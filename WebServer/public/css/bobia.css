@@ -1,0 +1,246 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+        --primaria: #8b5cf6;
+        --primaria-dark: #7c3aed;
+        --primaria-light: #a78bfa;
+        --secondaria: #67e8f9;
+        --branco: #ffffff;
+        --branco-light: #b99db6;
+        --texto: #000000;
+        --texto-secundario: #000000;
+        --sucesso: #10b981;
+        --perigo: #ef4444;
+        --alerta: #f59e0b;
+    }
+
+body{
+    font-family:'Inter', sans-serif;
+    background: var(--branco);
+    color: var(--texto);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+
+#cabecalho {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--branco);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid var(--primaria);
+    left: 0;
+}
+
+.cabecalho-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.cabecalho-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo img {
+    height: 100px;
+    width: auto;
+    display: block;
+}
+
+.cabecalho-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.cabecalho-links a {
+    color: var(--texto-secundario);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s, box-shadow 0.3s, background 0.3s, transform 0.3s;
+    position: relative;
+}
+
+#login{
+    color: var(--branco);
+}
+
+.cabecalho-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--branco);
+    transition: width 0.3s ease;
+}
+
+.cabecalho-links a:hover {
+    color: var(--primaria-dark);
+    transition: left 0.5s ease;
+    transform: translateY(-2px);
+}
+
+.cabecalho-links a:hover::after {
+    width: 100%;
+}
+
+.botao-principal {
+    background: linear-gradient(135deg, var(--primaria), var(--primaria-dark));
+    color: var(--branco);
+    padding: 7px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.botao-secundario {
+    background: #fff;
+    border: 2px solid var(--primaria);
+    color: var(--primaria);
+    padding: 7px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 1s ease;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.12);
+}
+
+.botao-principal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2)transparent);
+    transition: left 0.5s ease;
+}
+
+.botao-principal:hover::before {
+    left: 100%;
+}
+
+.botao-principal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+}
+
+.botao-secundario::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139,92,246,0.08), transparent);
+    transition: left 1s ease;
+}
+
+.botao-secundario:hover::before {
+    left: 100%;
+}
+
+.botao-secundario:hover {
+    background: var(--primaria);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+#cadastro:hover{
+    color: var(--branco);
+}
+
+.botoes {
+    display: flex;
+    gap: 14px;
+    animation: fadeInUp 1s ease 0.4s both;
+    justify-content: center;
+}
+
+.cabecalho-links .botao-principal{
+    color: var(--texto);
+}
+
+@font-face{
+    font-family:gendy;
+
+    /*Caso a fonte esteja na mesma pasta*/
+    src: url("../institucional_bobia/assets/fonts/gendy.otf");
+}
+
+.tituloBob h1 {
+    font-size: 6rem;
+    text-align: center;
+    margin: 40px 0 0 0;
+    font-weight: bold;
+    font-family: gendy;
+}
+
+@media (max-width: 600px) {
+    .tituloBob h1 {
+        font-size: 2rem;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+textarea{
+    border-radius: 7px;
+    padding: 5PX;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#buttonResposta {
+    padding: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+    background-color: var(--preto-light);
+    color: var(--texto);
+    border-color: var(--primaria-dark);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#buttonResposta:hover {
+    background-color: var(--primaria-dark);
+}
+
+#pergunta{
+    width: 500px;
+}
+
+span{
+    color: #8b5cf6;
+}
