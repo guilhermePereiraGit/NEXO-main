@@ -11,7 +11,7 @@ var database = require("../database/config")
 //Login de Empresa
 function verificar() {
   var instrucaoSql = `
-    SELECT nome,cnpj,email,telefone,status from empresa
+    SELECT nome,cnpj,email,telefone,status,idEmpresa from empresa
     WHERE status = "EM ANÁLISE";
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -27,6 +27,22 @@ function verificarAprovados() {
   return database.executar(instrucaoSql);
 }
 
+function aprovar(idEmpresa) {
+  var instrucaoSql = `
+    UPDATE empresa SET status = "APROVADO" WHERE idEmpresa = ${idEmpresa};
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function recusar(idEmpresa) {
+  var instrucaoSql = `
+    DELETE FROM empresa WHERE idEmpresa = ${idEmpresa};
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    verificar,verificarAprovados
+    verificar,verificarAprovados,aprovar,recusar
 };

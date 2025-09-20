@@ -36,6 +36,56 @@ function verificarAprovados(req, res) {
         );
 }
 
+function aprovar(req, res) {
+    var idEmpresa = req.body.idEmpresaServer;
+
+    if (idEmpresa == undefined) {
+        res.status(400).send("Id não Encontrado!");
+    } else {
+
+        aprovacaoModel.aprovar(idEmpresa)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar Aprovação! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+function recusar(req, res) {
+    var idEmpresa = req.body.idEmpresaServer;
+
+    if (idEmpresa == undefined) {
+        res.status(400).send("Id não Encontrado!");
+    } else {
+
+        aprovacaoModel.recusar(idEmpresa)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar Aprovação! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
 module.exports = {
-    verificar,verificarAprovados
+    verificar,verificarAprovados,aprovar,recusar
 };

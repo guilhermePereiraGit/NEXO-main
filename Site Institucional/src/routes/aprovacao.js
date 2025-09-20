@@ -11,4 +11,12 @@ router.get("/verificarAprovados", function (req, res) {
     aprovacaoController.verificarAprovados(req, res);
 })
 
+router.post("/aprovar", function (req, res) {
+    aprovacaoController.aprovar(req, res);
+})
+
+router.post("/recusar", function (req, res) {
+    aprovacaoController.recusar(req, res);
+})
+
 module.exports = router;

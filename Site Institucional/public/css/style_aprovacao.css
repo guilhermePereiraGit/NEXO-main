@@ -147,3 +147,17 @@ html {
     font-size: 50px;
     margin-bottom: 30px;
 }
+
+/* Cards Nothing */
+.card-nothing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primaria);
+    height: 55vh;
+    border-radius: 20px;
+}
+.card-nothing p{
+    font-size: 20px;
+}

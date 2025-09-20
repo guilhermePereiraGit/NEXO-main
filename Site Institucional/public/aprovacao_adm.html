@@ -50,6 +50,27 @@
     </div>
 </body>
 <script>
+    //Funções de Nada por Aqui
+    function nadaPorAquiAprovados() {
+        div_aprovados.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function nadaPorAquiPendentes() {
+        div_pendentes.innerHTML = `
+            <div class="card-nothing">
+                <h1>Sem Registros para Aprovação</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
     empresas = [];
     function carregarDados() {
         nome = sessionStorage.getItem("NOME_USUARIO");
@@ -69,7 +90,11 @@
                 resposta.json().then(data => {
                     console.log(data);
                     empresas = data;
-                    gerarCards();
+                    if (empresas.length > 0) {
+                        gerarCards();
+                    } else {
+                        nadaPorAquiPendentes();
+                    }
                 })
             } else {
                 console.log("Erro ao Buscar Dados!");
@@ -83,7 +108,8 @@
             var cnpj = empresas[i].cnpj;
             var email = empresas[i].email;
             var telefone = empresas[i].email;
-            div_pendentes.innerHTML += `
+            var idEmpresa = empresas[i].idEmpresa;
+                div_pendentes.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
@@ -95,8 +121,8 @@
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "aprovar">Aprovar</button>
-                        <button class = "reprovar">Reprovar</button>    
+                        <button class = "aprovar" onclick = "aprovar(${idEmpresa})">Aprovar</button>
+                        <button class = "reprovar" onclick = "recusar(${idEmpresa})">Reprovar</button>    
                     </div>
                 </div>
             </div>
@@ -105,7 +131,7 @@
     }
 
     aprovados = [];
-        function carregarDadosAprovados() {
+    function carregarDadosAprovados() {
         nome = sessionStorage.getItem("NOME_USUARIO");
         email = sessionStorage.getItem("EMAIL_USUARIO")
         lbl_nome.innerHTML = nome;
@@ -123,7 +149,11 @@
                 resposta.json().then(data => {
                     console.log(data);
                     aprovados = data;
-                    gerarCardsAprovados();
+                    if (aprovados.length > 0) {
+                        gerarCardsAprovados();
+                    } else {
+                        nadaPorAquiAprovados();
+                    }
                 })
             } else {
                 console.log("Erro ao Buscar Dados!");
@@ -131,12 +161,12 @@
         });
     }
 
-        function gerarCardsAprovados() {
-        for (var i = 0; i < empresas.length; i++) {
+    function gerarCardsAprovados() {
+        for (var i = 0; i < aprovados.length; i++) {
             var nome = aprovados[i].nome;
             var cnpj = aprovados[i].cnpj;
             var email = aprovados[i].email;
-            var telefone = aprovados[i].email;
+            var telefone = aprovados[i].telefone;
             div_aprovados.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
@@ -156,6 +186,56 @@
             </div>
             `;
         }
+    }
+
+    function aprovar(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/aprovacao/aprovar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresaServer: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload();
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function recusar(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/aprovacao/recusar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresaServer: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Erro ao Recusar")
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
     }
 </script>
 
