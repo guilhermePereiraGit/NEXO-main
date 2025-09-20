@@ -12,7 +12,7 @@ telefone varchar(14),
 status tinyint,
 fkEmpresa int,
 foreign key fkEmpresa(fkEmpresa) references empresa(idEmpresa)
-);
+) auto_increment = 1;
 
 -- Tabela Destinada ao Login para a Empresa e seus Funcionários
 create table usuario (
@@ -26,7 +26,7 @@ email varchar(70),
 senha varchar(45),
 fkEmpresa int,
 foreign key fkEmpresa(fkEmpresa) references empresa(idEmpresa)
-);
+) auto_increment = 1;
 
 -- Usuário Administrativo Nexo para Aprovação de Cadastro
 create table usuario_nexo (
@@ -34,7 +34,7 @@ idUsuarioNexo int primary key auto_increment,
 nome varchar(50),
 email varchar(50),
 senha varchar(50)
-);
+) auto_increment = 1;
 insert into usuario_nexo (nome,email,senha) values ("Adminstrador Nexo","adminnexo@gmail.com","12345");
 
 -- Modelo do Totem
@@ -47,13 +47,13 @@ descricao_arquitetura varchar(100),
 status varchar(50),
 fkEmpresa int,
 foreign key fkEmpresa(fkEmpresa) references empresa(idEmpresa)
-);
+) auto_increment = 1;
 
 -- Esta e Parametro estabelecem de forma dinâmica os parâmetros de logs do sistema
 create table Tipo_Parametro (
   idTipo_Parametro int primary key auto_increment,
   nome varchar(50)
-);
+) auto_increment = 1;
 
 create table Parametro (
   idParametro int primary key auto_increment,
@@ -62,7 +62,7 @@ create table Parametro (
   fkTipoParametro int,
   foreign key fkModelo(fkModelo) references modelo(idModelo),
   foreign key fkTipoParametro(fkTipoParametro) references Tipo_Parametro(idTipo_Parametro)
-) auto_increment = 1000;
+) auto_increment = 1;
 
 -- Endereço de cada totem e envolve os chamados de atendimento
 create table endereco (
@@ -78,7 +78,7 @@ telefone varchar(14),
 status_modelo tinyint,
 fkEmpresa int,
 foreign key fkEmpresa(fkEmpresa) references empresa(idEmpresa)
-);
+) auto_increment = 1;
 
 -- Dispositivo do qual serão coletadas as informações
 create table totem(
@@ -92,4 +92,4 @@ fkModelo int,
 fkEndereco int,
 foreign key fkModelo(fkModelo) references modelo(idModelo),
 foreign key fkEndereco(fkEndereco) references endereco(idEndereco)
-);
+) auto_increment = 1;
