@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Aprovação NEXO</title>
+    <link rel="stylesheet" href="./css/institucional.css">
+    <link rel="stylesheet" href="./css/style_aprovacao.css">
+
+</head>
+
+<body onload="carregarDados(),carregarDadosAprovados()">
+    <div id="cabecalho">
+        <div class="cabecalho-container">
+            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+            </div>
+            <div class="cabecalho-links" id="cabecalhoLinks">
+                <a href="#primeiro">Página Principal</a>
+                <a href="#principal">Aprovações Pendentes</a>
+                <a href="#segundo">Empresas Cadastradas</a>
+                <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
+                <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
+            </div>
+        </div>
+    </div>
+    <div class="pg-principal">
+
+        <div class="primeiro">
+            <div class="navegacao" id="primeiro">
+                <div class="infos-user">
+                    <img src="assets/imgs/user.png">
+                    <div class="labels"><label id="first">Nome:</label><label id="lbl_nome"></label></div>
+                    <div class="labels"><label id="first">Email:</label><label id="lbl_email"></label></div>
+                    <div class="labels"><label id="first">Acesso:</label><label>Administrador</label></div>
+                </div>
+            </div>
+        </div>
+        <div id="principal">
+            <h1>Empresas Pendentes</h1>
+            <div class="pendentes" id="div_pendentes">
+            </div>
+        </div>
+        <div id="segundo">
+            <h1>Empresas Cadastradas</h1>
+            <div class="aprovados" id="div_aprovados">
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    empresas = [];
+    function carregarDados() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+
+        fetch("/aprovacao/verificar", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    empresas = data;
+                    gerarCards();
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function gerarCards() {
+        for (var i = 0; i < empresas.length; i++) {
+            var nome = empresas[i].nome;
+            var cnpj = empresas[i].cnpj;
+            var email = empresas[i].email;
+            var telefone = empresas[i].email;
+            div_pendentes.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${cnpj}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class = "aprovar">Aprovar</button>
+                        <button class = "reprovar">Reprovar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    aprovados = [];
+        function carregarDadosAprovados() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+
+        fetch("/aprovacao/verificarAprovados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    aprovados = data;
+                    gerarCardsAprovados();
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+        function gerarCardsAprovados() {
+        for (var i = 0; i < empresas.length; i++) {
+            var nome = aprovados[i].nome;
+            var cnpj = aprovados[i].cnpj;
+            var email = aprovados[i].email;
+            var telefone = aprovados[i].email;
+            div_aprovados.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${cnpj}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class = "aprovar">Revisar</button>
+                        <button class = "reprovar">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+</script>
+
+</html>
