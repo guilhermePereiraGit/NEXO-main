@@ -10,26 +10,39 @@
 
 </head>
 
-<body>
-    <div id="cabecalho" style="position: relative !important;">
+<body onload="carregarDadosUsuario()">
+    <div id="cabecalho">
         <div class="cabecalho-container">
-            <div class="logo"><a href="#"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a></div>
+            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+            </div>
             <div class="cabecalho-links" id="cabecalhoLinks">
-                <a href="#diagrama">Página Principal</a>
-                <a href="#sobre-nos">Cadastro de Funcionários</a>
-                <a href="#recursos">Cadastro de Dispositivos</a>
-                <a href="#calculadora">Cadastro de Modelos</a>
+                <a href="#primeiro">Página Principal</a>
+                <a href="#principal">Aprovações Pendentes</a>
+                <a href="#segundo">Empresas Cadastradas</a>
                 <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
                 <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
             </div>
         </div>
     </div>
-    <div class="navegacao">
-        <div class="infos-user">
-            <img src="assets/imgs/user.png">
-            <label>Nome:</label><label id="lbl_nome"></label>
+    <div class="pg-principal">
+        <div class="primeiro">
+            <div class="navegacao" id="primeiro">
+                <div class="infos-user">
+                    <img src="assets/imgs/user.png">
+                    <div class="labels"><label id="first">Nome:</label><label id="lbl_nome"></label></div>
+                    <div class="labels"><label id="first">Email:</label><label id="lbl_email"></label></div>
+                    <div class="labels"><label id="first">Acesso:</label><label>Gestor</label></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
-
+<script>
+    function carregarDadosUsuario(){
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+    }
+</script>
 </html>

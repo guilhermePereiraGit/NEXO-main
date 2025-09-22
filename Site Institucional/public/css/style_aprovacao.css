@@ -12,7 +12,7 @@
     --alerta: #f59e0b;
 }
 
-html {
+html,body {
     overflow: hidden;
     scroll-behavior: smooth;
 }
@@ -34,6 +34,8 @@ html {
     padding-top: 10%;
     padding-left: 80px;
     padding-right: 80px;
+        background-color: #e2d9fd;
+
 }
 
 #segundo {
@@ -45,6 +47,7 @@ html {
     width: 100%;
     height: 100vh;
     border-bottom: solid 2px var(--primaria);
+    display: flex;
 }
 
 .navegacao {
@@ -82,14 +85,14 @@ html {
 
 /* Cards */
 .card-user {
-    display: flex;
-    font-size: 25px;
+     display: grid;
+    grid-template-columns: 1fr 1fr auto;
     align-items: center;
-    height: 17vh;
-    padding: 40px;
+    gap: 20px;
+    font-size: 25px;
+    padding: 30px;
     border-radius: 20px;
     border: solid 2px var(--primaria);
-    justify-content: space-between;
 }
 
 .card-second button {
@@ -113,7 +116,7 @@ html {
     margin-right: 5px;
 }
 
-#div_pendentes {
+#div_pendentes,#div_aprovados {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -124,10 +127,20 @@ html {
 
 .aprovar {
     background-color: lightgreen;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.aprovar:hover{
+    transform: scale(1.03);
 }
 
 .reprovar {
     background-color: lightcoral;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.reprovar:hover{
+    transform: scale(1.03);
 }
 
 #principal h1 {
@@ -160,4 +173,76 @@ html {
 }
 .card-nothing p{
     font-size: 20px;
+}
+
+.kpi{
+    width: 80%;
+    height: 20vh;
+    display: flex;
+    gap: 40px;
+}
+
+.card-kpi{
+    height: 100%;
+    width: 50%;
+    border: 2px solid var(--primaria);
+    border-radius: 20px;
+}
+
+.navegacao-information{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 9%;
+}
+
+/* KPI */
+.card-kpi{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.card-kpi .tittle{
+    font-size: 25px;
+}
+
+.card-kpi .conteudo{
+    font-size: 40px;
+    color: var(--primaria);
+    font-weight: bold;
+}
+
+/* Blocos de Conteúdo */
+.blocks img{
+    width: 280px;
+    transition: 0.3s;
+}
+.blocks img:hover{
+    transform: scale(1.03);
+}
+.first{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.portals h1{
+    color: var(--primaria);
+    font-size: 50px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.second{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#github{
+    width: 330px;
 }

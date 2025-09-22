@@ -7,6 +7,10 @@
     <title>Página de Aprovação NEXO</title>
     <link rel="stylesheet" href="./css/institucional.css">
     <link rel="stylesheet" href="./css/style_aprovacao.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 
 </head>
 
@@ -33,6 +37,37 @@
                     <div class="labels"><label id="first">Nome:</label><label id="lbl_nome"></label></div>
                     <div class="labels"><label id="first">Email:</label><label id="lbl_email"></label></div>
                     <div class="labels"><label id="first">Acesso:</label><label>Administrador</label></div>
+                </div>
+            </div>
+            <div class="navegacao-information">
+                <div class="kpi">
+                    <div class="card-kpi">
+                        <label class="tittle">Total de Solicitações Pendentes</label>
+                        <label id="total_pendentes" class="conteudo"></label>
+                    </div>
+                    <div class="card-kpi">
+                        <label class="tittle">Total de Cadastros Ativos</label>
+                        <label id="total_ativos" class="conteudo"></label>
+                    </div>
+                </div>
+                <div class="portals">
+                    <h1>Canais de Comunicação e Organização</h1>
+                    <div class="first">
+                        <div class="blocks">
+                            <a href="" target="_blank"><img src="assets/imgs/jira.png"></a>
+                        </div>
+                        <div class="blocks">
+                            <a href="https://app.slack.com/client/T09DD2ABNH5/D09FGBMUE94" target="_blank"><img src="assets/imgs/slack.png"></a>
+                        </div>
+                    </div>
+                    <div class="second">
+                        <div class="blocks">
+                            <a href="https://github.com/dashboard" target="_blank"><img src="assets/imgs/github.png" id="github"></a>
+                        </div>
+                        <div class="blocks">
+                            <a href="https://planner.cloud.microsoft/webui/plan/QIsN2rRRXUeNwmMeHixEEWQAFZL4/view/board?tid=fd50b457-84e0-400c-80f2-460f28eb41a6" target="_blank"><img src="assets/imgs/planner.png"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,6 +125,7 @@
                 resposta.json().then(data => {
                     console.log(data);
                     empresas = data;
+                    total_pendentes.innerHTML = empresas.length;
                     if (empresas.length > 0) {
                         gerarCards();
                     } else {
@@ -109,7 +145,7 @@
             var email = empresas[i].email;
             var telefone = empresas[i].email;
             var idEmpresa = empresas[i].idEmpresa;
-                div_pendentes.innerHTML += `
+            div_pendentes.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
@@ -149,6 +185,7 @@
                 resposta.json().then(data => {
                     console.log(data);
                     aprovados = data;
+                    total_ativos.innerHTML = aprovados.length;
                     if (aprovados.length > 0) {
                         gerarCardsAprovados();
                     } else {
@@ -179,7 +216,6 @@
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "aprovar">Revisar</button>
                         <button class = "reprovar">Cancelar</button>    
                     </div>
                 </div>
