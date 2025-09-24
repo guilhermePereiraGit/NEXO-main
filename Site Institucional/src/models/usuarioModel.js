@@ -41,6 +41,15 @@ function autenticarAdm(email, senha) {
   return database.executar(instrucaoSql);
 }
 
+function verificarUsuarios(idEmpresa) {
+  var instrucaoSql = `
+    SELECT idFuncionario,nome,cpf,cargo,email,telefone from usuario
+    WHERE fkEmpresa = ${idEmpresa};
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    cadastrar,autenticarEmpresa,autenticarAdm,autenticarUsuario
+    cadastrar,autenticarEmpresa,autenticarAdm,autenticarUsuario,verificarUsuarios
 };

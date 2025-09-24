@@ -1,0 +1,37 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+
+.more{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.more button{
+    width: 400px;
+    height: 10vh;
+    border-radius: 20px;
+    border: 2px solid var(--primaria);
+    color: white;
+    background-color: var(--primaria);
+    font-size: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.more button:hover{
+    transform: scale(1.01);
+    background-color: white;
+    color: var(--primaria);
+}

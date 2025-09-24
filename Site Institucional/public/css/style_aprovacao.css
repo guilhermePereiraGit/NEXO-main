@@ -216,8 +216,18 @@ html,body {
 }
 
 /* Blocos de Conteúdo */
+.blocks{
+    border: 2px solid var(--primaria);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
 .blocks img{
-    width: 280px;
+    width: 250px;
     transition: 0.3s;
 }
 .blocks img:hover{
@@ -233,7 +243,6 @@ html,body {
 .portals h1{
     color: var(--primaria);
     font-size: 50px;
-    margin-bottom: 30px;
     margin-top: 30px;
 }
 

@@ -144,6 +144,26 @@ function autenticar(req, res) {
 
 }
 
+function verificarUsuarios(req, res) {
+    var idEmpresa = req.body.idEmpresaServer;
+
+    usuarioModel.verificarUsuarios(idEmpresa)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar Verificação! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
-    cadastrar, autenticar
+    cadastrar, autenticar,verificarUsuarios
 };
