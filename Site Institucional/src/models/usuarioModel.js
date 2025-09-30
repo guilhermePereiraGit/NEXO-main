@@ -8,6 +8,19 @@ function cadastrar(nome, email, cnpj,senha,telefone) {
     return database.executar(instrucaoSql);
 }
 
+function cadastrarFuncionario(nome, email, cpf,senha,telefone,cargo,fkEmpresa) {
+    var instrucaoSql = `
+        INSERT INTO usuario (nome, cpf,cargo,email,senha,telefone,fkEmpresa) 
+        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}','${fkEmpresa}');`;
+    return database.executar(instrucaoSql);
+}
+
+function deletarFuncionario(nome, email,fkEmpresa) {
+    var instrucaoSql = `
+        DELETE FROM usuario WHERE nome = '${nome}' AND email = '${email}' AND fkEmpresa = ${fkEmpresa}`;
+    return database.executar(instrucaoSql);
+}
+
 //Login de Empresa
 function autenticarEmpresa(email, senha) {
   console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
@@ -43,13 +56,27 @@ function autenticarAdm(email, senha) {
 
 function verificarUsuarios(idEmpresa) {
   var instrucaoSql = `
-    SELECT idFuncionario,nome,cpf,cargo,email,telefone from usuario
+    SELECT idFuncionario,nome,cpf,cargo,email,telefone,senha,fkEmpresa from usuario
     WHERE fkEmpresa = ${idEmpresa};
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
 
+// Função para remover Empresa
+function limparFuncionarios(fkEmpresa) {
+    var instrucaoSql = `
+        DELETE FROM usuario WHERE fkEmpresa = ${fkEmpresa}`;
+    return database.executar(instrucaoSql);
+}
+
+function deletarEmpresa(idEmpresa){
+    var instrucaoSql = `
+        DELETE FROM empresa WHERE idEmpresa = ${idEmpresa}`;
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    cadastrar,autenticarEmpresa,autenticarAdm,autenticarUsuario,verificarUsuarios
+    cadastrar,autenticarEmpresa,autenticarAdm,autenticarUsuario,verificarUsuarios,cadastrarFuncionario,deletarFuncionario,
+    limparFuncionarios,deletarEmpresa
 };

@@ -216,7 +216,7 @@
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "reprovar">Cancelar</button>    
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
                     </div>
                 </div>
             </div>
@@ -239,6 +239,56 @@
 
                 if (resposta.ok) {
                     window.location.reload();
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function limparFuncionarios(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/limparFuncionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ fkEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    removerEmpresa(idEmpresaVar);
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+        function removerEmpresa(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/deletarEmpresa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload()
                 } else {
                     resposta.innerHTML = "Erro ao Aprovar"
                 }

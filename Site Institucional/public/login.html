@@ -110,9 +110,9 @@
                             sessionStorage.TELEFONE_USUARIO = json.telefone;
                             sessionStorage.FK_EMPRESA = json.fkEmpresa;
 
-                            if(json.cargo === "gestor"){
+                            if(json.cargo === "Gestor"){
                                 window.location = "dashboard_usuario.html"
-                            }else if(json.cargo === "tecnico"){
+                            }else if(json.cargo === "Técnico"){
                                 window.location = "dashboard.html"
                             }
                         }else if(json.status === "administrador"){

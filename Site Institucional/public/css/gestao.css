@@ -12,14 +12,14 @@
     --alerta: #f59e0b;
 }
 
-.more{
+.more {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
 }
 
-.more button{
+.more button {
     width: 400px;
     height: 10vh;
     border-radius: 20px;
@@ -30,8 +30,182 @@
     cursor: pointer;
     transition: 0.3s;
 }
-.more button:hover{
+
+.more button:hover {
     transform: scale(1.01);
+    background-color: transparent;
+    color: var(--primaria);
+}
+
+.popup {
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.375);
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 10%;
+}
+
+.card {
+    background-color: white;
+    height: 75vh;
+    width: 60%;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px var(--primaria);
+}
+
+.cima {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cima h1 {
+    color: var(--primaria);
+    font-size: 40px;
+}
+
+.cima button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cima button:hover {
+    transform: scale(1.05);
+}
+
+.baixo {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.baixo .item-card {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.baixo .item-card label {
+    color: var(--primaria);
+    font-size: 25px;
+    font-weight: bold;
+    width: 100px;
+}
+
+.baixo .item-card input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+#cargos{
+        border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.part-dois {
+    display: flex;
+    gap: 30px;
+}
+
+.part-dois .item-card label {
+    width: 125px;
+}
+
+.part-dois .cadastrar {
+    width: 50%;
+    background-color: var(--primaria);
+    border-radius: 10px;
+    border: 2px solid var(--primaria);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.part-dois .cadastrar:hover, .part-dois-special .gerar-senha:hover{
     background-color: white;
     color: var(--primaria);
+}
+
+.part-dois-special .gerar-senha {
+    width: 20%;
+    background-color: var(--primaria);
+    border-end-end-radius: 10px;
+    border-start-end-radius: 10px;
+    border: 2px solid var(--primaria);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: -5px;
+    transition: 0.3s;
+}
+
+.part-dois-special {
+    display: flex;
+}
+
+.part-dois-special .item-card input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: -15px;
+}
+
+.baixo .item-card-special {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.baixo .item-card-special label {
+    color: var(--primaria);
+    font-size: 25px;
+    font-weight: bold;
+    width: 100px;
+}
+
+.baixo .item-card-special input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    margin-left: -15px;
+    border-radius: 10px 0 0 10px;
+    width: 550px;
+}
+
+#cargos {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #8b5cf6;
+    border-radius: 8px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
+    no-repeat right 10px center;
+    background-color: #fff;
+    background-size: 20px;
+}
+
+.part1{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }

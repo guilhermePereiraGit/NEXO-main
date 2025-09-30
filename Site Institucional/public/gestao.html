@@ -44,7 +44,7 @@
                 <h1 style="margin-bottom: 0px;">Usuários Ativos</h1>
                 <button onclick="abrirPopup()">Adicionar Usuários</button>
             </div>
-            <div class="pendentes" id="div_pendentes">
+            <div class="pendentes" id="div_pendentes" style="height: 450px;">
             </div>
         </div>
         <div id="segundo">
@@ -54,13 +54,175 @@
         </div>
     </div>
 
+    <!-- style="display: none;" -->
     <div class="popup" id="popup" style="display: none;">
-        <h1>teste</h1>
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Funcionário</h1>
+                <button onclick="fecharPopup()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo">
+                <div class="item-card">
+                    <label for="input_nome">Nome:</label>
+                    <input type="text" id="input_nome">
+                </div>
+                <div class="item-card">
+                    <label for="input_nome">Email:</label>
+                    <input type="text" id="input_email">
+                </div>
+
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label for="input_nome">CPF:</label>
+                        <input type="text" id="input_cpf">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_nome">Telefone:</label>
+                        <input type="text" id="input_telefone">
+                    </div>
+                </div>
+                <div class="part-dois-special">
+                    <div class="item-card-special">
+                        <label for="input_nome">Senha:</label>
+                        <input type="text" id="input_senha">
+                    </div>
+                    <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
+                </div>
+                <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label>Cargo:</label>
+                        <select name="cargos" id="cargos">
+                            <option value="">Escolha uma opção</option>
+                            <option value="Gestor">Gestor</option>
+                            <option value="Técnico">Técnico</option>
+                        </select>
+                    </div>
+                    <button class="cadastrar" onclick="cadastrarFuncionario()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script>
-    function abrirPopup(){
-        popup.style.display = "block";
+    function cadastrarFuncionario() {
+        var nome = input_nome.value;
+        var email = input_email.value;
+        var cpf = input_cpf.value;
+        var telefone = input_telefone.value;
+        var senha = input_senha.value;
+        var cargo = cargos.value;
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        if (
+            nome == "" ||
+            email == "" ||
+            senha == "" ||
+            cpf == "" ||
+            telefone == "" ||
+            senha == "" ||
+            cargo == ""
+        ) {
+            resposta.innerHTML = "Preencha todos os campos"
+            return false;
+        }
+
+        fetch("/usuarios/cadastrarFuncionario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nome,
+                emailServer: email,
+                senhaServer: senha,
+                cpfServer: cpf,
+                telefoneServer: telefone,
+                cargoServer: cargo,
+                fkEmpresa: idEmpresa
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.innerHTML = "Cadastro Realizado com Sucesso!"
+
+                    setTimeout(() => {
+                        input_nome.value = "";
+                        input_email.value = "";
+                        input_cpf.value = "";
+                        input_senha.value = "";
+                        input_telefone.value = "";
+                        cargos.value = "";
+                    }, "2000");
+                } else {
+                    resposta.innerHTML = "Erro ao Logar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function deletarFuncionario(nomeVar,emailVar,fkEmpresa) {
+        var nome = nomeVar;
+        var email = emailVar;
+        var idEmpresa = fkEmpresa;
+
+        if (
+            nome == "" ||
+            email == "" ||
+            idEmpresa == ""
+        ) {
+            return false;
+        }
+
+        fetch("/usuarios/deletarFuncionario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nome,
+                emailServer: email,
+                fkEmpresa: idEmpresa
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if(resposta.ok){
+                    window.location.reload()
+                }else{
+                    console.log("Erro ao Deletar");
+                    
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function gerarSenha() {
+        const teclado = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var senhaAleatoria = "";
+        for (var i = 0; i < 20; i++) {
+            var indice = Math.floor(Math.random() * teclado.length);
+            senhaAleatoria += teclado[indice];
+        }
+        document.getElementById("input_senha").value = senhaAleatoria;
+    }
+
+    function abrirPopup() {
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    function fecharPopup() {
+        document.getElementById("popup").style.display = "none";
+        window.location.reload();
     }
 
     usuarios = [];
@@ -88,9 +250,9 @@
                 resposta.json().then(data => {
                     console.log(data);
                     usuarios = data;
-                    if(usuarios.length == 0){
+                    if (usuarios.length == 0) {
                         nadaPorAquiUsuarios();
-                    }else{
+                    } else {
                         gerarCardsUsuarios();
                     }
                 })
@@ -101,36 +263,40 @@
     }
 
     function nadaPorAquiUsuarios() {
-        div_aprovados.innerHTML = `
+        div_pendentes.innerHTML = `
         <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
+                <h1>Sem Usuários Ativos</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
                 <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
             </div>
         `;
     }
 
-        function gerarCardsUsuarios() {
+    function gerarCardsUsuarios() {
         for (var i = 0; i < usuarios.length; i++) {
             var idUsuario = usuarios[i].idFuncionario;
             var nome = usuarios[i].nome;
-            var cnpj = usuarios[i].cpf;
+            var cpf = usuarios[i].cpf;
             var email = usuarios[i].email;
-            var telefone = usuarios[i].email;
+            var telefone = usuarios[i].telefone;
+            var senha = usuarios[i].senha;
+            var cargo = usuarios[i].cargo;
             var fkEmpresa = usuarios[i].fkEmpresa;
             div_pendentes.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
-                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${cnpj}</label></div>
+                    <div class="labels"><label id="first">CPF:</label><label class="label-item">${cpf}</label></div>
+                    <div class="labels"><label id="first">Senha:</label><label class="label-item">${senha}</label></div>
                 </div>
                 <div class = "card-second">
                     <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
                     <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${cargo}</label></div>
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "reprovar" onclick = "recusar(${idEmpresa})">Remover</button>    
+                        <button class = "reprovar" onclick="deletarFuncionario('${nome}', '${email}', ${fkEmpresa})">Remover</button>    
                     </div>
                 </div>
             </div>

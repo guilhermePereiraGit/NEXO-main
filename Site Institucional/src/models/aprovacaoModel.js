@@ -20,7 +20,7 @@ function verificar() {
 
 function verificarAprovados() {
   var instrucaoSql = `
-    SELECT nome,cnpj,email,telefone,status from empresa
+    SELECT nome,cnpj,email,telefone,status,idEmpresa from empresa
     WHERE status = "APROVADO";
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
