@@ -19,7 +19,8 @@
             <div class="cabecalho-links" id="cabecalhoLinks">
                 <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Usuários Ativos</a>
-                <a href="#segundo">Modelos Cadastrados</a>
+                <a href="#segundo">Parâmetros Cadastrados</a>
+                <a href="#terceiro">Modelos Cadastrados</a>
                 <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
                 <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
             </div>
@@ -42,24 +43,35 @@
         <div id="principal">
             <div class="more">
                 <h1 style="margin-bottom: 0px;">Usuários Ativos</h1>
-                <button onclick="abrirPopup()">Adicionar Usuários</button>
+                <button onclick="abrirPopupUsuario()">Adicionar Usuários</button>
             </div>
             <div class="pendentes" id="div_pendentes" style="height: 450px;">
             </div>
         </div>
         <div id="segundo">
-            <h1>Modelos Cadastrados</h1>
-            <div class="aprovados" id="div_aprovados">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Parâmetros Cadastrados</h1>
+                <button onclick="abrirPopupParametro()">Cadastrar Parâmetro</button>
+            </div>
+            <div class="pendentes" id="div_pendentes" style="height: 450px;">
+            </div>
+        </div>
+        <div id="terceiro">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Modelos Cadastrados</h1>
+                <button onclick="abrirPopupModelo()">Cadastrar Modelo</button>
+            </div>
+            <div class="pendentes" id="div_pendentes" style="height: 450px;">
             </div>
         </div>
     </div>
 
     <!-- style="display: none;" -->
-    <div class="popup" id="popup" style="display: none;">
+    <div class="popupusuario" id="popupusuario" style="display: none;">
         <div class="card">
             <div class="cima">
                 <h1>Cadastro de Funcionário</h1>
-                <button onclick="fecharPopup()"><img src="assets/imgs/close.png"></button>
+                <button onclick="fecharPopupUsuario()"><img src="assets/imgs/close.png"></button>
             </div>
             <div class="baixo">
                 <div class="item-card">
@@ -82,11 +94,22 @@
                     </div>
                 </div>
                 <div class="part-dois-special">
-                    <div class="item-card-special">
+                    <div class="item-card">
                         <label for="input_nome">Senha:</label>
                         <input type="text" id="input_senha">
                     </div>
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
+                    <div class="item-card">
+                        <label>Região de Atuação:</label>
+                        <select name="regiao_atuacao" id="regiao_atuacao">
+                            <option value="">Escolha uma opção</option>
+                            <option value="Centro">Centro</option>
+                            <option value="Norte">Norte</option>
+                            <option value="Sul">Sul</option>
+                            <option value="Leste">Leste</option>
+                            <option value="Oeste">Oeste</option>
+                        </select>
+                    </div>
                 </div>
                 <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
                 <div class="part-dois">
@@ -103,6 +126,44 @@
             </div>
         </div>
     </div>
+
+    <!-- style="display: none;" -->
+    <div class="popupmodelo" id="popupmodelo" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Modelo</h1>
+                <button onclick="fecharPopupModelo()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo">
+                <div class="item-card">
+                    <label for="input_nome">Nome:</label>
+                    <input type="text" id="input_nome">
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="cadastrarModelo()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- style="display: none;" -->
+    <div class="popupparametro" id="popupparametro" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Modelo</h1>
+                <button onclick="fecharPopupParametro()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo">
+                <div class="item-card">
+                    <label for="input_nome">Nome:</label>
+                    <input type="text" id="input_nome">
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="cadastrarParametro()">SIMMMM</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     function cadastrarFuncionario() {
@@ -112,6 +173,7 @@
         var telefone = input_telefone.value;
         var senha = input_senha.value;
         var cargo = cargos.value;
+        var regiaoAtuacao = regiao_atuacao.value;
         var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
         if (
@@ -121,7 +183,8 @@
             cpf == "" ||
             telefone == "" ||
             senha == "" ||
-            cargo == ""
+            cargo == "" ||
+            regiaoAtuacao == ""
         ) {
             resposta.innerHTML = "Preencha todos os campos"
             return false;
@@ -139,6 +202,7 @@
                 cpfServer: cpf,
                 telefoneServer: telefone,
                 cargoServer: cargo,
+                regiaoAtuacaoServer: regiaoAtuacao,
                 fkEmpresa: idEmpresa
             }),
         })
@@ -166,7 +230,56 @@
         return false;
     }
 
-    function deletarFuncionario(nomeVar,emailVar,fkEmpresa) {
+    function cadastrarParametro() {
+        var componente = input_componente.value;
+        var limiteMaximo = input_limite_maximo.value;
+        var limiteMinimo = input_limite_minimo.value;
+
+        if (
+            componente == "" ||
+            limiteMaximo == "" ||
+            limiteMinimo == "" 
+        ) {
+            resposta.innerHTML = "Preencha todos os campos"
+            return false;
+        }
+
+        fetch("/parametro/cadastrarTipoParametro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                componenteServer: componente,
+                limiteMaximoServer: limiteMaximo,
+                limiteMinimoServer: limiteMinimo
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.innerHTML = "Cadastro Realizado com Sucesso!"
+
+                    setTimeout(() => {
+                        input_nome.value = "";
+                        input_email.value = "";
+                        input_cpf.value = "";
+                        input_senha.value = "";
+                        input_telefone.value = "";
+                        cargos.value = "";
+                    }, "2000");
+                } else {
+                    resposta.innerHTML = "Erro ao Logar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function deletarFuncionario(nomeVar, emailVar, fkEmpresa) {
         var nome = nomeVar;
         var email = emailVar;
         var idEmpresa = fkEmpresa;
@@ -193,11 +306,11 @@
             .then(function (resposta) {
                 console.log("resposta: ", resposta);
 
-                if(resposta.ok){
+                if (resposta.ok) {
                     window.location.reload()
-                }else{
+                } else {
                     console.log("Erro ao Deletar");
-                    
+
                 }
             })
             .catch(function (resposta) {
@@ -216,12 +329,30 @@
         document.getElementById("input_senha").value = senhaAleatoria;
     }
 
-    function abrirPopup() {
-        document.getElementById("popup").style.display = "flex";
+    function abrirPopupUsuario() {
+        document.getElementById("popupusuario").style.display = "flex";
     }
 
-    function fecharPopup() {
-        document.getElementById("popup").style.display = "none";
+    function abrirPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "flex";
+    }
+
+    function abrirPopupParametro() {
+        document.getElementById("popupparametro").style.display = "flex";
+    }
+
+    function fecharPopupUsuario() {
+        document.getElementById("popupusuario").style.display = "none";
+        window.location.reload();
+    }
+
+    function fecharPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "none";
+        window.location.reload();
+    }
+
+    function fecharPopupParametro() {
+        document.getElementById("popupparametro").style.display = "none";
         window.location.reload();
     }
 

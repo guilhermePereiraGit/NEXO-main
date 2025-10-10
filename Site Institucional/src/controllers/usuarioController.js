@@ -45,6 +45,7 @@ function cadastrarFuncionario(req, res) {
     var cpf = req.body.cpfServer;
     var telefone = req.body.telefoneServer;
     var cargo = req.body.cargoServer;
+    var regiaoAtuacao = req.body.regiaoAtuacaoServer;
     var fkEmpresa = req.body.fkEmpresa;
 
     if (nome == undefined) {
@@ -61,9 +62,11 @@ function cadastrarFuncionario(req, res) {
         res.status(400).send("Seu cargo está undefined!");
     } else if (fkEmpresa == undefined) {
         res.status(400).send("Sua empresa está undefined!");
+    } else if (regiaoAtuacao == undefined){
+        res.status(400).send("Sua área de atuação está undefined!");
     } else {
 
-        usuarioModel.cadastrarFuncionario(nome, email, cpf, senha, telefone,cargo,fkEmpresa)
+        usuarioModel.cadastrarFuncionario(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, fkEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);

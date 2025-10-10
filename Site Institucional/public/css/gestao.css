@@ -37,7 +37,7 @@
     color: var(--primaria);
 }
 
-.popup {
+.popupusuario, .popupmodelo, .popupparametro {
     transition: 0.3s;
     background-color: rgba(0, 0, 0, 0.375);
     width: 100%;
@@ -108,7 +108,7 @@
     width: 100%;
 }
 
-#cargos{
+#cargos, #regiao_atuacao{
         border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
@@ -188,7 +188,7 @@
     width: 550px;
 }
 
-#cargos {
+#cargos, #regiao_atuacao {
     width: 100%;
     padding: 10px;
     font-size: 16px;
