@@ -79,7 +79,3 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     email VARCHAR(70),
     senha VARCHAR(30)
 );
-
-insert into usuario_nexo (nome, email, senha) values ('Gabriel', 'gabriel@gmail.com', '12345');
-insert into empresa(nome, cnpj, email, senha, telefone, status) values ('oi', '12345', 'oi@gmail', 'senha', 'telefone', 'APROVADO');
-insert into usuario(nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, fkEmpresa) values ('nome', 'cpf', 'Técnico', 'email', 'senha', 'telefone', 'regiao', 1);
