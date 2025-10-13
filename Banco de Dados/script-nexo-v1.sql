@@ -27,8 +27,6 @@ CREATE TABLE IF NOT EXISTS usuario (
 CREATE TABLE IF NOT EXISTS modelo (
 	idModelo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(80),
-    criador VARCHAR(80),
-    tipo VARCHAR(45),
     descricao_arq VARCHAR(100),
     status VARCHAR(30),
     fkEmpresa INT,
@@ -36,19 +34,20 @@ CREATE TABLE IF NOT EXISTS modelo (
     constraint status_modelo_check check(status in ("ATIVO", "INATIVO"))
 );
 
-CREATE TABLE IF NOT EXISTS parametro (
-	idParametro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    limiteMin DECIMAL(4,2),
-    limiteMax DECIMAL(4,2),
-    fkModelo INT,
-    foreign key fk_modelo_parametro (fkModelo) references modelo(idModelo)
-);
-
 CREATE TABLE IF NOT EXISTS tipoParametro (
 	idTipoParametro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(45),
-    fkParametro INT,
-    foreign key fk_parametro_tipoParametro (fkParametro) references parametro(idParametro)
+	componente varchar(45),
+    status varchar(45)
+);
+
+CREATE TABLE IF NOT EXISTS parametro (
+	idParametro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    limiteMin varchar(45),
+    limiteMax varchar(45),
+    fkModelo INT,
+    fkTipoParametro INT,
+    foreign key fk_modelo_parametro (fkModelo) references modelo(idModelo),
+    foreign key fk_tipo_parametro_parametro (fkTipoParametro) references tipoParametro(idTipoParametro)
 );
 
 CREATE TABLE IF NOT EXISTS endereco (
@@ -82,3 +81,5 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
 );
 
 insert into usuario_nexo (nome, email, senha) values ('Gabriel', 'gabriel@gmail.com', '12345');
+insert into empresa(nome, cnpj, email, senha, telefone, status) values ('oi', '12345', 'oi@gmail', 'senha', 'telefone', 'APROVADO');
+insert into usuario(nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, fkEmpresa) values ('nome', 'cpf', 'Técnico', 'email', 'senha', 'telefone', 'regiao', 1);

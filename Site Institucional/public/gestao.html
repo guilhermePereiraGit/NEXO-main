@@ -19,8 +19,7 @@
             <div class="cabecalho-links" id="cabecalhoLinks">
                 <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Usuários Ativos</a>
-                <a href="#segundo">Parâmetros Cadastrados</a>
-                <a href="#terceiro">Modelos Cadastrados</a>
+                <a href="#segundo">Modelos Cadastrados</a>
                 <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
                 <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
             </div>
@@ -50,16 +49,8 @@
         </div>
         <div id="segundo">
             <div class="more">
-                <h1 style="margin-bottom: 0px;">Parâmetros Cadastrados</h1>
-                <button onclick="abrirPopupParametro()">Cadastrar Parâmetro</button>
-            </div>
-            <div class="pendentes" id="div_pendentes" style="height: 450px;">
-            </div>
-        </div>
-        <div id="terceiro">
-            <div class="more">
                 <h1 style="margin-bottom: 0px;">Modelos Cadastrados</h1>
-                <button onclick="abrirPopupModelo()">Cadastrar Modelo</button>
+                <button onclick="abrirPopupModelo()">Adicionar Modelo</button>
             </div>
             <div class="pendentes" id="div_pendentes" style="height: 450px;">
             </div>
@@ -134,32 +125,32 @@
                 <h1>Cadastro de Modelo</h1>
                 <button onclick="fecharPopupModelo()"><img src="assets/imgs/close.png"></button>
             </div>
-            <div class="baixo">
+            <div class="baixo" id="baixo">
                 <div class="item-card">
-                    <label for="input_nome">Nome:</label>
-                    <input type="text" id="input_nome">
+                    <label for="input_nome_modelo">Nome:</label>
+                    <input type="text" id="input_nome_modelo">
+                </div>
+                <div class="item-card">
+                    <label for="input_descricao">Descrição:</label>
+                    <input type="text" id="input_descricao">
                 </div>
                 <div class="part-dois">
+                    <div class="item-card">
+                        <label for="input_componente">Componente:</label>
+                        <input type="text" id="input_componente1">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_limite_maximo">Limite Máximo:</label>
+                        <input type="number" id="input_limite_maximo1">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_limite_minimo">Limite Mínimo:</label>
+                        <input type="number" id="input_limite_minimo1">
+                    </div>
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="adicionarParametro()">Adicionar Parâmetro</button>
                     <button class="cadastrar" onclick="cadastrarModelo()">Cadastrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- style="display: none;" -->
-    <div class="popupparametro" id="popupparametro" style="display: none;">
-        <div class="card">
-            <div class="cima">
-                <h1>Cadastro de Modelo</h1>
-                <button onclick="fecharPopupParametro()"><img src="assets/imgs/close.png"></button>
-            </div>
-            <div class="baixo">
-                <div class="item-card">
-                    <label for="input_nome">Nome:</label>
-                    <input type="text" id="input_nome">
-                </div>
-                <div class="part-dois">
-                    <button class="cadastrar" onclick="cadastrarParametro()">SIMMMM</button>
                 </div>
             </div>
         </div>
@@ -230,53 +221,78 @@
         return false;
     }
 
-    function cadastrarParametro() {
-        var componente = input_componente.value;
-        var limiteMaximo = input_limite_maximo.value;
-        var limiteMinimo = input_limite_minimo.value;
+    function cadastrarModelo() {
+        var nomeModelo = input_nome_modelo.value;
+        var descricao = input_descricao.value;
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        const parametros = [];
+
+        for (let i = 1; i <= numeroComponentes; i++) {
+            const componente = document.getElementById(`input_componente${i}`).value;
+            const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+            const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+
+            parametros.push({
+                componente: componente,
+                limiteMaximo: limiteMaximo,
+                limiteMinimo: limiteMinimo
+            });
+        }
 
         if (
-            componente == "" ||
-            limiteMaximo == "" ||
-            limiteMinimo == "" 
+            nomeModelo == "" ||
+            descricao == "" ||
+            parametros.some(p => p.componente == "" || p.limiteMaximo == "" || p.limiteMinimo == "")
         ) {
-            resposta.innerHTML = "Preencha todos os campos"
+            alert("Preencha todos os campos!");
             return false;
         }
 
-        fetch("/parametro/cadastrarTipoParametro", {
+        console.log(parametros);
+
+        fetch("/modelo/cadastrarModelo", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                componenteServer: componente,
-                limiteMaximoServer: limiteMaximo,
-                limiteMinimoServer: limiteMinimo
+                nomeModeloServer: nomeModelo,
+                descricaoServer: descricao,
+                parametrosServer: parametros,
+                fkEmpresaServer: idEmpresa,
             }),
         })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
+            .then((resposta) => {
                 if (resposta.ok) {
-                    resposta.innerHTML = "Cadastro Realizado com Sucesso!"
-
-                    setTimeout(() => {
-                        input_nome.value = "";
-                        input_email.value = "";
-                        input_cpf.value = "";
-                        input_senha.value = "";
-                        input_telefone.value = "";
-                        cargos.value = "";
-                    }, "2000");
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.reload();
                 } else {
-                    resposta.innerHTML = "Erro ao Logar"
+                    alert("Erro ao cadastrar modelo.");
                 }
             })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-            });
-        return false;
+            .catch((erro) => console.error("#ERRO:", erro));
+    }
+
+    function adicionarParametro() {
+        numeroComponentes++;
+
+        const novoParametro = document.createElement("div");
+        novoParametro.classList.add("part-dois");
+        novoParametro.innerHTML = `
+        <div class="item-card">
+            <label for="input_componente${numeroComponentes}">Componente:</label>
+            <input type="text" id="input_componente${numeroComponentes}">
+        </div>
+        <div class="item-card">
+            <label for="input_limite_maximo${numeroComponentes}">Limite Máximo:</label>
+            <input type="number" id="input_limite_maximo${numeroComponentes}">
+        </div>
+        <div class="item-card">
+            <label for="input_limite_minimo${numeroComponentes}">Limite Mínimo:</label>
+            <input type="number" id="input_limite_minimo${numeroComponentes}">
+        </div>
+    `;
+
+        baixo.appendChild(novoParametro);
     }
 
     function deletarFuncionario(nomeVar, emailVar, fkEmpresa) {
@@ -334,11 +350,8 @@
     }
 
     function abrirPopupModelo() {
+        numeroComponentes = 1
         document.getElementById("popupmodelo").style.display = "flex";
-    }
-
-    function abrirPopupParametro() {
-        document.getElementById("popupparametro").style.display = "flex";
     }
 
     function fecharPopupUsuario() {
@@ -348,11 +361,6 @@
 
     function fecharPopupModelo() {
         document.getElementById("popupmodelo").style.display = "none";
-        window.location.reload();
-    }
-
-    function fecharPopupParametro() {
-        document.getElementById("popupparametro").style.display = "none";
         window.location.reload();
     }
 
