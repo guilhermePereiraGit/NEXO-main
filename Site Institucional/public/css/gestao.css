@@ -37,7 +37,7 @@
     color: var(--primaria);
 }
 
-.popuptotem {
+.popuptotem, .popupmodelo, .popupusuario {
     transition: 0.3s;
     background-color: rgba(0, 0, 0, 0.375);
     width: 100%;
@@ -108,7 +108,7 @@
     width: 100%;
 }
 
-#cargos, #regiao_atuacao{
+#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos{
         border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
@@ -188,7 +188,7 @@
     width: 550px;
 }
 
-#cargos, #regiao_atuacao {
+#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
     width: 100%;
     padding: 10px;
     font-size: 16px;

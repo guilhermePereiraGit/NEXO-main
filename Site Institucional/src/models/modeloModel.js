@@ -35,6 +35,31 @@ function buscarIdTipoParametro() {
     return database.executar(instrucaoSql);
 }
 
+function buscarSeTipoParametroJaExiste(componente){
+    var instrucaoSql = `
+        SELECT idTipoParametro FROM tipoParametro where componente = '${componente}';
+    `
+    return database.executar(instrucaoSql);
+}
+
+function buscarTipoParametro(fkEmpresa){
+    var instrucaoSql = `
+        select distinct componente from tipoParametro tp
+        inner join parametro p on tp.idTipoParametro = p.fkTipoParametro
+        inner join modelo m on p.fkModelo = m.idModelo
+        where m.fkEmpresa = ${fkEmpresa};
+    `
+    return database.executar(instrucaoSql);
+}
+
+function buscarModelos(fkEmpresa){
+    var instrucaoSql = `
+        select idModelo as IdModelo, nome Nome from modelo where fkEmpresa = ${fkEmpresa};
+    `
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo
+    cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo,
+    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos
 };

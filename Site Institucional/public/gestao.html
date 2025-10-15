@@ -20,13 +20,11 @@
                 <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Usuários Ativos</a>
                 <a href="#segundo">Modelos Cadastrados</a>
-                <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
-                <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
+                <a href="login.html" class="botao-secundario" id="cadastro">Sair</a>
             </div>
         </div>
     </div>
     <div class="pg-principal">
-
         <div class="primeiro">
             <div class="navegacao" id="primeiro">
                 <div class="infos-user">
@@ -136,8 +134,14 @@
                 </div>
                 <div class="part-dois">
                     <div class="item-card">
-                        <label for="input_componente">Componente:</label>
-                        <input type="text" id="input_componente1">
+                        <label>Componente:</label>
+                        <select name="componentes" id="componentes1" class="componentes">
+                            <option value="">Componente</option>
+                            <option value="cpu">CPU</option>
+                            <option value="ram">RAM</option>
+                            <option value="disco">Disco</option>
+                            <option value="outro">Outro</option>
+                        </select>
                     </div>
                     <div class="item-card">
                         <label for="input_limite_maximo">Limite Máximo:</label>
@@ -157,6 +161,9 @@
     </div>
 </body>
 <script>
+
+    let numeroComponentes = 1;
+
     function cadastrarFuncionario() {
         var nome = input_nome.value;
         var email = input_email.value;
@@ -227,17 +234,49 @@
         var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
         const parametros = [];
+        var numeroCpu = 0;
+        var numeroRam = 0;
+        var numeroDisco = 0;
 
         for (let i = 1; i <= numeroComponentes; i++) {
-            const componente = document.getElementById(`input_componente${i}`).value;
-            const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
-            const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+            const componente = document.getElementById(`componentes${i}`).value;
 
-            parametros.push({
-                componente: componente,
-                limiteMaximo: limiteMaximo,
-                limiteMinimo: limiteMinimo
-            });
+            if (componente == 'cpu') {
+                numeroCpu++
+            } else if (componente == 'ram') {
+                numeroRam++
+            } else if (componente == 'disco') {
+                numeroDisco++
+            }
+
+            if (numeroCpu == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else if (numeroRam == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else if (numeroDisco == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else {
+                window.alert('Componentes iguais')
+                return
+            }
         }
 
         if (
@@ -274,13 +313,18 @@
 
     function adicionarParametro() {
         numeroComponentes++;
-
         const novoParametro = document.createElement("div");
         novoParametro.classList.add("part-dois");
         novoParametro.innerHTML = `
         <div class="item-card">
-            <label for="input_componente${numeroComponentes}">Componente:</label>
-            <input type="text" id="input_componente${numeroComponentes}">
+            <label>Componente:</label>
+            <select name="componentes" id="componentes${numeroComponentes}" class="componentes">
+                <option value="">Componente</option>
+                <option value="cpu">CPU</option>
+                <option value="ram">RAM</option>
+                <option value="disco">Disco</option>
+                <option value="outro">Outro</option>
+            </select>
         </div>
         <div class="item-card">
             <label for="input_limite_maximo${numeroComponentes}">Limite Máximo:</label>
@@ -291,9 +335,9 @@
             <input type="number" id="input_limite_minimo${numeroComponentes}">
         </div>
     `;
-
         baixo.appendChild(novoParametro);
     }
+
 
     function deletarFuncionario(nomeVar, emailVar, fkEmpresa) {
         var nome = nomeVar;
@@ -349,8 +393,31 @@
         document.getElementById("popupusuario").style.display = "flex";
     }
 
-    function abrirPopupModelo() {
-        numeroComponentes = 1
+    async function abrirPopupModelo() {
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+        var parametrosRetornados = []
+
+        await fetch("/modelo/buscarTipoParametro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa
+            }),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (parametros) {
+                for (var i = 0; i < parametros.length; i++) {
+                    parametrosRetornados.push(parametros[i])
+                }
+            })
+            .catch(function (erro) {
+                console.log(`Erro ao buscar os tipos de parâmetro: ${erro}`);
+            });
+
         document.getElementById("popupmodelo").style.display = "flex";
     }
 

@@ -1,12 +1,12 @@
 var modeloModel = require("../models/modeloModel");
+const { param } = require("../routes/modelo");
 
 async function cadastrarModelo(req, res) {
-    console.log('Entrou na função cadastrarModelo do controller');
-
     var nomeModelo = req.body.nomeModeloServer;
     var descricao = req.body.descricaoServer;
     var parametros = req.body.parametrosServer;
     var fkEmpresa = req.body.fkEmpresaServer;
+    var fkTipoParametroVariavel = 0;
     var fkTipoParametro = [];
     var fkModelo = 0;
 
@@ -22,35 +22,39 @@ async function cadastrarModelo(req, res) {
 
     try {
         for (var i = 0; i < parametros.length; i++) {
-            console.log('Entrou para cadastrar tipo parâmetro');
+            const resultadoBuscarSeTipoParametroJaExiste = await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente);
 
-            await modeloModel.cadastrarTipoParametro(parametros[i].componente);
-            console.log("Tipo parâmetro cadastrado com sucesso!");
+            if (resultadoBuscarSeTipoParametroJaExiste.length > 0) {
+                fkTipoParametroVariavel = resultadoBuscarSeTipoParametroJaExiste[0].idTipoParametro;
+                console.log("Tipo de parâmetro já existente. ID:", fkTipoParametroVariavel);
+            } else {
+                await modeloModel.cadastrarTipoParametro(parametros[i].componente);
+                console.log("Novo tipo de parâmetro cadastrado com sucesso!");
 
-            const resultadoBuscarIdTipoParametro = await modeloModel.buscarIdTipoParametro();
-            console.log("Entrou para buscar id tipo parâmetro");
+                const resultadoBuscarIdTipoParametro = await modeloModel.buscarIdTipoParametro();
+                fkTipoParametroVariavel = resultadoBuscarIdTipoParametro[0].idTipoParametro;
+                console.log("Novo ID cadastrado:", fkTipoParametroVariavel);
+            }
 
-            fkTipoParametro.push(resultadoBuscarIdTipoParametro[0]);
-            console.log("Id tipo parâmetro cadastrado com sucesso!", resultadoBuscarIdTipoParametro);
+            fkTipoParametro.push(fkTipoParametroVariavel);
         }
 
-        console.log('Entrou para cadastrar modelo');
+
         await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);
         console.log("Modelo cadastrado com sucesso!");
 
-        console.log('Entrou para buscar id modelo');
         const resultadoBuscarIdModelo = await modeloModel.buscarIdModelo();
         fkModelo = resultadoBuscarIdModelo[0];
         console.log("Id modelo buscado com sucesso!", resultadoBuscarIdModelo);
 
         for (var i = 0; i < parametros.length; i++) {
-            console.log('Entrou para cadastrar parâmetro');
             await modeloModel.cadastrarParametro(
                 parametros[i].limiteMaximo,
                 parametros[i].limiteMinimo,
                 fkModelo.idModelo,
-                fkTipoParametro[i].idTipoParametro
+                fkTipoParametro[i]
             );
+
             console.log('Parâmetro cadastrado com sucesso!');
         }
 
@@ -61,6 +65,41 @@ async function cadastrarModelo(req, res) {
     }
 }
 
+async function buscarTipoParametro(req, res){
+    var fkEmpresa = req.body.fkEmpresaServer
+    var parametros = []
+
+    resultadoBuscaTipoParametro = await modeloModel.buscarTipoParametro(fkEmpresa)
+
+    if(resultadoBuscaTipoParametro.length > 0){
+        for(var i = 0; i < resultadoBuscaTipoParametro.length; i++){
+            parametros.push(resultadoBuscaTipoParametro[i])
+        }
+    }else{
+        parametros.push('CPU', 'RAM', 'DISCO')
+    }
+
+    res.json(parametros)
+}
+
+async function buscarModelos(req, res){
+    var fkEmpresa = req.body.fkEmpresaServer;
+    var modelos = []
+
+    if(fkEmpresa == undefined){
+        console.log('O ID da empresa está undefined')
+    }else{
+        modelos = await modeloModel.buscarModelos(fkEmpresa)
+
+        if(modelos.length > 0){
+            res.json(modelos)
+        }else{
+            console.log('Erro ao buscar os modelos')
+            res.status(500)
+        }
+    }
+}
+
 module.exports = {
-    cadastrarModelo
+    cadastrarModelo, buscarTipoParametro, buscarModelos
 };
