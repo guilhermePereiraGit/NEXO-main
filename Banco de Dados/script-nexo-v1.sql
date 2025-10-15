@@ -79,3 +79,4 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     email VARCHAR(70),
     senha VARCHAR(30)
 );
+

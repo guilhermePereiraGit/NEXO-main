@@ -51,10 +51,6 @@
                         <label id="estado"></label>
                     </div>
                     <div class="item-card">
-                        <label>Estado:</label>
-                        <label id="estado"></label>
-                    </div>
-                    <div class="item-card">
                         <label>Cidade:</label>
                         <label id="cidade"></label>
                     </div>
@@ -82,7 +78,7 @@
                 <div class="part-dois">
                     <div class="item-card">
                         <label for="input_qtd_de_totens">Quantos tótens nesse local?</label>
-                        <input type="number" id="input_qtd_de_totens" oninput="adicionarTotem()">
+                        <input type="number" id="input_qtd_de_totens" oninput="atualizarTotens()">
                     </div>
                     <div class="item-card">
                         <label for="vies">Qual o viés?</label>
@@ -94,7 +90,7 @@
                         </select>
                     </div>
                     <div class="item-card">
-                        <label for="input_modelo">Qual o modelo?</label>
+                        <label for="input_modelos">Qual o modelo?</label>
                         <select name="modelos" id="input_modelos">
                             <option value="">Selecione uma opção</option>
                         </select>
@@ -102,8 +98,8 @@
                 </div>
                 <div class="item-card" id="totens"></div>
                 <div class="part-dois">
-                    <button class="cadastrar" onclick="adicionarTotem()">Adicionar Tótem</button>
-                    <button class="cadastrar" onclick="cadastrarTotem()">Cadastrar</button>
+                    <button class="cadastrar" onclick="adicionarMaisUmTotem()">Adicionar Tótem</button>
+                    <button class="cadastrar" onclick="cadastrarEndereco()">Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -111,40 +107,9 @@
 </body>
 <script>
 
-    function adicionarTotem() {
-        const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
-        const container = document.getElementById("totens");
-
-        container.innerHTML = "";
-
-        for (let i = 0; i < qtdTotens; i++) {
-            const novoInput = document.createElement("input");
-            novoInput.type = "text";
-            novoInput.placeholder = `MAC ADDRESS`;
-            novoInput.style.display = "block";
-            novoInput.style.margin = "8px 0";
-
-            container.appendChild(novoInput);
-        }
-    }
-
-    function abrirPopupTotem() {
-        var options = ''
-        for (var i = 0; i < modelos.length; i++) {
-            options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
-        }
-
-        input_modelos.innerHTML += options
-
-        document.getElementById("popuptotem").style.display = "flex";
-    }
-
-    function fecharPopupTotem() {
-        document.getElementById("popuptotem").style.display = "none";
-        window.location.reload();
-    }
-
+    let numeroTotens = 0;
     var modelos = []
+
     function carregarDadosModelo() {
         idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
@@ -174,6 +139,22 @@
             });
     }
 
+    function abrirPopupTotem() {
+        var options = ''
+        for (var i = 0; i < modelos.length; i++) {
+            options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
+        }
+
+        input_modelos.innerHTML += options
+
+        document.getElementById("popuptotem").style.display = "flex";
+    }
+
+    function fecharPopupTotem() {
+        document.getElementById("popuptotem").style.display = "none";
+        window.location.reload();
+    }
+
     async function buscarCEP() {
         let cepDigitado = input_cep.value;
 
@@ -186,6 +167,125 @@
         cidade.innerHTML = `${retornoConvertido.localidade}`
         bairro.innerHTML = `${retornoConvertido.bairro}`
         rua.innerHTML = `${retornoConvertido.logradouro}`
+    }
+
+    function atualizarTotens() {
+        const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
+        const container = document.getElementById("totens");
+
+        container.innerHTML = "";
+        numeroTotens = qtdTotens;
+
+        if (qtdTotens <= 0 || isNaN(qtdTotens)) return;
+
+        for (let i = 1; i <= qtdTotens; i++) {
+            const novoInput = document.createElement("input");
+            novoInput.type = "text";
+            novoInput.id = `totem${i}`;
+            novoInput.placeholder = `MAC ADDRESS ${i}`;
+            novoInput.style.display = "block";
+            novoInput.style.margin = "8px 0";
+            container.appendChild(novoInput);
+        }
+    }
+
+    function adicionarMaisUmTotem() {
+        const container = document.getElementById("totens");
+        numeroTotens++;
+
+        const novoInput = document.createElement("input");
+        novoInput.type = "text";
+        novoInput.id = `totem${numeroTotens}`;
+        novoInput.placeholder = `MAC ADDRESS ${numeroTotens}`;
+        novoInput.style.display = "block";
+        novoInput.style.margin = "8px 0";
+        container.appendChild(novoInput);
+
+        document.getElementById("input_qtd_de_totens").value = numeroTotens;
+    }
+
+    async function cadastrarEndereco() {
+        var cep = input_cep.value;
+        var estado = document.getElementById("estado").innerText;
+        var bairro = document.getElementById("bairro").innerText;
+        var cidade = document.getElementById("cidade").innerText;
+        var rua = document.getElementById("rua").innerText;
+        var numero = input_numero.value;
+        var complemento = input_complemento.value;
+
+        await fetch("/endereco/cadastrarEndereco", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cepServer: cep,
+                estadoServer: estado,
+                bairroServer: bairro,
+                cidadeServer: cidade,
+                ruaServer: rua,
+                numeroServer: numero,
+                complementoServer: complemento
+            }),
+        })
+            .then(resposta => {
+                if (resposta.ok) {
+                    cadastrarTotem();
+                } else {
+                    throw new Error("Erro na resposta do servidor");
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
+            });
+    }
+
+    function cadastrarTotem() {
+        var vies = input_vies.value;
+        var modelo = input_modelo;
+        var enderecosMac = []
+
+        for (let i = 1; i <= numeroTotens; i++) {
+            const macAddress = document.getElementById(`totem${i}`).value;
+            enderecosMac.push(macAddress)
+        }
+
+        var variavelAuxiliar = enderecosMac[0]
+        for (var i = 1; i < enderecosMac.length; i++) {
+            if (variavelAuxiliar == enderecosMac[i]) {
+                window.alert('Endereços MAC iguais!', variavelAuxiliar, enderecosMac[i])
+                return;
+            }
+        }
+
+        var mensagem = ''
+        if(enderecosMac.length > 1){
+            mensagem = 'Tótens cadastrados com sucesso!'
+        }else{
+            mensagem = 'Tótem cadastrado com sucesso!'
+        }
+
+        fetch("/endereco/cadastrarEndereco", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                viesServer: vies,
+                modeloServer: modelo,
+                enderecosMacServer: enderecosMac,
+            }),
+        })
+            .then(resposta => {
+                if (resposta.ok) {
+                    window.alert(mensagem);
+                } else {
+                    throw new Error("Erro na resposta do servidor");
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
+            });
     }
 </script>
 
