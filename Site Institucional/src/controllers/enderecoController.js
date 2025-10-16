@@ -1,26 +1,42 @@
 var enderecoModel = require("../models/enderecoModel");
 
 async function cadastrarEndereco(req, res) {
-    const { cepServer: cep, estadoServer: estado, bairroServer: bairro,
-            cidadeServer: cidade, ruaServer: rua, numeroServer: numero,
-            complementoServer: complemento } = req.body;
+    const cep = req.body.cepServer
+    const estado = req.body.estadoServer
+    const bairro = req.body.bairroServer
+    const cidade = req.body.cidadeServer
+    const rua = req.body.ruaServer
+    const numero = req.body.numeroServer
+    const complemento = req.body.complementoServer
 
     if (!cep || !estado || !bairro || !cidade || !rua || !numero || !complemento) {
         return res.status(400).json({ erro: "Parâmetros estão undefined!" });
     }
 
     try {
-        const resultadoInsert = await enderecoModel.cadastrarEndereco(
-            cep, estado, bairro, cidade, rua, numero, complemento
-        );
+        const resultadoBuscarEnderecoExistente = await enderecoModel.buscarEnderecoExistente(cidade, rua, numero, complemento)
 
-        const idEndereco = resultadoInsert.insertId;
+        if (resultadoBuscarEnderecoExistente.length  > 0) {
+            return res.status(200).json({ idEndereco: resultadoBuscarEnderecoExistente[0].idEndereco });
+        } else {
+            try {
+                const resultadoCadastrarEndereco = await enderecoModel.cadastrarEndereco(
+                    cep, estado, bairro, cidade, rua, numero, complemento
+                );
 
-        console.log("Endereço cadastrado com sucesso! ID:", idEndereco);
+                const idEndereco = resultadoCadastrarEndereco.insertId;
 
-        res.status(201).json({ idEndereco });
-    } catch (erro) {
-        console.error("Erro ao cadastrar endereço:", erro.sqlMessage || erro);
+                console.log("Endereço cadastrado com sucesso! ID:", idEndereco);
+
+                res.status(201).json({ idEndereco });
+            } catch (erro) {
+                console.error("Erro ao cadastrar endereço:", erro.sqlMessage || erro);
+                res.status(500).json({ erro: erro.sqlMessage || erro });
+            }
+        }
+    }
+    catch (erro) {
+        console.error("Erro ao buscar endereço existente:", erro.sqlMessage || erro);
         res.status(500).json({ erro: erro.sqlMessage || erro });
     }
 }

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./css/institucional.css">
     <link rel="stylesheet" href="./css/style_aprovacao.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/gestao.css">
+    <link rel="stylesheet" href="./css/tecnico.css">
 </head>
 
 <body onload="carregarDadosModelo()">
@@ -64,15 +64,21 @@
                         <label>Rua:</label>
                         <label id="rua"></label>
                     </div>
-                </div>
-                <div class="part-dois">
                     <div class="item-card">
                         <label for="input_numero">Número:</label>
                         <input type="number" id="input_numero">
                     </div>
+                </div>
+                <div class="part-dois">
                     <div class="item-card">
                         <label for="input_complemento">Complemento:</label>
                         <input type="text" id="input_complemento">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_modelos">Qual o modelo?</label>
+                        <select name="modelos" id="input_modelos">
+                            <option value="">Selecione uma opção</option>
+                        </select>
                     </div>
                 </div>
                 <div class="part-dois">
@@ -89,14 +95,8 @@
                             <option value="Hospital">Hospital</option>
                         </select>
                     </div>
-                    <div class="item-card">
-                        <label for="input_modelos">Qual o modelo?</label>
-                        <select name="modelos" id="input_modelos">
-                            <option value="">Selecione uma opção</option>
-                        </select>
-                    </div>
                 </div>
-                <div class="item-card" id="totens"></div>
+                <div class="totens-scroll" id="totens"></div>
                 <div class="part-dois">
                     <button class="cadastrar" onclick="adicionarMaisUmTotem()">Adicionar Tótem</button>
                     <button class="cadastrar" onclick="cadastrarEndereco()">Cadastrar</button>
@@ -183,8 +183,6 @@
             novoInput.type = "text";
             novoInput.id = `totem${i}`;
             novoInput.placeholder = `MAC ADDRESS ${i}`;
-            novoInput.style.display = "block";
-            novoInput.style.margin = "8px 0";
             container.appendChild(novoInput);
         }
     }
@@ -197,8 +195,6 @@
         novoInput.type = "text";
         novoInput.id = `totem${numeroTotens}`;
         novoInput.placeholder = `MAC ADDRESS ${numeroTotens}`;
-        novoInput.style.display = "block";
-        novoInput.style.margin = "8px 0";
         container.appendChild(novoInput);
 
         document.getElementById("input_qtd_de_totens").value = numeroTotens;
@@ -248,7 +244,6 @@
         var modelo = input_modelos.value;
         var enderecosMac = [];
         var endereco = idEndereco;
-        console.log('Enderecooooooo', endereco)
 
         for (let i = 1; i <= numeroTotens; i++) {
             const macAddress = document.getElementById(`totem${i}`).value;
@@ -259,7 +254,7 @@
         for (var i = 1; i < enderecosMac.length; i++) {
             if (variavelAuxiliar == enderecosMac[i]) {
                 window.alert('Endereços MAC iguais!', variavelAuxiliar, enderecosMac[i])
-                return;
+                window.location.reload();
             }
         }
 
