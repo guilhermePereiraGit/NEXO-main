@@ -1,0 +1,362 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+
+.navegacao a {
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Poppins';
+    padding: 15px;
+    border-bottom: 1px solid var(--primaria);
+    width: 270px;
+    color: black;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.navegacao a:hover {
+    background-color: var(--primaria);
+    color: white;
+}
+
+.navegacao a.active {
+    background-color: var(--primaria);
+    color: white;
+}
+
+.navegacao {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-bottom: 80px;
+}
+
+.cor {
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #8B5CF6;
+}
+
+.header-content {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.escolha-zona label {
+    font-family: 'Poppins';
+    font-size: 25px;
+}
+
+.escolha-zona select {
+    font-family: 'Poppins';
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 3px;
+    margin-left: 10px;
+    border: solid 1px var(--primaria);
+}
+
+.selecionar {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 5%;
+}
+
+.selecionar .selecionar-second {
+    display: flex;
+    gap: 30px;
+}
+
+.selecionar .selecionar-second h1 {
+    font-size: 25px;
+}
+
+.selecionar .selecionar-second p {
+    font-family: 'Poppins';
+}
+
+.selecionar .selecionar-second .kpi {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    border: 1px solid var(--primaria);
+    border-radius: 20px;
+}
+
+/* Legendas */
+.legendas {
+    display: flex;
+    gap: 70px;
+}
+
+.legenda {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legenda .cor-legenda {
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+}
+
+.legenda p {
+    font-family: 'Poppins';
+}
+
+/* Infos */
+.infos {
+    display: flex;
+    gap: 40px;
+}
+
+.infos .infos-first {
+    width: 45%;
+    height: 50vh;
+    margin-top: 20px;
+    overflow: auto;
+}
+
+.modelos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.modelo {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--primaria);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.modelo:hover {
+    background-color: #ede7ff;
+}
+
+.modelo h1 {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.modelo p {
+    font-family: 'Poppins';
+    font-size: 30px;
+    margin-top: -10px;
+}
+
+.cor-modelo {
+    width: 50px;
+    height: 20px;
+    border-radius: 20px;
+}
+
+/* Segunda Legenda */
+.legenda-second .cor-legenda-second {
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+}
+
+.legendas-second-outro {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+.legenda-second {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legenda-second p {
+    font-family: 'Poppins';
+    font-size: 20px;
+}
+
+/* Gráfico de Barras */
+#grafico-bar {
+    height: 37vh;
+}
+
+/* Parte de Alertas e Técnicos */
+.all {
+    display: flex;
+}
+
+#alertas-tecnicos {
+    padding: 2% 4% 0% 22%;
+}
+
+.conteudo-tecnicos {
+    margin-top: 20px;
+}
+
+.conteudo-tecnicos h1 {
+    font-size: 30px;
+}
+
+.linha {
+    width: 58%;
+}
+
+.tecnicos-associados {
+    margin-top: 5px;
+    border: 1px solid var(--primaria);
+    border-radius: 20px;
+    width: 60%;
+    flex-wrap: wrap;
+    overflow: auto;
+    height: 18vh;
+}
+
+.tecnicos {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.tecnico {
+    border-bottom: 1px solid var(--primaria);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.tecnico p {
+    font-family: 'Poppins';
+}
+
+.tecnico .tecnico-infos-more {
+    display: flex;
+    gap: 30px;
+}
+
+.tecnico img {
+    width: 20%;
+}
+
+/* Segunda Parte */
+.content-second {
+    margin-left: -300px;
+    padding-top: 2%;
+}
+
+.content-second h1 {
+    color: var(--primaria);
+}
+
+.legendas-alertas-semana {
+    display: flex;
+    margin-top: 20px;
+    gap: 60px;
+}
+
+.legendas-alertas-semana p {
+    font-family: 'Poppins';
+}
+
+.legenda-alerta-semana {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legenda-alerta-semana .cor-alerta-semana {
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+}
+
+.kpi-tecnicos {
+    border: 1px solid var(--primaria);
+    width: 100%;
+    padding: 33px;
+    border-radius: 20px;
+}
+
+.kpi-tecnicos h1 {
+    font-size: 30px;
+    text-align: center;
+}
+
+.kpi-tecnicos p {
+    font-family: 'Poppins';
+    text-align: center;
+    font-size: 20px;
+    color: var(--primaria);
+}
+
+.kpi-tecnicos p span {
+    font-size: 50px;
+    color: black;
+}
+
+/* Terceira Parte */
+#separator {
+    margin-top: 50px;
+}
+.separacao{
+    display: flex;
+    gap: 9%;
+}
+.two-kpi{
+    padding: 20px;
+    width: 400px;
+    border: solid 1px var(--primaria);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 20px;
+}
+.two-kpi p{
+    font-family: 'Poppins';
+    font-size: 20px;
+}
+.two-kpi h1{
+    font-size: 30px;
+}
+
+.tabela {
+    height: 64vh;
+    overflow: auto;
+}
+
+.conteudo-relatorio .tabela table {
+    border: 1px solid var(--primaria);
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.conteudo-relatorio .tabela table th {
+    border: 1px solid var(--primaria);
+    padding: 10px;
+    font-family: 'Poppins';
+}
+
+.conteudo-relatorio .tabela table #titulo {
+    color: var(--primaria);
+}

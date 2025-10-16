@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -112,11 +111,10 @@
                             sessionStorage.FK_EMPRESA = json.fkEmpresa;
 
                             if(json.cargo === "Gestor"){
-                                window.location = "gestor.html"
+                                window.location = "/dashboard/dashboard_usuario.html"
                             }else if(json.cargo === "Técnico"){
-                                window.location = "tecnico.html"
+                                window.location = "/dashboard/dashboard.html"
                             }
-                            
                         }else if(json.status === "administrador"){
                             sessionStorage.EMAIL_USUARIO = json.email;
                             sessionStorage.NOME_USUARIO = json.nome;                            

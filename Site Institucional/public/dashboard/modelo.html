@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Modelo</title>
+    <link rel="stylesheet" href="dash_geral.css">
+    <link rel="stylesheet" href="dashboard_usuario.css">
+    <link rel="stylesheet" href="modelo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body onload="gerarGraficoBarra()">
+    <header>
+        <div class="itens">
+            <div class="user">
+                <img src="../assets/imgs/user.png" style="margin-top: 150px;">
+                <div class="user-text">
+                    <label id="lbl_nome">Guilherme Silva</label>
+                    <label id="lbl_cargo" style="font-size: 17px; color: #8b5cf6; margin-bottom: 30px;">Gestor de
+                        Operações</label>
+                </div>
+            </div>
+            <div class="navegacao">
+                <a onclick="window.history.back()" style="border: 1px solid #8b5cf6; cursor: pointer;">Voltar</a>
+            </div>
+            <div class="icons-suporte" style="margin-top: 70px;">
+                <a href="#"><img src="../assets/imgs/icon-jira.png"></a>
+                <a href="#"><img src="../assets/imgs/icon-slack.png"></a>
+            </div>
+        </div>
+    </header>
+</body>
+<div class="content">
+    <div class="titulo">
+        <h1>Modelo:</h1>
+        <h1 style="color: black;">AA0385</h1>
+    </div>
+
+    <div class="half-kpi">
+        <div class="total">
+            <div class="primeira-parte">
+                <div class="half-top">
+                    <div class="half-top-item">
+                        <h1>Total de Totens</h1>
+                        <p>Associados</p>
+                        <h2>25</h2>
+                    </div>
+                    <div class="half-top-item">
+                        <h1>Totem com Mais Alerta</h1>
+                        <h2 style="color: black;">AA0385123</h2>
+                        <p style="color: #8b5cf6;">3 Alertas</p>
+                    </div>
+                </div>
+                <div class="half-down">
+                    <div class="half-down-item">
+                        <h1 style="font-size: 25px;">Parâmetros Monitorados:</h1>
+                        <div class="parametros">
+                            <div class="parametros-middle">
+                                <p>CPU - Limite de 60%</p>
+                                <p>RAM - Limite de 60%</p>
+                            </div>
+                            <div class="parametros-middle">
+                                <p>DISCO - Limite de 60%</p>
+                                <p>PROCESSOS - Limite de 300</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="segunda-parte" style="margin-top: -50px;">
+                <h1>Distribuição dos Alertas</h1>
+                <div class="barra">
+                    <canvas id="grafico-bar" class="chart-container"></canvas>
+                </div>
+                <div class="legendas-grafico-modelo">
+                    <div class="legenda-grafico">
+                        <div class="legenda-cor" style="background-color: #00bf63;"></div>
+                        <p>Solucionado</p>
+                    </div>
+                    <div class="legenda-grafico">
+                        <div class="legenda-cor" style="background-color: #ffde59;"></div>
+                        <p>Em Atenção</p>
+                    </div>
+                    <div class="legenda-grafico">
+                        <div class="legenda-cor" style="background-color: #ff914d;"></div>
+                        <p>Perigoso</p>
+                    </div>
+                    <div class="legenda-grafico">
+                        <div class="legenda-cor" style="background-color: #ff3131;"></div>
+                        <p>Muito Perigoso</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alertas">
+            <h1 style="font-weight: 500;">Alertas e Atendimentos no Jira - Semanal</h1>
+            <div class="alertas-case">
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #00bf63;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ffde59;"></div>
+                </div>
+                <div class="alerta">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff914d;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff3131;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #00bf63;"></div>
+                </div>
+                <div class="alerta">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ffde59;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff914d;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff3131;"></div>
+                </div>
+                <div class="alerta">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #00bf63;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ffde59;"></div>
+                </div>
+                <div class="alerta alerta-first">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff914d;"></div>
+                </div>
+                <div class="alerta">
+                    <p><span>Totem:</span> AA038123</p>
+                    <p><span>Data:</span> 17/09/2025 - 07:32</p>
+                    <p><span>Causa:</span> CPU Acima de 70%</p>
+                    <div class="alerta-cor" style="background-color: #ff3131;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function gerarGraficoBarra() {
+        //Gráfico de Barras
+        const ctx = document.getElementById('grafico-bar');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Solucionado', 'Atenção','Perigo','Muito Perigoso'],
+                datasets: [{
+                    label: 'Status dos Totens da Região',
+                    data: [53, 23,16,32],
+                    borderWidth: 1,
+                    backgroundColor: ['#00bf63', '#ffde59','#ff914d', '#ff3131']                
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    y: {
+                        display:false
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 20,
+                                family: 'Poppins'
+                            },
+                            color: 'white'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: {
+                                size: 30,
+                                family: 'Poppins'
+                            },
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</html>

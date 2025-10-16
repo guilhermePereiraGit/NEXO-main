@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Desempenho - Totem</title>
+    <link rel="stylesheet" href="dashboard_usuario.css">
+    <link rel="stylesheet" href="dash_geral.css">
+    <link rel="stylesheet" href="dashboard_tecnico.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="itens">
+            <div class="user">
+                <img src="../assets/imgs/user.png" style="margin-top: 150px;">
+                <div class="user-text">
+                    <label id="lbl_nome">Guilherme Silva</label>
+                    <label id="lbl_cargo" style="font-size: 17px; color: #8b5cf6; margin-bottom: 30px;">Técnico em
+                        Operação</label>
+                </div>
+            </div>
+            <div class="navegacao">
+                <a onclick="window.history.back()" style="border: 1px solid #8b5cf6; cursor: pointer;">Voltar</a>
+            </div>
+            <div class="icons-suporte" style="margin-top: 70px;">
+                <a href="#"><img src="../assets/imgs/icon-jira.png"></a>
+                <a href="#"><img src="../assets/imgs/icon-slack.png"></a>
+            </div>
+        </div>
+    </header>
+    <div class="content" id="content-metade">
+        <div class="metade1">
+            <h1>Totem: <span>2324543414</span></h1>
+            <div class="infos-totem">
+                <div class="infos-part-one">
+                    <p>Modelo: <span>AA0123</span></p>
+                    <p>Status: <span>Ligado</span></p>
+                    <p>CEP: <span>00221-392</span></p>
+                    <p>Telefone: <span>(11)9999-9999</span></p>
+                </div>
+                <div class="infos-part-one">
+                    <p>Cidade: <span>São Paulo</span></p>
+                    <p>Bairro: <span>Jardins</span></p>
+                    <p>Rua: <span>Rua Tavares</span></p>
+                    <p>Número: <span>34</span></p>
+                </div>
+            </div>
+            <button class="reiniciar-totem">Reiniciar Totem</button>
+            <div class="dv-kpis">
+                <div class="kpi">
+                    <h1>Quantidade de Processos</h1>
+                    <p>260</p>
+                </div>
+                <div class="kpi">
+                    <h1>Limite de Processos</h1>
+                    <p>360</p>
+                </div>
+            </div>
+            <div class="conteudo-relatorio">
+                <div class="tabela">
+                    <h1>Processos</h1>
+                    <table id="modelos">
+                        <tr id="titulo">
+                            <th>Nome</th>
+                            <th>CPU (%)</th>
+                            <th>RAM (%)</th>
+                            <th>DISCO (%)</th>
+                        </tr>
+                        <tr>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                        </tr>
+                        <tr>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                        </tr>
+                        <tr>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                        </tr>
+                        <tr>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                        </tr>
+                        <tr>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                            <th>XXXX</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="metade2">
+            <div class="metade2-parametros">
+                <div class="infos-metade2">
+                    <h1>Parâmetros do Modelo:</h1>
+                    <div class="infos-parametros">
+                        <p><span>CPU:</span> 60%</p>
+                        <p><span>RAM:</span> 40%</p>
+                        <p><span>DISCO:</span> 30%</p>
+                    </div>
+                </div>
+                <div class="primeira-leva-graficos"  style="margin-bottom: 40px;">
+                    <div class="graficos-metade2">
+                        <canvas id="graficoTotem"></canvas>
+                        <div class="infos-graficos">
+                            <p>40%</p>
+                            <p><span>CPU</span></p>
+                        </div>
+                    </div>
+                    <div class="graficos-metade2">
+                        <canvas id="graficoTotem2"></canvas>
+                        <div class="infos-graficos">
+                            <p>40%</p>
+                            <p><span>RAM</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="primeira-leva-graficos">
+                    <div class="graficos-metade2">
+                        <canvas id="graficoTotem3"></canvas>
+                        <div class="infos-graficos">
+                            <p>40%</p>
+                            <p><span>DISCO</span></p>
+                        </div>
+                    </div>
+                    <div class="graficos-metade2">
+                        <canvas id="graficoTotem4"></canvas>
+                        <div class="infos-graficos">
+                            <p>40%</p>
+                            <p><span>PROC.</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // Gráfico 1
+    const ctx = document.getElementById('graficoTotem').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Em Uso', 'Disponível'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#8b5cf6', '#e5e5e5']
+            }]
+        },
+
+        options: {
+            aspectRatio: 2,
+            circumference: 180,
+            rotation: -90,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Gráfico 2
+    const ctx2 = document.getElementById('graficoTotem2').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Em Uso', 'Disponível'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#8b5cf6', '#e5e5e5']
+            }]
+        },
+
+        options: {
+            aspectRatio: 2,
+            circumference: 180,
+            rotation: -90,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Gráfico 3
+    const ctx3 = document.getElementById('graficoTotem3').getContext('2d');
+    new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            labels: ['Em Uso', 'Disponível'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#8b5cf6', '#e5e5e5']
+            }]
+        },
+
+        options: {
+            aspectRatio: 2,
+            circumference: 180,
+            rotation: -90,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Gráfico 4
+    const ctx4 = document.getElementById('graficoTotem4').getContext('2d');
+    new Chart(ctx4, {
+        type: 'doughnut',
+        data: {
+            labels: ['Em Uso', 'Disponível'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#8b5cf6', '#e5e5e5']
+            }]
+        },
+
+        options: {
+            aspectRatio: 2,
+            circumference: 180,
+            rotation: -90,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+
+</html>

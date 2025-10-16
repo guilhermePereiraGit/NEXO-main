@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Análise</title>
+    <link rel="stylesheet" href="dashboard_usuario.css">
+    <link rel="stylesheet" href="dash_geral.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+
+<body onload="gerarGraficoBarra(),gerarGraficoLinha()">
+    <header>
+        <div class="itens">
+            <div class="user">
+                <img src="../assets/imgs/user.png" style="margin-top: 50px;">
+                <div class="user-text">
+                    <label id="lbl_nome">Guilherme Silva</label>
+                    <label id="lbl_cargo" style="font-size: 17px; color: #8b5cf6; margin-bottom: 30px;">Gestor de
+                        Operações</label>
+                </div>
+            </div>
+            <div class="navegacao">
+                <a href="#modelos" style="border-top: 1px solid #8b5cf6;">Modelos</a>
+                <a href="#alertas-tecnicos">Alertas e Técnicos</a>
+                <a href="#relatorio">Relatório</a>
+                <a href="dashboard_usuario.html" style="cursor: pointer;">Voltar</a>
+            </div>
+            <div class="icons-suporte">
+                <a href="#"><img src="../assets/imgs/icon-jira.png"></a>
+                <a href="#"><img src="../assets/imgs/icon-slack.png"></a>
+            </div>
+        </div>
+    </header>
+    <div class="content" id="modelos">
+        <div class="selecionar">
+            <div class="selecionar-fisrt">
+                <div class="header-content">
+                    <div class="cor"></div>
+                    <h1>Região - São Paulo</h1>
+                </div>
+                <div class="escolha-zona">
+                    <label>Escolha uma Zona:</label>
+                    <select name="zona_rms" id="zona_rms">
+                        <option value="">Escolha uma Opção</option>
+                        <option value="centro">Centro</option>
+                        <option value="norte">Zona Norte</option>
+                        <option value="sul">Zona Sul</option>
+                        <option value="leste">Zona Leste</option>
+                        <option value="oeste">Zona Oeste</option>
+                    </select>
+                </div>
+            </div>
+            <div class="selecionar-second">
+                <div class="kpi">
+                    <h1>Total de Totens</h1>
+                    <p>Associados</p>
+                    <h1 style="font-size: 40px;">250</h1>
+                </div>
+                <div class="kpi">
+                    <h1>Total de Alertas</h1>
+                    <p>Mensal</p>
+                    <h1 style="font-size: 40px;">50</h1>
+                </div>
+            </div>
+        </div>
+        <h1 style="margin-top: -50px; margin-bottom: 20px;">Modelos Associados</h1>
+        <div class="legendas">
+            <div class="legendas-first">
+                <div class="legenda" style="margin-bottom: 10px;">
+                    <div class="cor-legenda" style="background-color: #00bf63;"></div>
+                    <p>Menos 10% em Alerta</p>
+                </div>
+                <div class="legenda">
+                    <div class="cor-legenda" style="background-color: #ffde59;"></div>
+                    <p>Até 25% em Alerta</p>
+                </div>
+            </div>
+            <div class="legendas-second">
+                <div class="legenda" style="margin-bottom: 10px;">
+                    <div class="cor-legenda" style="background-color: #ff914d;"></div>
+                    <p>Até 50% em Alerta</p>
+                </div>
+                <div class="legenda">
+                    <div class="cor-legenda" style="background-color: #ff3131;"></div>
+                    <p>Mais 50% em Alerta</p>
+                </div>
+            </div>
+        </div>
+        <div class="infos">
+            <div class="infos-first">
+                <div class="modelos">
+                    <div class="modelo" id="first" onclick="window.location.href = 'modelo.html'">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #ffde59;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #ff3131;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo" id="first">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                    <div class="modelo">
+                        <h1>Modelo</h1>
+                        <p>AA0360</p>
+                        <div class="cor-modelo" style="background-color: #00bf63;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="infos-second">
+                <h1>Status Totens da Região</h1>
+                <div class="barra">
+                    <canvas id="grafico-bar" class="chart-container"></canvas>
+                </div>
+                <div class="legendas-second-outro">
+                    <div class="legenda-second">
+                        <div class="cor-legenda-second" style="background-color: #8b5cf6;"></div>
+                        <p>Totens Ativos</p>
+                    </div>
+                    <div class="legenda-second">
+                        <div class="cor-legenda-second" style="background-color: #a78bfa;"></div>
+                        <p>Totens Inativos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="all">
+        <div class="content" id="alertas-tecnicos">
+            <div class="selecionar-fisrt">
+                <div class="header-content">
+                    <div class="cor"></div>
+                    <h1>Região - São Paulo</h1>
+                </div>
+                <div class="escolha-zona">
+                    <label>Escolha uma Zona:</label>
+                    <select name="zona_rms" id="zona_rms">
+                        <option value="">Escolha uma Opção</option>
+                        <option value="centro">Centro</option>
+                        <option value="norte">Zona Norte</option>
+                        <option value="sul">Zona Sul</option>
+                        <option value="leste">Zona Leste</option>
+                        <option value="oeste">Zona Oeste</option>
+                    </select>
+                </div>
+            </div>
+            <div class="conteudo-tecnicos">
+                <h1>Distribuição de Alertas na Semana</h1>
+                <div class="linha">
+                    <canvas id="grafico-line" class="chart-container"></canvas>
+                </div>
+                <div class="legendas-alertas-semana">
+                    <div class="legenda-alerta-semana">
+                        <div class="cor-alerta-semana" style="background-color: #8b5cf6;"></div>
+                        <p>Alertas por Dia</p>
+                    </div>
+                    <div class="legenda-alerta-semana">
+                        <div class="cor-alerta-semana" style="background-color: #3B82F6;"></div>
+                        <p>Alertas Solucionados por Dia</p>
+                    </div>
+                </div>
+                <div class="tecnicos">
+                    <h1>Técnicos Associados</h1>
+                    <div class="tecnicos-associados">
+                        <div class="tecnico">
+                            <img src="../assets/imgs/user.png">
+                            <div class="tecnico-infos">
+                                <p style="font-size: 25px;">Gabriel Castilho</p>
+                                <div class="tecnico-infos-more">
+                                    <p>CPF: 510.000.000-00</p>
+                                    <p>Tel. (11)9999-9999</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tecnico">
+                            <img src="../assets/imgs/user.png">
+                            <div class="tecnico-infos">
+                                <p style="font-size: 25px;">Gabriel Castilho</p>
+                                <div class="tecnico-infos-more">
+                                    <p>CPF: 510.000.000-00</p>
+                                    <p>Tel. (11)9999-9999</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-second">
+            <div class="kpi-tecnicos">
+                <h1>Total de Técnicos</h1>
+                <p>Associados</p>
+                <p><span>15</span>10% do Total de Técnicos</p>
+            </div>
+            <div class="kpi-tecnicos" style="margin-top: 20px;">
+                <h1>Total de Alertas</h1>
+                <p>Semanal</p>
+                <p><span>280</span></p>
+            </div>
+            <div class="kpi-tecnicos" style="margin-top: 20px;">
+                <h1>Taxa de Solução</h1>
+                <p>Semanal</p>
+                <p><span>95%</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" id="relatorio">
+        <div class="separacao">
+            <div class="one">
+                <div class="selecionar-fisrt">
+                <div class="header-content">
+                    <div class="cor"></div>
+                    <h1>Região - São Paulo</h1>
+                </div>
+                <div class="escolha-zona">
+                    <label>Escolha uma Zona:</label>
+                    <select name="zona_rms" id="zona_rms">
+                        <option value="">Escolha uma Opção</option>
+                        <option value="centro">Centro</option>
+                        <option value="norte">Zona Norte</option>
+                        <option value="sul">Zona Sul</option>
+                        <option value="leste">Zona Leste</option>
+                        <option value="oeste">Zona Oeste</option>
+                    </select>
+                </div>
+                <h1 id="separator">Relatório de Modelos - Mensal</h1>
+            </div>
+            </div>
+            <div class="two">
+                <div class="two-kpi">
+                    <h1>Total de Modelos</h1>
+                    <p>Analisados</p>
+                    <p style="font-size: 50px;">50</p>
+                </div>
+            </div>
+        </div>
+        <div class="conteudo-relatorio">
+            <div class="tabela">
+                <table id="modelos">
+                    <tr id="titulo">
+                        <th>MODELO</th>
+                        <th>Alertas</th>
+                        <th>Alertas Atenção</th>
+                        <th>Alertas Perigo</th>
+                        <th>Alertas Crítico</th>
+                        <th>Max. de CPU</th>
+                        <th>Max. de RAM</th>
+                        <th>Max. de Disco</th>
+                        <th>Max. de Processos</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                    <tr>
+                        <th>AA0365</th>
+                        <th>53</th>
+                        <th>30</th>
+                        <th>13</th>
+                        <th>10</th>
+                        <th>67,4%</th>
+                        <th>89,2%</th>
+                        <th>65,5%</th>
+                        <th>231</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function gerarGraficoLinha() {
+        //Gráfico de Barras
+        let flinha_dados = [10, 20, 30, 40, 50, 60, 70]
+        let slinha_dados = [5, 13, 24, 45, 63, 43, 80]
+        const ctx = document.getElementById('grafico-line');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Total de Alertas',
+                    data: flinha_dados,
+                    borderWidth: 1,
+                    backgroundColor: '#8b5cf6',
+                    borderColor: '#8b5cf6'
+                },
+                {
+                    label: 'Alertas Solucionados',
+                    data: slinha_dados,
+                    borderWidth: 1,
+                    backgroundColor: '#3B82F6',
+                    borderColor: '#3B82F6'
+                }],
+            },
+            options: {
+                indexAxis: 'x',
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 17,
+                                family: 'Poppins'
+                            },
+                            color: 'black'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 30,
+                                family: 'Poppins'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function gerarGraficoBarra() {
+        //Gráfico de Barras
+        const ctx = document.getElementById('grafico-bar');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Ativos', 'Inativos'],
+                datasets: [{
+                    label: 'Status dos Totens da Região',
+                    data: [200, 50],
+                    borderWidth: 2,
+                    backgroundColor: ['#8b5cf6', '#a78bfa'],
+                    borderRadius: 20
+                }]
+            },
+            options: {
+                indexAxis: 'x',
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 20,
+                                family: 'Poppins'
+                            },
+                            color: 'white'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: {
+                                size: 30,
+                                family: 'Poppins'
+                            },
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Função para active do CSS
+    const links = document.querySelectorAll('.navegacao a');
+
+    function atualizarActive() {
+        const hashAtual = window.location.hash;
+        links.forEach(link => {
+            if (link.getAttribute('href') === hashAtual) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('load', atualizarActive);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+    window.addEventListener('hashchange', atualizarActive);
+
+</script>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Aprovação NEXO</title>
+    <title>Página de Administração</title>
     <link rel="stylesheet" href="./css/institucional.css">
     <link rel="stylesheet" href="./css/style_aprovacao.css">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
@@ -17,16 +17,49 @@
             <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
             </div>
             <div class="cabecalho-links" id="cabecalhoLinks">
+                <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Usuários Ativos</a>
-                <a href="login.html" class="botao-secundario" id="cadastro">Sair</a>
+                <a href="#segundo">Parâmetros Cadastrados</a>
+                <a href="#terceiro">Modelos Cadastrados</a>
+                <a href="login.html" class="botao-principal" id="login">Minha Conta</a>
+                <a href="cadastro.html" class="botao-secundario" id="cadastro">Sair</a>
             </div>
         </div>
     </div>
     <div class="pg-principal">
+
+        <div class="primeiro">
+            <div class="navegacao" id="primeiro">
+                <div class="infos-user">
+                    <img src="assets/imgs/user.png">
+                    <div class="labels"><label id="first">Nome:</label><label id="lbl_nome"></label></div>
+                    <div class="labels"><label id="first">Email:</label><label id="lbl_email"></label></div>
+                    <div class="labels"><label id="first">Acesso:</label><label>Gestão</label></div>
+                </div>
+            </div>
+            <div class="navegacao-information">
+            </div>
+        </div>
         <div id="principal">
             <div class="more">
                 <h1 style="margin-bottom: 0px;">Usuários Ativos</h1>
                 <button onclick="abrirPopupUsuario()">Adicionar Usuários</button>
+            </div>
+            <div class="pendentes" id="div_pendentes" style="height: 450px;">
+            </div>
+        </div>
+        <div id="segundo">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Parâmetros Cadastrados</h1>
+                <button onclick="abrirPopupParametro()">Cadastrar Parâmetro</button>
+            </div>
+            <div class="pendentes" id="div_pendentes" style="height: 450px;">
+            </div>
+        </div>
+        <div id="terceiro">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Modelos Cadastrados</h1>
+                <button onclick="abrirPopupModelo()">Cadastrar Modelo</button>
             </div>
             <div class="pendentes" id="div_pendentes" style="height: 450px;">
             </div>
@@ -66,8 +99,10 @@
                         <input type="text" id="input_senha">
                     </div>
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
-                    <div class="item-card">
-                        <label>Região de Atuação:</label>
+                </div>
+                <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
+                <div class="item-card">
+                        <label>Região:</label>
                         <select name="regiao_atuacao" id="regiao_atuacao">
                             <option value="">Escolha uma opção</option>
                             <option value="Centro">Centro</option>
@@ -77,8 +112,6 @@
                             <option value="Oeste">Oeste</option>
                         </select>
                     </div>
-                </div>
-                <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
                 <div class="part-dois">
                     <div class="item-card">
                         <label>Cargo:</label>
@@ -93,8 +126,46 @@
             </div>
         </div>
     </div>
-<script>
 
+    <!-- style="display: none;" -->
+    <div class="popupmodelo" id="popupmodelo" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Modelo</h1>
+                <button onclick="fecharPopupModelo()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo">
+                <div class="item-card">
+                    <label for="input_nome">Nome:</label>
+                    <input type="text" id="input_nome">
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="cadastrarModelo()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- style="display: none;" -->
+    <div class="popupparametro" id="popupparametro" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Modelo</h1>
+                <button onclick="fecharPopupParametro()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo">
+                <div class="item-card">
+                    <label for="input_nome">Nome:</label>
+                    <input type="text" id="input_nome">
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="cadastrarParametro()">SIMMMM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
     function cadastrarFuncionario() {
         var nome = input_nome.value;
         var email = input_email.value;
@@ -133,6 +204,55 @@
                 cargoServer: cargo,
                 regiaoAtuacaoServer: regiaoAtuacao,
                 fkEmpresa: idEmpresa
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.innerHTML = "Cadastro Realizado com Sucesso!"
+
+                    setTimeout(() => {
+                        input_nome.value = "";
+                        input_email.value = "";
+                        input_cpf.value = "";
+                        input_senha.value = "";
+                        input_telefone.value = "";
+                        cargos.value = "";
+                    }, "2000");
+                } else {
+                    resposta.innerHTML = "Erro ao Logar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function cadastrarParametro() {
+        var componente = input_componente.value;
+        var limiteMaximo = input_limite_maximo.value;
+        var limiteMinimo = input_limite_minimo.value;
+
+        if (
+            componente == "" ||
+            limiteMaximo == "" ||
+            limiteMinimo == "" 
+        ) {
+            resposta.innerHTML = "Preencha todos os campos"
+            return false;
+        }
+
+        fetch("/parametro/cadastrarTipoParametro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                componenteServer: componente,
+                limiteMaximoServer: limiteMaximo,
+                limiteMinimoServer: limiteMinimo
             }),
         })
             .then(function (resposta) {
@@ -213,8 +333,26 @@
         document.getElementById("popupusuario").style.display = "flex";
     }
 
+    function abrirPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "flex";
+    }
+
+    function abrirPopupParametro() {
+        document.getElementById("popupparametro").style.display = "flex";
+    }
+
     function fecharPopupUsuario() {
         document.getElementById("popupusuario").style.display = "none";
+        window.location.reload();
+    }
+
+    function fecharPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "none";
+        window.location.reload();
+    }
+
+    function fecharPopupParametro() {
+        document.getElementById("popupparametro").style.display = "none";
         window.location.reload();
     }
 

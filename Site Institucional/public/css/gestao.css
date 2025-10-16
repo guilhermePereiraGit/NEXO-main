@@ -37,7 +37,7 @@
     color: var(--primaria);
 }
 
-.popuptotem, .popupmodelo, .popupusuario {
+.popupusuario, .popupmodelo, .popupparametro {
     transition: 0.3s;
     background-color: rgba(0, 0, 0, 0.375);
     width: 100%;
@@ -47,12 +47,12 @@
     left: 0;
     display: flex;
     justify-content: center;
-    padding-top: 10%;
+    padding-top: 8%;
 }
 
 .card {
     background-color: white;
-    height: 75vh;
+    height: 80vh;
     width: 60%;
     padding: 40px;
     border-radius: 20px;
@@ -62,13 +62,11 @@
 .cima {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .cima h1 {
     color: var(--primaria);
     font-size: 40px;
-    margin: 0;
 }
 
 .cima button {
@@ -89,33 +87,6 @@
     gap: 20px;
 }
 
-.parametros-scroll {
-    max-height: 300px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-right: 10px;
-}
-
-.parametros-scroll::-webkit-scrollbar {
-    width: 8px;
-}
-
-.parametros-scroll::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.parametros-scroll::-webkit-scrollbar-thumb {
-    background: var(--primaria);
-    border-radius: 10px;
-}
-
-.parametros-scroll::-webkit-scrollbar-thumb:hover {
-    background: var(--primaria-dark);
-}
-
 .baixo .item-card {
     display: flex;
     gap: 30px;
@@ -126,7 +97,7 @@
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
-    min-width: 100px;
+    width: 100px;
 }
 
 .baixo .item-card input {
@@ -137,34 +108,26 @@
     width: 100%;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
+#regiao_atuacao{
     border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
     border-radius: 10px;
     width: 100%;
+    margin-left: -10px;
 }
 
 .part-dois {
     display: flex;
     gap: 30px;
-    align-items: center;
-    width: 100%;
-}
-
-.part-dois .item-card {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 30px;
 }
 
 .part-dois .item-card label {
-    min-width: 100px;
+    width: 125px;
 }
 
 .part-dois .cadastrar {
-    flex: 1;
+    width: 60%;
     background-color: var(--primaria);
     border-radius: 10px;
     border: 2px solid var(--primaria);
@@ -172,79 +135,70 @@
     font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
-    padding: 10px;
-    height: 48px;
 }
 
-.part-dois .cadastrar:hover, .part-dois-special .gerar-senha:hover {
+.part-dois .cadastrar:hover, .part-dois-special .gerar-senha:hover{
     background-color: white;
     color: var(--primaria);
 }
 
-.part-dois-special {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    width: 100%;
-}
-
-.part-dois-special > .item-card:first-child {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    flex: 1;
-}
-
-.part-dois-special > .item-card:first-child label {
-    color: var(--primaria);
-    font-size: 25px;
-    font-weight: bold;
-    min-width: 100px;
-}
-
-.part-dois-special > .item-card:first-child input {
-    border: 2px solid var(--primaria);
-    font-size: 20px;
-    padding: 10px;
-    border-radius: 10px 0 0 10px;
-    border-right: none;
-    flex: 1;
-}
-
 .part-dois-special .gerar-senha {
+    width: 20%;
     background-color: var(--primaria);
-    border-radius: 0 10px 10px 0;
+    border-end-end-radius: 10px;
+    border-start-end-radius: 10px;
     border: 2px solid var(--primaria);
     color: white;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
+    margin-left: -5px;
     transition: 0.3s;
-    padding: 12px 20px;
-    white-space: nowrap;
-    height: 48px;
-    flex-shrink: 0;
 }
 
-.part-dois-special > .item-card:last-child {
+#input_senha{
+    width: 550px;
+}
+
+.part-dois-special {
     display: flex;
-    align-items: center;
-    gap: 30px;
-    flex: 1;
 }
 
-.part-dois-special > .item-card:last-child label {
+.part-dois-special .item-card input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: -15px;
+}
+
+.baixo .item-card-special {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.baixo .item-card-special label {
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
-    min-width: 150px;
+    width: 100px;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
+.baixo .item-card-special input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    margin-left: -15px;
+    border-radius: 10px 0 0 10px;
+    width: 550px;
+}
+
+#cargos, #regiao_atuacao {
     width: 100%;
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     border: 2px solid #8b5cf6;
-    border-radius: 10px;
+    border-radius: 8px;
     outline: none;
     appearance: none;
     -webkit-appearance: none;
@@ -255,30 +209,8 @@
     background-size: 20px;
 }
 
-.part1 {
+.part1{
     display: flex;
     justify-content: space-between;
     width: 100%;
-}
-
-.baixo > label {
-    color: var(--primaria);
-    font-size: 16px;
-    margin-top: -10px;
-}
-
-.label-modelo{
-    max-width: 50%;
-}
-
-.label-modelo select{
-    max-width: 50%;
-}
-
-.limite{
-    max-width: 20%;
-}
-
-select{
-    cursor: pointer;
 }
