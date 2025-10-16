@@ -23,6 +23,10 @@ router.post("/verificarUsuarios", function (req, res) {
     usuarioController.verificarUsuarios(req, res);
 })
 
+router.get("/verificarAprovados", function (req, res){
+    usuarioController.verificarAprovados(req, res);
+})
+
 // Função para Excluir Empresa
 router.post("/limparFuncionarios", function (req, res) {
     usuarioController.limparFuncionarios(req, res);

@@ -1,24 +1,24 @@
 var database = require("../database/config")
 
-function cadastrar(nome, email, cnpj,senha,telefone) {
-    var instrucaoSql = `
+function cadastrar(nome, email, cnpj, senha, telefone) {
+  var instrucaoSql = `
         INSERT INTO empresa (nome, cnpj, email,senha,telefone,status) 
         VALUES ('${nome}', '${cnpj}', '${email}','${senha}','${telefone}',"EM ANÁLISE");
     `;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 function cadastrarFuncionario(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, fkEmpresa) {
-    var instrucaoSql = `
+  var instrucaoSql = `
         INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, fkEmpresa) 
         VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${regiaoAtuacao}', '${fkEmpresa}');`;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
-function deletarFuncionario(nome, email,fkEmpresa) {
-    var instrucaoSql = `
+function deletarFuncionario(nome, email, fkEmpresa) {
+  var instrucaoSql = `
         DELETE FROM usuario WHERE nome = '${nome}' AND email = '${email}' AND fkEmpresa = ${fkEmpresa}`;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 //Login de Empresa
@@ -64,18 +64,26 @@ function verificarUsuarios(idEmpresa) {
 
 // Função para remover Empresa
 function limparFuncionarios(fkEmpresa) {
-    var instrucaoSql = `
+  var instrucaoSql = `
         DELETE FROM usuario WHERE fkEmpresa = ${fkEmpresa}`;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
-function deletarEmpresa(idEmpresa){
-    var instrucaoSql = `
+function deletarEmpresa(idEmpresa) {
+  var instrucaoSql = `
         DELETE FROM empresa WHERE idEmpresa = ${idEmpresa}`;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function verificarAprovados() {
+  var instrucaoSql = `
+    SELECT nome,email,telefone,cargo,regiaoAtuacao from usuario;
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 module.exports = {
-    cadastrar,autenticarEmpresa,autenticarAdm,autenticarUsuario,verificarUsuarios,cadastrarFuncionario,deletarFuncionario,
-    limparFuncionarios,deletarEmpresa
+  cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, cadastrarFuncionario, deletarFuncionario,
+  limparFuncionarios, deletarEmpresa, verificarAprovados
 };

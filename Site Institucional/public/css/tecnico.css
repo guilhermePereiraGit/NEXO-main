@@ -37,7 +37,9 @@
     color: var(--primaria);
 }
 
-.popuptotem, .popupmodelo, .popupusuario {
+.popuptotem,
+.popupmodelo,
+.popupusuario {
     transition: 0.3s;
     background-color: rgba(0, 0, 0, 0.375);
     width: 100%;
@@ -116,10 +118,47 @@
     background: var(--primaria-dark);
 }
 
+.totens-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.totens-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar-thumb {
+    background: var(--primaria);
+    border-radius: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primaria-dark);
+}
+
+.totens-scroll input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
 .baixo .item-card {
     display: flex;
     gap: 30px;
     align-items: center;
+    flex: 1;
+    min-width: 0;
 }
 
 .baixo .item-card label {
@@ -127,6 +166,16 @@
     font-size: 25px;
     font-weight: bold;
     min-width: 100px;
+    white-space: nowrap;
+}
+
+.baixo .item-card label:not(:first-child) {
+    border: 2px solid var(--primaria);
+    padding: 12px 15px;
+    border-radius: 10px;
+    flex: 1;
+    font-weight: normal;
+    font-size: 20px;
 }
 
 .baixo .item-card input {
@@ -135,9 +184,14 @@
     padding: 10px;
     border-radius: 10px;
     width: 100%;
+    min-width: 0;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
+#cargos,
+#regiao_atuacao,
+.componentes,
+#input_vies,
+#input_modelos {
     border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
@@ -156,11 +210,29 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
+    min-width: 0;
+}
+
+.part-dois .item-card input[type="number"] {
+    max-width: 80px;
 }
 
 .part-dois .item-card label {
-    min-width: 100px;
+    min-width: fit-content;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.part-dois .item-card label:not(:first-child) {
+    border: 2px solid var(--primaria);
+    padding: 12px 15px;
+    border-radius: 10px;
+    flex: 1;
+    font-weight: normal;
+    font-size: 20px;
+    min-width: 0;
+    white-space: normal;
 }
 
 .part-dois .cadastrar {
@@ -176,7 +248,8 @@
     height: 48px;
 }
 
-.part-dois .cadastrar:hover, .part-dois-special .gerar-senha:hover {
+.part-dois .cadastrar:hover,
+.part-dois-special .gerar-senha:hover {
     background-color: white;
     color: var(--primaria);
 }
@@ -188,31 +261,32 @@
     width: 100%;
 }
 
-.part-dois-special > .item-card:first-child {
+.part-dois-special>.item-card:first-child {
     display: flex;
     align-items: center;
     gap: 30px;
     flex: 1;
 }
 
-.part-dois-special > .item-card:first-child label {
+.part-dois-special>.item-card:first-child label {
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
     min-width: 100px;
 }
 
-.part-dois-special > .item-card:first-child input {
+.part-dois-special>.item-card:first-child input {
     border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 10px 0 0 10px;
+    border-right: none;
     flex: 1;
 }
 
 .part-dois-special .gerar-senha {
     background-color: var(--primaria);
-    border-radius: 10px;
+    border-radius: 0 10px 10px 0;
     border: 2px solid var(--primaria);
     color: white;
     font-size: 18px;
@@ -224,21 +298,25 @@
     flex-shrink: 0;
 }
 
-.part-dois-special > .item-card:last-child {
+.part-dois-special>.item-card:last-child {
     display: flex;
     align-items: center;
     gap: 30px;
     flex: 1;
 }
 
-.part-dois-special > .item-card:last-child label {
+.part-dois-special>.item-card:last-child label {
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
     min-width: 150px;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
+#cargos,
+#regiao_atuacao,
+.componentes,
+#input_vies,
+#input_modelos {
     width: 100%;
     padding: 10px;
     font-size: 20px;
@@ -260,22 +338,10 @@
     width: 100%;
 }
 
-.baixo > label {
+.baixo>label {
     color: var(--primaria);
     font-size: 16px;
     margin-top: -10px;
-}
-
-.label-modelo{
-    max-width: 50%;
-}
-
-.label-modelo select{
-    max-width: 50%;
-}
-
-.limite{
-    max-width: 20%;
 }
 
 select{

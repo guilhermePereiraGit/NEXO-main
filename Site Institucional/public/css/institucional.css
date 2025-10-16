@@ -184,8 +184,12 @@ html{
     justify-content: center;
 }
 
-.cabecalho-links .botao-principal{
+.cabecalho-links{
     color: var(--texto);
+}
+
+.cabecalho-links .botao-principal{
+    color: var(--branco);
 }
 
 .inicio {

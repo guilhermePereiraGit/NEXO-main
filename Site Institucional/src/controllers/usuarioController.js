@@ -62,7 +62,7 @@ function cadastrarFuncionario(req, res) {
         res.status(400).send("Seu cargo está undefined!");
     } else if (fkEmpresa == undefined) {
         res.status(400).send("Sua empresa está undefined!");
-    } else if (regiaoAtuacao == undefined){
+    } else if (regiaoAtuacao == undefined) {
         res.status(400).send("Sua área de atuação está undefined!");
     } else {
 
@@ -97,7 +97,7 @@ function deletarFuncionario(req, res) {
         res.status(400).send("Sua empresa está undefined!");
     } else {
 
-        usuarioModel.deletarFuncionario(nome, email,fkEmpresa)
+        usuarioModel.deletarFuncionario(nome, email, fkEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -169,7 +169,7 @@ function autenticar(req, res) {
                                     senha: resultadoAutenticarUsuario[0].senha,
                                     telefone: resultadoAutenticarUsuario[0].telefone,
                                     cpf: resultadoAutenticarUsuario[0].cpf,
-                                    fkEmpresa:resultadoAutenticarUsuario[0].fkEmpresa,
+                                    fkEmpresa: resultadoAutenticarUsuario[0].fkEmpresa,
                                     status: "funcionario"
                                 });
                             }
@@ -293,6 +293,25 @@ function deletarEmpresa(req, res) {
     }
 }
 
+function verificarAprovados(req, res) {
+    usuarioModel.verificarAprovados()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar Verificação! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
-    cadastrar, autenticar,verificarUsuarios,cadastrarFuncionario,deletarFuncionario,limparFuncionarios,deletarEmpresa
+    cadastrar, autenticar, verificarUsuarios, cadastrarFuncionario, 
+    deletarFuncionario, limparFuncionarios, deletarEmpresa, verificarAprovados
 };

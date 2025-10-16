@@ -68,41 +68,59 @@ async function cadastrarModelo(req, res) {
     }
 }
 
-async function buscarTipoParametro(req, res){
+async function buscarTipoParametro(req, res) {
     var fkEmpresa = req.body.fkEmpresaServer
     var parametros = []
 
     resultadoBuscaTipoParametro = await modeloModel.buscarTipoParametro(fkEmpresa)
 
-    if(resultadoBuscaTipoParametro.length > 0){
-        for(var i = 0; i < resultadoBuscaTipoParametro.length; i++){
+    if (resultadoBuscaTipoParametro.length > 0) {
+        for (var i = 0; i < resultadoBuscaTipoParametro.length; i++) {
             parametros.push(resultadoBuscaTipoParametro[i])
         }
-    }else{
+    } else {
         parametros.push('CPU', 'RAM', 'DISCO')
     }
 
     res.json(parametros)
 }
 
-async function buscarModelos(req, res){
+async function buscarModelos(req, res) {
     var fkEmpresa = req.body.fkEmpresaServer;
     var modelos = []
 
-    if(fkEmpresa == undefined){
+    if (fkEmpresa == undefined) {
         console.log('O ID da empresa está undefined')
-    }else{
+    } else {
         modelos = await modeloModel.buscarModelos(fkEmpresa)
 
-        if(modelos.length > 0){
+        if (modelos.length > 0) {
             res.json(modelos)
-        }else{
+        } else {
             console.log('Erro ao buscar os modelos')
             res.status(500)
         }
     }
 }
 
+function verificarAprovados(req, res) {
+    modeloModel.verificarAprovados()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar Verificação! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
-    cadastrarModelo, buscarTipoParametro, buscarModelos
+    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados
 };

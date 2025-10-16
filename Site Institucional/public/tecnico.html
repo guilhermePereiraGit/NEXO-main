@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Aprovação NEXO</title>
+    <link rel="stylesheet" href="./css/institucional.css">
+    <link rel="stylesheet" href="./css/style_aprovacao.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/tecnico.css">
+</head>
+
+<body onload="carregarDadosModelo(), carregarDadosAprovados()">
+    <div id="cabecalho">
+        <div class="cabecalho-container">
+            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+            </div>
+            <div class="cabecalho-links" id="cabecalhoLinks">
+                <a href="#segundo">Tótens Cadastrados</a>
+                <a href="login.html" class="botao-principal" id="cadastro">Sair</a>
+            </div>
+        </div>
+    </div>
+    <div class="pg-principal">
+        <div id="segundo">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Tótens Cadastrados</h1>
+                <button onclick="abrirPopupTotem()">Adicionar Tótem</button>
+            </div>
+            <div class="aprovados" id="div_aprovados" style="height: 450px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- style="display: none;" -->
+    <div class="popuptotem" id="popuptotem" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Tótem</h1>
+                <button onclick="fecharPopupTotem()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo" id="baixo">
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label for="input_cep">Cep:</label>
+                        <input type="text" id="input_cep" maxlength="8" oninput="buscarCEP()" placeholder="CEP">
+                    </div>
+                    <div class="item-card">
+                        <label>Estado:</label>
+                        <label id="estado"></label>
+                    </div>
+                    <div class="item-card">
+                        <label>Cidade:</label>
+                        <label id="cidade"></label>
+                    </div>
+                </div>
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label>Bairro:</label>
+                        <label id="bairro"></label>
+                    </div>
+                    <div class="item-card">
+                        <label>Rua:</label>
+                        <label id="rua"></label>
+                    </div>
+                    <div class="item-card">
+                        <label for="input_numero">Número:</label>
+                        <input type="number" id="input_numero" placeholder="N°">
+                    </div>
+                </div>
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label for="input_complemento">Complemento:</label>
+                        <input type="text" id="input_complemento" placeholder="Complemento">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_modelos">Qual o modelo?</label>
+                        <select name="modelos" id="input_modelos">
+                            <option value="">Selecione uma opção</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="part-dois">
+                    <div class="item-card">
+                        <label for="input_qtd_de_totens">Quantos tótens nesse local?</label>
+                        <input type="number" id="input_qtd_de_totens" oninput="atualizarTotens()" placeholder="N°">
+                    </div>
+                    <div class="item-card">
+                        <label for="vies">Qual o viés?</label>
+                        <select name="vies" id="input_vies">
+                            <option value="">Escolha uma opção</option>
+                            <option value="Fast-Food">Fast-Food</option>
+                            <option value="Roupa">Roupa</option>
+                            <option value="Hospital">Hospital</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="totens-scroll" id="totens"></div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="adicionarMaisUmTotem()">Adicionar Tótem</button>
+                    <button class="cadastrar" onclick="cadastrarEndereco()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    aprovados = [];
+    function carregarDadosAprovados() {
+        fetch("/totem/verificarAprovados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    aprovados = data;
+                    if (aprovados.length > 0) {
+                        gerarCardModelos();
+                    } else {
+                        nadaPorAquiModelos();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function nadaPorAquiModelos() {
+        div_aprovados.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function gerarCardModelos() {
+        for (var i = 0; i < aprovados.length; i++) {
+            var numMAC = aprovados[i].numMAC;
+            var vies = aprovados[i].vies;
+            var status = aprovados[i].status;
+            var modelo = aprovados[i].nome;
+            div_aprovados.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Endereço MAC:</label><label class="label-item">${numMAC}</label></div>
+                    <div class="labels"><label id="first">Viés:</label><label class="label-item">${vies}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Status:</label><label class="label-item">${status}</label></div>
+                    <div class="labels"><label id="first">Modelo:</label><label class="label-item">${modelo}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    let numeroTotens = 0;
+    var modelos = []
+
+    function carregarDadosModelo() {
+        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+        fetch("/modelo/buscarModelos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa
+            }),
+        })
+            .then(resposta => {
+                if (resposta.ok) {
+                    return resposta.json();
+                } else {
+                    throw new Error("Erro na resposta do servidor");
+                }
+            })
+            .then(dados => {
+                for (let i = 0; i < dados.length; i++) {
+                    modelos.push(dados[i]);
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
+            });
+    }
+
+    function abrirPopupTotem() {
+        var options = ''
+        for (var i = 0; i < modelos.length; i++) {
+            options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
+        }
+
+        input_modelos.innerHTML += options
+
+        document.getElementById("popuptotem").style.display = "flex";
+    }
+
+    function fecharPopupTotem() {
+        document.getElementById("popuptotem").style.display = "none";
+        window.location.reload();
+    }
+
+    async function buscarCEP() {
+        let cepDigitado = input_cep.value;
+
+        let retornoConvertido =
+            await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`)
+                .then((resposta) => resposta.json())
+
+        console.log("Resposta final: ", retornoConvertido);
+        estado.innerHTML = `${retornoConvertido.estado}`
+        cidade.innerHTML = `${retornoConvertido.localidade}`
+        bairro.innerHTML = `${retornoConvertido.bairro}`
+        rua.innerHTML = `${retornoConvertido.logradouro}`
+    }
+
+    function atualizarTotens() {
+        const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
+        const container = document.getElementById("totens");
+
+        container.innerHTML = "";
+        numeroTotens = qtdTotens;
+
+        if (qtdTotens <= 0 || isNaN(qtdTotens)) return;
+
+        for (let i = 1; i <= qtdTotens; i++) {
+            const novoInput = document.createElement("input");
+            novoInput.type = "text";
+            novoInput.id = `totem${i}`;
+            novoInput.placeholder = `MAC ADDRESS ${i}`;
+            container.appendChild(novoInput);
+        }
+    }
+
+    function adicionarMaisUmTotem() {
+        const container = document.getElementById("totens");
+        numeroTotens++;
+
+        const novoInput = document.createElement("input");
+        novoInput.type = "text";
+        novoInput.id = `totem${numeroTotens}`;
+        novoInput.placeholder = `MAC ADDRESS ${numeroTotens}`;
+        container.appendChild(novoInput);
+
+        document.getElementById("input_qtd_de_totens").value = numeroTotens;
+    }
+
+    async function cadastrarEndereco() {
+        var cep = input_cep.value;
+        var estado = document.getElementById("estado").innerText;
+        var bairro = document.getElementById("bairro").innerText;
+        var cidade = document.getElementById("cidade").innerText;
+        var rua = document.getElementById("rua").innerText;
+        var numero = input_numero.value;
+        var complemento = input_complemento.value;
+
+        await fetch("/endereco/cadastrarEndereco", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                cepServer: cep,
+                estadoServer: estado,
+                bairroServer: bairro,
+                cidadeServer: cidade,
+                ruaServer: rua,
+                numeroServer: numero,
+                complementoServer: complemento
+            }),
+        })
+            .then(resposta => {
+                if (!resposta.ok) {
+                    throw new Error("Erro na resposta do servidor");
+                }
+                return resposta.json();
+            })
+            .then(dados => {
+                const idEndereco = dados.idEndereco || dados;
+                cadastrarTotem(idEndereco);
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
+            });
+    }
+
+    function cadastrarTotem(idEndereco) {
+        console.log('Entrou cadastor de totem')
+        var vies = input_vies.value;
+        var modelo = input_modelos.value;
+        var enderecosMac = [];
+        var endereco = idEndereco;
+
+        for (let i = 1; i <= numeroTotens; i++) {
+            const macAddress = document.getElementById(`totem${i}`).value;
+            enderecosMac.push(macAddress)
+        }
+
+        var variavelAuxiliar = enderecosMac[0]
+        for (var i = 1; i < enderecosMac.length; i++) {
+            if (variavelAuxiliar == enderecosMac[i]) {
+                window.alert('Endereços MAC iguais!', variavelAuxiliar, enderecosMac[i])
+                window.location.reload();
+            }
+        }
+
+        var mensagem = ''
+        if (enderecosMac.length > 1) {
+            mensagem = 'Tótens cadastrados com sucesso!'
+        } else {
+            mensagem = 'Tótem cadastrado com sucesso!'
+        }
+
+        fetch("/totem/cadastrarTotem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                viesServer: vies,
+                modeloServer: modelo,
+                enderecosMacServer: enderecosMac,
+                fkEnderecoServer: endereco
+            }),
+        })
+            .then(resposta => {
+                if (resposta.status == 200) {
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.reload();
+                } else {
+                    throw new Error("Erro na resposta do servidor");
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
+            });
+    }
+</script>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Aprovação NEXO</title>
+    <link rel="stylesheet" href="./css/institucional.css">
+    <link rel="stylesheet" href="./css/style_aprovacao.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/gestao.css">
+</head>
+
+<body onload="carregarDadosAprovados()">
+    <div id="cabecalho">
+        <div class="cabecalho-container">
+            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+            </div>
+            <div class="cabecalho-links" id="cabecalhoLinks">
+                <a href="#segundo">Modelos Cadastrados</a>
+                <a href="login.html" class="botao-principal" id="cadastro">Sair</a>
+            </div>
+        </div>
+    </div>
+    <div class="pg-principal">
+        <div id="segundo">
+            <div class="more">
+                <h1 style="margin-bottom: 0px;">Modelos Cadastrados</h1>
+                <button onclick="abrirPopupModelo()">Adicionar Modelo</button>
+            </div>
+            <div class="aprovados" id="div_aprovados" style="height: 450px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- style="display: none;" -->
+    <div class="popupmodelo" id="popupmodelo" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Modelo</h1>
+                <button onclick="fecharPopupModelo()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo" id="baixo">
+                <div class="item-card">
+                    <label for="input_nome_modelo">Nome:</label>
+                    <input type="text" id="input_nome_modelo">
+                </div>
+                <div class="item-card">
+                    <label for="input_descricao">Descrição:</label>
+                    <input type="text" id="input_descricao">
+                </div>
+                <div class="parametros-scroll" id="parametros-container">
+                    <div class="part-dois">
+                        <div class="item-card label-modelo">
+                            <label>Componente:</label>
+                            <select name="componentes" id="componentes1" class="componentes">
+                                <option value="">Selecione uma opção</option>
+                                <option value="cpu">CPU</option>
+                                <option value="ram">RAM</option>
+                                <option value="disco">Disco</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="item-card limite">
+                            <label for="input_limite_minimo">Limite Mínimo:</label>
+                            <input type="number" id="input_limite_minimo1">
+                        </div>
+                        <div class="item-card limite">
+                            <label for="input_limite_maximo">Limite Máximo:</label>
+                            <input type="number" id="input_limite_maximo1">
+                        </div>
+                    </div>
+                </div>
+                <div class="part-dois">
+                    <button class="cadastrar" onclick="adicionarParametro()">Adicionar Parâmetro</button>
+                    <button class="cadastrar" onclick="cadastrarModelo()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    aprovados = [];
+    function carregarDadosAprovados() {
+        fetch("/modelo/verificarAprovados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    aprovados = data;
+                    if (aprovados.length > 0) {
+                        gerarCardModelos();
+                    } else {
+                        nadaPorAquiModelos();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function nadaPorAquiModelos() {
+        div_aprovados.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function gerarCardModelos() {
+        for (var i = 0; i < aprovados.length; i++) {
+            var nome = aprovados[i].nome;
+            var descricao = aprovados[i].descricao_arq;
+            var status = aprovados[i].status;
+            div_aprovados.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
+                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${descricao}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Status:</label><label class="label-item">${status}</label></div>
+                    <div class = "buttons">
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    let numeroComponentes = 1;
+
+    function cadastrarModelo() {
+        console.log('Entrou para cadastrar modelo')
+        var nomeModelo = input_nome_modelo.value;
+        var descricao = input_descricao.value;
+        var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+        const parametros = [];
+        var numeroCpu = 0;
+        var numeroRam = 0;
+        var numeroDisco = 0;
+
+        for (let i = 1; i <= numeroComponentes; i++) {
+            const componente = document.getElementById(`componentes${i}`).value;
+
+            if (componente == 'cpu') {
+                numeroCpu++
+            } else if (componente == 'ram') {
+                numeroRam++
+            } else if (componente == 'disco') {
+                numeroDisco++
+            }
+
+            if (numeroCpu == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else if (numeroRam == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else if (numeroDisco == 1) {
+                const limiteMaximo = document.getElementById(`input_limite_maximo${i}`).value;
+                const limiteMinimo = document.getElementById(`input_limite_minimo${i}`).value;
+                parametros.push({
+                    componente: componente,
+                    limiteMaximo: limiteMaximo,
+                    limiteMinimo: limiteMinimo
+                });
+            } else {
+                window.alert('Componentes iguais')
+                return
+            }
+        }
+
+        if (
+            nomeModelo == "" ||
+            descricao == "" ||
+            parametros.some(p => p.componente == "" || p.limiteMaximo == "" || p.limiteMinimo == "")
+        ) {
+            alert("Preencha todos os campos!");
+            return false;
+        }
+
+        fetch("/modelo/cadastrarModelo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nomeModeloServer: nomeModelo,
+                descricaoServer: descricao,
+                parametrosServer: parametros,
+                fkEmpresaServer: idEmpresa,
+            }),
+        })
+            .then((resposta) => {
+                if (resposta.status == 200) {
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.reload();
+                } else {
+                    alert("Erro ao cadastrar modelo.");
+                }
+            })
+            .catch((erro) => console.error("#ERRO:", erro));
+    }
+
+    function adicionarParametro() {
+        numeroComponentes++;
+        const parametrosContainer = document.getElementById("parametros-container");
+        const novoParametro = document.createElement("div");
+        novoParametro.classList.add("part-dois");
+        novoParametro.innerHTML = `
+        <div class="item-card label-modelo">
+            <label>Componente:</label>
+            <select name="componentes" id="componentes${numeroComponentes}" class="componentes">
+                <option value="">Selecione uma opção</option>
+                <option value="cpu">CPU</option>
+                <option value="ram">RAM</option>
+                <option value="disco">Disco</option>
+                <option value="outro">Outro</option>
+            </select>
+        </div>
+        <div class="item-card limite">
+            <label for="input_limite_minimo${numeroComponentes}">Limite Mínimo:</label>
+            <input type="number" id="input_limite_minimo${numeroComponentes}">
+        </div>
+        <div class="item-card limite">
+            <label for="input_limite_maximo${numeroComponentes}">Limite Máximo:</label>
+            <input type="number" id="input_limite_maximo${numeroComponentes}">
+        </div>
+    `;
+        parametrosContainer.appendChild(novoParametro);
+    }
+    async function abrirPopupModelo() {
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+        var parametrosRetornados = []
+
+        await fetch("/modelo/buscarTipoParametro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa
+            }),
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (parametros) {
+                for (var i = 0; i < parametros.length; i++) {
+                    parametrosRetornados.push(parametros[i])
+                }
+            })
+            .catch(function (erro) {
+                console.log(`Erro ao buscar os tipos de parâmetro: ${erro}`);
+            });
+
+        document.getElementById("popupmodelo").style.display = "flex";
+    }
+
+    function fecharPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "none";
+        window.location.reload();
+    }
+</script>
+
+</html>

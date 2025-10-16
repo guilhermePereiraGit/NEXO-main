@@ -35,14 +35,14 @@ function buscarIdTipoParametro() {
     return database.executar(instrucaoSql);
 }
 
-function buscarSeTipoParametroJaExiste(componente){
+function buscarSeTipoParametroJaExiste(componente) {
     var instrucaoSql = `
         SELECT idTipoParametro FROM tipoParametro where componente = '${componente}';
     `
     return database.executar(instrucaoSql);
 }
 
-function buscarTipoParametro(fkEmpresa){
+function buscarTipoParametro(fkEmpresa) {
     var instrucaoSql = `
         select distinct componente from tipoParametro tp
         inner join parametro p on tp.idTipoParametro = p.fkTipoParametro
@@ -52,14 +52,22 @@ function buscarTipoParametro(fkEmpresa){
     return database.executar(instrucaoSql);
 }
 
-function buscarModelos(fkEmpresa){
+function buscarModelos(fkEmpresa) {
     var instrucaoSql = `
         select idModelo as IdModelo, nome Nome from modelo where fkEmpresa = ${fkEmpresa};
     `
     return database.executar(instrucaoSql);
 }
 
+function verificarAprovados() {
+    var instrucaoSql = `
+    SELECT nome, descricao_arq, status from modelo;
+  `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo,
-    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos
+    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados
 };
