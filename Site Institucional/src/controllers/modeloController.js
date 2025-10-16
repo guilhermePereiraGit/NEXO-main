@@ -22,6 +22,7 @@ async function cadastrarModelo(req, res) {
 
     try {
         for (var i = 0; i < parametros.length; i++) {
+            console.log('Entrou no for')
             const resultadoBuscarSeTipoParametroJaExiste = await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente);
 
             if (resultadoBuscarSeTipoParametroJaExiste.length > 0) {
@@ -38,6 +39,8 @@ async function cadastrarModelo(req, res) {
 
             fkTipoParametro.push(fkTipoParametroVariavel);
         }
+
+        console.log('Entrou saiu do for')
 
 
         await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);

@@ -16,6 +16,8 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var aprovacaoRouter = require("./src/routes/aprovacao");
 var modeloRouter = require("./src/routes/modelo");
+var enderecoRouter = require("./src/routes/endereco");
+var totemRouter = require("./src/routes/totem");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,6 +29,8 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/aprovacao", aprovacaoRouter);
 app.use("/modelo", modeloRouter);
+app.use("/endereco", enderecoRouter);
+app.use("/totem", totemRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`

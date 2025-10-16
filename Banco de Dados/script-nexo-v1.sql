@@ -52,19 +52,20 @@ CREATE TABLE IF NOT EXISTS parametro (
 
 CREATE TABLE IF NOT EXISTS endereco (
 	idEndereco INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    cep VARCHAR(9),
-    numero INT,
-    complemento VARCHAR(45),
-    fkEmpresa INT,
-    foreign key fk_empresa_endereco (fkEmpresa) references empresa(idEmpresa)
+    cep VARCHAR(8),
+    numero VARCHAR(10),
+    complemento VARCHAR(100),
+    estado VARCHAR(45),
+    cidade VARCHAR(45),
+    bairro VARCHAR(100),
+	rua VARCHAR(100)
 );
 
 CREATE TABLE IF NOT EXISTS totem (
 	idTotem INT NOT NULL AUTO_INCREMENT,
     numMAC VARCHAR(17) NOT NULL,
-    criador VARCHAR(80),
+	vies VARCHAR(45),
     status VARCHAR(30),
-    dataInstalacao DATETIME,
     fkModelo INT,
     fkEndereco INT,
     primary key (idTotem, numMAC),
@@ -79,4 +80,3 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     email VARCHAR(70),
     senha VARCHAR(30)
 );
-

@@ -84,9 +84,9 @@
                         <label for="vies">Qual o viés?</label>
                         <select name="vies" id="input_vies">
                             <option value="">Escolha uma opção</option>
-                            <option value="Centro">Fast-Food</option>
-                            <option value="Norte">Roupa</option>
-                            <option value="Sul">Hospital</option>
+                            <option value="Fast-Food">Fast-Food</option>
+                            <option value="Roupa">Roupa</option>
+                            <option value="Hospital">Hospital</option>
                         </select>
                     </div>
                     <div class="item-card">
@@ -111,7 +111,7 @@
     var modelos = []
 
     function carregarDadosModelo() {
-        idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
         fetch("/modelo/buscarModelos", {
             method: "POST",
@@ -229,21 +229,26 @@
             }),
         })
             .then(resposta => {
-                if (resposta.ok) {
-                    cadastrarTotem();
-                } else {
+                if (!resposta.ok) {
                     throw new Error("Erro na resposta do servidor");
                 }
+                return resposta.json();
+            })
+            .then(dados => {
+                const idEndereco = dados.idEndereco || dados;
+                cadastrarTotem(idEndereco);
             })
             .catch(erro => {
                 console.log(`#ERRO: ${erro}`);
             });
     }
 
-    function cadastrarTotem() {
+    function cadastrarTotem(idEndereco) {
         var vies = input_vies.value;
-        var modelo = input_modelo;
-        var enderecosMac = []
+        var modelo = input_modelos.value;
+        var enderecosMac = [];
+        var endereco = idEndereco;
+        console.log('Enderecooooooo', endereco)
 
         for (let i = 1; i <= numeroTotens; i++) {
             const macAddress = document.getElementById(`totem${i}`).value;
@@ -259,13 +264,13 @@
         }
 
         var mensagem = ''
-        if(enderecosMac.length > 1){
+        if (enderecosMac.length > 1) {
             mensagem = 'Tótens cadastrados com sucesso!'
-        }else{
+        } else {
             mensagem = 'Tótem cadastrado com sucesso!'
         }
 
-        fetch("/endereco/cadastrarEndereco", {
+        fetch("/totem/cadastrarTotem", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -274,11 +279,13 @@
                 viesServer: vies,
                 modeloServer: modelo,
                 enderecosMacServer: enderecosMac,
+                fkEnderecoServer: endereco
             }),
         })
             .then(resposta => {
-                if (resposta.ok) {
+                if (resposta.status == 200) {
                     window.alert(mensagem);
+                    console.log('Cadastrado com sucesso')
                 } else {
                     throw new Error("Erro na resposta do servidor");
                 }
