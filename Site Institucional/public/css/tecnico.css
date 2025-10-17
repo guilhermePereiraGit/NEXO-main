@@ -347,3 +347,23 @@
 select{
     cursor: pointer;
 }
+
+.linha-totem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.botao-lixeira {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #a57df3;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-lixeira:hover {
+    color: #f03f3f;
+}

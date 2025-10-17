@@ -10,7 +10,7 @@ function cadastrarModelo(nomeModelo, descricao, fkEmpresa) {
 function cadastrarTipoParametro(componente) {
     var instrucaoSql = `
         INSERT INTO tipoParametro (componente, status) 
-        VALUES ('${componente}', 'INATIVO');`;
+        VALUES ('${componente}', 'ATIVO');`;
     return database.executar(instrucaoSql);
 }
 

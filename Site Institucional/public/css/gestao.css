@@ -281,3 +281,18 @@
 select{
     cursor: pointer;
 }
+
+.botao-lixeira {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #a57df3;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+.botao-lixeira:hover {
+    color: #f03f3f;
+}
