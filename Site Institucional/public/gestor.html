@@ -110,7 +110,7 @@
     function nadaPorAquiModelos() {
         div_aprovados.innerHTML = `
         <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
+                <h1>Sem Registros</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
                 <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
             </div>
@@ -119,20 +119,14 @@
 
     function gerarCardModelos() {
         for (var i = 0; i < aprovados.length; i++) {
-            var nome = aprovados[i].nome;
-            var descricao = aprovados[i].descricao_arq;
-            var status = aprovados[i].status;
             div_aprovados.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
-                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${descricao}</label></div>
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${aprovados[i].descricao_arq}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Status:</label><label class="label-item">${status}</label></div>
-                    <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
-                    </div>
+                    <div class="labels"><label id="first">Status:</label><label class="label-item">${aprovados[i].status}</label></div>
                 </div>
             </div>
             `;
@@ -274,7 +268,6 @@
             .catch(function (erro) {
                 console.log(`Erro ao buscar os tipos de parâmetro: ${erro}`);
             });
-
         document.getElementById("popupmodelo").style.display = "flex";
     }
 

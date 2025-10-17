@@ -132,25 +132,20 @@
 
         function gerarCardsUsuarios() {
             for (var i = 0; i < aprovados.length; i++) {
-                var nome = aprovados[i].nome;
-                var email = aprovados[i].email;
-                var telefone = aprovados[i].telefone;
-                var cargo = aprovados[i].cargo;
-                var regiaoAtuacao = aprovados[i].regiaoAtuacao;
                 div_aprovados.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${cargo}</label></div>
-                    <div class="labels"><label id="first">Área de Atuação:</label><label class="label-item">${regiaoAtuacao}</label></div>
+                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${aprovados[i].cargo}</label></div>
+                    <div class="labels"><label id="first">Área de Atuação:</label><label class="label-item">${aprovados[i].regiaoAtuacao}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
                     <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idUsuario})">Cancelar</button>    
                     </div>
                 </div>
             </div>
@@ -221,15 +216,11 @@
             return false;
         }
 
-        function deletarFuncionario(nomeVar, emailVar, fkEmpresa) {
-            var nome = nomeVar;
-            var email = emailVar;
-            var idEmpresa = fkEmpresa;
+        function limparFuncionarios(id) {
+            var idUsuario = id;
 
             if (
-                nome == "" ||
-                email == "" ||
-                idEmpresa == ""
+                idUsuario == ""
             ) {
                 return false;
             }
@@ -240,9 +231,7 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    nomeServer: nome,
-                    emailServer: email,
-                    fkEmpresa: idEmpresa
+                    idUsuarioServer: idUsuario
                 }),
             })
                 .then(function (resposta) {

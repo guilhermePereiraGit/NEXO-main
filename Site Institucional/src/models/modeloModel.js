@@ -61,7 +61,7 @@ function buscarModelos(fkEmpresa) {
 
 function verificarAprovados() {
     var instrucaoSql = `
-    SELECT nome, descricao_arq, status from modelo;
+    SELECT idModelo, nome, descricao_arq, status from modelo;
   `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

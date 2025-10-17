@@ -40,6 +40,23 @@ async function cadastrarTotem(req, res) {
     }
 }
 
+async function modificarStatusTotem(req, res){
+    var idTotem = req.body.idTotemServer;
+    var acao = req.body.acaoServer;
+
+    if(!idTotem || !acao){
+        return res.status(400).send("Parâmetros estão undefined!");
+    }else{
+        if(acao == "ativar"){
+            await totemModel.ativarTotem(idTotem);
+        }else{
+            await totemModel.desativarTotem(idTotem);
+        }
+
+        res.status(200).json({ mensagem: "Totem modificado com sucesso" });
+    }
+}
+
 module.exports = {
-    cadastrarTotem, verificarAprovados
+    cadastrarTotem, verificarAprovados, modificarStatusTotem
 };

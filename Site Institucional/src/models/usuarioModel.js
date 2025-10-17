@@ -15,9 +15,9 @@ function cadastrarFuncionario(nome, email, cpf, senha, telefone, cargo, regiaoAt
   return database.executar(instrucaoSql);
 }
 
-function deletarFuncionario(nome, email, fkEmpresa) {
+function deletarFuncionario(idUsuario) {
   var instrucaoSql = `
-        DELETE FROM usuario WHERE nome = '${nome}' AND email = '${email}' AND fkEmpresa = ${fkEmpresa}`;
+        DELETE FROM usuario WHERE idUsuario = ${idUsuario};`
   return database.executar(instrucaoSql);
 }
 
@@ -77,7 +77,7 @@ function deletarEmpresa(idEmpresa) {
 
 function verificarAprovados() {
   var instrucaoSql = `
-    SELECT nome,email,telefone,cargo,regiaoAtuacao from usuario;
+    SELECT idUsuario,nome,email,telefone,cargo,regiaoAtuacao from usuario;
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

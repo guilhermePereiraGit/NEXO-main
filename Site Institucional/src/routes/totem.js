@@ -11,4 +11,8 @@ router.get("/verificarAprovados", function (req, res){
     totemController.verificarAprovados(req, res);
 })
 
+router.post("/modificarStatusTotem", function(req, res){
+    totemController.modificarStatusTotem(req, res);
+})
+
 module.exports = router;

@@ -136,7 +136,7 @@
     function nadaPorAquiModelos() {
         div_aprovados.innerHTML = `
         <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
+                <h1>Sem Registros</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
                 <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
             </div>
@@ -144,24 +144,23 @@
     }
 
     function gerarCardModelos() {
+        var ativar = "ativar"
+        var desativar = "desativar"
         for (var i = 0; i < aprovados.length; i++) {
-            var numMAC = aprovados[i].numMAC;
-            var vies = aprovados[i].vies;
-            var status = aprovados[i].status;
-            var modelo = aprovados[i].nome;
             div_aprovados.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
-                    <div class="labels"><label id="first">Endereço MAC:</label><label class="label-item">${numMAC}</label></div>
-                    <div class="labels"><label id="first">Viés:</label><label class="label-item">${vies}</label></div>
+                    <div class="labels"><label id="first">Endereço MAC:</label><label class="label-item">${aprovados[i].numMAC}</label></div>
+                    <div class="labels"><label id="first">Viés:</label><label class="label-item">${aprovados[i].vies}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Status:</label><label class="label-item">${status}</label></div>
-                    <div class="labels"><label id="first">Modelo:</label><label class="label-item">${modelo}</label></div>
+                    <div class="labels"><label id="first">Status:</label><label class="label-item">${aprovados[i].status}</label></div>
+                    <div class="labels"><label id="first">Modelo:</label><label class="label-item">${aprovados[i].nome}</label></div>
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                        <button class = "ativar" onclick="modificarStatusTotem(${aprovados[i].idTotem}, 'ativar')">Ativar</button>
+                        <button class = "desativar" onclick="modificarStatusTotem(${aprovados[i].idTotem}, 'desativar')">Desativar</button>   
                     </div>
                 </div>
             </div>
@@ -351,6 +350,30 @@
             .catch(erro => {
                 console.log(`#ERRO: ${erro}`);
             });
+    }
+
+    function modificarStatusTotem(idTotem, acao) {
+            fetch("/totem/modificarStatusTotem", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idTotemServer: idTotem,
+                    acaoServer: acao
+                }),
+            })
+                .then(resposta => {
+                    if (resposta.status == 200) {
+                        alert("Totem ativado com sucesso!");
+                        window.location.reload()
+                    } else {
+                        throw new Error("Erro na resposta do servidor");
+                    }
+                })
+                .catch(erro => {
+                    console.log(`#ERRO: ${erro}`);
+                });
     }
 </script>
 

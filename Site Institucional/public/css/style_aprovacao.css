@@ -132,12 +132,23 @@ html,body {
     transform: scale(1.03);
 }
 
-.reprovar {
+.reprovar, .desativar {
     background-color: lightcoral;
     cursor: pointer;
     transition: 0.3s;
 }
-.reprovar:hover{
+
+.reprovar:hover, .desativar:hover   {
+    transform: scale(1.03);
+}
+
+.ativar{
+    background-color: lightgreen;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ativar:hover   {
     transform: scale(1.03);
 }
 

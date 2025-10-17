@@ -85,19 +85,12 @@ function cadastrarFuncionario(req, res) {
 }
 
 function deletarFuncionario(req, res) {
-    var nome = req.body.nomeServer;
-    var email = req.body.emailServer;
-    var fkEmpresa = req.body.fkEmpresa;
+    var idUsuario = req.body.idUsuarioServer;
 
-    if (nome == undefined) {
+    if (idUsuario == undefined) {
         res.status(400).send("Seu nome está undefined!");
-    } else if (email == undefined) {
-        res.status(400).send("Seu email está undefined!");
-    } else if (fkEmpresa == undefined) {
-        res.status(400).send("Sua empresa está undefined!");
     } else {
-
-        usuarioModel.deletarFuncionario(nome, email, fkEmpresa)
+        usuarioModel.deletarFuncionario(idUsuario)
             .then(
                 function (resultado) {
                     res.json(resultado);
