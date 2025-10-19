@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Gestor</title>
     <link rel="stylesheet" href="dashboard_usuario.css">
+    <link rel="stylesheet" href="dash_geral.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
@@ -14,16 +15,16 @@
 <body>
     <header>
         <div class="itens">
-            <div class="logo">
-                <img src="../assets/imgs/Nexo-Logo.png">
-            </div>
             <div class="user">
-                <img src="../assets/imgs/user.png" style="margin-top: 100px;">
+                <img src="../assets/imgs/user.png" style="margin-top: 50px;">
                 <div class="user-text">
                     <label id="lbl_nome">Guilherme Silva</label>
-                    <label id="lbl_cargo" style="font-size: 17px; color: #8b5cf6; margin-bottom: 180px;">Gestor de
-                        Operações</label>
+                    <label id="lbl_cargo" style="font-size: 17px; color: #8b5cf6; margin-bottom: 30px;">Técnico em
+                        Operação</label>
                 </div>
+            </div>
+            <div class="navegacao"> 
+                <a href="../cards_gestor.html" style="border-top: 1px solid #8b5cf6;">Sair</a>
             </div>
             <div class="icons-suporte">
                 <a href="#"><img src="../assets/imgs/icon-jira.png"></a>
@@ -81,224 +82,224 @@
         <div class="regioes" id="regioes" style="display: none;">
             <a href="dash_geral.html#modelos" style="text-decoration: none;">
                 <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #8B5CF6;"></div>
-                    <h1>São Paulo</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #8B5CF6;"></div>
+                        <h1>São Paulo</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #3B82F6;"></div>
-                    <h1>Campinas</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #3B82F6;"></div>
+                        <h1>Campinas</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">30%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">30%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #10B981;"></div>
-                    <h1>Santos</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #10B981;"></div>
+                        <h1>Santos</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">45%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">45%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #F97316;"></div>
-                    <h1>Ribeirão Preto</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #F97316;"></div>
+                        <h1>Ribeirão Preto</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #EF4444;"></div>
-                    <h1>S. J. dos Campos</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #EF4444;"></div>
+                        <h1>S. J. dos Campos</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #8B4513;"></div>
-                    <h1>Bauru</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #8B4513;"></div>
+                        <h1>Bauru</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">25%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">25%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #F59E0B;"></div>
-                    <h1>Piracicaba</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #F59E0B;"></div>
+                        <h1>Piracicaba</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">10%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">10%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #22C55E;"></div>
-                    <h1>Franca</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #22C55E;"></div>
+                        <h1>Franca</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #60A5FA;"></div>
-                    <h1>P. Prudente</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #60A5FA;"></div>
+                        <h1>P. Prudente</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">15%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">15%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #C084FC;"></div>
-                    <h1>Araçatuba</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #C084FC;"></div>
+                        <h1>Araçatuba</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">20%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #FCD34D;"></div>
-                    <h1>Marília</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #FCD34D;"></div>
+                        <h1>Marília</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">50%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">50%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #FCA5A5;"></div>
-                    <h1>Barretos</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #FCA5A5;"></div>
+                        <h1>Barretos</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
             <a href="em_producao.html" style="text-decoration: none;">
-            <div class="regiao" style="border: none;">
-                <div class="primeiro-bloco">
-                    <div class="cor" style="background-color: #A78BFA;"></div>
-                    <h1>S. J. da Boa Vista</h1>
-                </div>
-                <div class="segunda-parte">
-                    <div class="segundo-bloco">
-                        <h1>Taxa de Alerta</h1>
-                        <label>Alertas/Total Totens</label>
+                <div class="regiao" style="border: none;">
+                    <div class="primeiro-bloco">
+                        <div class="cor" style="background-color: #A78BFA;"></div>
+                        <h1>S. J. da Boa Vista</h1>
                     </div>
-                    <div class="terceiro-bloco">
-                        <h1 style="font-size: 60px; color: black; font-weight: normal;">55%</h1>
+                    <div class="segunda-parte">
+                        <div class="segundo-bloco">
+                            <h1>Taxa de Alerta</h1>
+                            <label>Alertas/Total Totens</label>
+                        </div>
+                        <div class="terceiro-bloco">
+                            <h1 style="font-size: 60px; color: black; font-weight: normal;">55%</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
             </a>
         </div>
         <!-- Se Escolher os Demais -->
