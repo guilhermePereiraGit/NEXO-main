@@ -80,3 +80,5 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     email VARCHAR(70),
     senha VARCHAR(30)
 );
+
+insert into usuario_nexo(nome, email, senha) values ('oi', 'oi', 'oi');
