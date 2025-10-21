@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS usuario (
     senha VARCHAR(30),
     telefone VARCHAR(14),
     regiaoAtuacao varchar(45),
+    estado varchar(45),
+    zona varchar(45),
     fkEmpresa INT,
     foreign key fk_empresa_usuario2 (fkEmpresa) references empresa(idEmpresa)
 );
@@ -42,8 +44,8 @@ CREATE TABLE IF NOT EXISTS tipoParametro (
 
 CREATE TABLE IF NOT EXISTS parametro (
 	idParametro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    limiteMin varchar(45),
-    limiteMax varchar(45),
+    limiteMin INT,
+    limiteMax INT,
     fkModelo INT,
     fkTipoParametro INT,
     foreign key fk_modelo_parametro (fkModelo) references modelo(idModelo),
@@ -58,13 +60,13 @@ CREATE TABLE IF NOT EXISTS endereco (
     estado VARCHAR(45),
     cidade VARCHAR(45),
     bairro VARCHAR(100),
-	rua VARCHAR(100)
+	rua VARCHAR(100),
+    zona varchar(100)
 );
 
 CREATE TABLE IF NOT EXISTS totem (
 	idTotem INT NOT NULL AUTO_INCREMENT,
     numMAC VARCHAR(17) NOT NULL,
-	vies VARCHAR(45),
     status VARCHAR(30),
     fkModelo INT,
     fkEndereco INT,
