@@ -37,7 +37,9 @@
     color: var(--primaria);
 }
 
-.popuptotem, .popupmodelo, .popupusuario {
+.popuptotem,
+.popupmodelo,
+.popupusuario {
     transition: 0.3s;
     background-color: rgba(0, 0, 0, 0.375);
     width: 100%;
@@ -137,7 +139,12 @@
     width: 100%;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos, #estado_atuacao {
+#cargos,
+#regiao_atuacao,
+.componentes,
+#input_vies,
+#input_modelos,
+#estado_atuacao {
     border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
@@ -176,7 +183,8 @@
     height: 48px;
 }
 
-.cadastrar:hover, .part-dois-special .gerar-senha:hover {
+.cadastrar:hover,
+.part-dois-special .gerar-senha:hover {
     background-color: white;
     color: var(--primaria);
 }
@@ -188,21 +196,21 @@
     width: 100%;
 }
 
-.part-dois-special > .item-card:first-child {
+.part-dois-special>.item-card:first-child {
     display: flex;
     align-items: center;
     gap: 30px;
     flex: 1;
 }
 
-.part-dois-special > .item-card:first-child label {
+.part-dois-special>.item-card:first-child label {
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
     min-width: 100px;
 }
 
-.part-dois-special > .item-card:first-child input {
+.part-dois-special>.item-card:first-child input {
     border: 2px solid var(--primaria);
     font-size: 20px;
     padding: 10px;
@@ -224,21 +232,25 @@
     flex-shrink: 0;
 }
 
-.part-dois-special > .item-card:last-child {
+.part-dois-special>.item-card:last-child {
     display: flex;
     align-items: center;
     gap: 30px;
     flex: 1;
 }
 
-.part-dois-special > .item-card:last-child label {
+.part-dois-special>.item-card:last-child label {
     color: var(--primaria);
     font-size: 25px;
     font-weight: bold;
     min-width: 150px;
 }
 
-#cargos, #regiao_atuacao, .componentes, #input_vies, #input_modelos {
+#cargos,
+#regiao_atuacao,
+.componentes,
+#input_vies,
+#input_modelos {
     width: 100%;
     padding: 10px;
     font-size: 20px;
@@ -248,8 +260,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
-    no-repeat right 10px center;
+    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
     background-color: #fff;
     background-size: 20px;
 }
@@ -260,25 +271,25 @@
     width: 100%;
 }
 
-.baixo > label {
+.baixo>label {
     color: var(--primaria);
     font-size: 16px;
     margin-top: -10px;
 }
 
-.label-modelo{
+.label-modelo {
     max-width: 50%;
 }
 
-.label-modelo select{
+.label-modelo select {
     max-width: 50%;
 }
 
-.limite{
+.limite {
     max-width: 20%;
 }
 
-select{
+select {
     cursor: pointer;
 }
 
@@ -321,7 +332,7 @@ select{
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
     transition: all 0.5s ease;
 }
 
@@ -384,7 +395,7 @@ select{
     transform: translateX(4px);
 }
 
-.navegacao-information{
+.navegacao-information {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -392,6 +403,417 @@ select{
     justify-content: space-evenly;
 }
 
-#regiao_atuacao{
+#regiao_atuacao {
     max-width: 45%;
+}
+
+@media (min-width: 1025px) {
+    .card {
+        width: 60%;
+        height: 75vh;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 1024px) {
+    .card {
+        width: 75%;
+        height: 80vh;
+        overflow-y: auto;
+    }
+
+    .more button {
+        width: 300px;
+        height: 8vh;
+        font-size: 20px;
+    }
+
+    .stat-card {
+        width: 350px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .popuptotem,
+    .popupmodelo,
+    .popupusuario {
+        padding: 15px;
+        align-items: center;
+    }
+
+    .card {
+        width: 95%;
+        max-width: 600px;
+        height: auto;
+        max-height: 90vh;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .cima h1 {
+        font-size: 24px;
+    }
+
+    .cima button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .more {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .more h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .more button {
+        width: 100%;
+        height: 55px;
+        font-size: 17px;
+    }
+
+    .baixo {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .baixo>.item-card {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .baixo>.item-card label {
+        font-size: 16px;
+    }
+
+    .baixo>.item-card input {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .parametros-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .parametros-scroll .part-dois {
+        background: rgba(139, 92, 246, 0.08);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .parametros-scroll .part-dois .item-card {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 10px;
+        align-items: center;
+        margin: 0;
+    }
+
+    .parametros-scroll .part-dois .item-card label {
+        font-size: 15px;
+    }
+
+    .parametros-scroll .part-dois .item-card input,
+    .parametros-scroll .part-dois .item-card select {
+        width: 100%;
+        font-size: 15px;
+        padding: 9px;
+    }
+
+    .parametros-scroll .part-dois .botao-lixeira {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
+        margin: 0;
+        padding: 5px;
+        background: rgba(239, 68, 68, 0.1);
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .parametros-scroll .part-dois .botao-lixeira:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    .label-modelo,
+    .label-modelo select,
+    .limite {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .baixo>.part-dois {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: none;
+        padding: 0;
+        border: none;
+        margin-bottom: 0;
+    }
+
+    .baixo>.part-dois .cadastrar {
+        width: 100%;
+        font-size: 17px;
+        padding: 13px;
+        height: auto;
+    }
+
+    .part-dois-special {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: none;
+        padding: 0;
+    }
+
+    .part-dois-special>.item-card {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .part-dois-special>.item-card label {
+        font-size: 16px;
+    }
+
+    .part-dois-special>.item-card input {
+        font-size: 15px;
+        padding: 10px;
+        border: 2px solid var(--primaria);
+        border-radius: 10px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 14px;
+        padding: 10px 15px;
+        height: auto;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    #cargos,
+    #regiao_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos,
+    #estado_atuacao {
+        font-size: 15px;
+        padding: 9px;
+    }
+
+    .navegacao-information {
+        gap: 15px;
+    }
+
+    .stat-card {
+        width: 100%;
+        max-width: 400px;
+        height: 240px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    #regiao_atuacao {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 96%;
+        padding: 18px;
+    }
+
+    .cima h1 {
+        font-size: 21px;
+    }
+
+    .more h1 {
+        font-size: 20px;
+    }
+
+    .more button {
+        height: 52px;
+        font-size: 16px;
+    }
+
+    .baixo>.item-card {
+        grid-template-columns: 100px 1fr;
+        gap: 8px;
+    }
+
+    .baixo>.item-card label {
+        font-size: 15px;
+    }
+
+    .baixo>.item-card input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .parametros-scroll {
+        max-height: 250px;
+    }
+
+    .parametros-scroll .part-dois {
+        padding: 12px;
+        padding-top: 30px;
+        gap: 10px;
+    }
+
+    .parametros-scroll .part-dois .item-card {
+        grid-template-columns: 95px 1fr;
+    }
+
+    .parametros-scroll .part-dois .item-card label {
+        font-size: 14px;
+    }
+
+    .parametros-scroll .part-dois .item-card input,
+    .parametros-scroll .part-dois .item-card select {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .parametros-scroll .part-dois .botao-lixeira {
+        font-size: 18px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .baixo>.part-dois .cadastrar {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .part-dois-special>.item-card {
+        grid-template-columns: 85px 1fr auto;
+    }
+
+    .part-dois-special>.item-card label {
+        font-size: 15px;
+    }
+
+    .part-dois-special>.item-card input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 13px;
+        padding: 9px 12px;
+    }
+
+    #cargos,
+    #regiao_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos,
+    #estado_atuacao {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .stat-card {
+        height: 210px;
+        padding: 18px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .cima h1 {
+        font-size: 19px;
+    }
+
+    .more h1 {
+        font-size: 18px;
+    }
+
+    .more button {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .baixo>.item-card {
+        grid-template-columns: 85px 1fr;
+    }
+
+    .baixo>.item-card label {
+        font-size: 14px;
+    }
+
+    .baixo>.item-card input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .parametros-scroll {
+        max-height: 220px;
+    }
+
+    .parametros-scroll .part-dois {
+        padding: 10px;
+        padding-top: 28px;
+    }
+
+    .parametros-scroll .part-dois .item-card {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .parametros-scroll .part-dois .item-card label {
+        font-size: 13px;
+    }
+
+    .parametros-scroll .part-dois .item-card input,
+    .parametros-scroll .part-dois .item-card select {
+        font-size: 13px;
+        padding: 7px;
+    }
+
+    .part-dois-special>.item-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .part-dois-special .gerar-senha {
+        width: 100%;
+    }
+
+    .stat-card {
+        height: 190px;
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
 }

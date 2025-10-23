@@ -326,8 +326,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") 
-    no-repeat right 10px center;
+    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
     background-color: #fff;
     background-size: 20px;
 }
@@ -344,7 +343,7 @@
     margin-top: -10px;
 }
 
-select{
+select {
     cursor: pointer;
 }
 
@@ -366,4 +365,461 @@ select{
 
 .botao-lixeira:hover {
     color: #f03f3f;
+}
+
+
+@media (min-width: 1025px) {
+    .card {
+        width: 60%;
+        height: 75vh;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 1024px) {
+    .card {
+        width: 75%;
+        height: 80vh;
+        overflow-y: auto;
+    }
+
+    .more button {
+        width: 300px;
+        height: 8vh;
+        font-size: 20px;
+    }
+
+    .totens-scroll {
+        max-height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .popuptotem, .popupmodelo, .popupusuario {
+        padding: 15px;
+        align-items: center;
+    }
+
+    .card {
+        width: 95%;
+        max-width: 600px;
+        height: auto;
+        max-height: 90vh;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .cima h1 {
+        font-size: 24px;
+    }
+
+    .cima button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .more {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .more h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .more button {
+        width: 100%;
+        height: 55px;
+        font-size: 17px;
+    }
+
+    .baixo {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .baixo .part-dois {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: none;
+        padding: 0;
+        border: none;
+    }
+
+    .baixo .part-dois .item-card {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 15px;
+        min-width: auto;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        padding: 10px 12px;
+        font-size: 15px;
+        border: 2px solid var(--primaria);
+        border-radius: 10px;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        background: rgba(139, 92, 246, 0.03);
+    }
+
+    .baixo .part-dois .item-card input {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .baixo .part-dois .item-card select {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    #cargos, #regiao_atuacao, .componentes,
+    #input_vies, #input_modelos {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .baixo > .part-dois:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .baixo > .part-dois:last-child .cadastrar {
+        width: 100%;
+        font-size: 17px;
+        padding: 13px;
+        height: auto;
+    }
+
+    .part-dois-special {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: none;
+        padding: 0;
+    }
+
+    .part-dois-special > .item-card {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .part-dois-special > .item-card label {
+        font-size: 16px;
+    }
+
+    .part-dois-special > .item-card input {
+        font-size: 15px;
+        padding: 10px;
+        border: 2px solid var(--primaria);
+        border-radius: 10px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 14px;
+        padding: 10px 15px;
+        height: auto;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    .parametros-scroll {
+        max-height: 280px;
+    }
+
+    .totens-scroll {
+        max-height: 250px;
+        overflow-y: auto;
+        padding-right: 5px;
+        gap: 10px;
+    }
+
+    .totens-scroll input {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .linha-totem {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+
+    .linha-totem input {
+        flex: 1;
+    }
+
+    .botao-lixeira {
+        font-size: 20px;
+        margin: 0;
+        flex-shrink: 0;
+        padding: 5px;
+        background: rgba(239, 68, 68, 0.1);
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .botao-lixeira:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    .card-user {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .card-first,
+    .card-second {
+        width: 100%;
+    }
+
+    .labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .labels label {
+        font-size: 15px;
+    }
+
+    .labels .label-item {
+        font-size: 15px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .buttons button {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 96%;
+        padding: 18px;
+    }
+
+    .cima h1 {
+        font-size: 21px;
+    }
+
+    .more h1 {
+        font-size: 20px;
+    }
+
+    .more button {
+        height: 52px;
+        font-size: 16px;
+    }
+
+    .baixo .part-dois .item-card {
+        grid-template-columns: 95px 1fr;
+        gap: 8px;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 14px;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        font-size: 14px;
+        padding: 9px 10px;
+        min-height: 38px;
+    }
+
+    .baixo .part-dois .item-card input,
+    .baixo .part-dois .item-card select {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    #cargos, #regiao_atuacao, .componentes,
+    #input_vies, #input_modelos {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .baixo > .part-dois:last-child .cadastrar {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .part-dois-special > .item-card {
+        grid-template-columns: 85px 1fr auto;
+    }
+
+    .part-dois-special > .item-card label {
+        font-size: 15px;
+    }
+
+    .part-dois-special > .item-card input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 13px;
+        padding: 9px 12px;
+    }
+
+    .parametros-scroll {
+        max-height: 230px;
+    }
+
+    .totens-scroll {
+        max-height: 200px;
+    }
+
+    .totens-scroll input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .linha-totem {
+        gap: 8px;
+    }
+
+    .botao-lixeira {
+        font-size: 18px;
+    }
+
+    .baixo > label {
+        font-size: 13px;
+    }
+
+    .card-user {
+        padding: 12px;
+    }
+
+    .labels {
+        gap: 6px;
+    }
+
+    .labels label,
+    .labels .label-item {
+        font-size: 13px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .buttons button {
+        width: 100%;
+        font-size: 13px;
+        padding: 9px;
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .cima h1 {
+        font-size: 19px;
+    }
+
+    .more h1 {
+        font-size: 18px;
+    }
+
+    .more button {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .baixo .part-dois .item-card {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 13px;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        font-size: 13px;
+        padding: 8px;
+        min-height: 36px;
+    }
+
+    .baixo .part-dois .item-card input,
+    .baixo .part-dois .item-card select {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    #cargos, #regiao_atuacao, .componentes,
+    #input_vies, #input_modelos {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .baixo > .part-dois:last-child .cadastrar {
+        font-size: 15px;
+        padding: 11px;
+    }
+
+    .part-dois-special > .item-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .part-dois-special .gerar-senha {
+        width: 100%;
+    }
+
+    .totens-scroll {
+        max-height: 170px;
+    }
+
+    .totens-scroll input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .parametros-scroll {
+        max-height: 200px;
+    }
+
+    .botao-lixeira {
+        font-size: 16px;
+    }
+
+    .labels label,
+    .labels .label-item {
+        font-size: 12px;
+    }
+
+    .buttons button {
+        font-size: 12px;
+        padding: 8px;
+    }
 }
