@@ -73,14 +73,15 @@
                         <label for="input_complemento">Complemento:</label>
                         <input type="text" id="input_complemento" placeholder="Complemento">
                     </div>
+                    <div class="item-card" id="regiao"></div>
+                </div>
+                <div class="part-dois">
                     <div class="item-card">
                         <label for="input_modelos">Qual o modelo?</label>
                         <select name="modelos" id="input_modelos">
                             <option value="">Selecione uma opção</option>
                         </select>
                     </div>
-                </div>
-                <div class="part-dois">
                     <div class="item-card">
                         <label for="input_qtd_de_totens">Quantos tótens nesse local?</label>
                         <input type="number" id="input_qtd_de_totens" oninput="atualizarTotens()" placeholder="N°">
@@ -222,11 +223,44 @@
             await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`)
                 .then((resposta) => resposta.json())
 
-        console.log("Resposta final: ", retornoConvertido);
         estado.innerHTML = `${retornoConvertido.estado}`
         cidade.innerHTML = `${retornoConvertido.localidade}`
         bairro.innerHTML = `${retornoConvertido.bairro}`
         rua.innerHTML = `${retornoConvertido.logradouro}`
+
+        if (retornoConvertido.uf === "SP") {
+            let prefixo = cepDigitado.substring(0, 2);
+            let regiaoTexto = "";
+
+            switch (true) {
+                case (prefixo === "01"):
+                case (prefixo === "02" && cepDigitado.startsWith("010") === false):
+                    regiaoTexto = "Centro";
+                    break;
+                case (prefixo === "02"):
+                    regiaoTexto = "Zona Norte";
+                    break;
+                case (prefixo === "03" || prefixo === "08"):
+                    regiaoTexto = "Zona Leste";
+                    break;
+                case (prefixo === "04"):
+                    regiaoTexto = "Zona Sul";
+                    break;
+                case (prefixo === "05"):
+                    regiaoTexto = "Zona Oeste";
+                    break;
+                case (prefixo === "06"):
+                    regiaoTexto = "Região Metropolitana (ABC)";
+                    break;
+                default:
+                    regiaoTexto = "Região não identificada";
+            }
+
+            regiao.innerHTML = `
+                <label>Região:</label>
+                <label id="regiao_label">${regiaoTexto}</label>
+            `;
+        }
     }
 
     function atualizarTotens() {
@@ -309,6 +343,12 @@
         var numero = input_numero.value;
         var complemento = input_complemento.value;
 
+        if(estado == "São Paulo"){
+            var zona = document.getElementById("regiao_label").value;
+        }else{
+            var zona = ""
+        }
+
         await fetch("/endereco/cadastrarEndereco", {
             method: "POST",
             headers: {
@@ -321,7 +361,8 @@
                 cidadeServer: cidade,
                 ruaServer: rua,
                 numeroServer: numero,
-                complementoServer: complemento
+                complementoServer: complemento,
+                zonaServer: zona
             }),
         })
             .then(resposta => {

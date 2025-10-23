@@ -1,9 +1,17 @@
 var database = require("../database/config")
 
-function cadastrarEndereco(cep, estado, bairro, cidade, rua, numero, complemento) {
+function cadastrarEnderecoSemRegiao(cep, estado, bairro, cidade, rua, numero, complemento) {
     const instrucaoSql = `
         INSERT INTO endereco (cep, estado, bairro, cidade, rua, numero, complemento)
         VALUES ('${cep}', '${estado}', '${bairro}', '${cidade}', '${rua}', '${numero}', '${complemento}');
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function cadastrarEnderecoComRegiao(cep, estado, bairro, cidade, rua, numero, complemento, zona){
+    const instrucaoSql = `
+        INSERT INTO endereco (cep, estado, bairro, cidade, rua, numero, complemento, zona)
+        VALUES ('${cep}', '${estado}', '${bairro}', '${cidade}', '${rua}', '${numero}', '${complemento}', '${zona}');
     `;
     return database.executar(instrucaoSql);
 }
@@ -16,5 +24,5 @@ function buscarEnderecoExistente(cidade, rua, numero, complemento){
 }
 
 module.exports = {
-    cadastrarEndereco, buscarEnderecoExistente
+    cadastrarEnderecoSemRegiao, buscarEnderecoExistente, cadastrarEnderecoComRegiao
 };

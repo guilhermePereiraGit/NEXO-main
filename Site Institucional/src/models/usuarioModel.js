@@ -8,10 +8,17 @@ function cadastrar(nome, email, cnpj, senha, telefone) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrarFuncionario(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, fkEmpresa) {
+function cadastrarFuncionarioSemRegiao(nome, email, cpf, senha, telefone, cargo, estadoAtuacao, fkEmpresa) {
   var instrucaoSql = `
-        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, fkEmpresa) 
-        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${regiaoAtuacao}', '${fkEmpresa}');`;
+        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, estadoAtuacao, fkEmpresa) 
+        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${estadoAtuacao}', '${fkEmpresa}');`;
+  return database.executar(instrucaoSql);
+}
+
+function cadastrarFuncionarioComRegiao(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, estadoAtuacao, fkEmpresa) {
+  var instrucaoSql = `
+        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, estadoAtuacao, regiaoAtuacao, fkEmpresa) 
+        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${estadoAtuacao}', '${regiaoAtuacao}', '${fkEmpresa}');`;
   return database.executar(instrucaoSql);
 }
 
@@ -84,6 +91,6 @@ function verificarAprovados() {
 }
 
 module.exports = {
-  cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, cadastrarFuncionario, deletarFuncionario,
-  limparFuncionarios, deletarEmpresa, verificarAprovados
+  cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, cadastrarFuncionarioSemRegiao, deletarFuncionario,
+  cadastrarFuncionarioComRegiao, limparFuncionarios, deletarEmpresa, verificarAprovados
 };

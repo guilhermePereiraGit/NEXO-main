@@ -1,6 +1,5 @@
 var usuarioModel = require("../models/usuarioModel");
 
-//Cadastro de Empresas
 function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
@@ -46,6 +45,7 @@ function cadastrarFuncionario(req, res) {
     var telefone = req.body.telefoneServer;
     var cargo = req.body.cargoServer;
     var regiaoAtuacao = req.body.regiaoAtuacaoServer;
+    var estadoAtuacao = req.body.estadoAtuacaoServer;
     var fkEmpresa = req.body.fkEmpresa;
 
     if (nome == undefined) {
@@ -64,23 +64,41 @@ function cadastrarFuncionario(req, res) {
         res.status(400).send("Sua empresa está undefined!");
     } else if (regiaoAtuacao == undefined) {
         res.status(400).send("Sua área de atuação está undefined!");
-    } else {
+    }else {
 
-        usuarioModel.cadastrarFuncionario(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, fkEmpresa)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
+        if (regiaoAtuacao == "") {
+            usuarioModel.cadastrarFuncionarioSemRegiao(nome, email, cpf, senha, telefone, cargo, estadoAtuacao, fkEmpresa)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
+                );
+        } else {
+            usuarioModel.cadastrarFuncionarioComRegiao(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, estadoAtuacao, fkEmpresa)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
+                );
+        }
     }
 }
 
@@ -305,6 +323,6 @@ function verificarAprovados(req, res) {
 }
 
 module.exports = {
-    cadastrar, autenticar, verificarUsuarios, cadastrarFuncionario, 
+    cadastrar, autenticar, verificarUsuarios, cadastrarFuncionario,
     deletarFuncionario, limparFuncionarios, deletarEmpresa, verificarAprovados
 };

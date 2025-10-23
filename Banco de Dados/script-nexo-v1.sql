@@ -20,8 +20,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     senha VARCHAR(30),
     telefone VARCHAR(14),
     regiaoAtuacao varchar(45),
-    estado varchar(45),
-    zona varchar(45),
+    estadoAtuacao varchar(45),
     fkEmpresa INT,
     foreign key fk_empresa_usuario2 (fkEmpresa) references empresa(idEmpresa)
 );
@@ -84,3 +83,6 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
 );
 
 insert into usuario_nexo(nome, email, senha) values ('oi', 'oi', 'oi');
+select * from endereco;
+select * from modelo;
+select * from totem;
