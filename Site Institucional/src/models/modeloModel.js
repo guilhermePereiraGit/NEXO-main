@@ -3,7 +3,7 @@ var database = require("../database/config")
 function cadastrarModelo(nomeModelo, descricao, fkEmpresa) {
     var instrucaoSql = `
         INSERT INTO modelo (nome, descricao_arq, fkEmpresa, status) 
-        VALUES ('${nomeModelo}', '${descricao}', '${fkEmpresa}', 'INATIVO');`;
+        VALUES ('${nomeModelo}', '${descricao}', '${fkEmpresa}', 'ATIVO');`;
     return database.executar(instrucaoSql);
 }
 
