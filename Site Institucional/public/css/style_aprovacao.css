@@ -36,7 +36,7 @@ html,body {
     padding-right: 80px;
 }
 
-#segundo {
+#segundo, #terceiro {
     width: 100%;
     height: 100vh;
 }
@@ -114,7 +114,7 @@ html,body {
     margin-right: 5px;
 }
 
-#div_pendentes,#div_aprovados {
+#div_pendentes,#div_aprovados, #div_definir_parametros {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -158,13 +158,13 @@ html,body {
     margin-bottom: 30px;
 }
 
-#segundo {
+#segundo, #terceiro {
     padding-top: 10%;
     padding-left: 80px;
     padding-right: 80px;
 }
 
-#segundo h1 {
+#segundo, #terceiro h1 {
     color: var(--primaria);
     font-size: 50px;
     margin-bottom: 30px;

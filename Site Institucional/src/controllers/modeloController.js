@@ -52,8 +52,6 @@ async function cadastrarModelo(req, res) {
 
         for (var i = 0; i < parametros.length; i++) {
             await modeloModel.cadastrarParametro(
-                parametros[i].limiteMaximo,
-                parametros[i].limiteMinimo,
                 fkModelo.idModelo,
                 fkTipoParametro[i]
             );
@@ -121,6 +119,11 @@ function verificarAprovados(req, res) {
         );
 }
 
+async function buscarModelosCadastrados(req, res){
+    var modelos = await modeloModel.buscarModelosCadastrados();
+    res.json(modelos)
+}
+
 module.exports = {
-    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados
+    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados, buscarModelosCadastrados
 };

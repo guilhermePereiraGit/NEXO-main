@@ -14,7 +14,7 @@
 
 </head>
 
-<body onload="carregarDados(),carregarDadosAprovados()">
+<body onload="carregarDados(),carregarDadosAprovados(), carregarModelos()">
     <div id="cabecalho">
         <div class="cabecalho-container">
             <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
@@ -23,6 +23,7 @@
                 <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Aprovações Pendentes</a>
                 <a href="#segundo">Empresas Cadastradas</a>
+                <a href="#terceiro">Definir Parâmetros</a>
                 <a href="login.html" class="botao-principal" id="cadastro">Sair</a>
             </div>
         </div>
@@ -56,15 +57,18 @@
                             <a href="" target="_blank"><img src="assets/imgs/jira.png"></a>
                         </div>
                         <div class="blocks">
-                            <a href="https://app.slack.com/client/T09DD2ABNH5/D09FGBMUE94" target="_blank"><img src="assets/imgs/slack.png"></a>
+                            <a href="https://app.slack.com/client/T09DD2ABNH5/D09FGBMUE94" target="_blank"><img
+                                    src="assets/imgs/slack.png"></a>
                         </div>
                     </div>
                     <div class="second">
                         <div class="blocks">
-                            <a href="https://github.com/dashboard" target="_blank"><img src="assets/imgs/github.png" id="github"></a>
+                            <a href="https://github.com/dashboard" target="_blank"><img src="assets/imgs/github.png"
+                                    id="github"></a>
                         </div>
                         <div class="blocks">
-                            <a href="https://planner.cloud.microsoft/webui/plan/QIsN2rRRXUeNwmMeHixEEWQAFZL4/view/board?tid=fd50b457-84e0-400c-80f2-460f28eb41a6" target="_blank"><img src="assets/imgs/planner.png"></a>
+                            <a href="https://planner.cloud.microsoft/webui/plan/QIsN2rRRXUeNwmMeHixEEWQAFZL4/view/board?tid=fd50b457-84e0-400c-80f2-460f28eb41a6"
+                                target="_blank"><img src="assets/imgs/planner.png"></a>
                         </div>
                     </div>
                 </div>
@@ -77,8 +81,11 @@
         </div>
         <div id="segundo">
             <h1>Empresas Cadastradas</h1>
-            <div class="aprovados" id="div_aprovados">
-            </div>
+            <div class="aprovados" id="div_aprovados"></div>
+        </div>
+        <div id="terceiro">
+            <h1>Definir Parâmetros</h1>
+            <div class="definir_parametros" id="div_definir_parametros"></div>
         </div>
     </div>
     </div>
@@ -273,7 +280,7 @@
         return false;
     }
 
-        function removerEmpresa(idEmpresa) {
+    function removerEmpresa(idEmpresa) {
         var idEmpresaVar = idEmpresa;
 
         fetch("/usuarios/deletarEmpresa", {
@@ -321,6 +328,69 @@
                 console.log(`#ERRO: ${resposta}`);
             });
         return false;
+    }
+
+    modelos = [];
+    function carregarModelos() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+
+        fetch("/modelo/buscarModelosCadastrados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    modelos = data;
+                    if (modelos.length > 0) {
+                        gerarCardsModelos();
+                    } else {
+                        nadaPorAquiModelos();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function gerarCardsModelos() {
+        for (var i = 0; i < modelos.length; i++) {
+            div_definir_parametros.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome Empresa:</label><label class="label-item">${modelos[i].NomeEmpresa}</label></div>
+                    <div class="labels"><label id="first">Nome Modelo:</label><label class="label-item">${modelos[i].NomeModelo}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${modelos[i].DescricaoModelo}</label></div>
+                    <div class="labels"><label id="first">Id:</label><label class="label-item">${modelos[i].IdModelo}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    function nadaPorAquiModelos() {
+        div_definir_parametros.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
     }
 </script>
 

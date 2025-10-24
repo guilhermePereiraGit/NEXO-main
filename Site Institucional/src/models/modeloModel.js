@@ -14,10 +14,10 @@ function cadastrarTipoParametro(componente) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarParametro(limiteMaximo, limiteMinimo, fkModelo, fkTipoParametro) {
+function cadastrarParametro(fkModelo, fkTipoParametro) {
     var instrucaoSql = `
-        INSERT INTO parametro (limiteMax, limiteMin, fkModelo, fkTipoParametro) 
-        VALUES ('${limiteMaximo}', '${limiteMinimo}', ${fkModelo}, ${fkTipoParametro});`;
+        INSERT INTO parametro (fkModelo, fkTipoParametro) 
+        VALUES (${fkModelo}, ${fkTipoParametro});`;
     return database.executar(instrucaoSql);
 }
 
@@ -67,7 +67,16 @@ function verificarAprovados() {
     return database.executar(instrucaoSql);
 }
 
+function buscarModelosCadastrados(){
+    var instrucaoSql = `
+    SELECT e.nome NomeEmpresa, m.nome NomeModelo, m.descricao_arq DescricaoModelo, idModelo IdModelo from empresa e inner join modelo m on m.fkEmpresa = e.idEmpresa;
+    `
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo,
-    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados
+    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados,
+    buscarModelosCadastrados
 };
