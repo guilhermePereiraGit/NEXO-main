@@ -53,6 +53,12 @@
     padding-right: 40px;
     padding-bottom: 20px;
     padding-top: 20px;
+    transition: 0.3s;
+}
+
+.regiao:hover{
+    background-color: #eae3ff;
+    cursor: pointer;
 }
 
 .regiao .primeiro-bloco .cor {

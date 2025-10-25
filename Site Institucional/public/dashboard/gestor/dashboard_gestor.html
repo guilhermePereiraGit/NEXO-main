@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Modelos - Gestor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../geral.css">
+    <link rel="stylesheet" href="dashboard_gestor.css">
+</head>
+
+<body onload="identificarRegiao()">
+    <div class="all">
+        <header>
+            <div class="header-all">
+                <div class="user">
+                    <img src="../../assets/imgs/user.png">
+                    <div class="text">
+                        <label id="nome">Guilherme Silva</label>
+                        <label id="cargo">Gestor de Operações</label>
+                    </div>
+                </div>
+                <div class="navegation">
+                    <a href="#modelos">Modelos</a>
+                    <a href="#eficiencia" id="efic">Eficiência da Equipe</a>
+                    <a href="#relatorio" id="relat">Relatório</a>
+                    <a href="" id="voltar">Voltar</a>
+                </div>
+                <div class="suporte">
+                    <a href="#"><img src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="#"><img src="../../assets/imgs/icon-slack.png"></a>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <h1>Região: <span id="regiao_escolhida"></span></h1>
+            <div class="zona" id="zona">
+                <label>Escolha a Zona:</label>
+                <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
+                    <option value="x">Escolha uma Opção</option>
+                    <option value="AC">Zona Norte</option>
+                    <option value="AL">Zona Sul</option>
+                    <option value="AP">Zona Leste</option>
+                    <option value="AM">Zona Oeste</option>
+                    <option value="BA">Centro</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function identificarRegiao(){
+        var regiao_escolhida = document.getElementById("regiao_escolhida");
+        regiao_escolhida.innerHTML = sessionStorage.getItem("REGIAO_ESCOLHIDA");
+        
+        if(sessionStorage.getItem("REGIAO_ESCOLHIDA") != "São Paulo"){
+            document.getElementById("zona").style.display = "none";
+        }
+    }
+
+        // Função para active do CSS
+    const links = document.querySelectorAll('.navegation a');
+
+    function atualizarActive() {
+        const hashAtual = window.location.hash;
+        links.forEach(link => {
+            if (link.getAttribute('href') === hashAtual) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('load', atualizarActive);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+    window.addEventListener('hashchange', atualizarActive);
+</script>
+</html>

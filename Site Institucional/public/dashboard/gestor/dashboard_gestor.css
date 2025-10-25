@@ -1,0 +1,34 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+
+.content h1 span{
+    color: black;
+    font-weight: 400;
+}
+
+.content .zona{
+    display: flex;
+    gap: 20px;
+}
+.content .zona label {
+    font-size: 25px;
+}
+
+.content .zona select {
+    border: 1px solid var(--primaria);
+    border-radius: 10px;
+    width: 225px;
+    padding: 10px;
+    font-size: 17px;
+}
