@@ -30,7 +30,6 @@ header{
     width: 15%;
     height: 100vh;
     border-right: 1px solid var(--primaria);
-    padding: 20px;
     padding-top: 90px;
 }
 header .header-all{
@@ -79,8 +78,6 @@ header .header-all .suporte img:hover{
 header .header-all .navegation{
     border-top: 1px solid var(--primaria);
     border-bottom: 1px solid var(--primaria);
-    width: 224px;
-    margin-left: -20px;
     display: flex;
     justify-content: center;
     padding: 20px;
