@@ -1,0 +1,121 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+html,body{
+    overflow: hidden;
+}
+
+/* HEADER */
+.all{
+    display: flex;
+}
+header{
+    width: 15%;
+    height: 100vh;
+    border-right: 1px solid var(--primaria);
+    padding: 20px;
+    padding-top: 90px;
+}
+header .header-all{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 97%;
+}
+header .header-all .user{
+    display: flex;
+    flex-direction: column;
+}
+header .header-all .user img{
+    width: 75%;
+    align-self: center;
+    margin-bottom: 20px;
+}
+header .header-all .user .text{
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    font-family: 'Poppins';
+    justify-content: center;
+    align-items: center;
+}
+header .header-all .user .text #nome{
+    font-size: 22px;
+}
+header .header-all .user .text #cargo{
+    color: var(--primaria);
+    font-weight: 500;
+    margin-top: -7px;
+}
+header .header-all .suporte{
+    display: flex;
+    gap: 20px;
+}
+header .header-all .suporte img{
+    width: 90%;
+    transition: 0.3s;
+}
+header .header-all .suporte img:hover{
+    transform: scale(1.03);
+}
+
+header .header-all .navegation{
+    border-top: 1px solid var(--primaria);
+    border-bottom: 1px solid var(--primaria);
+    width: 224px;
+    margin-left: -20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--primaria);
+    cursor: pointer;
+}
+header .header-all .navegation a{
+    text-decoration: none;
+    font-size: 18px;
+    background-color: var(--primaria);
+    color: white;
+}   
+
+/* CONTENT */
+.content{
+    padding: 30px;
+    padding-left: 60px;
+}
+.content h1{
+    font-size: 40px;
+    color: var(--primaria);
+}
+.content .escolha{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+.content .escolha label{
+    font-size: 25px;
+}
+.content .escolha select{
+    border: 1px solid var(--primaria);
+    border-radius: 10px;
+    width: 300px;
+    padding: 10px;
+    font-size: 17px;
+}

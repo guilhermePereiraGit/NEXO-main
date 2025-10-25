@@ -12,106 +12,12 @@
     --alerta: #f59e0b;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-html,body{
-    overflow: hidden;
-}
-
-h1 {
-    font-family: 'Poppins';
-}
-
-header {
-    width: 18%;
-    height: 100vh;
-    border-right: 2px solid var(--primaria);
-    position: fixed;
-}
-
-.itens {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.itens .logo {
-    display: flex;
-    justify-content: center;
-}
-
-.itens .logo img {
-    width: 60%;
-}
-
-.itens .user {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.itens .user .user-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.itens .user .user-text label {
-    font-size: 25px;
-    font-family: 'Poppins';
-    text-align: center;
-}
-
-.itens .user img {
-    width: 50%;
-}
-
-.itens .icons-suporte {
-    display: flex;
-    justify-content: center;
-    margin-left: 30px;
-}
-
-.itens .icons-suporte img {
-    width: 65%;
-}
-
-/* CONTENT */
-.content {
-    padding-top: 2%;
-    padding-left: 22%;
-    height: 100vh;
-}
-
-.content h1 {
-    font-size: 40px;
-    color: var(--primaria);
-}
-
-.escolha-estado label {
-    font-family: 'Poppins';
-    font-size: 25px;
-}
-
-.escolha-estado select {
-    font-family: 'Poppins';
-    font-size: 20px;
-    border-radius: 5px;
-    padding: 3px;
-    margin-left: 10px;
-    border: solid 1px var(--primaria);
-}
-
 /* Aguardando */
 .aguardando{
-    width: 93%;
+    width: 1150px;
     border: 1px solid var(--primaria);
     height: 60vh;
-    margin-top: 60px;
+    margin-top: 10px;
     padding: 60px;
     display: flex;
     flex-direction: column;
@@ -127,12 +33,13 @@ header {
     font-size: 20px;
     text-align: center;
 }
+
 /* Regiões */
 .regioes {
-    width: 93%;
-    height: 55vh;
+    width: 1150px;
+    height: 60vh;
     border: 1px solid var(--primaria);
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 20px;
     top: 0;
     overflow: auto;
@@ -158,13 +65,13 @@ header {
     display: flex;
     align-items: center;
     gap: 30px;
-    width: 50%;
+    width: 100%;
 }
 
 .segunda-parte {
     display: flex;
     justify-content: space-between;
-    width: 45%;
+    width: 60%;
 }
 
 .segunda-parte h1 {
