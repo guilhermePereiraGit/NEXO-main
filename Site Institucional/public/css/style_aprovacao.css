@@ -270,3 +270,7 @@ html,body {
 #github{
     width: 330px;
 }
+
+.card-user{
+    cursor: pointer;
+}

@@ -66,6 +66,17 @@
                     </div>
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
                     <div class="item-card">
+                        <label>Cargo:</label>
+                        <select name="cargos" id="cargos">
+                            <option value="">Escolha uma opção</option>
+                            <option value="Gestor">Gestor</option>
+                            <option value="Técnico">Técnico</option>
+                        </select>
+                    </div>
+                </div>
+                <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
+                <div class="part-dois">
+                    <div class="item-card">
                         <label>Estado de Atuação:</label>
                         <select name="estado_atuacao" id="estado_atuacao" onchange="verificarEstadoAtuacao()">
                             <option value="">Selecione uma opção</option>
@@ -96,17 +107,6 @@
                             <option value="São Paulo">São Paulo</option>
                             <option value="Sergipe">Sergipe</option>
                             <option value="Tocantins">Tocantins</option>
-                        </select>
-                    </div>
-                </div>
-                <label style="color: #8b5cf6;">(Opcional: Gere uma senha forte para seus usuários)</label>
-                <div class="part-dois">
-                    <div class="item-card">
-                        <label>Cargo:</label>
-                        <select name="cargos" id="cargos">
-                            <option value="">Escolha uma opção</option>
-                            <option value="Gestor">Gestor</option>
-                            <option value="Técnico">Técnico</option>
                         </select>
                     </div>
                     <div class="item-card" id="regioes"></div>
