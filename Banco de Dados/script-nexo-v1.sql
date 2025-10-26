@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     senha VARCHAR(30)
 );
 
-insert into usuario_nexo(nome, email, senha) values ('oi', 'oi', 'oi');
-select * from endereco;
-select * from modelo;
-select * from totem;
+insert into usuario_nexo (nome, email, senha) values ('oi', 'oi', 'oi');
+insert into empresa (nome, cnpj, email, senha, telefone, status) values ('oi', 'oi', 'oii', 'oii', 'oi', 'APROVADO');
+insert into usuario (nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, estadoAtuacao, fkEmpresa) values ('oi', 'oi', 'Gestor', 'oiii', 'oiii', 'oi', 'oi', 'oi', 1);
+insert into usuario (nome, cpf, cargo, email, senha, telefone, regiaoAtuacao, estadoAtuacao, fkEmpresa) values ('oi', 'oi', 'Técnico', 'oiiii', 'oiiii', 'oi', 'oi', 'oi', 1);

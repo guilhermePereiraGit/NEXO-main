@@ -19,8 +19,12 @@ router.get("/verificarAprovados", function (req, res){
     modeloController.verificarAprovados(req, res);
 })
 
-router.get("/buscarModelosCadastrados", function(req, res){
+router.post("/buscarModelosCadastrados", function(req, res){
     modeloController.buscarModelosCadastrados(req, res);
+})
+
+router.post("/cadastrarParametro", function(req, res){
+    modeloController.cadastrarParametro(req, res)
 })
 
 module.exports = router;

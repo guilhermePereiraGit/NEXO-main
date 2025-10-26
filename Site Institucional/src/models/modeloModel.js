@@ -14,13 +14,6 @@ function cadastrarTipoParametro(componente) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarParametro(fkModelo, fkTipoParametro) {
-    var instrucaoSql = `
-        INSERT INTO parametro (fkModelo, fkTipoParametro) 
-        VALUES (${fkModelo}, ${fkTipoParametro});`;
-    return database.executar(instrucaoSql);
-}
-
 function buscarIdModelo() {
     var instrucaoSql = `
         SELECT idModelo FROM modelo ORDER BY idModelo DESC LIMIT 1;
@@ -67,16 +60,59 @@ function verificarAprovados() {
     return database.executar(instrucaoSql);
 }
 
-function buscarModelosCadastrados(){
+function buscarModelosCadastrados(idEmpresa) {
     var instrucaoSql = `
-    SELECT e.nome NomeEmpresa, m.nome NomeModelo, m.descricao_arq DescricaoModelo, idModelo IdModelo from empresa e inner join modelo m on m.fkEmpresa = e.idEmpresa;
+        SELECT 
+            e.nome AS NomeEmpresa,
+            m.idModelo AS IdModelo,
+            m.nome AS NomeModelo,
+            m.descricao_arq AS DescricaoModelo,
+            GROUP_CONCAT(tp.componente SEPARATOR ', ') AS TiposParametro
+        FROM empresa e
+        INNER JOIN modelo m 
+            ON m.fkEmpresa = e.idEmpresa
+        LEFT JOIN parametro p 
+            ON p.fkModelo = m.idModelo
+        LEFT JOIN tipoParametro tp 
+            ON tp.idTipoParametro = p.fkTipoParametro
+        WHERE e.idEmpresa = ${idEmpresa}
+        GROUP BY m.idModelo;
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function cadastrarParametro(idModelo, fkTipoParametro){
+        var instrucaoSql = `
+        INSERT INTO parametro (fkModelo, fkTipoParametro) VALUES (${idModelo}, ${fkTipoParametro});
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function buscarParametro(idModelo){
+    var instrucaoSql = `
+        SELECT limiteMin, limiteMax from parametro where fkModelo = ${idModelo};
     `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function cadastrarValoresParametro(idModelo, nomeParametro, limiteMin, limiteMax){
+    var instrucaoSql = `
+        INSERT INTO parametro (limiteMin, limiteMax, fkModelo, fkTipoParametro) 
+            VALUES (${limiteMin}, ${limiteMax}, ${idModelo}, (SELECT idTipoParametro FROM tipoParametro WHERE componente = '${nomeParametro}'));
+    `
+    return database.executar(instrucaoSql);
+}
+
+function atualizarParametro(idModelo, nomeParametro, limiteMin, limiteMax) {
+    var instrucaoSql = `
+        UPDATE parametro set limiteMin = ${limiteMin}, limiteMax = ${limiteMax}
+            where fkModelo = ${idModelo} and fkTipoParametro = (select idTipoParametro from tipoParametro where componente = '${nomeParametro}');
+    `;
     return database.executar(instrucaoSql);
 }
 
 module.exports = {
     cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo,
     buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados,
-    buscarModelosCadastrados
+    buscarModelosCadastrados, buscarParametro, atualizarParametro, cadastrarValoresParametro
 };

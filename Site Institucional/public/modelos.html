@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Adicionar Parâmetros</title>
+    <link rel="stylesheet" href="./css/institucional.css">
+    <link rel="stylesheet" href="./css/style_aprovacao.css">
+    <link rel="stylesheet" href="./css/gestao.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+
+<body onload="carregarModelos()">
+    <div id="cabecalho">
+        <div class="cabecalho-container">
+            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+            </div>
+            <div class="cabecalho-links" id="cabecalhoLinks">
+                <a href="aprovacao_adm.html" class="botao-principal" id="cadastro">Voltar</a>
+            </div>
+        </div>
+    </div>
+    <div class="pg-principal">
+        <div id="principal">
+            <h1>Empresas Cadastradas</h1>
+            <div class="parametros" id="div_definir_parametros"></div>
+        </div>
+    </div>
+
+    <!-- style="display: none;" -->
+    <div class="popupmodelo" id="popupmodelo" style="display: none;">
+        <div class="card">
+            <div class="cima">
+                <h1>Cadastro de Parâmetro</h1>
+                <button onclick="fecharPopupModelo()"><img src="assets/imgs/close.png"></button>
+            </div>
+            <div class="baixo" id="baixo">
+                <div class="parametros-scroll" id="parametros-container">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    modelos = [];
+    function carregarModelos() {
+        var params = new URLSearchParams(window.location.search);
+        var idEmpresa = params.get("id");
+
+        fetch("/modelo/buscarModelosCadastrados", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ idEmpresaServer: idEmpresa }),
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    modelos = data;
+                    if (modelos.length > 0) {
+                        gerarCardsModelos();
+                    } else {
+                        nadaPorAquiModelos();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function gerarCardsModelos() {
+        div_definir_parametros.innerHTML = "";
+
+        for (var i = 0; i < modelos.length; i++) {
+            const modelo = modelos[i];
+
+            div_definir_parametros.innerHTML += `
+            <div class="card-user">
+                <div class="card-first">
+                    <div class="labels">
+                        <label id="first">Nome Empresa:</label>
+                        <label class="label-item">${modelo.NomeEmpresa}</label>
+                    </div>
+                    <div class="labels">
+                        <label id="first">Nome Modelo:</label>
+                        <label class="label-item">${modelo.NomeModelo}</label>
+                    </div>
+                </div>
+
+                <div class="card-second">
+                    <div class="labels">
+                        <label id="first">Descrição:</label>
+                        <label class="label-item">${modelo.DescricaoModelo}</label>
+                    </div>
+                    <div class="labels">
+                        <label id="first">ID:</label>
+                        <label class="label-item">${modelo.IdModelo}</label>
+                    </div>
+                </div>
+
+                <div class="card-second">
+                    <div class="buttons">
+                        <button class="definir-parametros" 
+                            onclick="abrirPopupModelo(${modelo.IdModelo}, '${modelo.TiposParametro}')">
+                            Definir Parâmetros
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-second">
+                    <div class="labels">
+                        <label id="first">Tipos de Parâmetros Definidos:</label>
+                        <label class="label-item">
+                            ${modelo.TiposParametro}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+    }
+
+    function nadaPorAquiModelos() {
+        div_definir_parametros.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function abrirPopupModelo(idModelo, tiposParametros) {
+        document.getElementById("popupmodelo").style.display = "flex";
+
+        const parametrosContainer = document.getElementById("parametros-container");
+        parametrosContainer.innerHTML = "";
+
+        const listaParametros = tiposParametros.split(",").map(p => p.trim());
+
+        parametrosContainer.innerHTML += `<h2>Definir Parâmetros para o Modelo ${idModelo}</h2>`;
+
+        listaParametros.forEach(parametro => {
+            parametrosContainer.innerHTML += `
+            <div class="parametro-item">
+                <h3>${parametro}</h3>
+                <label>Limite Mínimo:</label>
+                <input type="number" id="limiteMin_${parametro}" placeholder="Ex: 10" class="input-param">
+                <label>Limite Máximo:</label>
+                <input type="number" id="limiteMax_${parametro}" placeholder="Ex: 100" class="input-param">
+            </div>
+        `;
+        });
+
+        parametrosContainer.innerHTML += `
+        <div class="part-dois">
+            <button class="cadastrar" onclick="cadastrarParametro(${idModelo}, '${tiposParametros}')">
+                Cadastrar Parâmetros
+            </button>
+        </div>
+    `;
+    }
+
+
+    function fecharPopupModelo() {
+        document.getElementById("popupmodelo").style.display = "none";
+        window.location.reload();
+    }
+
+    function cadastrarParametro(idModelo, tiposParametros) {
+        const listaParametros = tiposParametros.split(",").map(p => p.trim());
+        const parametrosParaEnviar = [];
+
+        listaParametros.forEach(parametro => {
+            const limiteMin = document.getElementById(`limiteMin_${parametro}`).value;
+            const limiteMax = document.getElementById(`limiteMax_${parametro}`).value;
+
+            if (limiteMin === "" || limiteMax === "") {
+                alert(`Preencha os limites para o parâmetro: ${parametro}`);
+                return;
+            }
+
+            parametrosParaEnviar.push({
+                nomeParametro: parametro,
+                limiteMin: Number(limiteMin),
+                limiteMax: Number(limiteMax),
+                idModelo: idModelo
+            });
+        });
+
+        console.log("Enviando parâmetros:", parametrosParaEnviar);
+
+        fetch("/modelo/cadastrarParametro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(parametrosParaEnviar)
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("Parâmetros cadastrados com sucesso!");
+                    fecharPopupModelo();
+                } else {
+                    alert("Erro ao cadastrar parâmetros!");
+                }
+            })
+            .catch(err => console.error("Erro na requisição:", err));
+    }
+</script>
+
+</html>

@@ -11,10 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-
 </head>
 
-<body onload="carregarDados(),carregarDadosAprovados(), carregarModelos()">
+<body onload="carregarDados(),carregarDadosAprovados()">
     <div id="cabecalho">
         <div class="cabecalho-container">
             <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
@@ -23,7 +22,6 @@
                 <a href="#primeiro">Página Principal</a>
                 <a href="#principal">Aprovações Pendentes</a>
                 <a href="#segundo">Empresas Cadastradas</a>
-                <a href="#terceiro">Definir Parâmetros</a>
                 <a href="login.html" class="botao-principal" id="cadastro">Sair</a>
             </div>
         </div>
@@ -82,10 +80,6 @@
         <div id="segundo">
             <h1>Empresas Cadastradas</h1>
             <div class="aprovados" id="div_aprovados"></div>
-        </div>
-        <div id="terceiro">
-            <h1>Definir Parâmetros</h1>
-            <div class="definir_parametros" id="div_definir_parametros"></div>
         </div>
     </div>
     </div>
@@ -146,25 +140,20 @@
 
     function gerarCards() {
         for (var i = 0; i < empresas.length; i++) {
-            var nome = empresas[i].nome;
-            var cnpj = empresas[i].cnpj;
-            var email = empresas[i].email;
-            var telefone = empresas[i].email;
-            var idEmpresa = empresas[i].idEmpresa;
             div_pendentes.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
-                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${cnpj}</label></div>
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${empresas[i].nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${empresas[i].cnpj}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${empresas[i].email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${empresas[i].telefone}</label></div>
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "aprovar" onclick = "aprovar(${idEmpresa})">Aprovar</button>
-                        <button class = "reprovar" onclick = "recusar(${idEmpresa})">Reprovar</button>    
+                        <button class = "aprovar" onclick = "aprovar(${empresas[i].idEmpresa})">Aprovar</button>
+                        <button class = "reprovar" onclick = "recusar(${empresas[i].idEmpresa})">Reprovar</button>    
                     </div>
                 </div>
             </div>
@@ -206,23 +195,19 @@
 
     function gerarCardsAprovados() {
         for (var i = 0; i < aprovados.length; i++) {
-            var nome = aprovados[i].nome;
-            var cnpj = aprovados[i].cnpj;
-            var email = aprovados[i].email;
-            var telefone = aprovados[i].telefone;
             div_aprovados.innerHTML += `
-            <div class = "card-user">
+            <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
                 <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${nome}</label></div>
-                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${cnpj}</label></div>
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
                 </div>
                 <div class = "card-second">
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${email}</label></div>
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${telefone}</label></div>
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
                 </div>
                 <div class = "card-second">
                     <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                        <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
                     </div>
                 </div>
             </div>
@@ -330,67 +315,8 @@
         return false;
     }
 
-    modelos = [];
-    function carregarModelos() {
-        nome = sessionStorage.getItem("NOME_USUARIO");
-        email = sessionStorage.getItem("EMAIL_USUARIO")
-        lbl_nome.innerHTML = nome;
-        lbl_email.innerHTML = email;
-
-        fetch("/modelo/buscarModelosCadastrados", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }).then(function (resposta) {
-            console.log(resposta);
-
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    console.log(data);
-                    modelos = data;
-                    if (modelos.length > 0) {
-                        gerarCardsModelos();
-                    } else {
-                        nadaPorAquiModelos();
-                    }
-                })
-            } else {
-                console.log("Erro ao Buscar Dados!");
-            }
-        });
-    }
-
-    function gerarCardsModelos() {
-        for (var i = 0; i < modelos.length; i++) {
-            div_definir_parametros.innerHTML += `
-            <div class = "card-user">
-                <div class = "card-first">
-                    <div class="labels"><label id="first">Nome Empresa:</label><label class="label-item">${modelos[i].NomeEmpresa}</label></div>
-                    <div class="labels"><label id="first">Nome Modelo:</label><label class="label-item">${modelos[i].NomeModelo}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${modelos[i].DescricaoModelo}</label></div>
-                    <div class="labels"><label id="first">Id:</label><label class="label-item">${modelos[i].IdModelo}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
-                    </div>
-                </div>
-            </div>
-            `;
-        }
-    }
-
-    function nadaPorAquiModelos() {
-        div_definir_parametros.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
+    function carregarModelos(idEmpresa) {
+        window.location.href = `modelos.html?id=${idEmpresa}`;
     }
 </script>
 
