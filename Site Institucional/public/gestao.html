@@ -67,7 +67,7 @@
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
                     <div class="item-card">
                         <label>Cargo:</label>
-                        <select name="cargos" id="cargos">
+                        <select name="cargos" id="cargos" onchange="verificarCargoSelecionado()">
                             <option value="">Escolha uma opção</option>
                             <option value="Gestor">Gestor</option>
                             <option value="Técnico">Técnico</option>
@@ -154,7 +154,8 @@
 
         function gerarCardsUsuarios() {
             for (var i = 0; i < aprovados.length; i++) {
-                div_aprovados.innerHTML += `
+                if (aprovados[i].cargos == "Técnico") {
+                    div_aprovados.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
@@ -172,16 +173,62 @@
                 </div>
             </div>
             `;
+                } else {
+                    div_aprovados.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${aprovados[i].cargo}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
+                    <div class = "buttons">
+                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idUsuario})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+                }
             }
         }
 
+        var estadoSelecionado = "";
+        var cargoSelecionado = "";
         function verificarEstadoAtuacao() {
-            const estadoSelecionado = document.getElementById("estado_atuacao").value;
+            estadoSelecionado = document.getElementById("estado_atuacao").value;
             const regioes = document.getElementById("regioes");
 
             regioes.innerHTML = "";
 
-            if (estadoSelecionado === "São Paulo") {
+            if (estadoSelecionado === "São Paulo" && cargoSelecionado === "Técnico") {
+                console.log("oiiiii")
+                regioes.innerHTML += `
+                <div class="item-card">
+                    <label>Região de Atuação:</label>
+                    <select name="regiao_atuacao" id="regiao_atuacao">
+                        <option value="">Escolha uma opção</option>
+                        <option value="Centro">Centro</option>
+                        <option value="Norte">Norte</option>
+                        <option value="Sul">Sul</option>
+                        <option value="Leste">Leste</option>
+                        <option value="Oeste">Oeste</option>
+                    </select>
+                </div>
+        `;
+            }
+        }
+
+        function verificarCargoSelecionado() {
+            const cargoSelecionado = document.getElementById("cargos").value;
+            const regioes = document.getElementById("regioes");
+
+            regioes.innerHTML = "";
+
+            if (cargoSelecionado === "Técnico" && estadoSelecionado == "São Paulo") {
+                console.log("oiiiii")
                 regioes.innerHTML += `
                 <div class="item-card">
                     <label>Região de Atuação:</label>
