@@ -14,7 +14,10 @@ async function cadastrarEndereco(req, res) {
         return res.status(400).json({ erro: "Parâmetros estão undefined!" });
     }
 
-    if (zona == "") {
+    console.log('oiii',zona)
+
+    if (zona == undefined) {
+        console.log("Entrou no if")
         try {
             const resultadoBuscarEnderecoExistente = await enderecoModel.buscarEnderecoExistente(cidade, rua, numero, complemento)
 
@@ -42,6 +45,7 @@ async function cadastrarEndereco(req, res) {
             res.status(500).json({ erro: erro.sqlMessage || erro });
         }
     } else {
+        console.log("Entrou no else")
         try {
             const resultadoBuscarEnderecoExistente = await enderecoModel.buscarEnderecoExistente(cidade, rua, numero, complemento)
 

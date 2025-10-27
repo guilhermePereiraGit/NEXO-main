@@ -344,7 +344,8 @@
         var complemento = input_complemento.value;
 
         if(estado == "São Paulo"){
-            var zona = document.getElementById("regiao_label").value;
+            var zona = document.getElementById("regiao_label").innerText;
+            console.log(zona)
         }else{
             var zona = ""
         }

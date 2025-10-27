@@ -82,8 +82,17 @@
         for (var i = 0; i < modelos.length; i++) {
             const modelo = modelos[i];
 
+            if (modelo.LimiteMaximo == null) {
+                modelo.LimiteMaximo = 0
+            }
+            if (modelo.LimiteMinimo == null) {
+                modelo.LimiteMinimo = 0
+            }
+
             div_definir_parametros.innerHTML += `
             <div class="card-user">
+
+                <!-- Linha 1 -->
                 <div class="card-first">
                     <div class="labels">
                         <label id="first">Nome Empresa:</label>
@@ -93,9 +102,6 @@
                         <label id="first">Nome Modelo:</label>
                         <label class="label-item">${modelo.NomeModelo}</label>
                     </div>
-                </div>
-
-                <div class="card-second">
                     <div class="labels">
                         <label id="first">Descrição:</label>
                         <label class="label-item">${modelo.DescricaoModelo}</label>
@@ -103,6 +109,22 @@
                     <div class="labels">
                         <label id="first">ID:</label>
                         <label class="label-item">${modelo.IdModelo}</label>
+                    </div>
+                </div>
+
+                <!-- Linha 2 -->
+                <div class="card-second">
+                    <div class="labels">
+                        <label id="first">Tipos de Parâmetros Definidos:</label>
+                        <label class="label-item">${modelo.TiposParametro}</label>
+                    </div>
+                    <div class="labels">
+                        <label id="first">Limite Mínimo:</label>
+                        <label class="label-item">${modelo.LimiteMinimo}</label>
+                    </div>
+                    <div class="labels">
+                        <label id="first">Limite Máximo:</label>
+                        <label class="label-item">${modelo.LimiteMaximo}</label>
                     </div>
                 </div>
 
@@ -115,14 +137,6 @@
                     </div>
                 </div>
 
-                <div class="card-second">
-                    <div class="labels">
-                        <label id="first">Tipos de Parâmetros Definidos:</label>
-                        <label class="label-item">
-                            ${modelo.TiposParametro}
-                        </label>
-                    </div>
-                </div>
             </div>
         `;
         }

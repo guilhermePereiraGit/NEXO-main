@@ -67,6 +67,8 @@ function buscarModelosCadastrados(idEmpresa) {
             m.idModelo AS IdModelo,
             m.nome AS NomeModelo,
             m.descricao_arq AS DescricaoModelo,
+            MIN(p.limiteMin) AS LimiteMinimo,
+            MAX(p.limiteMax) AS LimiteMaximo,
             GROUP_CONCAT(tp.componente SEPARATOR ', ') AS TiposParametro
         FROM empresa e
         INNER JOIN modelo m 
