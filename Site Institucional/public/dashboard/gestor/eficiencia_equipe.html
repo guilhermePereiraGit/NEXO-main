@@ -7,7 +7,7 @@
     <title>Dashboard Eficiência Equipe - Gestor</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../geral.css">
     <link rel="stylesheet" href="dashboard_gestor.css">
     <link rel="stylesheet" href="eficiencia_equipe.css">
@@ -164,9 +164,9 @@
         var regiao_escolhida = document.getElementById("regiao_escolhida");
         regiao_escolhida.innerHTML = sessionStorage.getItem("REGIAO_ESCOLHIDA");
 
-        if (sessionStorage.getItem("REGIAO_ESCOLHIDA") != "São Paulo") {
-            document.getElementById("zona").style.display = "none";
-        }
+        // if (sessionStorage.getItem("REGIAO_ESCOLHIDA") != "São Paulo") {
+        //     document.getElementById("zona").style.display = "none";
+        // }
     }
 
     // Função para active do CSS
