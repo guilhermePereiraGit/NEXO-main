@@ -1,0 +1,89 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+.first .first-real .real-time{
+    border: 1px solid var(--primaria);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.first .first-real .real-time h1{
+    font-size: 30px;
+}
+
+/* GRÁFICOS */
+.graficos{
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+.grafico{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.part1-graficos{
+    display: flex;
+    margin-top: 30px;
+}
+.grafico-special{
+    border: 1px solid var(--primaria);
+    border-radius: 20px;
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.grafico-special h1{
+    font-size: 60px !important;
+}
+
+/* Blocos de Localização */
+.localizacao{
+    display: flex;
+}
+.localizacao .bloco h2{
+    font-size: 22px;
+    color: var(--primaria);
+}
+.localizacao .bloco h2 span{
+    color: black;
+    font-weight: 400;
+}
+
+/* PROCESSOS */
+.processos{
+    margin-top: 100px;
+    width: 90%;
+}
+.processos h1{
+    font-size: 25px;
+    text-align: center;
+    border: 1px solid var(--primaria);
+    padding: 10px;
+}
+.processos table {
+    border: 1px solid var(--primaria);
+    border-collapse: collapse;
+    width: 100%;
+}
+.processos table th {
+    border: 1px solid var(--primaria);
+    padding: 8px;
+    font-family: 'Poppins';
+}

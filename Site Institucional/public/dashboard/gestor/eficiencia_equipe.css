@@ -1,0 +1,70 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+
+.first-tittle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+.first-tittle h1{
+    font-size: 50px;
+}
+
+.seconds{
+    margin-top: 50px;
+}
+.seconds .second-kpi{
+    display: flex;
+    gap: 30px;
+}
+.seconds .second-kpi .kpi{
+    border: 1px solid var(--primaria);
+    padding: 20px;
+    border-radius: 10px;
+}
+.seconds .second-kpi .kpi h1{
+    font-size: 30px;
+    text-align: center;
+}
+.seconds .second-kpi .kpi h1 span{
+    font-size: 25px;
+}
+.seconds .second-kpi .kpi p{
+    font-size: 35px;
+    text-align: center;
+}
+.seconds .second-kpi .kpi p span{
+    font-size: 20px;
+    color: var(--primaria);
+}
+
+/* GRÁFICOS */
+.graficos-linha{
+    display: flex;
+    gap: 30px;
+}
+.grafico1{
+    width: 50%;
+}
+.grafico1 h1,.grafico2 h1{
+    font-size: 28px;
+    margin-top: 30px;
+}
+.grafico1 canvas,.grafico2 canvas{
+    margin-top: -20px;
+}
+.grafico2{
+    width: 50%;
+}

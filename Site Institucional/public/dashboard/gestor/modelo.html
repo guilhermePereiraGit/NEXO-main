@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Modelo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../geral.css">
+    <link rel="stylesheet" href="dashboard_gestor.css">
+    <link rel="stylesheet" href="modelo.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="identificarModelo(),gerarGraficoRadar(),gerarGraficoBarra()">
+    <div class="all">
+        <header>
+            <div class="header-all">
+                <div class="user">
+                    <img src="../../assets/imgs/user.png">
+                    <div class="text">
+                        <label id="nome">Guilherme Silva</label>
+                        <label id="cargo">Gestor de Operações</label>
+                    </div>
+                </div>
+                <div class="navegation">
+                    <a href="dashboard_gestor.html" id="voltar">Voltar</a>
+                </div>
+                <div class="suporte">
+                    <a
+                        href="https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true"><img
+                            src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="#"><img src="../../assets/imgs/icon-slack.png"></a>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="content-divisao">
+            <div class="first-modelo">
+                <div class="first-region">
+                    <h1>Modelo: <span id="modelo_escolhido"></span></h1>
+                    <!-- <div class="zona" id="zona">
+                        <label>Escolha a Zona:</label>
+                        <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
+                            <option value="x">Escolha uma Opção</option>
+                            <option value="AC">Zona Norte</option>
+                            <option value="AL">Zona Sul</option>
+                            <option value="AP">Zona Leste</option>
+                            <option value="AM">Zona Oeste</option>
+                            <option value="BA">Centro</option>
+                        </select>
+                    </div> -->
+
+                    <div class="desc">
+                        <h2>Desempenho dos Componentes</h2>
+                        <p>Componente com Melhor Desempenho (%)</p>
+                    </div>
+
+                    <div class="radar">
+                        <canvas id="grafico-radar" class="chart-container"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="second-modelo">
+                <div class="kpi-normal">
+                    <div class="kpi">
+                        <h1>Total de Totens do Modelo</h1>
+                        <p>40 <span>10% do Total</span></p>
+                    </div>
+                    <div class="kpi">
+                        <h1>Taxa de Alertas (%)<span>Total de Totens/Total de Alertas</span></h1>
+                        <p>20% <span>20 Alertas</span></p>
+                    </div>
+                </div>
+                <div class="kpi-especial">
+                    <div class="ranking">
+                        <div class="ranking-content">
+                            <h1>Componente com Mais Alertas (Semanal)</h1>
+                            <p>DISCO <span>5 Alertas</span></p>
+                        </div>
+                    </div>
+                    <div class="ranking">
+                        <h1>Mês Atual</h1>
+                        <div class="ranking-desc">
+                            <h1>Outubro</h1>
+                            <p>-15 Taxa de Alerta desde Setembro</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="third-modelo">
+                <h1>Taxa de Alertas em Cada Mês</h1>
+                <div class="barra">
+                    <canvas id="grafico-bar" class="chart-container"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+        function gerarGraficoBarra() {
+        legenda = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+        infos = [10,20,10,15,15,30,10,20,10,15,15,30]
+        const cty = document.getElementById('grafico-bar');
+        cty.height = 210;
+        new Chart(cty, {
+                type: 'bar',
+                data: {
+                    labels:legenda,
+                    datasets: [{
+                        data: infos,
+                        borderWidth: 1,
+                        backgroundColor: "#8b5cf6",
+                        borderRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+
+                    }
+                },
+        })
+    }
+
+    function gerarGraficoRadar() {
+        const ctx = document.getElementById("grafico-radar");
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                datasets: [{
+                    data: [80, 60, 55],
+                    backgroundColor: "#8a5cf680"
+                }],
+                labels: ['CPU', 'RAM', 'DISCO']
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: false,
+                    }
+                }
+            },
+        })
+    }
+
+    function identificarModelo() {
+        var modelo_escolhido = document.getElementById("modelo_escolhido");
+        modelo_escolhido.innerHTML = sessionStorage.getItem("MODELO_SELECIONADO");
+    }
+
+
+    // Função para active do CSS
+    const links = document.querySelectorAll('.navegation a');
+
+    function atualizarActive() {
+        const hashAtual = window.location.hash;
+        links.forEach(link => {
+            if (link.getAttribute('href') === hashAtual) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('load', atualizarActive);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+    window.addEventListener('hashchange', atualizarActive);
+</script>
+</html>

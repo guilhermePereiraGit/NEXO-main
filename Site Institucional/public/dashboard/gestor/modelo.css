@@ -1,0 +1,116 @@
+:root {
+    --primaria: #8b5cf6;
+    --primaria-dark: #7c3aed;
+    --primaria-light: #a78bfa;
+    --secondaria: #67e8f9;
+    --branco: #ffffff;
+    --branco-light: #b99db6;
+    --texto: #000000;
+    --texto-secundario: #000000;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --alerta: #f59e0b;
+}
+.radar{
+    width: 75%;
+}
+.desc h2{
+    color: var(--primaria);
+}
+.content .content-divisao{
+    display: flex;
+}
+.content .first-modelo{
+    width: 50%;
+}
+
+/* SEGUNDA PARTE */
+.second-modelo .kpi-normal{
+    display: flex;
+    gap: 20px;
+}
+.second-modelo .kpi-normal .kpi{
+    border: 1px solid var(--primaria);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+}
+.second-modelo .kpi-normal .kpi h1{
+    font-size: 25px;
+    text-align: center;
+}
+.second-modelo .kpi-normal .kpi h1 span{
+    display: block;
+    font-size: 20px;
+}
+.second-modelo .kpi-normal .kpi p{
+    text-align: center;
+    font-size: 25px;
+}
+.second-modelo .kpi-normal .kpi p span{
+    font-size: 18px;
+    color: var(--primaria);
+}
+
+/* KPI ESPECIAL */
+.kpi-especial{
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+.kpi-especial .ranking{
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--primaria);
+    width: 50%;
+    border-radius: 10px;
+}
+.kpi-especial .ranking h1{
+    font-size: 20px;
+}
+.kpi-especial .ranking .ranking-modelos{
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+}
+.kpi-especial .ranking .ranking-modelos .modelo{
+    border: 1px solid var(--primaria);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.kpi-especial .ranking .ranking-modelos .modelo h2{
+    color: var(--primaria);
+}
+.ranking .ranking-desc h1{
+    font-size: 50px;
+    color: black;
+    font-weight: 400;
+    margin-top: 30px;
+}
+.ranking .ranking-desc p{
+    color: var(--primaria);
+}
+.ranking-content{
+    display: flex;
+    flex-direction: column;
+}
+.ranking-content p{
+    margin-top: 30px;
+    font-size: 30px;
+}
+.ranking-content p span{
+    font-size: 20px;
+    color: var(--primaria);
+}
+
+/* TERCEIRA PARTE */
+.third-modelo{
+    margin-top: -50px;
+}
+.third-modelo h1{
+    font-size: 30px;
+}

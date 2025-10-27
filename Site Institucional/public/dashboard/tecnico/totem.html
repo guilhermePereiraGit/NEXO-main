@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Totem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../geral.css">
+    <link rel="stylesheet" href="../gestor/dashboard_gestor.css">
+    <link rel="stylesheet" href="dashboard_tecnico.css">
+    <link rel="stylesheet" href="totem.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="identificarTotem(),graficoVelocimetro()">
+    <div class="all">
+        <header>
+            <div class="header-all">
+                <div class="user">
+                    <img src="../../assets/imgs/user.png">
+                    <div class="text">
+                        <label id="nome">Guilherme Silva</label>
+                        <label id="cargo">Técnico em Operação</label>
+                    </div>
+                </div>
+                <div class="navegation">
+                    <a href="dashboard_tecnico.html" id="voltar">Voltar</a>
+                </div>
+                <div class="suporte">
+                    <a href="#"><img src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="#"><img src="../../assets/imgs/icon-slack.png"></a>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="first">
+                <div class="first-region">
+                    <h1>Totem: <span id="totem_escolhido"></span></h1>
+                    <!-- <div class="zona" id="zona">
+                        <label>Escolha a Zona:</label>
+                        <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
+                            <option value="x">Escolha uma Opção</option>
+                            <option value="AC">Zona Norte</option>
+                            <option value="AL">Zona Sul</option>
+                            <option value="AP">Zona Leste</option>
+                            <option value="AM">Zona Oeste</option>
+                            <option value="BA">Centro</option>
+                        </select>
+                    </div> -->
+                    <div class="localizacao">
+                        <div class="bloco">
+                            <h2>MAC: <span>A4:C2:9F:31:7B:E2</span></h2>
+                            <h2>Modelo: <span>AA0123</span></h2>
+                            <h2>Status: <span>Ligado</span></h2>
+                            <h2>CEP: <span>00222-333</span></h2>
+                            <h2>Telefone: <span>(11)99993-4454</span></h2>
+                        </div>
+                        <div class="bloco">
+                            <h2>Cidade: <span>São Paulo</span></h2>
+                            <h2>Bairro: <span>Jardins</span></h2>
+                            <h2>Rua <span>Rua Tavares</span></h2>
+                            <h2>Número: <span>34</span></h2>
+                        </div>
+                    </div>
+                    <div class="processos">
+                        <h1>Processos</h1>
+                        <table class="table-processos">
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPU (%)</th>
+                                <th>RAM (%)</th>
+                                <th>DISCO (%)</th>
+                            </tr>
+                            <tr>
+                                <th>chrome.exe</th>
+                                <th>15</th>
+                                <th>10</th>
+                                <th>15</th>
+                            </tr>
+                            <tr>
+                                <th>totem-updater.exe</th>
+                                <th>12.5</th>
+                                <th>13.3</th>
+                                <th>7.5</th>
+                            </tr>
+                            <tr>
+                                <th>antivirus.exe</th>
+                                <th>5</th>
+                                <th>8</th>
+                                <th>2</th>
+                            </tr>
+                            <tr>
+                                <th>order-service.exe</th>
+                                <th>10</th>
+                                <th>7</th>
+                                <th>5</th>
+                            </tr>
+                            <tr>
+                                <th>network-manager.exe</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>1</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="first-real">
+                    <div class="real-time">
+                        <h1>Monitoramento dos Componentes</h1>
+                        <div class="graficos">
+                            <div class="part1-graficos">
+                                <div class="grafico">
+                                    <div class="velo-one">
+                                        <canvas id="primeiro-grafico" class="chart-container"></canvas>
+                                    </div>
+                                    <h1>CPU(70%)</h1>
+                                </div>
+                                <div class="grafico">
+                                    <div class="velo-one">
+                                        <canvas id="segundo-grafico" class="chart-container"></canvas>
+                                    </div>
+                                    <h1>RAM(40%)</h1>
+                                </div>
+                            </div>
+                            <div class="part1-graficos">
+                                <div class="grafico">
+                                    <div class="velo-one">
+                                        <canvas id="terceiro-grafico" class="chart-container"></canvas>
+                                    </div>
+                                    <h1>DISCO(50%)</h1>
+                                </div>
+                                <div class="grafico-special">
+                                    <h1>360</h1>
+                                    <h2>PROCESSOS</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function identificarTotem() {
+        var totem_escolhido = document.getElementById("totem_escolhido");
+        totem_escolhido.innerHTML = sessionStorage.getItem("TOTEM_SELECIONADO");
+    }
+
+    function graficoVelocimetro() {
+        // CPU
+        const data = {
+            labels: ['Ocupado', 'Restante'],
+            datasets: [{
+                data: [70, 30],
+                backgroundColor: ['#8b5cf6', '#eae3ff']
+            }]
+        }
+        ctx = document.getElementById("primeiro-grafico");
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+            options: {
+                aspectRatio: 2,
+                circumference: 180,
+                rotation: -90
+            }
+        })
+
+        // RAM
+        const data2 = {
+            labels: ['Ocupado', 'Restante'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#8b5cf6', '#eae3ff']
+            }]
+        }
+
+        cty = document.getElementById("segundo-grafico");
+        new Chart(cty, {
+            type: 'doughnut',
+            data: data2,
+            options: {
+                aspectRatio: 2,
+                circumference: 180,
+                rotation: -90
+            }
+        })
+
+        // DISCO
+        const data3 = {
+            labels: ['Ocupado', 'Restante'],
+            datasets: [{
+                data: [50, 50],
+                backgroundColor: ['#8b5cf6', '#eae3ff']
+            }]
+        }
+
+        ctz = document.getElementById("terceiro-grafico");
+        new Chart(ctz, {
+            type: 'doughnut',
+            data: data2,
+            options: {
+                aspectRatio: 2,
+                circumference: 180,
+                rotation: -90
+            }
+        })
+    }
+</script>
+</html>
