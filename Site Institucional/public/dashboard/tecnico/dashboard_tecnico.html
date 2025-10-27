@@ -26,6 +26,8 @@
                     </div>
                 </div>
                 <div class="navegation">
+                    <a href="#totens" style="border-bottom: none;">Totens</a>
+                    <a href="metricas.html#metricas" id="metric">Métricas de Alerta</a>
                     <a href="" id="voltar">Voltar</a>
                 </div>
                 <div class="suporte">
@@ -34,7 +36,7 @@
                 </div>
             </div>
         </header>
-        <div class="content">
+        <div class="content" id="totens">
             <div class="first">
                 <div class="first-region">
                     <h1>Região: <span id="regiao_escolhida">São Paulo</span></h1>
@@ -230,5 +232,28 @@
             },
         })
     }
+
+        // Função para active do CSS
+    const links = document.querySelectorAll('.navegation a');
+
+    function atualizarActive() {
+        const hashAtual = window.location.hash;
+        links.forEach(link => {
+            if (link.getAttribute('href') === hashAtual) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('load', atualizarActive);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+    window.addEventListener('hashchange', atualizarActive); 
 </script>
 </html>

@@ -26,7 +26,8 @@
                 </div>
                 <div class="navegation">
                     <a href="#modelos">Modelos</a>
-                    <a href="eficiencia_equipe.html#eficiencia" id="efic">Eficiência da Equipe</a>
+                    <a href="eficiencia_equipe.html#efic" id="efic">Eficiência da Equipe</a>
+                    <a href="metricas.html#metricas" id="metric">Métricas de Alerta</a>
                     <a href="" id="voltar">Voltar</a>
                 </div>
                 <div class="suporte">
@@ -39,7 +40,7 @@
             <div class="first">
                 <div class="first-region">
                     <h1>Região: <span id="regiao_escolhida"></span></h1>
-                    <!-- <div class="zona" id="zona">
+                    <div class="zona" id="zona">
                         <label>Escolha a Zona:</label>
                         <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
                             <option value="x">Escolha uma Opção</option>
@@ -49,7 +50,7 @@
                             <option value="AM">Zona Oeste</option>
                             <option value="BA">Centro</option>
                         </select>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="first-kpi">
                     <div class="kpi">
@@ -207,9 +208,9 @@
         var regiao_escolhida = document.getElementById("regiao_escolhida");
         regiao_escolhida.innerHTML = sessionStorage.getItem("REGIAO_ESCOLHIDA");
 
-        // if (sessionStorage.getItem("REGIAO_ESCOLHIDA") != "São Paulo") {
-        //     document.getElementById("zona").style.display = "none";
-        // }
+        if (sessionStorage.getItem("REGIAO_ESCOLHIDA") != "São Paulo") {
+             document.getElementById("zona").style.display = "none";
+        }
     }
 
     // Função para active do CSS

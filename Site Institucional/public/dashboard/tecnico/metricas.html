@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métricas de Alertas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../../assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../geral.css">
+    <link rel="stylesheet" href="../metricas.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="all">
+        <header>
+            <div class="header-all">
+                <div class="user">
+                    <img src="../../assets/imgs/user.png">
+                    <div class="text">
+                        <label id="nome">Guilherme Silva</label>
+                        <label id="cargo">Técnico em Operação</label>
+                    </div>
+                </div>
+                <div class="navegation">
+                    <a href="dashboard_tecnico.html#totens" style="border-bottom: none;">Totens</a>
+                    <a href="#metricas" id="metric">Métricas de Alerta</a>
+                    <a href="" id="voltar">Voltar</a>
+                </div>
+                <div class="suporte">
+                    <a href="#"><img src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="#"><img src="../../assets/imgs/icon-slack.png"></a>
+                </div>
+            </div>
+        </header>
+        <div class="content" id="metricas">
+            <h1>Metricas</h1>
+            <div class="metricas-info">
+                <h2>Parametrização de Alertas</h2>
+                <p>
+                    O método de Tratamento de Dados pela solução é feita de 30
+                    em 30 minutos, com isto a análise de criticidade destes alertas
+                    é feita à partir da aparição dos mesmos nas linhas analisadas.
+                </p>
+                <div class="justificativas">
+                    <div class="justificativa">
+                        <div class="title">
+                            <div class="color" style="background-color: #FFD700;"></div>
+                            <h2>Grau Atenção:</h2>
+                        </div>
+                        <p>
+                            Para casos do total de tempo em que permaneceu
+                            em alerta ser de 10 minutos ou total de 120 vezes de componentes
+                            em alerta durante estas capturas.
+                        </p>
+                    </div>
+                    <div class="justificativa">
+                        <div class="title">
+                            <div class="color" style="background-color: #FF8C00;"></div>
+                            <h2>Grau de Perigo:</h2>
+                        </div>
+                        <p>
+                            Para casos do total de tempo em que permaneceu
+                            em alerta ser de 18 à 30 minutos ou total de 240 à 360 vezes de componentes
+                            em alerta durante estas capturas.
+                        </p>
+                    </div>
+                    <div class="justificativa">
+                        <div class="title">
+                            <div class="color" style="background-color: #FF0000;"></div>
+                            <h2>Grau de Muito Perigo:</h2>
+                        </div>
+                        <p>
+                            Para casos do total de tempo em que permaneceu
+                            em alerta ser de acima de 30 minutos ou acima de 360 vezes de componentes
+                            em alerta durante estas capturas.
+                        </p>
+                    </div>
+                    <div class="observacao">
+                        <p>
+                            OBS: Cada leitura dentre os 30 minutos trata 360 linhas
+                            de coleta de dados, do qual cada linha pode conter até
+                            4 alertas devido aos componentes analisados CPU, RAM,
+                            DISCO e PROCESSOS.
+                            <br>
+                            Tratar a o grau de criticidade somente por porcentagem
+                            não é uma análise viável por conta da possibilidade de
+                            variações momentâneas de execução.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // Função para active do CSS
+    const links = document.querySelectorAll('.navegation a');
+
+    function atualizarActive() {
+        const hashAtual = window.location.hash;
+        links.forEach(link => {
+            if (link.getAttribute('href') === hashAtual) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    window.addEventListener('load', atualizarActive);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+    window.addEventListener('hashchange', atualizarActive);
+</script>
+
+</html>
