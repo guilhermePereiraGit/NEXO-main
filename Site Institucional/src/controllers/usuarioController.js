@@ -305,7 +305,8 @@ function deletarEmpresa(req, res) {
 }
 
 function verificarAprovados(req, res) {
-    usuarioModel.verificarAprovados()
+    var idEmpresa = req.body.idEmpresaServer;
+    usuarioModel.verificarAprovados(idEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado);

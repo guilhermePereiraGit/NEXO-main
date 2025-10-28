@@ -17,7 +17,7 @@
             <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
             </div>
             <div class="cabecalho-links" id="cabecalhoLinks">
-                <a href="cards_tecnico.html" class="botao-principal" id="cadastro">Sair</a>
+                <a href="cards_tecnico.html" class="botao-principal" id="cadastro">Voltar</a>
             </div>
         </div>
     </div>
@@ -100,11 +100,16 @@
 
     aprovados = [];
     function carregarDadosAprovados() {
+        var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
         fetch("/totem/verificarAprovados", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify({
+                idEmpresaServer: idEmpresa
+            }),
         }).then(function (resposta) {
             console.log(resposta);
 
@@ -113,7 +118,7 @@
                     console.log(data);
                     aprovados = data;
                     if (aprovados.length > 0) {
-                        gerarCardModelos();
+                        gerarCardTotens();
                     } else {
                         nadaPorAquiModelos();
                     }
@@ -134,7 +139,7 @@
         `;
     }
 
-    function gerarCardModelos() {
+    function gerarCardTotens() {
         for (var i = 0; i < aprovados.length; i++) {
             var ativo = aprovados[i].status === "ATIVO";
 
@@ -343,10 +348,10 @@
         var numero = input_numero.value;
         var complemento = input_complemento.value;
 
-        if(estado == "São Paulo"){
+        if (estado == "São Paulo") {
             var zona = document.getElementById("regiao_label").innerText;
             console.log(zona)
-        }else{
+        } else {
             var zona = ""
         }
 

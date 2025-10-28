@@ -118,11 +118,16 @@
     <script>
         aprovados = [];
         function carregarDadosAprovados() {
+            var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
             fetch("/usuarios/verificarAprovados", {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
+                body: JSON.stringify({
+                    idEmpresaServer: idEmpresa
+                }),
             }).then(function (resposta) {
                 console.log(resposta);
 
@@ -197,6 +202,7 @@
 
         var estadoSelecionado = "";
         var cargoSelecionado = "";
+
         function verificarEstadoAtuacao() {
             estadoSelecionado = document.getElementById("estado_atuacao").value;
             const regioes = document.getElementById("regioes");
@@ -222,7 +228,7 @@
         }
 
         function verificarCargoSelecionado() {
-            const cargoSelecionado = document.getElementById("cargos").value;
+            cargoSelecionado = document.getElementById("cargos").value;
             const regioes = document.getElementById("regioes");
 
             regioes.innerHTML = "";

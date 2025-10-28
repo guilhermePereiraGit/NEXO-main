@@ -52,9 +52,9 @@ function buscarModelos(fkEmpresa) {
     return database.executar(instrucaoSql);
 }
 
-function verificarAprovados() {
+function verificarAprovados(idEmpresa) {
     var instrucaoSql = `
-    SELECT idModelo, nome, descricao_arq, status from modelo;
+    SELECT idModelo, nome, descricao_arq, status from modelo where fkEmpresa = ${idEmpresa};
   `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

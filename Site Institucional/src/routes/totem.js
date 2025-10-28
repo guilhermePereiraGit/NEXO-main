@@ -7,7 +7,7 @@ router.post("/cadastrarTotem", function (req, res) {
     totemController.cadastrarTotem(req, res);
 })
 
-router.get("/verificarAprovados", function (req, res){
+router.post("/verificarAprovados", function (req, res){
     totemController.verificarAprovados(req, res);
 })
 

@@ -15,7 +15,7 @@ router.post("/buscarModelos", function (req, res){
     modeloController.buscarModelos(req, res)
 })
 
-router.get("/verificarAprovados", function (req, res){
+router.post("/verificarAprovados", function (req, res){
     modeloController.verificarAprovados(req, res);
 })
 

@@ -103,7 +103,9 @@ async function buscarModelos(req, res) {
 }
 
 function verificarAprovados(req, res) {
-    modeloModel.verificarAprovados()
+    var idEmpresa = req.body.idEmpresaServer
+
+    modeloModel.verificarAprovados(idEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado);

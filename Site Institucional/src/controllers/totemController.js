@@ -1,7 +1,9 @@
 var totemModel = require("../models/totemModel");
 
 function verificarAprovados(req, res) {
-    totemModel.verificarAprovados()
+    var idEmpresa = req.body.idEmpresaServer
+    
+    totemModel.verificarAprovados(idEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado);

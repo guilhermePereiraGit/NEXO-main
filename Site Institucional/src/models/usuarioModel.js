@@ -82,9 +82,9 @@ function deletarEmpresa(idEmpresa) {
   return database.executar(instrucaoSql);
 }
 
-function verificarAprovados() {
+function verificarAprovados(idEmpresa) {
   var instrucaoSql = `
-    SELECT idUsuario,nome,email,telefone,cargo,regiaoAtuacao from usuario;
+    SELECT idUsuario,nome,email,telefone,cargo,regiaoAtuacao from usuario WHERE fkEmpresa = ${idEmpresa};
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

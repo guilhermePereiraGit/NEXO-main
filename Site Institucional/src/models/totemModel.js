@@ -8,9 +8,12 @@ function cadastrarTotem(modelo, enderecoMac, fkEndereco){
     return database.executar(instrucaoSql);
 }
 
-function verificarAprovados() {
+function verificarAprovados(idEmpresa) {
     var instrucaoSql = `
-    SELECT idTotem, t.numMAC, t.status, m.nome from totem t inner join modelo m on t.fkModelo = m.idModelo;
+    SELECT idTotem, t.numMAC, t.status, m.nome from totem t 
+    inner join modelo m on t.fkModelo = m.idModelo
+    inner join empresa e on m.fkEmpresa = e.idEmpresa
+    where e.idEmpresa = ${idEmpresa};
   `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

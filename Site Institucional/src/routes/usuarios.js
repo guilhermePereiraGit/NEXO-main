@@ -23,7 +23,7 @@ router.post("/verificarUsuarios", function (req, res) {
     usuarioController.verificarUsuarios(req, res);
 })
 
-router.get("/verificarAprovados", function (req, res){
+router.post("/verificarAprovados", function (req, res){
     usuarioController.verificarAprovados(req, res);
 })
 
