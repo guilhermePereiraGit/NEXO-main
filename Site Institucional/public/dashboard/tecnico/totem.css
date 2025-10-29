@@ -37,7 +37,7 @@
 }
 .part1-graficos{
     display: flex;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 .grafico-special{
     border: 1px solid var(--primaria);
@@ -68,7 +68,7 @@
 
 /* PROCESSOS */
 .processos{
-    margin-top: 100px;
+    margin-top: 50px;
     width: 90%;
 }
 .processos h1{
@@ -86,4 +86,18 @@
     border: 1px solid var(--primaria);
     padding: 8px;
     font-family: 'Poppins';
+}
+
+/* Alertas Pendentes */
+.alertas .color{
+    width: 15%;
+    height: 4vh;
+    border: 1px solid var(--primaria);
+    border-radius: 20px;
+}
+.alertas{
+    display: flex;
+    gap: 20px;
+    margin-top: 50px;
+    align-items: center;
 }

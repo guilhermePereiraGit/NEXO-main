@@ -7,7 +7,7 @@
     <title>Análise de Totem</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../geral.css">
     <link rel="stylesheet" href="../gestor/dashboard_gestor.css">
     <link rel="stylesheet" href="dashboard_tecnico.css">
@@ -22,7 +22,7 @@
                 <div class="user">
                     <img src="../../assets/imgs/user.png">
                     <div class="text">
-                        <label id="nome">Guilherme Silva</label>
+                        <label id="nome">Guilherme Barros</label>
                         <label id="cargo">Técnico em Operação</label>
                     </div>
                 </div>
@@ -30,8 +30,11 @@
                     <a href="dashboard_tecnico.html" id="voltar">Voltar</a>
                 </div>
                 <div class="suporte">
-                    <a href="https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true"><img src="../../assets/imgs/icon-jira.png"></a>
-                    <a href="https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22"><img src="../../assets/imgs/icon-slack.png"></a>
+                    <a
+                        href="https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true"><img
+                            src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22"><img
+                            src="../../assets/imgs/icon-slack.png"></a>
                 </div>
             </div>
         </header>
@@ -65,8 +68,14 @@
                             <h2>Número: <span>34</span></h2>
                         </div>
                     </div>
+
+                    <div class="alertas">
+                        <div class="color" style="background-color: #FF0000;"></div>
+                        <h2>Alerta de Grau Muito Perigoso</h2>
+                    </div>
+
                     <div class="processos">
-                        <h1>Processos</h1>
+                        <h1>Top 5 Processos</h1>
                         <table class="table-processos">
                             <tr>
                                 <th>Nome</th>
@@ -151,14 +160,31 @@
     }
 
     function graficoVelocimetro() {
+        consumoCPU = 70;
+        sobraCPU = 30;
+
+        if (consumoCPU < 30) {
+            corCPUPreenchida = "#4ed259"
+        } else if (consumoCPU < 50) {
+            corCPUPreenchida = "#FFD700";
+        } else if (consumoCPU <= 65) {
+            corCPUPreenchida = "#FF8C00"
+        } else if (consumoCPU > 65) {
+            corCPUPreenchida = "#FF0000"
+        }
+
+        coresCpu = [corCPUPreenchida, "#eae3ff"];
+        dadosCpu = [consumoCPU, sobraCPU];
+
         // CPU
         const data = {
             labels: ['Ocupado', 'Restante'],
             datasets: [{
-                data: [70, 30],
-                backgroundColor: ['#8b5cf6', '#eae3ff']
+                data: dadosCpu,
+                backgroundColor: coresCpu
             }]
         }
+
         ctx = document.getElementById("primeiro-grafico");
         new Chart(ctx, {
             type: 'doughnut',
@@ -170,12 +196,28 @@
             }
         })
 
+        consumoRAM = 40;
+        sobraRAM = 60;
+
+        if (consumoRAM < 30) {
+            corRAMPreenchida = "#4ed259"
+        } else if (consumoRAM < 50) {
+            corRAMPreenchida = "#FFD700";
+        } else if (consumoRAM <= 65) {
+            corRAMPreenchida = "#FF8C00"
+        } else if (consumoRAM > 65) {
+            corRAMPreenchida = "#FF0000"
+        }
+
+        coresRam = [corRAMPreenchida, "#eae3ff"];
+        dadosRam = [consumoRAM, sobraRAM];
+
         // RAM
         const data2 = {
             labels: ['Ocupado', 'Restante'],
             datasets: [{
-                data: [40, 60],
-                backgroundColor: ['#8b5cf6', '#eae3ff']
+                data: dadosRam,
+                backgroundColor: coresRam
             }]
         }
 
@@ -190,19 +232,35 @@
             }
         })
 
+        consumoDISCO = 20;
+        sobraDISCO = 80;
+
+        if (consumoDISCO < 30) {
+            corDISCOPreenchida = "#4ed259"
+        } else if (consumoDISCO < 50) {
+            corDISCOPreenchida = "#FFD700";
+        } else if (consumoDISCO <= 65) {
+            corDISCOPreenchida = "#FF8C00"
+        } else if (consumoDISCO > 65) {
+            corDISCOPreenchida = "#FF0000"
+        }
+
+        coresDisco = [corDISCOPreenchida, "#eae3ff"];
+        dadosDisco = [consumoDISCO, sobraDISCO];
+
         // DISCO
         const data3 = {
             labels: ['Ocupado', 'Restante'],
             datasets: [{
-                data: [50, 50],
-                backgroundColor: ['#8b5cf6', '#eae3ff']
+                data: dadosDisco,
+                backgroundColor: coresDisco
             }]
         }
 
         ctz = document.getElementById("terceiro-grafico");
         new Chart(ctz, {
             type: 'doughnut',
-            data: data2,
+            data: data3,
             options: {
                 aspectRatio: 2,
                 circumference: 180,
@@ -211,4 +269,5 @@
         })
     }
 </script>
+
 </html>

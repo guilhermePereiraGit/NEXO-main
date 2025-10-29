@@ -21,7 +21,7 @@
                 <div class="user">
                     <img src="../../assets/imgs/user.png">
                     <div class="text">
-                        <label id="nome">Guilherme Silva</label>
+                        <label id="nome">Guilherme Barros</label>
                         <label id="cargo">Técnico em Operação</label>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
                 </div>
                 <div class="first-kpi">
                     <div class="kpi">
-                        <h1>Disponibilidade da Região</h1>
-                        <h1>78% <span>por Semana</span></h1>
+                        <h1>Alertas Pendentes da Região</h1>
+                        <h1>20 <span>Atualmente</span></h1>
                     </div>
                     <div class="kpi">
                         <h1>Total de Totens da Região</h1>
@@ -207,7 +207,7 @@
 
     function gerarGraficoBarra() {
         legenda = ["Atenção", "Perigoso", "Muito Perigoso"]
-        infos = [10, 20, 10]
+        infos = [11, 4, 5]
         const cty = document.getElementById('grafico-bar');
         new Chart(cty, {
             type: 'bar',

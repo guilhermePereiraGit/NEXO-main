@@ -7,7 +7,7 @@
     <title>Análise de Modelo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../../assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../geral.css">
     <link rel="stylesheet" href="dashboard_gestor.css">
     <link rel="stylesheet" href="modelo.css">
@@ -70,7 +70,7 @@
                         <p>40 <span>10% do Total</span></p>
                     </div>
                     <div class="kpi">
-                        <h1>Taxa de Alertas (%)<span>Total de Totens/Total de Alertas</span></h1>
+                        <h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1>
                         <p>20% <span>20 Alertas</span></p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
 <script>
         function gerarGraficoBarra() {
         legenda = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
-        infos = [10,20,10,15,15,30,10,20,10,15,15,30]
+        infos = [10,20,10,15,15,30,10,20,30,15,15,30]
         const cty = document.getElementById('grafico-bar');
         cty.height = 210;
         new Chart(cty, {
