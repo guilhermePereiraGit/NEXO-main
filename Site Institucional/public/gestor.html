@@ -57,6 +57,7 @@
                                 <option value="cpu">CPU</option>
                                 <option value="ram">RAM</option>
                                 <option value="disco">Disco</option>
+                                <option value="processos">Processos</option>
                             </select>
                         </div>
                     </div>
@@ -140,6 +141,7 @@
         var numeroCpu = 0;
         var numeroRam = 0;
         var numeroDisco = 0;
+        var numeroProcesso = 0;
 
         for (let i = 1; i <= numeroComponentes; i++) {
             const componente = document.getElementById(`componentes${i}`).value;
@@ -150,6 +152,8 @@
                 numeroRam++
             } else if (componente == 'disco') {
                 numeroDisco++
+            } else if (componente == 'processos') {
+                numeroProceso++
             }
 
             if (numeroCpu == 1) {
@@ -161,6 +165,10 @@
                     componente: componente,
                 });
             } else if (numeroDisco == 1) {
+                parametros.push({
+                    componente: componente,
+                });
+            } else if (numeroProceso == 1) {
                 parametros.push({
                     componente: componente,
                 });
@@ -213,6 +221,7 @@
                 <option value="cpu">CPU</option>
                 <option value="ram">RAM</option>
                 <option value="disco">Disco</option>
+                <option value="processos">Processos</option>
             </select>
             <button class="botao-lixeira" onclick="removerParametro(this)">🗑️</button>
         </div>

@@ -19,10 +19,12 @@ function executar(instrucao) {
     return new Promise(function (resolve, reject) {
         var conexao = mysql.createConnection(mySqlConfig);
         conexao.connect();
-        conexao.query(instrucao, function (erro, resultados) {
+        conexao.query(instrucao, function (erro, resultados, campos) {
             conexao.end();
             if (erro) {
                 reject(erro);
+            } else {
+                resolve(resultados);
             }
             console.log(resultados);
             resolve(resultados);

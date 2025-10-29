@@ -82,13 +82,6 @@
         for (var i = 0; i < modelos.length; i++) {
             const modelo = modelos[i];
 
-            if (modelo.LimiteMaximo == null) {
-                modelo.LimiteMaximo = 0
-            }
-            if (modelo.LimiteMinimo == null) {
-                modelo.LimiteMinimo = 0
-            }
-
             div_definir_parametros.innerHTML += `
             <div class="card-user">
 
@@ -117,14 +110,6 @@
                     <div class="labels">
                         <label id="first">Tipos de Parâmetros Definidos:</label>
                         <label class="label-item">${modelo.TiposParametro}</label>
-                    </div>
-                    <div class="labels">
-                        <label id="first">Limite Mínimo:</label>
-                        <label class="label-item">${modelo.LimiteMinimo}</label>
-                    </div>
-                    <div class="labels">
-                        <label id="first">Limite Máximo:</label>
-                        <label class="label-item">${modelo.LimiteMaximo}</label>
                     </div>
                 </div>
 

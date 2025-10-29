@@ -8,18 +8,12 @@ function cadastrar(nome, email, cnpj, senha, telefone) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrarFuncionarioSemRegiao(nome, email, cpf, senha, telefone, cargo, estadoAtuacao, fkEmpresa) {
+async function cadastrarUsuario(nome, email, cpf, senha, telefone, cargo, fkEmpresa) {
   var instrucaoSql = `
-        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, estadoAtuacao, fkEmpresa) 
-        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${estadoAtuacao}', '${fkEmpresa}');`;
-  return database.executar(instrucaoSql);
-}
-
-function cadastrarFuncionarioComRegiao(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, estadoAtuacao, fkEmpresa) {
-  var instrucaoSql = `
-        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, estadoAtuacao, regiaoAtuacao, fkEmpresa) 
-        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${estadoAtuacao}', '${regiaoAtuacao}', '${fkEmpresa}');`;
-  return database.executar(instrucaoSql);
+        INSERT INTO usuario (nome, cpf, cargo, email, senha, telefone, fkEmpresa) 
+        VALUES ('${nome}', '${cpf}', '${cargo}','${email}','${senha}','${telefone}', '${fkEmpresa}');`;
+  const resultado = await database.executar(instrucaoSql);
+  return resultado.insertId;
 }
 
 function deletarFuncionario(idUsuario) {
@@ -84,13 +78,13 @@ function deletarEmpresa(idEmpresa) {
 
 function verificarAprovados(idEmpresa) {
   var instrucaoSql = `
-    SELECT idUsuario,nome,email,telefone,cargo,regiaoAtuacao from usuario WHERE fkEmpresa = ${idEmpresa};
+    SELECT idUsuario,nome,email,telefone,cargo from usuario WHERE fkEmpresa = ${idEmpresa};
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
 
 module.exports = {
-  cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, cadastrarFuncionarioSemRegiao, deletarFuncionario,
-  cadastrarFuncionarioComRegiao, limparFuncionarios, deletarEmpresa, verificarAprovados
+  cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, deletarFuncionario,
+  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarAprovados
 };

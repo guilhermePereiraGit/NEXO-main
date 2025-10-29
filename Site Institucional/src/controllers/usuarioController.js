@@ -1,4 +1,5 @@
 var usuarioModel = require("../models/usuarioModel");
+var enderecoModel = require("../models/enderecoModel");
 
 function cadastrar(req, res) {
     var nome = req.body.nomeServer;
@@ -37,7 +38,8 @@ function cadastrar(req, res) {
     }
 }
 
-function cadastrarFuncionario(req, res) {
+async function cadastrarFuncionario(req, res) {
+    console.log("Entrou para cadastrarrrrrrrrrrr")
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -46,6 +48,7 @@ function cadastrarFuncionario(req, res) {
     var cargo = req.body.cargoServer;
     var regiaoAtuacao = req.body.regiaoAtuacaoServer;
     var estadoAtuacao = req.body.estadoAtuacaoServer;
+    var zonaAtuacao = req.body.zonaAtuacaoServer;
     var fkEmpresa = req.body.fkEmpresa;
 
     if (nome == undefined) {
@@ -64,41 +67,28 @@ function cadastrarFuncionario(req, res) {
         res.status(400).send("Sua empresa está undefined!");
     } else if (regiaoAtuacao == undefined) {
         res.status(400).send("Sua área de atuação está undefined!");
-    }else {
+    } else if (estadoAtuacao == undefined) {
+        res.status(400).send("Seu estado de atuação está undefined!");
+    } else {
 
-        if (regiaoAtuacao == "") {
-            usuarioModel.cadastrarFuncionarioSemRegiao(nome, email, cpf, senha, telefone, cargo, estadoAtuacao, fkEmpresa)
-                .then(
-                    function (resultado) {
-                        res.json(resultado);
-                    }
-                ).catch(
-                    function (erro) {
-                        console.log(erro);
-                        console.log(
-                            "\nHouve um erro ao realizar o cadastro! Erro: ",
-                            erro.sqlMessage
-                        );
-                        res.status(500).json(erro.sqlMessage);
-                    }
-                );
-        } else {
-            usuarioModel.cadastrarFuncionarioComRegiao(nome, email, cpf, senha, telefone, cargo, regiaoAtuacao, estadoAtuacao, fkEmpresa)
-                .then(
-                    function (resultado) {
-                        res.json(resultado);
-                    }
-                ).catch(
-                    function (erro) {
-                        console.log(erro);
-                        console.log(
-                            "\nHouve um erro ao realizar o cadastro! Erro: ",
-                            erro.sqlMessage
-                        );
-                        res.status(500).json(erro.sqlMessage);
-                    }
-                );
+        const retornoIdRegiao = await enderecoModel.buscarIdRegiao(regiaoAtuacao);
+
+        let retornoIdZona = [];
+        if (zonaAtuacao != "") {
+            retornoIdZona = await enderecoModel.buscarIdZona(zonaAtuacao);
         }
+
+        const retornoIdUsuario = await usuarioModel.cadastrarUsuario(
+            nome, email, senha, cpf, telefone, cargo, fkEmpresa
+        );
+
+        if (retornoIdZona.length > 0) {
+            await enderecoModel.cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegiao);
+        }
+
+        await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao);
+
+        res.status(200).send("Funcionário cadastrado com sucesso!");
     }
 }
 
@@ -126,7 +116,6 @@ function deletarFuncionario(req, res) {
     }
 }
 
-//Login de Empresas
 function autenticar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -137,7 +126,6 @@ function autenticar(req, res) {
         res.status(400).send("Sua senha está indefinida!");
     }
     else {
-        //Tentando acessar como usuário Empresa
         usuarioModel.autenticarEmpresa(email, senha)
             .then(function (resultadoAutenticarEmpresa) {
                 if (resultadoAutenticarEmpresa.length == 1) {

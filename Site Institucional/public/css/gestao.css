@@ -145,6 +145,7 @@
 
 #cargos,
 #regiao_atuacao,
+#zona_atuacao,
 .componentes,
 #input_vies,
 #input_modelos,
@@ -252,6 +253,7 @@
 
 #cargos,
 #regiao_atuacao,
+#zona_atuacao,
 .componentes,
 #input_vies,
 #input_modelos {
@@ -617,6 +619,7 @@ select {
 
     #cargos,
     #regiao_atuacao,
+    #zona_atuacao,
     .componentes,
     #input_vies,
     #input_modelos,
@@ -730,6 +733,7 @@ select {
 
     #cargos,
     #regiao_atuacao,
+    #zona_atuacao,
     .componentes,
     #input_vies,
     #input_modelos,

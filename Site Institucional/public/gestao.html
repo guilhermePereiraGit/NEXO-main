@@ -67,7 +67,7 @@
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
                     <div class="item-card">
                         <label>Cargo:</label>
-                        <select name="cargos" id="cargos" onchange="verificarCargoSelecionado()">
+                        <select name="cargos" id="cargos" onchange="atualizarCampos()">
                             <option value="">Escolha uma opção</option>
                             <option value="Gestor">Gestor</option>
                             <option value="Técnico">Técnico</option>
@@ -78,7 +78,7 @@
                 <div class="part-dois">
                     <div class="item-card">
                         <label>Estado de Atuação:</label>
-                        <select name="estado_atuacao" id="estado_atuacao" onchange="verificarEstadoAtuacao()">
+                        <select name="estado_atuacao" id="estado_atuacao" onchange="atualizarCampos()">
                             <option value="">Selecione uma opção</option>
                             <option value="Acre">Acre</option>
                             <option value="Alagoas">Alagoas</option>
@@ -110,6 +110,7 @@
                         </select>
                     </div>
                     <div class="item-card" id="regioes"></div>
+                    <div class="item-card" id="zonas"></div>
                 </div>
                 <button class="cadastrar" onclick="cadastrarFuncionario()">Cadastrar</button>
             </div>
@@ -200,56 +201,64 @@
             }
         }
 
-        var estadoSelecionado = "";
-        var cargoSelecionado = "";
+        function atualizarCampos() {
+            const estado = estado_atuacao.value;
+            const cargo = cargos.value;
+            const regiaoContainer = regioes;
+            const zonaContainer = zonas;
 
-        function verificarEstadoAtuacao() {
-            estadoSelecionado = document.getElementById("estado_atuacao").value;
-            const regioes = document.getElementById("regioes");
+            const regiaoSelectExistente = document.getElementById("regiao_atuacao");
+            const regiaoSelecionada = regiaoSelectExistente ? regiaoSelectExistente.value : "";
 
-            regioes.innerHTML = "";
+            zonaContainer.innerHTML = "";
 
-            if (estadoSelecionado === "São Paulo" && cargoSelecionado === "Técnico") {
-                console.log("oiiiii")
-                regioes.innerHTML += `
+            if (cargo === "Técnico" && estado === "São Paulo") {
+                if (!regiaoSelectExistente) {
+                    regiaoContainer.innerHTML = `
                 <div class="item-card">
                     <label>Região de Atuação:</label>
-                    <select name="regiao_atuacao" id="regiao_atuacao">
+                    <select name="regiao_atuacao" id="regiao_atuacao" onchange="atualizarCampos()">
                         <option value="">Escolha uma opção</option>
-                        <option value="Centro">Centro</option>
-                        <option value="Norte">Norte</option>
-                        <option value="Sul">Sul</option>
-                        <option value="Leste">Leste</option>
-                        <option value="Oeste">Oeste</option>
+                        <option value="São Paulo">São Paulo</option>
+                        <option value="Campinas">Campinas</option>
+                        <option value="Santos">Santos</option>
+                        <option value="V. do Paraíba">V. do Paraíba</option>
+                        <option value="Sorocaba">Sorocaba</option>
+                        <option value="R. Preto">R. Preto</option>
+                        <option value="S. J. Rio Preto">S. J. Rio Preto</option>
+                        <option value="Bauru">Bauru</option>
+                        <option value="Jundiaí">Jundiaí</option>
+                        <option value="Piracicaba">Piracicaba</option>
+                        <option value="Franca">Franca</option>
                     </select>
                 </div>
+            `;
+                }
+            } else {
+                regiaoContainer.innerHTML = "";
+                return;
+            }
+
+            const regiao = document.getElementById("regiao_atuacao").value || regiaoSelecionada;
+
+            if (cargo === "Técnico" && estado === "São Paulo" && regiao === "São Paulo") {
+                zonaContainer.innerHTML = `
+            <div class="item-card">
+                <label>Zona de Atuação:</label>
+                <select name="zona_atuacao" id="zona_atuacao">
+                    <option value="">Escolha uma opção</option>
+                    <option value="Centro">Centro</option>
+                    <option value="Norte">Norte</option>
+                    <option value="Sul">Sul</option>
+                    <option value="Leste">Leste</option>
+                    <option value="Oeste">Oeste</option>
+                </select>
+            </div>
         `;
             }
         }
 
-        function verificarCargoSelecionado() {
-            cargoSelecionado = document.getElementById("cargos").value;
-            const regioes = document.getElementById("regioes");
 
-            regioes.innerHTML = "";
-
-            if (cargoSelecionado === "Técnico" && estadoSelecionado == "São Paulo") {
-                console.log("oiiiii")
-                regioes.innerHTML += `
-                <div class="item-card">
-                    <label>Região de Atuação:</label>
-                    <select name="regiao_atuacao" id="regiao_atuacao">
-                        <option value="">Escolha uma opção</option>
-                        <option value="Centro">Centro</option>
-                        <option value="Norte">Norte</option>
-                        <option value="Sul">Sul</option>
-                        <option value="Leste">Leste</option>
-                        <option value="Oeste">Oeste</option>
-                    </select>
-                </div>
-        `;
-            }
-        }
 
         function cadastrarFuncionario() {
             var nome = input_nome.value;
@@ -259,9 +268,11 @@
             var senha = input_senha.value;
             var cargo = cargos.value;
             var estadoAtuacao = estado_atuacao.value;
+            var zonaAtuacao = zona_atuacao.value;
+            var cargoSelecionado = cargos.value
             var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
-            if (estadoAtuacao == "São Paulo") {
+            if (estadoAtuacao == "São Paulo" && cargoSelecionado == "Técnico") {
                 var regiaoAtuacao = regiao_atuacao.value;
                 if (
                     nome == "" ||
@@ -308,6 +319,7 @@
                     cargoServer: cargo,
                     regiaoAtuacaoServer: regiaoAtuacao,
                     estadoAtuacaoServer: estadoAtuacao,
+                    zonaAtuacaoServer: zonaAtuacao,
                     fkEmpresa: idEmpresa
                 }),
             })
