@@ -10,7 +10,20 @@ CREATE TABLE IF NOT EXISTS empresa (
     senha VARCHAR(30),
     telefone VARCHAR(14),
     status VARCHAR(30)
-);	
+);
+
+-- Usuário Técnico/Gestor/Empresa
+CREATE TABLE IF NOT EXISTS usuario (
+	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(80),
+    cpf VARCHAR(14),
+    cargo VARCHAR(45),
+    email VARCHAR(70),
+    senha VARCHAR(30),
+    telefone VARCHAR(14),
+    fkEmpresa INT,
+    foreign key fk_empresa_usuario2 (fkEmpresa) references empresa(idEmpresa)
+);
 
 -- Estado
 CREATE TABLE IF NOT EXISTS estado (
@@ -34,21 +47,14 @@ CREATE TABLE IF NOT EXISTS zona (
     foreign key fkRegiao(fkRegiao) references regiao(idRegiao)
 );
 
--- Usuário Técnico/Gestor/Empresa
-CREATE TABLE IF NOT EXISTS usuario (
-	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(80),
-    cpf VARCHAR(14),
-    cargo VARCHAR(45),
-    email VARCHAR(70),
-    senha VARCHAR(30),
-    telefone VARCHAR(14),
-    fkEmpresa INT,
-    foreign key fk_empresa_usuario2 (fkEmpresa) references empresa(idEmpresa),
-    fkregiao int,
-    foreign key fkregiao(fkregiao) references regiao(idRegiao),
-    fkzona int,
-    foreign key fkzona(fkzona) references zona(idZona)
+CREATE TABLE IF NOT EXISTS areasAtuacao (
+	fkRegiao INT,
+    fkUsuario INT,
+    PRIMARY KEY(fkRegiao, fkUsuario),
+    fkZona INT,
+    foreign key fkZona(fkZona) references zona(idZona),
+    foreign key fkRegiao(fkRegiao) references regiao(idRegiao),
+    foreign key fkUsuario(fkUsuario) references usuario(idUsuario)
 );
 
 -- Modelo
@@ -63,9 +69,9 @@ CREATE TABLE IF NOT EXISTS modelo (
 );
 
 -- Tipo Parâmetro
-CREATE TABLE IF NOT EXISTS tipoParametro (
-	idTipoParametro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	componente varchar(45),
+CREATE TABLE IF NOT EXISTS componente (
+	idComponente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	nome varchar(45),
     status varchar(45)
 );
 
@@ -75,9 +81,9 @@ CREATE TABLE IF NOT EXISTS parametro (
     limiteMin varchar(45),
     limiteMax varchar(45),
     fkModelo INT,
-    fkTipoParametro INT,
+    fkComponente INT,
     foreign key fk_modelo_parametro (fkModelo) references modelo(idModelo),
-    foreign key fk_tipo_parametro_parametro (fkTipoParametro) references tipoParametro(idTipoParametro)
+    foreign key fk_componente_parametro (fkComponente) references componente(idComponente)
 );
 
 -- Endereço
