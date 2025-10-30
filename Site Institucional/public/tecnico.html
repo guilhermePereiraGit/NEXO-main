@@ -43,11 +43,11 @@
                 <div class="part-dois">
                     <div class="item-card">
                         <label for="input_cep">Cep:</label>
-                        <input type="text" id="input_cep" maxlength="8" oninput="buscarCEP()" placeholder="CEP">
+                        <input type="text" id="input_cep">
                     </div>
                     <div class="item-card">
                         <label>Estado:</label>
-                        <label id="estado"></label>
+                        <div id="estado"><select name="estado_atuacao" id="estado_atuacao"></select></label>
                     </div>
                     <div class="item-card">
                         <label>Cidade:</label>
@@ -221,53 +221,6 @@
         window.location.reload();
     }
 
-    async function buscarCEP() {
-        let cepDigitado = input_cep.value;
-
-        let retornoConvertido =
-            await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`)
-                .then((resposta) => resposta.json())
-
-        estado.innerHTML = `${retornoConvertido.estado}`
-        cidade.innerHTML = `${retornoConvertido.localidade}`
-        bairro.innerHTML = `${retornoConvertido.bairro}`
-        rua.innerHTML = `${retornoConvertido.logradouro}`
-
-        if (retornoConvertido.uf === "SP") {
-            let prefixo = cepDigitado.substring(0, 2);
-            let regiaoTexto = "";
-
-            switch (true) {
-                case (prefixo === "01"):
-                case (prefixo === "02" && cepDigitado.startsWith("010") === false):
-                    regiaoTexto = "Centro";
-                    break;
-                case (prefixo === "02"):
-                    regiaoTexto = "Zona Norte";
-                    break;
-                case (prefixo === "03" || prefixo === "08"):
-                    regiaoTexto = "Zona Leste";
-                    break;
-                case (prefixo === "04"):
-                    regiaoTexto = "Zona Sul";
-                    break;
-                case (prefixo === "05"):
-                    regiaoTexto = "Zona Oeste";
-                    break;
-                case (prefixo === "06"):
-                    regiaoTexto = "Região Metropolitana (ABC)";
-                    break;
-                default:
-                    regiaoTexto = "Região não identificada";
-            }
-
-            regiao.innerHTML = `
-                <label>Região:</label>
-                <label id="regiao_label">${regiaoTexto}</label>
-            `;
-        }
-    }
-
     function atualizarTotens() {
         const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
         const container = document.getElementById("totens");
@@ -338,7 +291,6 @@
         document.getElementById("input_qtd_de_totens").value = numeroTotens;
     }
 
-
     async function cadastrarEndereco() {
         var cep = input_cep.value;
         var estado = document.getElementById("estado").innerText;
@@ -355,7 +307,7 @@
             var zona = ""
         }
 
-        await fetch("/endereco/cadastrarEndereco", {
+        await fetch("/endereco/cadastrarEnderecoTotem", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -456,6 +408,129 @@
             .catch(erro => {
                 console.log(`#ERRO: ${erro}`);
             });
+    }
+
+    var estados = []
+    function carregarEstados() {
+        fetch("/endereco/buscarEstados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        estados = data;
+                        plotarEstadosSelect(estados)
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            });
+    }
+
+    function plotarEstadosSelect(estados) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < estados.length; i++) {
+            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+        }
+
+        estado_atuacao.innerHTML = option;
+    }
+
+    var regioes = [];
+    function atualizarCampos() {
+        var selectEstado = document.getElementById("estado_atuacao");
+        var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
+        const estado = estado_atuacao.value;
+        const cargo = cargos.value;
+        const regiaoContainer = regioes;
+        const zonaContainer = zonas;
+
+        fetch("/endereco/buscarRegioes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idEstadoServer: estado
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        console.log(data);
+                        regioes = data;
+                        plotarRegioesSelect(regioes);
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+    function plotarRegioesSelect(regioes) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < regioes.length; i++) {
+            option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
+        }
+
+        regiao_atuacao.innerHTML = option;
+    }
+
+    var zonas = []
+    function procurarZonas() {
+        var cargo = cargos.value;
+
+        if (cargo == "Técnico") {
+            var selectRegiao = document.getElementById("regiao_atuacao");
+            var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+            const regiao = regiao_atuacao.value;
+
+            fetch("/endereco/buscarZonas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    idRegiaoServer: regiao
+                }),
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(data => {
+                            zonas = data;
+                            if (zonas.length > 0) {
+                                plotarZonasSelect(zonas);
+                            } else {
+                                zona_atuacao.innerHTML = "";
+                            }
+                        })
+                    } else {
+                        console.log("Erro ao Buscar Dados!");
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+        }
+    }
+
+    function plotarZonasSelect(zonas) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < zonas.length; i++) {
+            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
+        }
+
+        zona_atuacao.innerHTML = option;
     }
 </script>
 

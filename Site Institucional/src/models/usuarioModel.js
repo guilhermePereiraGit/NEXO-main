@@ -76,27 +76,36 @@ function deletarEmpresa(idEmpresa) {
   return database.executar(instrucaoSql);
 }
 
-function verificarTecnicosAprovados(idEmpresa) {
+function verificarAprovados(idEmpresa) {
   var instrucaoSql = `
-    SELECT u.idUsuario, u.nome, u.email, u.telefone, u.cargo, z.nome as regiaoAtuacao
+    SELECT 
+        u.idUsuario,
+        u.nome,
+        u.email,
+        u.senha,
+        u.cargo,
+        u.telefone,
+        COALESCE(z.nome, NULL) AS NomeZona,
+        COALESCE(r1.nome, r2.nome) AS NomeRegiao,
+        COALESCE(e1.nome, e2.nome) AS NomeEstado
     FROM usuario u
-    LEFT JOIN areasAtuacao a ON u.idUsuario = a.fkusuario
+    -- 🔹 Caso o usuário esteja em uma área (com ou sem zona)
+    LEFT JOIN areasAtuacao a ON a.fkUsuario = u.idUsuario
     LEFT JOIN zona z ON a.fkZona = z.idZona
-    WHERE u.fkEmpresa = ${idEmpresa} AND u.cargo = "Técnico";
+    LEFT JOIN regiao r1 ON COALESCE(z.fkRegiao, a.fkRegiao) = r1.idRegiao
+    LEFT JOIN estado e1 ON r1.fkEstado = e1.idEstado
+    -- 🔹 Caso o usuário esteja apenas em uma região (sem zona)
+    LEFT JOIN regioesAtuacao ra ON ra.fkUsuario = u.idUsuario
+    LEFT JOIN regiao r2 ON ra.fkRegiao = r2.idRegiao
+    LEFT JOIN estado e2 ON r2.fkEstado = e2.idEstado
+    WHERE u.fkEmpresa = ${idEmpresa};
+
   `;
   return database.executar(instrucaoSql);
 }
 
-function verificarGestoresAprovados(idEmpresa){
-    var instrucaoSql = `
-        SELECT u.idUsuario, u.nome, u.email, u.telefone, u.cargo
-        FROM usuario u 
-        WHERE fkEmpresa = ${idEmpresa} AND cargo = "Gestor";
-    `;
-    return database.executar(instrucaoSql);
-}
 
 module.exports = {
   cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, deletarFuncionario,
-  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarTecnicosAprovados, verificarGestoresAprovados
+  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarAprovados
 };

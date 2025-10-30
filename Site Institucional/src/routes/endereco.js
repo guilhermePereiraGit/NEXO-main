@@ -19,4 +19,8 @@ router.post("/buscarZonas", function (req, res){
     enderecoController.buscarZonas(req, res);
 })
 
+router.post("/cadastrarEnderecoTotem", function (req, res){
+    enderecoController.cadastrarEnderecoTotem(req, res);
+})
+
 module.exports = router;

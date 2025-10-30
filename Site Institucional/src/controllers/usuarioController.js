@@ -286,10 +286,9 @@ function deletarEmpresa(req, res) {
 
 async function verificarAprovados(req, res) {
     var idEmpresa = req.body.idEmpresaServer;
-    var retornoUsuarioGestores = await usuarioModel.verificarGestoresAprovados(idEmpresa)
-    var retornoUsuarioTecnicos = await usuarioModel.verificarTecnicosAprovados(idEmpresa)
+    var retornoUsuarios = await usuarioModel.verificarAprovados(idEmpresa)
     
-    res.json([retornoUsuarioGestores, retornoUsuarioTecnicos]);
+    res.json(retornoUsuarios);
 }
 
 module.exports = {

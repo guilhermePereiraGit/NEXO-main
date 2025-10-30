@@ -21,42 +21,31 @@ async function cadastrarModelo(req, res) {
     }
 
     try {
-        console.log("Dados recebidos:", { nomeModelo, descricao, parametros, fkEmpresa });
 
         for (var i = 0; i < parametros.length; i++) {
-            console.log(`Iteração ${i + 1} - componente:`, parametros[i].componente);
 
             const resultadoBuscarSeTipoParametroJaExiste =
                 await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente);
 
-            console.log("Resultado busca tipo:", resultadoBuscarSeTipoParametroJaExiste);
-
             if (resultadoBuscarSeTipoParametroJaExiste.length > 0) {
-                fkTipoParametroVariavel = resultadoBuscarSeTipoParametroJaExiste[0].idTipoParametro;
-                console.log("Tipo existente:", fkTipoParametroVariavel);
+                fkTipoParametroVariavel = resultadoBuscarSeTipoParametroJaExiste[0].idComponente;
             } else {
-                console.log("Cadastrando novo tipo...");
                 await modeloModel.cadastrarTipoParametro(parametros[i].componente);
 
                 const resultadoBuscarIdTipoParametro = await modeloModel.buscarIdTipoParametro();
-                fkTipoParametroVariavel = resultadoBuscarIdTipoParametro[0].idTipoParametro;
-                console.log("Novo tipo cadastrado:", fkTipoParametroVariavel);
+                fkTipoParametroVariavel = resultadoBuscarIdTipoParametro[0].idComponente;
             }
 
             fkTipoParametro.push(fkTipoParametroVariavel);
         }
 
-        console.log("Saiu do for de tipoParametro, cadastrando modelo...");
         await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);
 
         const resultadoBuscarIdModelo = await modeloModel.buscarIdModelo();
-        console.log("Resultado buscarIdModelo:", resultadoBuscarIdModelo);
 
         fkModelo = resultadoBuscarIdModelo[0];
-        console.log("ID modelo:", fkModelo);
 
         for (var i = 0; i < parametros.length; i++) {
-            console.log(`Cadastrando parâmetro ${i + 1}: tipoParametro = ${fkTipoParametro[i]}`);
             await modeloModel.cadastrarParametro(fkModelo.idModelo, fkTipoParametro[i]);
         }
 

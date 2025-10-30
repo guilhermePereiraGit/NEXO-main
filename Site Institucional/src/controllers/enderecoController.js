@@ -14,10 +14,7 @@ async function cadastrarEndereco(req, res) {
         return res.status(400).json({ erro: "Parâmetros estão undefined!" });
     }
 
-    console.log('oiii', zona)
-
     if (zona == undefined) {
-        console.log("Entrou no if")
         try {
             const resultadoBuscarEnderecoExistente = await enderecoModel.buscarEnderecoExistente(cidade, rua, numero, complemento)
 
@@ -97,6 +94,17 @@ async function buscarZonas(req, res) {
     res.json(zonasBuscadas);
 }
 
+async function cadastrarEnderecoTotem(req, res){
+    const cep = req.body.cepServer
+    const estado = req.body.estadoServer
+    const bairro = req.body.bairroServer
+    const cidade = req.body.cidadeServer
+    const rua = req.body.ruaServer
+    const numero = req.body.numeroServer
+    const complemento = req.body.complementoServer
+    const zona = req.body.zonaServer
+}
+
 module.exports = {
-    cadastrarEndereco, buscarEstados, buscarRegioes, buscarZonas
+    cadastrarEndereco, buscarEstados, buscarRegioes, buscarZonas, cadastrarEnderecoTotem
 };

@@ -109,9 +109,7 @@
 
                 if (resposta.ok) {
                     resposta.json().then(data => {
-                        console.log(data);
-                        aprovados = [...data[0], ...data[1]];
-
+                        aprovados = data;
                         if (aprovados.length > 0) {
                             gerarCardsUsuarios();
                         } else {
@@ -137,47 +135,56 @@
         }
 
         function gerarCardsUsuarios() {
+            div_aprovados.innerHTML = "";
+
             for (var i = 0; i < aprovados.length; i++) {
-                if (aprovados[i].cargo == "Técnico") {
-                    div_aprovados.innerHTML += `
-            <div class = "card-user">
-                <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                var user = aprovados[i];
+                var cardHTML = `
+            <div class="card-user">
+                <div class="card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${user.nome}</label></div>
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${user.email}</label></div>
+                    <div class="labels"><label id="first">Senha:</label><label class="label-item">${user.senha}</label></div>
                 </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${aprovados[i].cargo}</label></div>
-                    <div class="labels"><label id="first">Área de Atuação:</label><label class="label-item">${aprovados[i].regiaoAtuacao}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
-                    <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idUsuario})">Cancelar</button>    
-                    </div>
-                </div>
-            </div>
-            `;
-                } else {
-                    div_aprovados.innerHTML += `
-            <div class = "card-user">
-                <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${aprovados[i].cargo}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
-                    <div class = "buttons">
-                        <button class = "reprovar" onclick="limparFuncionarios(${aprovados[i].idUsuario})">Cancelar</button>    
-                    </div>
-                </div>
-            </div>
+                <div class="card-second">
+                    <div class="labels"><label id="first">Cargo:</label><label class="label-item">${user.cargo}</label></div>
+        `;
+
+                if (user.cargo == "Técnico") {
+                    if (user.NomeZona != null) {
+                        cardHTML += `
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
+                    <div class="labels"><label id="first">Estado:</label><label class="label-item">${user.NomeEstado}</label></div>
+                    <div class="labels"><label id="first">Região:</label><label class="label-item">${user.NomeRegiao}</label></div>
+                    <div class="labels"><label id="first">Zona:</label><label class="label-item">${user.NomeZona}</label></div>
+                `;
+                    } else {
+                        cardHTML += `
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
+                    <div class="labels"><label id="first">Estado:</label><label class="label-item">${user.NomeEstado}</label></div>
+                    <div class="labels"><label id="first">Região:</label><label class="label-item">${user.NomeRegiao}</label></div>
+                `;
+                    }
+                } else if (user.cargo == "Gestor") {
+                    cardHTML += `
+                <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
             `;
                 }
+
+                cardHTML += `
+                </div>
+                <div class="card-second">
+                    <div class="buttons">
+                        <button class="reprovar" onclick="limparFuncionarios(${user.idUsuario})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+        `;
+
+                div_aprovados.innerHTML += cardHTML;
             }
         }
+
 
         var estados = []
         function carregarEstados() {
