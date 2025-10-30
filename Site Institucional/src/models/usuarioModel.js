@@ -76,15 +76,27 @@ function deletarEmpresa(idEmpresa) {
   return database.executar(instrucaoSql);
 }
 
-function verificarAprovados(idEmpresa) {
+function verificarTecnicosAprovados(idEmpresa) {
   var instrucaoSql = `
-    SELECT idUsuario,nome,email,telefone,cargo from usuario WHERE fkEmpresa = ${idEmpresa};
+    SELECT u.idUsuario, u.nome, u.email, u.telefone, u.cargo, z.nome as regiaoAtuacao
+    FROM usuario u
+    LEFT JOIN areasAtuacao a ON u.idUsuario = a.fkusuario
+    LEFT JOIN zona z ON a.fkZona = z.idZona
+    WHERE u.fkEmpresa = ${idEmpresa} AND u.cargo = "Técnico";
   `;
-  console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
+}
+
+function verificarGestoresAprovados(idEmpresa){
+    var instrucaoSql = `
+        SELECT u.idUsuario, u.nome, u.email, u.telefone, u.cargo
+        FROM usuario u 
+        WHERE fkEmpresa = ${idEmpresa} AND cargo = "Gestor";
+    `;
+    return database.executar(instrucaoSql);
 }
 
 module.exports = {
   cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, deletarFuncionario,
-  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarAprovados
+  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarTecnicosAprovados, verificarGestoresAprovados
 };

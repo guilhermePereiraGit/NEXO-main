@@ -405,4 +405,3 @@ INSERT INTO zona (nome, fkRegiao)
 SELECT 'Centro', idRegiao FROM regiao WHERE nome = 'Região Metropolitana de Manaus';
 
 insert into usuario_nexo(nome,email,senha) values ("AdminUserNexo","nexo.sptech@gmail.com","12345");
-select * from zona;

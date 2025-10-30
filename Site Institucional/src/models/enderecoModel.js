@@ -44,21 +44,43 @@ function buscarIdZona(zonaAtuacao) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegiao){
+function cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegiao) {
     const instrucaoSql = `
-        INSERT INTO areasAtuacao (fkRegiao, fkUsuario, fkZona) values (${retornoIdRegiao}, ${retornoIdUsuario}, ${retornoIdZona}]);
+        INSERT INTO areasAtuacao (fkRegiao, fkUsuario, fkZona) values (${retornoIdRegiao}, ${retornoIdUsuario}, ${retornoIdZona});
     `
     return database.executar(instrucaoSql);
 }
 
-function cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao){
+function cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao) {
     const instrucaoSql = `
         INSERT INTO regioesAtuacao (fkRegiao, fkUsuario) values (${retornoIdRegiao}, ${retornoIdUsuario});
     `
     return database.executar(instrucaoSql);
 }
 
+function buscarEstados() {
+    const instrucaoSql = `
+        SELECT idEstado as IdEstado, nome as Nome from estado;
+    `
+    return database.executar(instrucaoSql);
+}
+
+function buscarRegioes(idEstado) {
+    const instrucaoSql = `
+        SELECT idRegiao as IdRegiao, nome as Nome from regiao where fkEstado = ${idEstado};
+    `
+    return database.executar(instrucaoSql);
+}
+
+function buscarZonas(idRegiao) {
+    const instrucaoSql = `
+        SELECT idZona as IdZona, nome as Nome from zona where fkRegiao = ${idRegiao};
+    `
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     cadastrarEnderecoSemRegiao, buscarEnderecoExistente, cadastrarEnderecoComRegiao, buscarIdEstado,
-    buscarIdRegiao, buscarIdZona, cadastrarUsuarioComZona, cadastrarUsuarioComRegiao
+    buscarIdRegiao, buscarIdZona, cadastrarUsuarioComZona, cadastrarUsuarioComRegiao, buscarEstados,
+    buscarRegioes, buscarZonas
 };

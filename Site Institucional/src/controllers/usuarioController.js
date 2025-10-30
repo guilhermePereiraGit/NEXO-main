@@ -39,7 +39,6 @@ function cadastrar(req, res) {
 }
 
 async function cadastrarFuncionario(req, res) {
-    console.log("Entrou para cadastrarrrrrrrrrrr")
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -71,22 +70,15 @@ async function cadastrarFuncionario(req, res) {
         res.status(400).send("Seu estado de atuação está undefined!");
     } else {
 
-        const retornoIdRegiao = await enderecoModel.buscarIdRegiao(regiaoAtuacao);
-
-        let retornoIdZona = [];
-        if (zonaAtuacao != "") {
-            retornoIdZona = await enderecoModel.buscarIdZona(zonaAtuacao);
-        }
-
         const retornoIdUsuario = await usuarioModel.cadastrarUsuario(
             nome, email, senha, cpf, telefone, cargo, fkEmpresa
         );
 
-        if (retornoIdZona.length > 0) {
-            await enderecoModel.cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegiao);
+        if (zonaAtuacao != "") {
+            await enderecoModel.cadastrarUsuarioComZona(zonaAtuacao, retornoIdUsuario, regiaoAtuacao);
         }
 
-        await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao);
+        await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, regiaoAtuacao);
 
         res.status(200).send("Funcionário cadastrado com sucesso!");
     }
@@ -121,7 +113,7 @@ function autenticar(req, res) {
     var senha = req.body.senhaServer;
 
     if (email == undefined) {
-        res.status(400).send("Seu email está undefined!");
+        res.status(400).send("Seu email está indefinido!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está indefinida!");
     }
@@ -292,23 +284,12 @@ function deletarEmpresa(req, res) {
     }
 }
 
-function verificarAprovados(req, res) {
+async function verificarAprovados(req, res) {
     var idEmpresa = req.body.idEmpresaServer;
-    usuarioModel.verificarAprovados(idEmpresa)
-        .then(
-            function (resultado) {
-                res.json(resultado);
-            }
-        ).catch(
-            function (erro) {
-                console.log(erro);
-                console.log(
-                    "\nHouve um erro ao realizar Verificação! Erro: ",
-                    erro.sqlMessage
-                );
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
+    var retornoUsuarioGestores = await usuarioModel.verificarGestoresAprovados(idEmpresa)
+    var retornoUsuarioTecnicos = await usuarioModel.verificarTecnicosAprovados(idEmpresa)
+    
+    res.json([retornoUsuarioGestores, retornoUsuarioTecnicos]);
 }
 
 module.exports = {

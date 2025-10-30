@@ -67,7 +67,7 @@
                     <button class="gerar-senha" onclick="gerarSenha()">Gerar Senha</button>
                     <div class="item-card">
                         <label>Cargo:</label>
-                        <select name="cargos" id="cargos">
+                        <select name="cargos" id="cargos" onchange="atualizarCampos()">
                             <option value="">Escolha uma opção</option>
                             <option value="Gestor">Gestor</option>
                             <option value="Técnico">Técnico</option>
@@ -80,12 +80,8 @@
                         <label>Estado de Atuação:</label>
                         <select name="estado_atuacao" id="estado_atuacao" onchange="atualizarCampos()"></select>
                     </div>
-                    <div class="item-card" id="regioes">
-                        <select name="regiao_atuacao" id="regiao_atuacao" onchange="procurarZonas()"></select>
-                    </div>
-                    <div class="item-card" id="zonas">
-                        <select name="zona_atuacao" id="zona_atuacao"></select>
-                    </div>
+                    <div class="item-card" id="regioes"></div>
+                    <div class="item-card" id="zonas"></div>
                 </div>
                 <button class="cadastrar" onclick="cadastrarFuncionario()">Cadastrar</button>
             </div>
@@ -110,16 +106,13 @@
                 if (resposta.ok) {
                     resposta.json().then(data => {
                         console.log(data);
-                        aprovados = [...data[0], ...data[1]];
-
+                        aprovados = data;
                         if (aprovados.length > 0) {
                             gerarCardsUsuarios();
                         } else {
                             nadaPorAquiUsuarios();
                         }
-                    });
-
-
+                    })
                 } else {
                     console.log("Erro ao Buscar Dados!");
                 }
@@ -200,107 +193,74 @@
                 });
         }
 
-        function plotarEstadosSelect(estados) {
-            var option = `<option value="">Selecione uma opção</option>`;
+        function plotarEstadosSelect(estados){
+            var option = ""
 
-            for (var i = 0; i < estados.length; i++) {
-                option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+            for(var i = 0; i < estados.length; i++){
+                option += `option value="${estados[i].IdEstado}">${estados[i].Nome}</option`
             }
-
-            estado_atuacao.innerHTML = option;
+            
+            estado_atuacao.innerHTML += option
         }
 
-        var regioes = [];
         function atualizarCampos() {
-            var selectEstado = document.getElementById("estado_atuacao");
-            var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
             const estado = estado_atuacao.value;
             const cargo = cargos.value;
             const regiaoContainer = regioes;
             const zonaContainer = zonas;
 
-            fetch("/endereco/buscarRegioes", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    idEstadoServer: estado
-                }),
-            })
-                .then(function (resposta) {
-                    if (resposta.ok) {
-                        resposta.json().then(data => {
-                            console.log(data);
-                            regioes = data;
-                            plotarRegioesSelect(regioes);
-                        })
-                    } else {
-                        console.log("Erro ao Buscar Dados!");
-                    }
-                })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
-        }
+            const regiaoSelectExistente = document.getElementById("regiao_atuacao");
+            const regiaoSelecionada = regiaoSelectExistente ? regiaoSelectExistente.value : "";
 
-        function plotarRegioesSelect(regioes) {
-            var option = `<option value="">Selecione uma opção</option>`;
+            zonaContainer.innerHTML = "";
 
-            for (var i = 0; i < regioes.length; i++) {
-                option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
+            if (cargo === "Técnico" && estado === "São Paulo") {
+                if (!regiaoSelectExistente) {
+                    regiaoContainer.innerHTML = `
+                <div class="item-card">
+                    <label>Região de Atuação:</label>
+                    <select name="regiao_atuacao" id="regiao_atuacao" onchange="atualizarCampos()">
+                        <option value="">Escolha uma opção</option>
+                        <option value="São Paulo">São Paulo</option>
+                        <option value="Campinas">Campinas</option>
+                        <option value="Santos">Santos</option>
+                        <option value="V. do Paraíba">V. do Paraíba</option>
+                        <option value="Sorocaba">Sorocaba</option>
+                        <option value="R. Preto">R. Preto</option>
+                        <option value="S. J. Rio Preto">S. J. Rio Preto</option>
+                        <option value="Bauru">Bauru</option>
+                        <option value="Jundiaí">Jundiaí</option>
+                        <option value="Piracicaba">Piracicaba</option>
+                        <option value="Franca">Franca</option>
+                    </select>
+                </div>
+            `;
+                }
+            } else {
+                regiaoContainer.innerHTML = "";
+                return;
             }
 
-            regiao_atuacao.innerHTML = option;
-        }
+            const regiao = document.getElementById("regiao_atuacao").value || regiaoSelecionada;
 
-        var zonas = []
-        function procurarZonas() {
-            var cargo = cargos.value;
-
-            if (cargo == "Técnico") {
-                var selectRegiao = document.getElementById("regiao_atuacao");
-                var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
-                const regiao = regiao_atuacao.value;
-
-                fetch("/endereco/buscarZonas", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        idRegiaoServer: regiao
-                    }),
-                })
-                    .then(function (resposta) {
-                        if (resposta.ok) {
-                            resposta.json().then(data => {
-                                zonas = data;
-                                if (zonas.length > 0) {
-                                    plotarZonasSelect(zonas);
-                                } else {
-                                    zona_atuacao.innerHTML = "";
-                                }
-                            })
-                        } else {
-                            console.log("Erro ao Buscar Dados!");
-                        }
-                    })
-                    .catch(function (resposta) {
-                        console.log(`#ERRO: ${resposta}`);
-                    });
+            if (cargo === "Técnico" && estado === "São Paulo" && regiao === "São Paulo") {
+                zonaContainer.innerHTML = `
+            <div class="item-card">
+                <label>Zona de Atuação:</label>
+                <select name="zona_atuacao" id="zona_atuacao">
+                    <option value="">Escolha uma opção</option>
+                    <option value="Centro">Centro</option>
+                    <option value="Norte">Norte</option>
+                    <option value="Sul">Sul</option>
+                    <option value="Leste">Leste</option>
+                    <option value="Oeste">Oeste</option>
+                </select>
+            </div>
+        `;
             }
         }
 
-        function plotarZonasSelect(zonas) {
-            var option = `<option value="">Selecione uma opção</option>`;
 
-            for (var i = 0; i < zonas.length; i++) {
-                option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
-            }
-
-            zona_atuacao.innerHTML = option;
-        }
 
         function cadastrarFuncionario() {
             var nome = input_nome.value;
@@ -308,11 +268,44 @@
             var cpf = input_cpf.value;
             var telefone = input_telefone.value;
             var senha = input_senha.value;
+            var cargo = cargos.value;
             var estadoAtuacao = estado_atuacao.value;
             var zonaAtuacao = zona_atuacao.value;
-            var regiaoAtuacao = regiao_atuacao.value;
-            var cargo = cargos.value
+            var cargoSelecionado = cargos.value
             var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+            if (estadoAtuacao == "São Paulo" && cargoSelecionado == "Técnico") {
+                var regiaoAtuacao = regiao_atuacao.value;
+                if (
+                    nome == "" ||
+                    email == "" ||
+                    senha == "" ||
+                    cpf == "" ||
+                    telefone == "" ||
+                    senha == "" ||
+                    cargo == "" ||
+                    estadoAtuacao == "" ||
+                    regiaoAtuacao == ""
+                ) {
+                    resposta.innerHTML = "Preencha todos os campos"
+                    return false;
+                }
+            } else {
+                var regiaoAtuacao = "";
+                if (
+                    nome == "" ||
+                    email == "" ||
+                    senha == "" ||
+                    cpf == "" ||
+                    telefone == "" ||
+                    senha == "" ||
+                    cargo == "" ||
+                    estadoAtuacao == ""
+                ) {
+                    resposta.innerHTML = "Preencha todos os campos"
+                    return false;
+                }
+            }
 
             fetch("/usuarios/cadastrarFuncionario", {
                 method: "POST",
@@ -396,17 +389,8 @@
                 var indice = Math.floor(Math.random() * teclado.length); senhaAleatoria
                     += teclado[indice];
             } document.getElementById("input_senha").value = senhaAleatoria;
-        }
-
-        function abrirPopupUsuario() {
-            document.getElementById("popupusuario").style.display = "flex";
-            carregarEstados();
-        }
-
-        function fecharPopupUsuario() {
+        } function abrirPopupUsuario() { document.getElementById("popupusuario").style.display = "flex"; } function fecharPopupUsuario() {
             document.getElementById("popupusuario").style.display = "none"; window.location.reload();
-        }
-
-    </script>
+        } </script>
 
 </html>

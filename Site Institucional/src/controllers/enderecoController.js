@@ -14,7 +14,7 @@ async function cadastrarEndereco(req, res) {
         return res.status(400).json({ erro: "Parâmetros estão undefined!" });
     }
 
-    console.log('oiii',zona)
+    console.log('oiii', zona)
 
     if (zona == undefined) {
         console.log("Entrou no if")
@@ -75,6 +75,28 @@ async function cadastrarEndereco(req, res) {
     }
 }
 
+async function buscarEstados(_, res) {
+    var estadosBuscados = await enderecoModel.buscarEstados();
+
+    res.json(estadosBuscados);
+}
+
+async function buscarRegioes(req, res) {
+    var idEstado = req.body.idEstadoServer;
+
+    var regioesBuscadas = await enderecoModel.buscarRegioes(idEstado);
+
+    res.json(regioesBuscadas);
+}
+
+async function buscarZonas(req, res) {
+    var idRegiao = req.body.idRegiaoServer;
+
+    var zonasBuscadas = await enderecoModel.buscarZonas(idRegiao);
+
+    res.json(zonasBuscadas);
+}
+
 module.exports = {
-    cadastrarEndereco
+    cadastrarEndereco, buscarEstados, buscarRegioes, buscarZonas
 };
