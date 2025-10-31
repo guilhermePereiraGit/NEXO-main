@@ -63,7 +63,7 @@
                     </div>
                     <div class="localizacao">
                         <div class="bloco">
-                            <h2>MAC: <span>A4:C2:9F:31:7B:E2</span></h2>
+                            <h2>MAC: <span>154724027927939</span></h2>
                             <h2>Modelo: <span>AA0123</span></h2>
                             <h2>Status: <span>Ligado</span></h2>
                             <h2>CEP: <span>00222-333</span></h2>
@@ -163,33 +163,26 @@
                                                     <div class="part-parametros">
                             <div class="parametro">
                                 <h2>CPU: </h2>
-                                <div class="part" style="background-color: #4ed259;">25%</div>
-                                <div class="part" style="background-color: #FFD700;">50%</div>
-                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #4ed259;">45%</div>
+                                <div class="part" style="background-color: #FFD700;">75%</div>
+                                <div class="part" style="background-color: #FF8C00;">80%</div>
                                 <div class="part" style="background-color: #FF0000;">100%</div>
                             </div>
                             <div class="parametro">
                                 <h2>RAM: </h2>
-                                <div class="part" style="background-color: #4ed259;">25%</div>
-                                <div class="part" style="background-color: #FFD700;">50%</div>
-                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #4ed259;">75%</div>
+                                <div class="part" style="background-color: #FFD700;">85%</div>
+                                <div class="part" style="background-color: #FF8C00;">90%</div>
                                 <div class="part" style="background-color: #FF0000;">100%</div>
                             </div>
                         </div>
                         <div class="part-parametros">
                             <div class="parametro">
                                 <h2>DISCO: </h2>
-                                <div class="part" style="background-color: #4ed259;">25%</div>
-                                <div class="part" style="background-color: #FFD700;">50%</div>
-                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #4ed259;">68%</div>
+                                <div class="part" style="background-color: #FFD700;">75%</div>
+                                <div class="part" style="background-color: #FF8C00;">88%</div>
                                 <div class="part" style="background-color: #FF0000;">100%</div>
-                            </div>
-                            <div class="parametro">
-                                <h2>PROC: </h2>
-                                <div class="part" style="background-color: #4ed259;">100</div>
-                                <div class="part" style="background-color: #FFD700;">150</div>
-                                <div class="part" style="background-color: #FF8C00;">200</div>
-                                <div class="part" style="background-color: #FF0000;">250</div>
                             </div>
                         </div>
                         </div>
@@ -209,13 +202,13 @@
         consumoCPU = 70;
         sobraCPU = 30;
 
-        if (consumoCPU < 25) {
+        if (consumoCPU < 45) {
             corCPUPreenchida = "#4ed259"
-        } else if (consumoCPU <= 50) {
-            corCPUPreenchida = "#FFD700";
         } else if (consumoCPU <= 75) {
+            corCPUPreenchida = "#FFD700";
+        } else if (consumoCPU <= 80) {
             corCPUPreenchida = "#FF8C00"
-        } else if (consumoCPU > 75) {
+        } else if (consumoCPU > 80) {
             corCPUPreenchida = "#FF0000"
         }
 
@@ -245,13 +238,13 @@
         consumoRAM = 40;
         sobraRAM = 60;
 
-        if (consumoRAM < 25) {
+        if (consumoRAM < 75) {
             corRAMPreenchida = "#4ed259"
-        } else if (consumoRAM <= 50) {
+        } else if (consumoRAM <= 85) {
             corRAMPreenchida = "#FFD700";
-        } else if (consumoRAM <= 75) {
+        } else if (consumoRAM <= 90) {
             corRAMPreenchida = "#FF8C00"
-        } else if (consumoRAM > 75) {
+        } else if (consumoRAM > 90) {
             corRAMPreenchida = "#FF0000"
         }
 
@@ -281,13 +274,13 @@
         consumoDISCO = 50;
         sobraDISCO = 50;
 
-        if (consumoDISCO < 25) {
+        if (consumoDISCO < 68) {
             corDISCOPreenchida = "#4ed259"
-        } else if (consumoDISCO <= 50) {
-            corDISCOPreenchida = "#FFD700";
         } else if (consumoDISCO <= 75) {
+            corDISCOPreenchida = "#FFD700";
+        } else if (consumoDISCO <= 88) {
             corDISCOPreenchida = "#FF8C00"
-        } else if (consumoDISCO > 75) {
+        } else if (consumoDISCO > 88) {
             corDISCOPreenchida = "#FF0000"
         }
 
