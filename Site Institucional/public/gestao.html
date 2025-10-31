@@ -33,7 +33,7 @@
     </div>
 
     <!-- style="display: none;" -->
-    <div class="popupusuario" id="popupusuario" style="display: none;" onload="carregarEstados()">
+    <div class="popupusuario" id="popupusuario" style="display: none;">
         <div class="card">
             <div class="cima">
                 <h1>Cadastro de Funcionário</h1>
@@ -81,9 +81,11 @@
                         <select name="estado_atuacao" id="estado_atuacao" onchange="atualizarCampos()"></select>
                     </div>
                     <div class="item-card" id="regioes">
+                        <label>Região de Atuação:</label>
                         <select name="regiao_atuacao" id="regiao_atuacao" onchange="procurarZonas()"></select>
                     </div>
                     <div class="item-card" id="zonas">
+                        <label>Zona de Atuação:</label>
                         <select name="zona_atuacao" id="zona_atuacao"></select>
                     </div>
                 </div>
@@ -415,5 +417,6 @@
         }
 
     </script>
+</body>
 
 </html>

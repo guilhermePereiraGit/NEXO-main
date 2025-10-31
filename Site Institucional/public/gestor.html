@@ -59,7 +59,7 @@
                                 <option value="disco">Disco</option>
                                 <option value="processos">Processos</option>
                             </select>
-                        </div>
+                        </div> 
                     </div>
                 </div>
                 <div class="part-dois">
@@ -132,7 +132,6 @@
     let numeroComponentes = 1;
 
     function cadastrarModelo() {
-        console.log('Entrou para cadastrar modelo')
         var nomeModelo = input_nome_modelo.value;
         var descricao = input_descricao.value;
         var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
@@ -153,7 +152,7 @@
             } else if (componente == 'disco') {
                 numeroDisco++
             } else if (componente == 'processos') {
-                numeroProceso++
+                numeroProcesso++
             }
 
             if (numeroCpu == 1) {
@@ -168,7 +167,7 @@
                 parametros.push({
                     componente: componente,
                 });
-            } else if (numeroProceso == 1) {
+            } else if (numeroProcesso == 1) {
                 parametros.push({
                     componente: componente,
                 });

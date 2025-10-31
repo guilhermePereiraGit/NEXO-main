@@ -189,6 +189,8 @@
 
 #cargos,
 #regiao_atuacao,
+#estado_atuacao,
+#zona_atuacao,
 .componentes,
 #input_vies,
 #input_modelos {
@@ -314,6 +316,8 @@
 
 #cargos,
 #regiao_atuacao,
+#estado_atuacao,
+#zona_atuacao,
 .componentes,
 #input_vies,
 #input_modelos {
@@ -395,7 +399,10 @@ select {
 }
 
 @media (max-width: 768px) {
-    .popuptotem, .popupmodelo, .popupusuario {
+
+    .popuptotem,
+    .popupmodelo,
+    .popupusuario {
         padding: 15px;
         align-items: center;
     }
@@ -484,20 +491,25 @@ select {
         padding: 10px;
     }
 
-    #cargos, #regiao_atuacao, .componentes,
-    #input_vies, #input_modelos {
+    #cargos,
+    #regiao_atuacao,
+    .componentes,
+    #estado_atuacao,
+    #zona_atuacao,
+    #input_vies,
+    #input_modelos {
         font-size: 15px;
         padding: 10px;
     }
 
-    .baixo > .part-dois:last-child {
+    .baixo>.part-dois:last-child {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-top: 10px;
     }
 
-    .baixo > .part-dois:last-child .cadastrar {
+    .baixo>.part-dois:last-child .cadastrar {
         width: 100%;
         font-size: 17px;
         padding: 13px;
@@ -512,18 +524,18 @@ select {
         padding: 0;
     }
 
-    .part-dois-special > .item-card {
+    .part-dois-special>.item-card {
         display: grid;
         grid-template-columns: 100px 1fr auto;
         gap: 10px;
         align-items: center;
     }
 
-    .part-dois-special > .item-card label {
+    .part-dois-special>.item-card label {
         font-size: 16px;
     }
 
-    .part-dois-special > .item-card input {
+    .part-dois-special>.item-card input {
         font-size: 15px;
         padding: 10px;
         border: 2px solid var(--primaria);
@@ -658,26 +670,31 @@ select {
         padding: 9px;
     }
 
-    #cargos, #regiao_atuacao, .componentes,
-    #input_vies, #input_modelos {
+    #cargos,
+    #regiao_atuacao,
+    #estado_atuacao,
+    #zona_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos {
         font-size: 14px;
         padding: 9px;
     }
 
-    .baixo > .part-dois:last-child .cadastrar {
+    .baixo>.part-dois:last-child .cadastrar {
         font-size: 16px;
         padding: 12px;
     }
 
-    .part-dois-special > .item-card {
+    .part-dois-special>.item-card {
         grid-template-columns: 85px 1fr auto;
     }
 
-    .part-dois-special > .item-card label {
+    .part-dois-special>.item-card label {
         font-size: 15px;
     }
 
-    .part-dois-special > .item-card input {
+    .part-dois-special>.item-card input {
         font-size: 14px;
         padding: 9px;
     }
@@ -708,7 +725,7 @@ select {
         font-size: 18px;
     }
 
-    .baixo > label {
+    .baixo>label {
         font-size: 13px;
     }
 
@@ -776,18 +793,23 @@ select {
         padding: 8px;
     }
 
-    #cargos, #regiao_atuacao, .componentes,
-    #input_vies, #input_modelos {
+    #cargos,
+    #regiao_atuacao,
+    #estado_atuacao,
+    #zona_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos {
         font-size: 13px;
         padding: 8px;
     }
 
-    .baixo > .part-dois:last-child .cadastrar {
+    .baixo>.part-dois:last-child .cadastrar {
         font-size: 15px;
         padding: 11px;
     }
 
-    .part-dois-special > .item-card {
+    .part-dois-special>.item-card {
         grid-template-columns: 1fr;
         gap: 8px;
     }

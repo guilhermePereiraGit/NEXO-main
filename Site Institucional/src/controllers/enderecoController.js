@@ -95,14 +95,18 @@ async function buscarZonas(req, res) {
 }
 
 async function cadastrarEnderecoTotem(req, res){
-    const cep = req.body.cepServer
-    const estado = req.body.estadoServer
-    const bairro = req.body.bairroServer
-    const cidade = req.body.cidadeServer
-    const rua = req.body.ruaServer
-    const numero = req.body.numeroServer
-    const complemento = req.body.complementoServer
-    const zona = req.body.zonaServer
+    const cep = req.body.cepServer;
+    const regiaoAtuacao = req.body.regiaoAtuacaoServer;
+    const zonaAtuacao = req.body.zonaAtuacaoServer;
+    const bairro = req.body.bairroServer;
+    const cidade = req.body.cidadeServer;
+    const rua = req.body.ruaServer;
+    const numero = req.body.numeroServer;
+    const complemento = req.body.complementoServer;
+
+    var idEndereco = await enderecoModel.cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade, rua, numero, complemento)
+
+    res.status(200).json({ idEndereco });
 }
 
 module.exports = {

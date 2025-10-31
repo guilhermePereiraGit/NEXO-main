@@ -40,40 +40,49 @@
                 <button onclick="fecharPopupTotem()"><img src="assets/imgs/close.png"></button>
             </div>
             <div class="baixo" id="baixo">
-                <div class="part-dois">
+                <div class="item-card">
                     <div class="item-card">
                         <label for="input_cep">Cep:</label>
-                        <input type="text" id="input_cep">
+                        <input type="text" id="input_cep" placeholder="CEP">
                     </div>
-                    <div class="item-card">
+                    <div class="item-card" id="estado">
                         <label>Estado:</label>
-                        <div id="estado"><select name="estado_atuacao" id="estado_atuacao"></select></label>
-                    </div>
-                    <div class="item-card">
-                        <label>Cidade:</label>
-                        <label id="cidade"></label>
+                        <select name="estado_atuacao" id="estado_atuacao" onchange="atualizarCampos()"></select>
                     </div>
                 </div>
-                <div class="part-dois">
+                <div class="item-card">
+                    <div class="item-card" id="regioes">
+                        <label>Região:</label>
+                        <select name="regiao_atuacao" id="regiao_atuacao" onchange="procurarZonas()"></select>
+                    </div>
+                    <div class="item-card" id="zonas">
+                        <label>Zona:</label>
+                        <select name="zona_atuacao" id="zona_atuacao"></select>
+                    </div>
+                </div>
+                <div class="item-card">
                     <div class="item-card">
-                        <label>Bairro:</label>
-                        <label id="bairro"></label>
+                        <label for="input_cidade">Cidade:</label>
+                        <input type="text" id="input_cidade" placeholder="Cidade">
                     </div>
                     <div class="item-card">
-                        <label>Rua:</label>
-                        <label id="rua"></label>
+                        <label for="input_rua">Rua:</label>
+                        <input type="text" id="input_rua" placeholder="Rua">
+                    </div>
+                    <div class="item-card">
+                        <label for="input_bairro">Bairro:</label>
+                        <input type="text" id="input_bairro" placeholder="Bairro">
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-card">
+                        <label for="input_complemento">Complemento:</label>
+                        <input type="text" id="input_complemento" placeholder="Complemento">
                     </div>
                     <div class="item-card">
                         <label for="input_numero">Número:</label>
                         <input type="number" id="input_numero" placeholder="N°">
                     </div>
-                </div>
-                <div class="part-dois">
-                    <div class="item-card">
-                        <label for="input_complemento">Complemento:</label>
-                        <input type="text" id="input_complemento" placeholder="Complemento">
-                    </div>
-                    <div class="item-card" id="regiao"></div>
                 </div>
                 <div class="part-dois">
                     <div class="item-card">
@@ -94,66 +103,64 @@
                 </div>
             </div>
         </div>
-    </div>
-</body>
-<script>
+        <script>
 
-    aprovados = [];
-    function carregarDadosAprovados() {
-        var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+            aprovados = [];
+            function carregarDadosAprovados() {
+                var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
-        fetch("/totem/verificarAprovados", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                idEmpresaServer: idEmpresa
-            }),
-        }).then(function (resposta) {
-            console.log(resposta);
+                fetch("/totem/verificarAprovados", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idEmpresaServer: idEmpresa
+                    }),
+                }).then(function (resposta) {
+                    console.log(resposta);
 
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    console.log(data);
-                    aprovados = data;
-                    if (aprovados.length > 0) {
-                        gerarCardTotens();
+                    if (resposta.ok) {
+                        resposta.json().then(data => {
+                            console.log(data);
+                            aprovados = data;
+                            if (aprovados.length > 0) {
+                                gerarCardTotens();
+                            } else {
+                                nadaPorAquiModelos();
+                            }
+                        })
                     } else {
-                        nadaPorAquiModelos();
+                        console.log("Erro ao Buscar Dados!");
                     }
-                })
-            } else {
-                console.log("Erro ao Buscar Dados!");
+                });
             }
-        });
-    }
 
-    function nadaPorAquiModelos() {
-        div_aprovados.innerHTML = `
+            function nadaPorAquiModelos() {
+                div_aprovados.innerHTML = `
         <div class="card-nothing">
                 <h1>Sem Registros</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
                 <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
             </div>
         `;
-    }
+            }
 
-    function gerarCardTotens() {
-        for (var i = 0; i < aprovados.length; i++) {
-            var ativo = aprovados[i].status === "ATIVO";
+            function gerarCardTotens() {
+                for (var i = 0; i < aprovados.length; i++) {
+                    var ativo = aprovados[i].status === "ATIVO";
 
-            var ativarDisabled = ativo ? "disabled" : "";
-            var desativarDisabled = ativo ? "" : "disabled";
+                    var ativarDisabled = ativo ? "disabled" : "";
+                    var desativarDisabled = ativo ? "" : "disabled";
 
-            var ativarStyle = ativo
-                ? "background-color: #a5d6a7; cursor: not-allowed; opacity: 0.6;"
-                : "background-color: #4caf50; cursor: pointer;";
-            var desativarStyle = ativo
-                ? "background-color: #f44336; cursor: pointer;"
-                : "background-color: #ef9a9a; cursor: not-allowed; opacity: 0.6;";
+                    var ativarStyle = ativo
+                        ? "background-color: #a5d6a7; cursor: not-allowed; opacity: 0.6;"
+                        : "background-color: #4caf50; cursor: pointer;";
+                    var desativarStyle = ativo
+                        ? "background-color: #f44336; cursor: pointer;"
+                        : "background-color: #ef9a9a; cursor: not-allowed; opacity: 0.6;";
 
-            div_aprovados.innerHTML += `
+                    div_aprovados.innerHTML += `
         <div class="card-user">
             <div class="card-first">
                 <div class="labels"><label id="first">Endereço MAC:</label><label class="label-item">${aprovados[i].numMAC}</label></div>
@@ -170,368 +177,477 @@
             </div>
         </div>
         `;
-        }
-    }
-
-    let numeroTotens = 0;
-    var modelos = []
-
-    function carregarDadosModelo() {
-        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
-
-        fetch("/modelo/buscarModelos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresaServer: idEmpresa
-            }),
-        })
-            .then(resposta => {
-                if (resposta.ok) {
-                    return resposta.json();
-                } else {
-                    throw new Error("Erro na resposta do servidor");
                 }
-            })
-            .then(dados => {
-                for (let i = 0; i < dados.length; i++) {
-                    modelos.push(dados[i]);
-                }
-            })
-            .catch(erro => {
-                console.log(`#ERRO: ${erro}`);
-            });
-    }
+            }
 
-    function abrirPopupTotem() {
-        var options = ''
-        for (var i = 0; i < modelos.length; i++) {
-            options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
-        }
+            let numeroTotens = 0;
+            var modelos = []
 
-        input_modelos.innerHTML += options
+            function carregarDadosModelo() {
+                idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
-        document.getElementById("popuptotem").style.display = "flex";
-    }
-
-    function fecharPopupTotem() {
-        document.getElementById("popuptotem").style.display = "none";
-        window.location.reload();
-    }
-
-    function atualizarTotens() {
-        const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
-        const container = document.getElementById("totens");
-
-        container.innerHTML = "";
-        numeroTotens = qtdTotens;
-
-        if (qtdTotens <= 0 || isNaN(qtdTotens)) return;
-
-        for (let i = 1; i <= qtdTotens; i++) {
-            const divTotem = document.createElement("div");
-            divTotem.classList.add("linha-totem");
-
-            const novoInput = document.createElement("input");
-            novoInput.type = "text";
-            novoInput.id = `totem${i}`;
-            novoInput.placeholder = `MAC ADDRESS ${i}`;
-
-            const botaoLixeira = document.createElement("button");
-            botaoLixeira.classList.add("botao-lixeira");
-            botaoLixeira.innerHTML = "🗑️";
-            botaoLixeira.onclick = function () {
-                removerTotem(divTotem);
-            };
-
-            divTotem.appendChild(novoInput);
-            divTotem.appendChild(botaoLixeira);
-            container.appendChild(divTotem);
-        }
-    }
-
-    function adicionarMaisUmTotem() {
-        const container = document.getElementById("totens");
-        numeroTotens++;
-
-        const divTotem = document.createElement("div");
-        divTotem.classList.add("linha-totem");
-
-        const novoInput = document.createElement("input");
-        novoInput.type = "text";
-        novoInput.id = `totem${numeroTotens}`;
-        novoInput.placeholder = `MAC ADDRESS ${numeroTotens}`;
-
-        const botaoLixeira = document.createElement("button");
-        botaoLixeira.classList.add("botao-lixeira");
-        botaoLixeira.innerHTML = "🗑️";
-        botaoLixeira.onclick = function () {
-            removerTotem(divTotem);
-        };
-
-        divTotem.appendChild(novoInput);
-        divTotem.appendChild(botaoLixeira);
-        container.appendChild(divTotem);
-
-        document.getElementById("input_qtd_de_totens").value = numeroTotens;
-    }
-
-    function removerTotem(divTotem) {
-        divTotem.remove();
-
-        numeroTotens--;
-        const inputs = document.querySelectorAll("#totens input");
-        inputs.forEach((input, i) => {
-            input.id = `totem${i + 1}`;
-            input.placeholder = `MAC ADDRESS ${i + 1}`;
-        });
-
-        document.getElementById("input_qtd_de_totens").value = numeroTotens;
-    }
-
-    async function cadastrarEndereco() {
-        var cep = input_cep.value;
-        var estado = document.getElementById("estado").innerText;
-        var bairro = document.getElementById("bairro").innerText;
-        var cidade = document.getElementById("cidade").innerText;
-        var rua = document.getElementById("rua").innerText;
-        var numero = input_numero.value;
-        var complemento = input_complemento.value;
-
-        if (estado == "São Paulo") {
-            var zona = document.getElementById("regiao_label").innerText;
-            console.log(zona)
-        } else {
-            var zona = ""
-        }
-
-        await fetch("/endereco/cadastrarEnderecoTotem", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                cepServer: cep,
-                estadoServer: estado,
-                bairroServer: bairro,
-                cidadeServer: cidade,
-                ruaServer: rua,
-                numeroServer: numero,
-                complementoServer: complemento,
-                zonaServer: zona
-            }),
-        })
-            .then(resposta => {
-                if (!resposta.ok) {
-                    throw new Error("Erro na resposta do servidor");
-                }
-                return resposta.json();
-            })
-            .then(dados => {
-                const idEndereco = dados.idEndereco || dados;
-                cadastrarTotem(idEndereco);
-            })
-            .catch(erro => {
-                console.log(`#ERRO: ${erro}`);
-            });
-    }
-
-    function cadastrarTotem(idEndereco) {
-        console.log('Entrou cadastor de totem')
-        var modelo = input_modelos.value;
-        var enderecosMac = [];
-        var endereco = idEndereco;
-
-        for (let i = 1; i <= numeroTotens; i++) {
-            const macAddress = document.getElementById(`totem${i}`).value;
-            enderecosMac.push(macAddress)
-        }
-
-        var mensagem = ''
-        if (enderecosMac.length > 1) {
-            mensagem = 'Totens cadastrados com sucesso!'
-        } else {
-            mensagem = 'Totem cadastrado com sucesso!'
-        }
-
-        fetch("/totem/cadastrarTotem", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                modeloServer: modelo,
-                enderecosMacServer: enderecosMac,
-                fkEnderecoServer: endereco
-            }),
-        })
-            .then(resposta => {
-                if (resposta.status == 200) {
-                    alert("Cadastro realizado com sucesso!");
-                    window.location.reload();
-                } else {
-                    throw new Error("Erro na resposta do servidor");
-                }
-            })
-            .catch(erro => {
-                console.log(`#ERRO: ${erro}`);
-            });
-    }
-
-    function modificarStatusTotem(idTotem, acao) {
-        fetch("/totem/modificarStatusTotem", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                idTotemServer: idTotem,
-                acaoServer: acao
-            }),
-        })
-            .then(resposta => {
-                if (resposta.status == 200) {
-                    if (acao == "ativar") {
-                        alert("Totem ativado com sucesso!");
-                        window.location.reload()
-                    } else {
-                        alert("Totem desativado com sucesso!");
-                        window.location.reload()
-                    }
-
-                } else {
-                    throw new Error("Erro na resposta do servidor");
-                }
-            })
-            .catch(erro => {
-                console.log(`#ERRO: ${erro}`);
-            });
-    }
-
-    var estados = []
-    function carregarEstados() {
-        fetch("/endereco/buscarEstados", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(function (resposta) {
-
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        estados = data;
-                        plotarEstadosSelect(estados)
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-    }
-
-    function plotarEstadosSelect(estados) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < estados.length; i++) {
-            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
-        }
-
-        estado_atuacao.innerHTML = option;
-    }
-
-    var regioes = [];
-    function atualizarCampos() {
-        var selectEstado = document.getElementById("estado_atuacao");
-        var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
-        const estado = estado_atuacao.value;
-        const cargo = cargos.value;
-        const regiaoContainer = regioes;
-        const zonaContainer = zonas;
-
-        fetch("/endereco/buscarRegioes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                idEstadoServer: estado
-            }),
-        })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        console.log(data);
-                        regioes = data;
-                        plotarRegioesSelect(regioes);
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-            });
-    }
-
-    function plotarRegioesSelect(regioes) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < regioes.length; i++) {
-            option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
-        }
-
-        regiao_atuacao.innerHTML = option;
-    }
-
-    var zonas = []
-    function procurarZonas() {
-        var cargo = cargos.value;
-
-        if (cargo == "Técnico") {
-            var selectRegiao = document.getElementById("regiao_atuacao");
-            var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
-            const regiao = regiao_atuacao.value;
-
-            fetch("/endereco/buscarZonas", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    idRegiaoServer: regiao
-                }),
-            })
-                .then(function (resposta) {
-                    if (resposta.ok) {
-                        resposta.json().then(data => {
-                            zonas = data;
-                            if (zonas.length > 0) {
-                                plotarZonasSelect(zonas);
-                            } else {
-                                zona_atuacao.innerHTML = "";
-                            }
-                        })
-                    } else {
-                        console.log("Erro ao Buscar Dados!");
-                    }
+                fetch("/modelo/buscarModelos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        fkEmpresaServer: idEmpresa
+                    }),
                 })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
+                    .then(resposta => {
+                        if (resposta.ok) {
+                            return resposta.json();
+                        } else {
+                            throw new Error("Erro na resposta do servidor");
+                        }
+                    })
+                    .then(dados => {
+                        for (let i = 0; i < dados.length; i++) {
+                            modelos.push(dados[i]);
+                        }
+                    })
+                    .catch(erro => {
+                        console.log(`#ERRO: ${erro}`);
+                    });
+            }
+
+            function abrirPopupTotem() {
+                var options = ''
+                for (var i = 0; i < modelos.length; i++) {
+                    options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
+                }
+
+                input_modelos.innerHTML += options
+
+                document.getElementById("popuptotem").style.display = "flex";
+                carregarEstados();
+            }
+
+            function fecharPopupTotem() {
+                document.getElementById("popuptotem").style.display = "none";
+                window.location.reload();
+            }
+
+            function atualizarTotens() {
+                const qtdTotens = Number(document.getElementById("input_qtd_de_totens").value);
+                const container = document.getElementById("totens");
+
+                container.innerHTML = "";
+                numeroTotens = qtdTotens;
+
+                if (qtdTotens <= 0 || isNaN(qtdTotens)) return;
+
+                for (let i = 1; i <= qtdTotens; i++) {
+                    const divTotem = document.createElement("div");
+                    divTotem.classList.add("linha-totem");
+
+                    const novoInput = document.createElement("input");
+                    novoInput.type = "text";
+                    novoInput.id = `totem${i}`;
+                    novoInput.placeholder = `MAC ADDRESS ${i}`;
+
+                    const botaoLixeira = document.createElement("button");
+                    botaoLixeira.classList.add("botao-lixeira");
+                    botaoLixeira.innerHTML = "🗑️";
+                    botaoLixeira.onclick = function () {
+                        removerTotem(divTotem);
+                    };
+
+                    divTotem.appendChild(novoInput);
+                    divTotem.appendChild(botaoLixeira);
+                    container.appendChild(divTotem);
+                }
+            }
+
+            function adicionarMaisUmTotem() {
+                const container = document.getElementById("totens");
+                numeroTotens++;
+
+                const divTotem = document.createElement("div");
+                divTotem.classList.add("linha-totem");
+
+                const novoInput = document.createElement("input");
+                novoInput.type = "text";
+                novoInput.id = `totem${numeroTotens}`;
+                novoInput.placeholder = `MAC ADDRESS ${numeroTotens}`;
+
+                const botaoLixeira = document.createElement("button");
+                botaoLixeira.classList.add("botao-lixeira");
+                botaoLixeira.innerHTML = "🗑️";
+                botaoLixeira.onclick = function () {
+                    removerTotem(divTotem);
+                };
+
+                divTotem.appendChild(novoInput);
+                divTotem.appendChild(botaoLixeira);
+                container.appendChild(divTotem);
+
+                document.getElementById("input_qtd_de_totens").value = numeroTotens;
+            }
+
+            function removerTotem(divTotem) {
+                divTotem.remove();
+
+                numeroTotens--;
+                const inputs = document.querySelectorAll("#totens input");
+                inputs.forEach((input, i) => {
+                    input.id = `totem${i + 1}`;
+                    input.placeholder = `MAC ADDRESS ${i + 1}`;
                 });
-        }
-    }
 
-    function plotarZonasSelect(zonas) {
-        var option = `<option value="">Selecione uma opção</option>`;
+                document.getElementById("input_qtd_de_totens").value = numeroTotens;
+            }
 
-        for (var i = 0; i < zonas.length; i++) {
-            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
-        }
+            var estados = []
+            function carregarEstados() {
+                fetch("/endereco/buscarEstados", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then(function (resposta) {
 
-        zona_atuacao.innerHTML = option;
-    }
-</script>
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                estados = data;
+                                plotarEstadosSelect(estados)
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    });
+            }
+
+            function plotarEstadosSelect(estados) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < estados.length; i++) {
+                    option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+                }
+
+                estado_atuacao.innerHTML = option;
+            }
+
+            console.log("oiiiiiiiiiiiiiii")
+            var regioes = [];
+            function atualizarCampos() {
+                const estado = estado_atuacao.value;
+                
+                fetch("/endereco/buscarRegioes", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idEstadoServer: estado
+                    }),
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                console.log(data);
+                                regioes = data;
+                                plotarRegioesSelect(regioes);
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    })
+                    .catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+            }
+
+            function plotarRegioesSelect(regioes) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < regioes.length; i++) {
+                    option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
+                }
+
+                regiao_atuacao.innerHTML = option;
+            }
+
+            var zonas = []
+            function procurarZonas() {
+
+                var selectRegiao = document.getElementById("regiao_atuacao");
+                var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+                const regiao = regiao_atuacao.value;
+
+                fetch("/endereco/buscarZonas", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idRegiaoServer: regiao
+                    }),
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                zonas = data;
+                                if (zonas.length > 0) {
+                                    plotarZonasSelect(zonas);
+                                } else {
+                                    zona_atuacao.innerHTML = "";
+                                }
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    })
+                    .catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+
+            }
+
+            function plotarZonasSelect(zonas) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < zonas.length; i++) {
+                    option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
+                }
+
+                zona_atuacao.innerHTML = option;
+            }
+
+            async function cadastrarEndereco() {
+                var cep = input_cep.value;
+                var regiaoAtuacao = regiao_atuacao.value;
+                var zonaAtuacao = zona_atuacao.value;
+                var bairro = input_bairro.value;
+                var cidade = input_cidade.value;
+                var rua = input_rua.value;
+                var numero = input_numero.value;
+                var complemento = input_complemento.value;
+
+                await fetch("/endereco/cadastrarEnderecoTotem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        cepServer: cep,
+                        regiaoAtuacaoServer: regiaoAtuacao,
+                        zonaAtuacaoServer: zonaAtuacao,
+                        bairroServer: bairro,
+                        cidadeServer: cidade,
+                        ruaServer: rua,
+                        numeroServer: numero,
+                        complementoServer: complemento
+                    }),
+                })
+                    .then(resposta => {
+                        if (!resposta.ok) {
+                            throw new Error("Erro na resposta do servidor");
+                        }
+                        return resposta.json();
+                    })
+                    .then(dados => {
+                        const idEndereco = dados.idEndereco || dados;
+                        cadastrarTotem(idEndereco);
+                    })
+                    .catch(erro => {
+                        console.log(`#ERRO: ${erro}`);
+                    });
+            }
+
+            function cadastrarTotem(idEndereco) {
+                var modelo = input_modelos.value;
+                var enderecosMac = [];
+                var endereco = idEndereco;
+
+                for (let i = 1; i <= numeroTotens; i++) {
+                    const macAddress = document.getElementById(`totem${i}`).value;
+                    enderecosMac.push(macAddress)
+                }
+
+                var mensagem = ''
+                if (enderecosMac.length > 1) {
+                    mensagem = 'Totens cadastrados com sucesso!'
+                } else {
+                    mensagem = 'Totem cadastrado com sucesso!'
+                }
+
+                fetch("/totem/cadastrarTotem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        modeloServer: modelo,
+                        enderecosMacServer: enderecosMac,
+                        fkEnderecoServer: endereco
+                    }),
+                })
+                    .then(resposta => {
+                        if (resposta.status == 200) {
+                            alert("Cadastro realizado com sucesso!");
+                            window.location.reload();
+                        } else {
+                            throw new Error("Erro na resposta do servidor");
+                        }
+                    })
+                    .catch(erro => {
+                        console.log(`#ERRO: ${erro}`);
+                    });
+            }
+
+            function modificarStatusTotem(idTotem, acao) {
+                fetch("/totem/modificarStatusTotem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idTotemServer: idTotem,
+                        acaoServer: acao
+                    }),
+                })
+                    .then(resposta => {
+                        if (resposta.status == 200) {
+                            if (acao == "ativar") {
+                                alert("Totem ativado com sucesso!");
+                                window.location.reload()
+                            } else {
+                                alert("Totem desativado com sucesso!");
+                                window.location.reload()
+                            }
+
+                        } else {
+                            throw new Error("Erro na resposta do servidor");
+                        }
+                    })
+                    .catch(erro => {
+                        console.log(`#ERRO: ${erro}`);
+                    });
+            }
+
+            var estados = []
+            function carregarEstados() {
+                fetch("/endereco/buscarEstados", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then(function (resposta) {
+
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                estados = data;
+                                plotarEstadosSelect(estados)
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    });
+            }
+
+            function plotarEstadosSelect(estados) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < estados.length; i++) {
+                    option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+                }
+
+                estado_atuacao.innerHTML = option;
+            }
+
+            var regioes = [];
+            function atualizarCampos() {
+                var selectEstado = document.getElementById("estado_atuacao");
+                var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
+                const estado = estado_atuacao.value;
+                const regiaoContainer = regioes;
+                const zonaContainer = zonas;
+
+                fetch("/endereco/buscarRegioes", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idEstadoServer: estado
+                    }),
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                console.log(data);
+                                regioes = data;
+                                plotarRegioesSelect(regioes);
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    })
+                    .catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+            }
+
+            function plotarRegioesSelect(regioes) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < regioes.length; i++) {
+                    option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
+                }
+
+                regiao_atuacao.innerHTML = option;
+            }
+
+            var zonas = []
+            function procurarZonas() {
+
+                var selectRegiao = document.getElementById("regiao_atuacao");
+                var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+                const regiao = regiao_atuacao.value;
+
+                fetch("/endereco/buscarZonas", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idRegiaoServer: regiao
+                    }),
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            resposta.json().then(data => {
+                                zonas = data;
+                                if (zonas.length > 0) {
+                                    plotarZonasSelect(zonas);
+                                } else {
+                                    zona_atuacao.innerHTML = "";
+                                }
+                            })
+                        } else {
+                            console.log("Erro ao Buscar Dados!");
+                        }
+                    })
+                    .catch(function (resposta) {
+                        console.log(`#ERRO: ${resposta}`);
+                    });
+
+            }
+
+            function plotarZonasSelect(zonas) {
+                var option = `<option value="">Selecione uma opção</option>`;
+
+                for (var i = 0; i < zonas.length; i++) {
+                    option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
+                }
+
+                zona_atuacao.innerHTML = option;
+            }
+        </script>
+</body>
 
 </html>

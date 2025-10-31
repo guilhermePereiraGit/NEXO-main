@@ -60,7 +60,11 @@ CREATE TABLE IF NOT EXISTS endereco (
     cidade VARCHAR(45),
     bairro VARCHAR(100),
 	rua VARCHAR(100),
-    zona varchar(100)
+    zona varchar(100),
+    fkZona int,
+    fkRegiao int, 
+    foreign key (fkZona) references zona(idZona),
+    foreign key (fkRegiao) references regiao(idRegiao)
 );
 
 CREATE TABLE IF NOT EXISTS totem (

@@ -100,7 +100,6 @@ CREATE TABLE IF NOT EXISTS endereco (
     cep VARCHAR(8),
     numero VARCHAR(10),
     complemento VARCHAR(100),
-    estado VARCHAR(45),
     cidade VARCHAR(45),
     bairro VARCHAR(100),
 	rua VARCHAR(100),
@@ -405,3 +404,12 @@ INSERT INTO zona (nome, fkRegiao)
 SELECT 'Centro', idRegiao FROM regiao WHERE nome = 'Região Metropolitana de Manaus';
 
 insert into usuario_nexo(nome,email,senha) values ("AdminUserNexo","nexo.sptech@gmail.com","12345");
+
+select * from endereco;
+select * from totem;
+select * from usuario;
+
+SELECT e.idEstado, e.nome AS Estado, COUNT(r.idRegiao) AS QtdeRegioes
+FROM estado e
+LEFT JOIN regiao r ON e.idEstado = r.fkEstado
+GROUP BY e.idEstado;

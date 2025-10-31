@@ -27,6 +27,7 @@ function buscarIdEstado(estadoAtuacao) {
     const instrucaoSql = `
         SELECT idEstado from estado where nome = '${estadoAtuacao}';
     `
+    console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
 
@@ -34,6 +35,7 @@ function buscarIdRegiao(regiaoAtuacao) {
     const instrucaoSql = `
         SELECT idRegiao from regiao where nome = '${regiaoAtuacao}';
     `
+    console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
 
@@ -41,6 +43,7 @@ function buscarIdZona(zonaAtuacao) {
     const instrucaoSql = `
         SELECT idZona from zona where nome = '${zonaAtuacao}';
     `
+    console.log(instrucaoSql)
     return database.executar(instrucaoSql);
 }
 
@@ -79,8 +82,17 @@ function buscarZonas(idRegiao) {
     return database.executar(instrucaoSql);
 }
 
+async function cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade, rua, numero, complemento) {
+    const instrucaoSql = `
+        INSERT INTO endereco (cep, fkRegiao, fkZona, bairro, cidade, rua, numero, complemento) 
+            values('${cep}', ${regiaoAtuacao}, ${zonaAtuacao}, '${bairro}', '${cidade}', '${rua}', '${numero}', '${complemento}');
+    `
+    const resultado = await database.executar(instrucaoSql);
+    return resultado.insertId;
+}
+
 module.exports = {
     cadastrarEnderecoSemRegiao, buscarEnderecoExistente, cadastrarEnderecoComRegiao, buscarIdEstado,
     buscarIdRegiao, buscarIdZona, cadastrarUsuarioComZona, cadastrarUsuarioComRegiao, buscarEstados,
-    buscarRegioes, buscarZonas
+    buscarRegioes, buscarZonas, cadastrarEndereco
 };
