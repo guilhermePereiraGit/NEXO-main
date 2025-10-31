@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESCOLHA DE REGIÃO - GESTOR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../../assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../geral.css">
+    <link rel="stylesheet" href="../gestor/escolha_regiao.css">
+</head>
+
+<body>
+    <div class="all">
+        <header>
+            <div class="header-all">
+                <div class="user">
+                    <img src="../../assets/imgs/user.png">
+                    <div class="text">
+                        <label id="nome">Guilherme Silva</label>
+                        <label id="cargo">Técnico em Operação</label>
+                    </div>
+                </div>
+                <div class="navegation">
+                    <a href="../../cards_gestor.html" id="voltar">Voltar</a>
+                </div>
+                <div class="suporte">
+                    <a href="https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true"><img src="../../assets/imgs/icon-jira.png"></a>
+                    <a href="https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22"><img src="../../assets/imgs/icon-slack.png"></a>
+                </div>
+            </div>
+        </header>
+        <div class="content">
+            <h1>Selecione o Estado para Análise</h1>
+            <div class="escolha">
+                <label>Estado:</label>
+                <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
+                    <option value="x">Escolha uma Opção</option>
+                    <option value="SP">SP - São Paulo</option>
+                </select>
+            </div>
+            <h1 style="margin-top: 30px;" id="tittle-regiao">Regiões:</h1>
+            <div class="aguardando" id="aguardando">
+                <h1>Selecione um Estado</h1>
+                <p>Antes de prosseguir, escolha um estado para que seja possível selecionar uma região específica.</p>
+            </div>
+            <div class="aguardando" id="producao" style="display: none;">
+                <h1>Não há Totens Registrados para Este Estado</h1>
+                <p>Nossos serviços por hora estão disponíveis apenas para o Estado de São Paulo, aguarde para novas
+                    atualizações.</p>
+            </div>
+            <!-- Se Escolher SP -->
+            <div class="regioes" id="regioes" style="display: none;">
+                <a onclick="nevegarTelas('São Paulo')" style="text-decoration: none;">
+                    <div class="regiao">
+                        <div class="primeiro-bloco">
+                            <div class="cor" style="background-color: #8B5CF6;"></div>
+                            <h1>São Paulo</h1>
+                        </div>
+                        <div class="segunda-parte">
+                            <div class="segundo-bloco">
+                                <h1>Taxa de Alerta</h1>
+                                <label>Alertas/Total Totens</label>
+                            </div>
+                            <div class="terceiro-bloco">
+                                <h1 style="font-size: 60px; color: black; font-weight: normal;">40%</h1>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function nevegarTelas(regiao){
+        sessionStorage.setItem("REGIAO_ESCOLHIDA",regiao);
+        window.location.href = "dashboard_tecnico.html#totens";
+    }
+
+    function carregarRegioes() {
+        escolha = regiao_atuacao.value;
+
+        if (escolha == "SP") {
+            regiao = document.getElementById("regioes").style.display = "block";
+            aguardando = document.getElementById("aguardando").style.display = "none";
+            emProducao = document.getElementById("producao").style.display = "none";
+        }
+        else if (escolha == "x") {
+            aguardando = document.getElementById("aguardando").style.display = "flex";
+            regiao = document.getElementById("regioes").style.display = "none";
+            emProducao = document.getElementById("producao").style.display = "none";
+        } else {
+            emProducao = document.getElementById("producao").style.display = "flex";
+            regiao = document.getElementById("regioes").style.display = "none";
+            aguardando = document.getElementById("aguardando").style.display = "none";
+        }
+    }
+</script>
+</html>

@@ -28,7 +28,7 @@
 .graficos{
     display: flex;
     flex-direction: column;
-    gap: 100px;
+    gap: 30px;
 }
 .grafico{
     display: flex;
@@ -37,7 +37,6 @@
 }
 .part1-graficos{
     display: flex;
-    margin-top: 50px;
 }
 .grafico-special{
     border: 1px solid var(--primaria);
@@ -56,6 +55,7 @@
 /* Blocos de Localização */
 .localizacao{
     display: flex;
+    margin-bottom: 20px;
 }
 .localizacao .bloco h2{
     font-size: 22px;
@@ -68,7 +68,7 @@
 
 /* PROCESSOS */
 .processos{
-    margin-top: 50px;
+    margin-top: 20px;
     width: 90%;
 }
 .processos h1{
@@ -89,15 +89,62 @@
 }
 
 /* Alertas Pendentes */
-.alertas .color{
-    width: 15%;
-    height: 4vh;
-    border: 1px solid var(--primaria);
-    border-radius: 20px;
-}
 .alertas{
     display: flex;
     gap: 20px;
-    margin-top: 50px;
+    margin-bottom: 30px;
     align-items: center;
+}
+.alertas img{
+    width: 10%;
+}
+.alertas-text p{
+    color: var(--primaria);
+}
+.dad-param{
+    display: flex;
+}
+.dad-param .param .color{
+    width: 50%;
+    height: 4vh;
+    border: 1px solid var(--primaria);
+}
+.param{
+    display: flex;
+}
+#parte1 .chart-container{
+    width: 90%;
+}
+
+/* PARÂMETROS */
+.parametro{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.parametros h2{
+    color: var(--primaria);
+}
+
+.parametro h2 {
+    margin: 0;
+    width: 60px;
+}
+.parametros .part-parametros{
+    margin-top: 10px;
+}
+.parametros .part-parametros h2{
+    margin-right: 25px;
+    color: #000000;
+}
+.parametro .part{
+    width: 50px;
+    height: 5vh;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.all-param{
+    display: flex;
+    gap: 30px;
 }

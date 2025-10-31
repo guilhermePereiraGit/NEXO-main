@@ -53,6 +53,14 @@
                             <option value="BA">Centro</option>
                         </select>
                     </div> -->
+
+                    <div class="alertas">
+                        <img src="../../assets/imgs/icon-alerta.png">
+                        <div class="alertas-text">
+                            <h2>Alerta de Grau Muito Perigoso</h2>
+                            <p>Causa: Consumo Excessivo Constante de CPU</p>
+                        </div>
+                    </div>
                     <div class="localizacao">
                         <div class="bloco">
                             <h2>MAC: <span>A4:C2:9F:31:7B:E2</span></h2>
@@ -69,11 +77,6 @@
                         </div>
                     </div>
 
-                    <div class="alertas">
-                        <div class="color" style="background-color: #FF0000;"></div>
-                        <h2>Alerta de Grau Muito Perigoso</h2>
-                    </div>
-
                     <div class="processos">
                         <h1>Top 5 Processos</h1>
                         <table class="table-processos">
@@ -86,24 +89,24 @@
                             <tr>
                                 <th>chrome.exe</th>
                                 <th>15</th>
-                                <th>10</th>
+                                <th>8</th>
                                 <th>15</th>
                             </tr>
                             <tr>
                                 <th>totem-updater.exe</th>
                                 <th>12.5</th>
-                                <th>13.3</th>
+                                <th>8.5</th>
                                 <th>7.5</th>
                             </tr>
                             <tr>
                                 <th>antivirus.exe</th>
-                                <th>5</th>
+                                <th>10</th>
                                 <th>8</th>
                                 <th>2</th>
                             </tr>
                             <tr>
                                 <th>order-service.exe</th>
-                                <th>10</th>
+                                <th>5</th>
                                 <th>7</th>
                                 <th>5</th>
                             </tr>
@@ -113,6 +116,12 @@
                                 <th>4</th>
                                 <th>1</th>
                             </tr>
+                            <tr>
+                                <th>Processos de Sistema</th>
+                                <th>24.5</th>
+                                <th>4.5</th>
+                                <th>29,5</th>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -120,7 +129,7 @@
                     <div class="real-time">
                         <h1>Monitoramento dos Componentes</h1>
                         <div class="graficos">
-                            <div class="part1-graficos">
+                            <div class="part1-graficos" id="parte1">
                                 <div class="grafico">
                                     <div class="velo-one">
                                         <canvas id="primeiro-grafico" class="chart-container"></canvas>
@@ -142,10 +151,47 @@
                                     <h1>DISCO(50%)</h1>
                                 </div>
                                 <div class="grafico-special">
-                                    <h1>360</h1>
+                                    <h1>280</h1>
                                     <h2>PROCESSOS</h2>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="parametros">
+                        <h2 style="margin-top: 20px;">Parâmetros Utilizados</h2>
+                        <div class="all-param">
+                                                    <div class="part-parametros">
+                            <div class="parametro">
+                                <h2>CPU: </h2>
+                                <div class="part" style="background-color: #4ed259;">25%</div>
+                                <div class="part" style="background-color: #FFD700;">50%</div>
+                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #FF0000;">100%</div>
+                            </div>
+                            <div class="parametro">
+                                <h2>RAM: </h2>
+                                <div class="part" style="background-color: #4ed259;">25%</div>
+                                <div class="part" style="background-color: #FFD700;">50%</div>
+                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #FF0000;">100%</div>
+                            </div>
+                        </div>
+                        <div class="part-parametros">
+                            <div class="parametro">
+                                <h2>DISCO: </h2>
+                                <div class="part" style="background-color: #4ed259;">25%</div>
+                                <div class="part" style="background-color: #FFD700;">50%</div>
+                                <div class="part" style="background-color: #FF8C00;">75%</div>
+                                <div class="part" style="background-color: #FF0000;">100%</div>
+                            </div>
+                            <div class="parametro">
+                                <h2>PROC: </h2>
+                                <div class="part" style="background-color: #4ed259;">100</div>
+                                <div class="part" style="background-color: #FFD700;">150</div>
+                                <div class="part" style="background-color: #FF8C00;">200</div>
+                                <div class="part" style="background-color: #FF0000;">250</div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -163,13 +209,13 @@
         consumoCPU = 70;
         sobraCPU = 30;
 
-        if (consumoCPU < 30) {
+        if (consumoCPU < 25) {
             corCPUPreenchida = "#4ed259"
-        } else if (consumoCPU < 50) {
+        } else if (consumoCPU <= 50) {
             corCPUPreenchida = "#FFD700";
-        } else if (consumoCPU <= 65) {
+        } else if (consumoCPU <= 75) {
             corCPUPreenchida = "#FF8C00"
-        } else if (consumoCPU > 65) {
+        } else if (consumoCPU > 75) {
             corCPUPreenchida = "#FF0000"
         }
 
@@ -178,7 +224,7 @@
 
         // CPU
         const data = {
-            labels: ['Ocupado', 'Restante'],
+            labels: ['Em Uso', 'Disponível'],
             datasets: [{
                 data: dadosCpu,
                 backgroundColor: coresCpu
@@ -199,13 +245,13 @@
         consumoRAM = 40;
         sobraRAM = 60;
 
-        if (consumoRAM < 30) {
+        if (consumoRAM < 25) {
             corRAMPreenchida = "#4ed259"
-        } else if (consumoRAM < 50) {
+        } else if (consumoRAM <= 50) {
             corRAMPreenchida = "#FFD700";
-        } else if (consumoRAM <= 65) {
+        } else if (consumoRAM <= 75) {
             corRAMPreenchida = "#FF8C00"
-        } else if (consumoRAM > 65) {
+        } else if (consumoRAM > 75) {
             corRAMPreenchida = "#FF0000"
         }
 
@@ -214,7 +260,7 @@
 
         // RAM
         const data2 = {
-            labels: ['Ocupado', 'Restante'],
+            labels: ['Em Uso', 'Disponível'],
             datasets: [{
                 data: dadosRam,
                 backgroundColor: coresRam
@@ -232,16 +278,16 @@
             }
         })
 
-        consumoDISCO = 20;
-        sobraDISCO = 80;
+        consumoDISCO = 50;
+        sobraDISCO = 50;
 
-        if (consumoDISCO < 30) {
+        if (consumoDISCO < 25) {
             corDISCOPreenchida = "#4ed259"
-        } else if (consumoDISCO < 50) {
+        } else if (consumoDISCO <= 50) {
             corDISCOPreenchida = "#FFD700";
-        } else if (consumoDISCO <= 65) {
+        } else if (consumoDISCO <= 75) {
             corDISCOPreenchida = "#FF8C00"
-        } else if (consumoDISCO > 65) {
+        } else if (consumoDISCO > 75) {
             corDISCOPreenchida = "#FF0000"
         }
 
@@ -250,7 +296,7 @@
 
         // DISCO
         const data3 = {
-            labels: ['Ocupado', 'Restante'],
+            labels: ['Em Uso', 'Disponível'],
             datasets: [{
                 data: dadosDisco,
                 backgroundColor: coresDisco
