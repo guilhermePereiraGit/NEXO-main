@@ -334,7 +334,7 @@
             var regioes = [];
             function atualizarCampos() {
                 const estado = estado_atuacao.value;
-                
+
                 fetch("/endereco/buscarRegioes", {
                     method: "POST",
                     headers: {
@@ -449,8 +449,17 @@
                         return resposta.json();
                     })
                     .then(dados => {
-                        const idEndereco = dados.idEndereco || dados;
-                        cadastrarTotem(idEndereco);
+                        let idEndereco;
+                        if (dados.idEndereco) {
+                            idEndereco = dados.idEndereco;
+                        } else if (dados.retornoIdEndereco && dados.retornoIdEndereco.length > 0) {
+                            idEndereco = dados.retornoIdEndereco[0].idEndereco;
+                        }
+                        if (idEndereco) {
+                            cadastrarTotem(idEndereco);
+                        } else {
+                            console.error("Não foi possível obter o ID do endereço.");
+                        }
                     })
                     .catch(erro => {
                         console.log(`#ERRO: ${erro}`);
@@ -458,6 +467,7 @@
             }
 
             function cadastrarTotem(idEndereco) {
+                console.log("cadastrooooooo", idEndereco)
                 var modelo = input_modelos.value;
                 var enderecosMac = [];
                 var endereco = idEndereco;

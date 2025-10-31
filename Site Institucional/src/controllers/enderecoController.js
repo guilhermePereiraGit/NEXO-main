@@ -104,9 +104,15 @@ async function cadastrarEnderecoTotem(req, res){
     const numero = req.body.numeroServer;
     const complemento = req.body.complementoServer;
 
-    var idEndereco = await enderecoModel.cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade, rua, numero, complemento)
+    var retornoIdEndereco = await enderecoModel.buscarEnderecoExistente(cidade, rua, numero, complemento)
 
-    res.status(200).json({ idEndereco });
+    if(retornoIdEndereco.length > 0){
+        return res.status(200).json({ retornoIdEndereco });
+    }else{
+        var idEndereco = await enderecoModel.cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade, rua, numero, complemento)
+        return res.status(200).json({ idEndereco });
+    }
+
 }
 
 module.exports = {

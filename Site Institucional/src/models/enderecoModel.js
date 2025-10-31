@@ -83,13 +83,17 @@ function buscarZonas(idRegiao) {
 }
 
 async function cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade, rua, numero, complemento) {
+    const zonaValue = zonaAtuacao ? zonaAtuacao : 'NULL';
+
     const instrucaoSql = `
-        INSERT INTO endereco (cep, fkRegiao, fkZona, bairro, cidade, rua, numero, complemento) 
-            values('${cep}', ${regiaoAtuacao}, ${zonaAtuacao}, '${bairro}', '${cidade}', '${rua}', '${numero}', '${complemento}');
-    `
+        INSERT INTO endereco (cep, fkRegiao, fkZona, bairro, cidade, rua, numero, complemento)
+        VALUES ('${cep}', ${regiaoAtuacao}, ${zonaValue}, '${bairro}', '${cidade}', '${rua}', '${numero}', '${complemento}');
+    `;
+
     const resultado = await database.executar(instrucaoSql);
     return resultado.insertId;
 }
+
 
 module.exports = {
     cadastrarEnderecoSemRegiao, buscarEnderecoExistente, cadastrarEnderecoComRegiao, buscarIdEstado,
