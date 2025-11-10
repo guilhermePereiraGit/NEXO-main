@@ -71,7 +71,7 @@ async function cadastrarFuncionario(req, res) {
     } else {
 
         const retornoIdUsuario = await usuarioModel.cadastrarUsuario(
-            nome, email, senha, cpf, telefone, cargo, fkEmpresa
+            nome, email, cpf, senha, telefone, cargo, fkEmpresa
         );
 
         if (zonaAtuacao != "") {
