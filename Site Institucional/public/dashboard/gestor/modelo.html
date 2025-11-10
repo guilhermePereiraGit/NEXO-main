@@ -32,16 +32,17 @@
                     <a
                         href="https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true"><img
                             src="../../assets/imgs/icon-jira.png"></a>
-                    <a href="https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22"><img src="../../assets/imgs/icon-slack.png"></a>
+                    <a href="https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22"><img
+                            src="../../assets/imgs/icon-slack.png"></a>
                 </div>
             </div>
         </header>
         <div class="content">
             <div class="content-divisao">
-            <div class="first-modelo">
-                <div class="first-region">
-                    <h1>Modelo: <span id="modelo_escolhido"></span></h1>
-                    <!-- <div class="zona" id="zona">
+                <div class="first-modelo">
+                    <div class="first-region">
+                        <h1>Modelo: <span id="modelo_escolhido"></span></h1>
+                        <!-- <div class="zona" id="zona">
                         <label>Escolha a Zona:</label>
                         <select name="regiao_atuacao" id="regiao_atuacao" onchange="carregarRegioes()">
                             <option value="x">Escolha uma Opção</option>
@@ -53,43 +54,37 @@
                         </select>
                     </div> -->
 
-                    <div class="desc">
-                        <h2>Desempenho dos Componentes</h2>
-                        <p>Componente com Melhor Desempenho (%)</p>
-                    </div>
+                        <div class="desc">
+                            <h2>Desempenho dos Componentes</h2>
+                            <p>Componente com Melhor Desempenho (%)</p>
+                        </div>
 
-                    <div class="radar">
-                        <canvas id="grafico-radar" class="chart-container"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="second-modelo">
-                <div class="kpi-normal">
-                    <div class="kpi">
-                        <h1>Total de Totens do Modelo</h1>
-                        <p>40 <span>10% do Total</span></p>
-                    </div>
-                    <div class="kpi">
-                        <h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1>
-                        <p>20% <span>20 Alertas</span></p>
-                    </div>
-                </div>
-                <div class="kpi-especial">
-                    <div class="ranking">
-                        <div class="ranking-content">
-                            <h1>Componente com Mais Alertas (Semanal)</h1>
-                            <p>DISCO <span>5 Alertas</span></p>
-                        </div>
-                    </div>
-                    <div class="ranking">
-                        <h1>Mês Atual</h1>
-                        <div class="ranking-desc">
-                            <h1>Outubro</h1>
-                            <p>-15 Taxa de Alerta desde Setembro</p>
+                        <div class="radar">
+                            <canvas id="grafico-radar" class="chart-container"></canvas>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="second-modelo">
+                    <div class="kpi-normal">
+                        <div class="kpi">
+                            <h1>Total de Totens do Modelo</h1>
+                            <p>40 <span>10% do Total</span></p>
+                        </div>
+                        <div class="kpi" id="kpi-porcentagem">
+                        </div>
+                    </div>
+                    <div class="kpi-especial">
+                        <div class="ranking">
+                            <div class="ranking-content" id="ranking-content">
+                            </div>
+                        </div>
+                        <div class="ranking">
+                            <h1>Mês Atual</h1>
+                            <div class="ranking-desc" id="ranking-desc">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="third-modelo">
                 <h1>Taxa de Alertas em Cada Mês</h1>
@@ -101,42 +96,125 @@
     </div>
 </body>
 <script>
-        function gerarGraficoBarra() {
-        legenda = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
-        infos = [10,20,10,15,15,30,10,20,30,15,15,30]
+    function identificarModelo() {
+        var modelo_escolhido = document.getElementById("modelo_escolhido");
+        modelo_escolhido.innerHTML = sessionStorage.getItem("MODELO_SELECIONADO");
+
+        if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385123") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>62.5% <span>25 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 30, 15, 15, 30];
+            dados = [80, 60, 55]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>DISCO</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-15 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385129") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>57.5% <span>23 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 15, 25, 15, 30];
+            dados = [55, 40, 80]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>RAM</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>+10 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385124") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>37.5% <span>15 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 20, 10, 15, 30];
+            dados = [70, 40, 35]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>DISCO</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-10 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385130") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>37.5% <span>15 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 15, 20, 15, 30];
+            dados = [75, 55, 50]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>DISCO</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>+5 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385132") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>32.5% <span>13 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 30, 15, 15, 30];
+            dados = [78, 43, 51]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>RAM</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-15 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385134") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>30% <span>12 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 21, 8, 15, 30];
+            dados = [34, 64, 37]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>CPU</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-13 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385125") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>27.5% <span>11 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 16, 32, 15, 30];
+            dados = [24, 35, 68]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>CPU</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>+16 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385127") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>25% <span>10 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 30, 23, 15, 30];
+            dados = [40, 60, 32]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>DISCO</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-7 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385126") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>22.5% <span>9 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 12, 11, 15, 30];
+            dados = [64, 40, 21]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>DISCO</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-1 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385131") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>17.5% <span>7 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 5, 10, 15, 30];
+            dados = [20, 70, 53]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>CPU</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>+5 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385128") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>15% <span>6 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 13, 12, 15, 30];
+            dados = [23, 73, 75]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>CPU</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>-1 Taxa de Alerta desde Setembro</p>"
+        } else if (sessionStorage.getItem("MODELO_SELECIONADO") == "AA0385133") {
+            document.getElementById('kpi-porcentagem').innerHTML += "<h1>Taxa de Alertas (%)<span>Total de Alertas/Total de Totens</span></h1><p>7.5% <span>3 Alertas</span></p>"
+            var infos = [10, 20, 10, 15, 15, 30, 10, 20, 30, 43, 15, 30];
+            dados = [23, 98, 35]
+            document.getElementById('ranking-content').innerHTML += "<h1>Componente com Mais Alertas (Semanal)</h1><p>CPU</p>"
+            document.getElementById('ranking-desc').innerHTML += "<h1>Outubro</h1><p>+13 Taxa de Alerta desde Setembro</p>"
+        }
+
+
+        gerarGraficoBarra(infos)
+        gerarGraficoRadar(dados)
+    }
+
+
+    function gerarGraficoBarra(infos) {
+        legenda = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
         const cty = document.getElementById('grafico-bar');
         cty.height = 210;
         new Chart(cty, {
-                type: 'bar',
-                data: {
-                    labels:legenda,
-                    datasets: [{
-                        data: infos,
-                        borderWidth: 1,
-                        backgroundColor: "#8b5cf6",
-                        borderRadius: 10
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
+            type: 'bar',
+            data: {
+                labels: legenda,
+                datasets: [{
+                    data: infos,
+                    borderWidth: 1,
+                    backgroundColor: "#8b5cf6",
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
 
-                    }
-                },
+                }
+            },
         })
     }
 
-    function gerarGraficoRadar() {
+    function gerarGraficoRadar(dados) {
         const ctx = document.getElementById("grafico-radar");
         new Chart(ctx, {
             type: 'radar',
             data: {
                 datasets: [{
-                    data: [80, 60, 55],
+                    data: dados,
                     backgroundColor: "#8a5cf680"
                 }],
                 labels: ['CPU', 'RAM', 'DISCO']
@@ -154,12 +232,6 @@
             },
         })
     }
-
-    function identificarModelo() {
-        var modelo_escolhido = document.getElementById("modelo_escolhido");
-        modelo_escolhido.innerHTML = sessionStorage.getItem("MODELO_SELECIONADO");
-    }
-
 
     // Função para active do CSS
     const links = document.querySelectorAll('.navegation a');
@@ -184,4 +256,5 @@
     });
     window.addEventListener('hashchange', atualizarActive);
 </script>
+
 </html>
