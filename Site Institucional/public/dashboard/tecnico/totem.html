@@ -63,17 +63,17 @@
                     </div>
                     <div class="localizacao">
                         <div class="bloco">
-                            <h2>MAC: <span>154724027927939</span></h2>
-                            <h2>Modelo: <span>AA0123</span></h2>
-                            <h2>Status: <span>Ligado</span></h2>
-                            <h2>CEP: <span>00222-333</span></h2>
-                            <h2>Telefone: <span>(11)99993-4454</span></h2>
+                            <h2>MAC: <span id="mac">154724027927939</span></h2>
+                            <h2>Modelo: <span id="modelo">AA0123</span></h2>
+                            <h2>Status: <span id="status">Ligado</span></h2>
+                            <h2>CEP: <span id="cep">00222-333</span></h2>
+                            <h2>Telefone: <span id="telefone">(11)99993-4454</span></h2>
                         </div>
                         <div class="bloco">
-                            <h2>Cidade: <span>São Paulo</span></h2>
-                            <h2>Bairro: <span>Jardins</span></h2>
-                            <h2>Rua <span>Rua Tavares</span></h2>
-                            <h2>Número: <span>34</span></h2>
+                            <h2>Cidade: <span id="cidade">São Paulo</span></h2>
+                            <h2>Bairro: <span id="bairro">Jardins</span></h2>
+                            <h2>Rua <span id="rua">Rua Tavares</span></h2>
+                            <h2>Número: <span id="numero">34</span></h2>
                         </div>
                     </div>
 
@@ -134,13 +134,13 @@
                                     <div class="velo-one">
                                         <canvas id="primeiro-grafico" class="chart-container"></canvas>
                                     </div>
-                                    <h1>CPU(70%)</h1>
+                                    <h1 id="cpu">CPU(70%)</h1>
                                 </div>
                                 <div class="grafico">
                                     <div class="velo-one">
                                         <canvas id="segundo-grafico" class="chart-container"></canvas>
                                     </div>
-                                    <h1>RAM(40%)</h1>
+                                    <h1 id="ram">RAM(40%)</h1>
                                 </div>
                             </div>
                             <div class="part1-graficos">
@@ -148,10 +148,10 @@
                                     <div class="velo-one">
                                         <canvas id="terceiro-grafico" class="chart-container"></canvas>
                                     </div>
-                                    <h1>DISCO(50%)</h1>
+                                    <h1 id="disco">DISCO(50%)</h1>
                                 </div>
                                 <div class="grafico-special">
-                                    <h1>280</h1>
+                                    <h1 id="processos">280</h1>
                                     <h2>PROCESSOS</h2>
                                 </div>
                             </div>
@@ -160,31 +160,31 @@
                     <div class="parametros">
                         <h2 style="margin-top: 20px;">Parâmetros Utilizados</h2>
                         <div class="all-param">
-                                                    <div class="part-parametros">
-                            <div class="parametro">
-                                <h2>CPU: </h2>
-                                <div class="part" style="background-color: #4ed259;">45%</div>
-                                <div class="part" style="background-color: #FFD700;">75%</div>
-                                <div class="part" style="background-color: #FF8C00;">80%</div>
-                                <div class="part" style="background-color: #FF0000;">100%</div>
+                            <div class="part-parametros">
+                                <div class="parametro">
+                                    <h2>CPU: </h2>
+                                    <div class="part" style="background-color: #4ed259;">45%</div>
+                                    <div class="part" style="background-color: #FFD700;">75%</div>
+                                    <div class="part" style="background-color: #FF8C00;">80%</div>
+                                    <div class="part" style="background-color: #FF0000;">100%</div>
+                                </div>
+                                <div class="parametro">
+                                    <h2>RAM: </h2>
+                                    <div class="part" style="background-color: #4ed259;">75%</div>
+                                    <div class="part" style="background-color: #FFD700;">85%</div>
+                                    <div class="part" style="background-color: #FF8C00;">90%</div>
+                                    <div class="part" style="background-color: #FF0000;">100%</div>
+                                </div>
                             </div>
-                            <div class="parametro">
-                                <h2>RAM: </h2>
-                                <div class="part" style="background-color: #4ed259;">75%</div>
-                                <div class="part" style="background-color: #FFD700;">85%</div>
-                                <div class="part" style="background-color: #FF8C00;">90%</div>
-                                <div class="part" style="background-color: #FF0000;">100%</div>
+                            <div class="part-parametros">
+                                <div class="parametro">
+                                    <h2>DISCO: </h2>
+                                    <div class="part" style="background-color: #4ed259;">68%</div>
+                                    <div class="part" style="background-color: #FFD700;">75%</div>
+                                    <div class="part" style="background-color: #FF8C00;">88%</div>
+                                    <div class="part" style="background-color: #FF0000;">100%</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="part-parametros">
-                            <div class="parametro">
-                                <h2>DISCO: </h2>
-                                <div class="part" style="background-color: #4ed259;">68%</div>
-                                <div class="part" style="background-color: #FFD700;">75%</div>
-                                <div class="part" style="background-color: #FF8C00;">88%</div>
-                                <div class="part" style="background-color: #FF0000;">100%</div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -196,12 +196,82 @@
     function identificarTotem() {
         var totem_escolhido = document.getElementById("totem_escolhido");
         totem_escolhido.innerHTML = sessionStorage.getItem("TOTEM_SELECIONADO");
+        //mac,modelo,status,cep,telefone,cidade,bairro,rua,numero
+        if (sessionStorage.getItem("TOTEM_SELECIONADO") == "AA05000") {
+            document.getElementById('mac').innerHTML = "154724027927939";
+            document.getElementById('modelo').innerHTML = "AA0123";
+            document.getElementById('cep').innerHTML = "00222-333";
+            document.getElementById('telefone').innerHTML = "(11)98802-2449";
+            document.getElementById('cidade').innerHTML = "São Paulo";
+            document.getElementById('bairro').innerHTML = "Jardins";
+            document.getElementById('rua').innerHTML = "Rua Tavares"
+            document.getElementById('numero').innerHTML = "34";
+            consumoCPU = 70;
+            sobraCPU = 30;
+            consumoRAM = 40;
+            sobraRAM = 60;
+            consumoDISCO = 50;
+            sobraDISCO = 50;
+            document.getElementById('cpu').innerHTML = `CPU(${consumoCPU}%)`
+            document.getElementById('ram').innerHTML = `RAM(${consumoRAM}%)`
+            document.getElementById('disco').innerHTML = `DISCO(${consumoDISCO}%)`
+            document.getElementById('processos').innerHTML = `280`
+        } else if (sessionStorage.getItem("TOTEM_SELECIONADO") == "AA05001") {
+            document.getElementById('mac').innerHTML = "847365987304912";
+            document.getElementById('modelo').innerHTML = "AA0123";
+            document.getElementById('cep').innerHTML = "11333-444";
+            document.getElementById('telefone').innerHTML = "(11)49002-8922";
+            document.getElementById('cidade').innerHTML = "São Paulo";
+            document.getElementById('bairro').innerHTML = "Cequeira Cesar"
+            document.getElementById('rua').innerHTML = "Rua Haddock Lobo"
+            document.getElementById('numero').innerHTML = "595"
+            consumoCPU = 50;
+            sobraCPU = 50;
+            consumoRAM = 20;
+            sobraRAM = 80;
+            consumoDISCO = 20;
+            sobraDISCO = 80;
+            document.getElementById('cpu').innerHTML = `CPU(${consumoCPU}%)`
+            document.getElementById('ram').innerHTML = `RAM(${consumoRAM}%)`
+            document.getElementById('disco').innerHTML = `DISCO(${consumoDISCO}%)`
+            document.getElementById('processos').innerHTML = `270`
+        } else if (sessionStorage.getItem("TOTEM_SELECIONADO") == "AA05002") {
+            document.getElementById('mac').innerHTML = "194837201948573";
+            document.getElementById('modelo').innerHTML = "AA0124";
+            document.getElementById('cep').innerHTML = "22444-555";
+            document.getElementById('telefone').innerHTML = "(11)94023-1232";
+            document.getElementById('cidade').innerHTML = "Carapicuiba"
+            document.getElementById('cidade').innerHTML = "Santa Terezina"
+            document.getElementById('rua').innerHTML = "Doutor João Veloso"
+            document.getElementById('numero').innerHTML = "216"
+            consumoCPU = 70;
+            sobraCPU = 30;
+            consumoRAM = 70;
+            sobraRAM = 30;
+            consumoDISCO = 90;
+            sobraDISCO = 10;
+            document.getElementById('cpu').innerHTML = `CPU(${consumoCPU}%)`
+            document.getElementById('ram').innerHTML = `RAM(${consumoRAM}%)`
+            document.getElementById('disco').innerHTML = `DISCO(${consumoDISCO}%)`
+            document.getElementById('processos').innerHTML = `260`
+        }else{
+            consumoCPU = 70;
+            sobraCPU = 30;
+            consumoRAM = 40;
+            sobraRAM = 60;
+            consumoDISCO = 50;
+            sobraDISCO = 50;
+            document.getElementById('cpu').innerHTML = `CPU(${consumoCPU}%)`
+            document.getElementById('ram').innerHTML = `RAM(${consumoRAM}%)`
+            document.getElementById('disco').innerHTML = `DISCO(${consumoDISCO}%)`
+            document.getElementById('processos').innerHTML = `280`
+        }
+        graficoVelocimetro(consumoCPU, sobraCPU, consumoRAM,
+            sobraRAM, consumoDISCO, sobraDISCO)
     }
 
-    function graficoVelocimetro() {
-        consumoCPU = 70;
-        sobraCPU = 30;
-
+    function graficoVelocimetro(consumoCPU, sobraCPU, consumoRAM,
+        sobraRAM, consumoDISCO, sobraDISCO) {
         if (consumoCPU < 45) {
             corCPUPreenchida = "#4ed259"
         } else if (consumoCPU <= 75) {
@@ -235,9 +305,6 @@
             }
         })
 
-        consumoRAM = 40;
-        sobraRAM = 60;
-
         if (consumoRAM < 75) {
             corRAMPreenchida = "#4ed259"
         } else if (consumoRAM <= 85) {
@@ -270,9 +337,6 @@
                 rotation: -90
             }
         })
-
-        consumoDISCO = 50;
-        sobraDISCO = 50;
 
         if (consumoDISCO < 68) {
             corDISCOPreenchida = "#4ed259"
