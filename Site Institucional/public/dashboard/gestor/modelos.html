@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD - MODELOS</title>
+    <link rel="stylesheet" href="modelos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body onload="carregarDados();gerarGraficoLinha()">
+    <div class="tudo">
+        <header>
+            <div class="header-container">
+                <!-- MENU -->
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenu()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
+
+                <!-- NAVEGAÇÃO -->
+                <div class="header-navigation">
+                    <div class="home">
+                        <div class="fundo" id="fundo" style="display: block;"></div>
+                        <i class="bi bi-house" onclick="ativar('fundo');irPara('conteudo')" id="first"
+                            style="color: #451c8b;"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" id="fundo2" style="display: none;"></div>
+                        <i class="bi bi-clipboard-data" onclick="ativar('fundo2');irPara('eficiencia')" id="second"></i>
+                    </div>
+                    <div class="alert">
+                        <div class="fundo" id="fundo3" style="display: none;"></div>
+                        <i class="bi bi-exclamation-triangle" onclick="ativar('fundo3');irPara('alertas')"
+                            id="third"></i>
+                    </div>
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+                    </div>
+                </div>
+
+                <!-- HELP - MÉTRICAS -->
+                <div class="header-help">
+                    <i class="bi bi-info-circle" onclick="abrirPassos()"></i>
+                </div>
+            </div>
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1>Guilherme Silva</h1>
+                    <h2>Gestor de Operações</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card"
+                        onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="../../assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card"
+                        onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="../../assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- POPUP DE LOGOUT -->
+        <div class="popup-logout" style="display: none;" id="popup-logout">
+            <div class="popup-content">
+                <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
+                <h1>Deseja Sair?</h1>
+                <div class="box-button">
+                    <button>Fazer Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUP DE PASSO À PASSO -->
+        <div class="popup-passos" style="display: none;" id="popup-passos">
+            <div class="passos-content">
+
+            </div>
+        </div>
+
+        <!-- POPUP DE ESCOLHA DE REGIÃO -->
+        <div class="popup-escolha" style="display: none;" id="popup-escolha">
+            <div class="escolha-content">
+                <i class="bi bi-x-lg" onclick="fecharEscolha(),carregarDados()" style="cursor: pointer;"></i>
+                <div class="initial-escolha">
+                    <div class="box">
+                        <h1>Escolha o Estado</h1>
+                        <select name="estado-escolha" id="estado-escolha" onchange="carregarRegioes()">
+                            <option value="x">Escolha uma Opção</option>
+                            <option value="AC">AC - Acre</option>
+                            <option value="AL">AL - Alagoas</option>
+                            <option value="AP">AP - Amapá</option>
+                            <option value="AM">AM - Amazonas</option>
+                            <option value="BA">BA - Bahia</option>
+                            <option value="CE">CE - Ceará</option>
+                            <option value="DF">DF - Distrito Federal</option>
+                            <option value="ES">ES - Espírito Santo</option>
+                            <option value="GO">GO - Goiás</option>
+                            <option value="MA">MA - Maranhão</option>
+                            <option value="MT">MT - Mato Grosso</option>
+                            <option value="MS">MS - Mato Grosso do Sul</option>
+                            <option value="MG">MG - Minas Gerais</option>
+                            <option value="PA">PA - Pará</option>
+                            <option value="PB">PB - Paraíba</option>
+                            <option value="PR">PR - Paraná</option>
+                            <option value="PE">PE - Pernambuco</option>
+                            <option value="PI">PI - Piauí</option>
+                            <option value="RJ">RJ - Rio de Janeiro</option>
+                            <option value="RN">RN - Rio Grande do Norte</option>
+                            <option value="RS">RS - Rio Grande do Sul</option>
+                            <option value="RO">RO - Rondônia</option>
+                            <option value="RR">RR - Roraima</option>
+                            <option value="SC">SC - Santa Catarina</option>
+                            <option value="SP">SP - São Paulo</option>
+                            <option value="SE">SE - Sergipe</option>
+                            <option value="TO">TO - Tocantins</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="priorizar" id="priorizar" style="display: none;">
+                    <i class="bi bi-exclamation-diamond"></i>
+                    <p>A região mais crítica é Região Metropolitana de São Paulo</p>
+                </div>
+
+                <!-- ANTES DE ESCOLHER UM ESTADO -->
+                <div class="aguardando" id="aguardando">
+                    <h2>Selecione o Estado para Prosseguir</h2>
+                    <p>Escolha um estado para que suas regiões metropolitanas sejam devidamente carregadas para
+                        selecionar.</p>
+                </div>
+
+                <!-- APÓS ESCOLHER UM ESTADO -->
+                <div class="regioes" id="regioes" style="display: none;">
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de São Paulo','RMSP')">
+                        <h1>Região Metropolitana de São Paulo - RMSP</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Campinas','RMC')">
+                        <h1>Região Metropolitana de Campinas - RMC</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Santos','RMBS')">
+                        <h1>Região Metropolitana de Santos - RMBS</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana do Vale do Paraíba','RMVPLN')">
+                        <h1>Região Metropolitana do Vale do Paraíba - RMVPLN</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Sorocaba','RMS')">
+                        <h1>Região Metropolitana de Sorocaba - RMS</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Ribeirão Preto','RMRP')">
+                        <h1>Região Metropolitana de Ribeirão Preto - RMRP</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de S.J do Rio Preto','RMSJRP')">
+                        <h1>Região Metropolitana de S.J do Rio Preto - RMSJRP</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Bauru','RMB')">
+                        <h1>Região Metropolitana de Bauru - RMB</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Piracicaba','RMP')">
+                        <h1>Região Metropolitana de Piracicaba - RMP</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Jundiaí','RMJ')">
+                        <h1>Região Metropolitana de Jundiaí - RMJ</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Franca','RMF')">
+                        <h1>Região Metropolitana de Franca - RMF</h1>
+                        <div class="priorizar">
+                            <h2>Disponibilidade</h2>
+                            <h3>60%</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EM PRODUÇÃO -->
+                <div class="producao" id="producao" style="display: none;">
+                    <h2>Em Produção</h2>
+                    <p>Este Estado ainda não possui serviços disponíveis para análise ou monitoramento dos dados</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="information">
+                <div class="title">
+                    <h1 id="regiao-escolhida">Região Metropolitana de São Paulo</h1>
+                    <p id="sigla-regiao">RMSP</p>
+                </div>
+                <div class="alterar-regiao">
+                    <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
+                </div>
+            </div>
+            <div class="conteudo" id="conteudo">
+                <div class="kpis">
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Totens</h1>
+                            <h2>da Regiao</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>200</h1>
+                            <h2>10% do Total</h2>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Totens</h1>
+                            <h2>da Regiao</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>200</h1>
+                            <h2>10% do Total</h2>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Totens</h1>
+                            <h2>da Regiao</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>200</h1>
+                            <h2>10% do Total</h2>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Totens</h1>
+                            <h2>da Regiao</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>200</h1>
+                            <h2>10% do Total</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="dados">
+                    <div class="modelos">
+                        <div class="legenda">
+                            <div class="barra-legenda">
+                                <div class="item ione">20%</div>
+                                <div class="item itwo">40%</div>
+                                <div class="item ithree">60%</div>
+                                <div class="item ifour">100%</div>
+                            </div>
+                            <p>% de Totens em Alerta</p>
+                        </div>
+                        <div class="list-modelos">
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                            <div class="modelo">
+                                <p>Modelo AA0385</p>
+                                <div class="color"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grafico">
+                        <canvas id="grafico-linha" class="chart-container"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="eficiencia" id="eficiencia" style="display: none;">
+                <h1>AAAAAAAAAAAAAA</h1>
+            </div>
+
+            <div class="alertas" id="alertas" style="display: none;">
+                <h1>BBBBBBBBBBBBBB</h1>
+            </div>
+
+            <!-- CASO A REGIÃO NÃO TENHA SIDO SELECIONADA -->
+            <div class="waiting" id="waiting">
+                <div class="box">
+                    <div class="text">
+                        <h1>Aguardando Seleção de Região</h1>
+                        <p>Aguardando a seleção de uma região para que os dados sejam carregados corretamente, caso
+                            tenha selecionado a região e os dados não apareceram, entre em contato com nossa equipe de
+                            suporte.</p>
+                        <img src="../../assets/imgs/icon-nexo.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function irPara(escolhida) {
+        $("#conteudo, #eficiencia, #alertas").stop().animate({ opacity: 0 }, 200, function () {
+            $(this).css("display", "none");
+        });
+        $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
+        carregarDados();
+    }
+
+    function gerarGraficoLinha() {
+        const linha = document.getElementById('grafico-linha');
+        new Chart(linha, {
+            type: 'line',
+            data: {
+                labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+                datasets: [
+                    {
+                        label: 'Atenção',
+                        data: [10, 15, 5, 10, 13, 20, 15],
+                        borderColor: '#fada64',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Perigoso',
+                        data: [5, 2, 7, 12, 3, 6, 9],
+                        borderColor: '#f98a25',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Crítico',
+                        data: [1, 2, 1, 4, 2, 3, 1],
+                        borderColor: '#ff3131',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Line Chart'
+                    }
+                }
+            },
+        });
+    }
+    function escolherRegiao(regiao, sigla) {
+        sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
+        sessionStorage.setItem('SIGLA_REGIAO', sigla);
+        fecharEscolha();
+        carregarDados();
+        gerarGraficoLinha();
+    }
+
+    function carregarDados() {
+        regiao_escolhida = document.getElementById('regiao-escolhida');
+        sigla_escolhida = document.getElementById('sigla-regiao');
+
+        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'block';
+            document.getElementById('escolhaNew').style.display = 'block';
+            document.getElementById('eficiencia').style.display = 'block';
+            document.getElementById('alertas').style.display = 'block';
+        } else {
+            regiao_escolhida.innerHTML = "Região não Selecionada";
+            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+            document.getElementById('escolhaNew').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'none';
+            document.getElementById('eficiencia').style.display = 'none';
+            document.getElementById('alertas').style.display = 'none';
+        }
+    }
+
+    function carregarRegioes() {
+        escolha = document.getElementById('estado-escolha').value;
+        regioes = document.getElementById('regioes');
+        producao = document.getElementById('producao');
+        aguardando = document.getElementById('aguardando');
+        priorizar = document.getElementById('priorizar');
+        if (escolha == "x") {
+            aguardando.style.display = 'flex';
+            regioes.style.display = 'none';
+            producao.style.display = 'none';
+            priorizar.style.display = 'none';
+        } else if (escolha == "SP") {
+            aguardando.style.display = 'none';
+            regioes.style.display = 'flex';
+            producao.style.display = 'none';
+            priorizar.style.display = 'flex';
+        } else {
+            aguardando.style.display = 'none';
+            regioes.style.display = 'none';
+            producao.style.display = 'flex';
+            priorizar.style.display = 'none';
+        }
+    }
+
+    function ativar(escolha) {
+        document.getElementById(escolha).style.display = 'block';
+        document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
+        if (escolha == "fundo") {
+            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('first').style.color = "#451c8b";
+            document.getElementById('second').style.color = "white";
+            document.getElementById('third').style.color = "white";
+        } else if (escolha == "fundo2") {
+            document.getElementById('fundo').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('second').style.color = "#451c8b";
+            document.getElementById('first').style.color = "white";
+            document.getElementById('third').style.color = "white";
+        } else if (escolha == "fundo3") {
+            document.getElementById('fundo').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('third').style.color = "#451c8b";
+            document.getElementById('second').style.color = "white";
+            document.getElementById('first').style.color = "white";
+        }
+    }
+
+    function abrirMenu() {
+        menu_icon = document.getElementById('icone');
+        menu = document.querySelector('.menu-extend');
+        if (menu_icon.classList.contains("bi-list")) {
+            console.log("entrei");
+            document.getElementById('extend').style.display = "flex";
+            menu.style.animation = "expandirDireita 0.5s ease forwards";
+            menu_icon.classList.remove("bi-list");
+            menu_icon.classList.add("bi-x-lg")
+
+        } else {
+            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+            menu_icon.classList.remove("bi-x-lg");
+            menu_icon.classList.add("bi-list")
+        }
+    }
+
+    function ativarPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+
+    function abrirEscolha() {
+        popup = $("#popup-escolha");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharEscolha() {
+        popup = $("#popup-escolha");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+    function abrirPassos(){
+        popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPassos() {
+        popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+</script>
+</html>
