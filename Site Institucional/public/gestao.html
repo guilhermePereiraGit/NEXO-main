@@ -4,42 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Aprovação NEXO</title>
-    <link rel="stylesheet" href="./css/institucional.css">
-    <link rel="stylesheet" href="./css/style_aprovacao.css">
+    <link rel="stylesheet" href="css/gestao2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/gestao.css">
+    <title>Página de Cadastro de Usuários</title>
 </head>
 
 <body onload="carregarDadosAprovados()">
-    <div id="cabecalho">
-        <div class="cabecalho-container">
-            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+    <div class="container">
+        <div class="nav-bar">
+            <div class="header-menu">
+                <div class="menu" id="menu" onclick="abrirMenu()">
+                    <i class="bi bi-list" id="icone"></i>
+                </div>
             </div>
-            <div class="cabecalho-links" id="cabecalhoLinks">
-                <a href="login.html" class="botao-principal" id="cadastro">Sair</a>
+            <div class="sair">
+                <div class="fundo" style="display: none;"></div>
+                <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
             </div>
         </div>
-    </div>
-    <div class="pg-principal">
-        <div id="principal">
-            <div class="more">
-                <h1 style="margin-bottom: 0px;">Usuários Ativos</h1>
-                <button onclick="abrirPopupUsuario()">Adicionar Usuários</button>
+        <div class="main">
+            <div class="topo">
+                <h2>Usuários Cadastrados</h2>
+                <button onclick="abrirPopupUsuario()">Adicionar Usuário</button>
             </div>
-            <div class="aprovados" id="div_aprovados" style="height: 450px;">
+            <div class="baixo">
+                <div class="conteudo">
+                    <div class="div_aprovados"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- style="display: none;" -->
     <div class="popupusuario" id="popupusuario" style="display: none;">
         <div class="card">
             <div class="cima">
                 <h1>Cadastro de Funcionário</h1>
                 <button onclick="fecharPopupUsuario()"><img src="assets/imgs/close.png"></button>
             </div>
-            <div class="baixo">
+            <div class="baixo-popup">
                 <div class="item-card">
                     <label for="input_nome">Nome:</label>
                     <input type="text" id="input_nome">
@@ -93,55 +98,55 @@
             </div>
         </div>
     </div>
-    <script>
-        aprovados = [];
-        function carregarDadosAprovados() {
-            var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+</body>
 
-            fetch("/usuarios/verificarAprovados", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    idEmpresaServer: idEmpresa
-                }),
-            }).then(function (resposta) {
-                console.log(resposta);
+<script>
+    aprovados = [];
+    function carregarDadosAprovados() {
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        aprovados = data;
-                        if (aprovados.length > 0) {
-                            gerarCardsUsuarios();
-                        } else {
-                            nadaPorAquiUsuarios();
-                        }
-                    });
+        fetch("/usuarios/verificarAprovados", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idEmpresaServer: idEmpresa
+            }),
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    aprovados = data;
+                    if (aprovados.length > 0) {
+                        gerarCardsUsuarios();
+                    } else {
+                        nadaPorAquiUsuarios();
+                    }
+                });
 
 
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-        }
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
 
-        function nadaPorAquiUsuarios() {
-            div_aprovados.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
+    function nadaPorAquiUsuarios() {
+        div_aprovados.innerHTML = `
+            <h1>Nenhum Usuário Cadastrado</h1>
+            <p>Ao cadastrar um usuário, o cadastro com informações aparecerão aqui.</p>
+            <img src="icon-nexo.png" class="img-nexo">
         `;
-        }
+    }
 
-        function gerarCardsUsuarios() {
-            div_aprovados.innerHTML = "";
+    function gerarCardsUsuarios() {
+        div_aprovados.innerHTML = "";
 
-            for (var i = 0; i < aprovados.length; i++) {
-                var user = aprovados[i];
-                var cardHTML = `
+        for (var i = 0; i < aprovados.length; i++) {
+            var user = aprovados[i];
+            var cardHTML = `
             <div class="card-user">
                 <div class="card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${user.nome}</label></div>
@@ -152,28 +157,28 @@
                     <div class="labels"><label id="first">Cargo:</label><label class="label-item">${user.cargo}</label></div>
         `;
 
-                if (user.cargo == "Técnico") {
-                    if (user.NomeZona != null) {
-                        cardHTML += `
+            if (user.cargo == "Técnico") {
+                if (user.NomeZona != null) {
+                    cardHTML += `
                     <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
                     <div class="labels"><label id="first">Estado:</label><label class="label-item">${user.NomeEstado}</label></div>
                     <div class="labels"><label id="first">Região:</label><label class="label-item">${user.NomeRegiao}</label></div>
                     <div class="labels"><label id="first">Zona:</label><label class="label-item">${user.NomeZona}</label></div>
                 `;
-                    } else {
-                        cardHTML += `
+                } else {
+                    cardHTML += `
                     <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
                     <div class="labels"><label id="first">Estado:</label><label class="label-item">${user.NomeEstado}</label></div>
                     <div class="labels"><label id="first">Região:</label><label class="label-item">${user.NomeRegiao}</label></div>
                 `;
-                    }
-                } else if (user.cargo == "Gestor") {
-                    cardHTML += `
+                }
+            } else if (user.cargo == "Gestor") {
+                cardHTML += `
                 <div class="labels"><label id="first">Telefone:</label><label class="label-item">${user.telefone}</label></div>
             `;
-                }
+            }
 
-                cardHTML += `
+            cardHTML += `
                 </div>
                 <div class="card-second">
                     <div class="buttons">
@@ -183,240 +188,239 @@
             </div>
         `;
 
-                div_aprovados.innerHTML += cardHTML;
-            }
+            div_aprovados.innerHTML += cardHTML;
         }
+    }
 
 
-        var estados = []
-        function carregarEstados() {
-            fetch("/endereco/buscarEstados", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then(function (resposta) {
+    var estados = []
+    function carregarEstados() {
+        fetch("/endereco/buscarEstados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then(function (resposta) {
 
-                    if (resposta.ok) {
-                        resposta.json().then(data => {
-                            estados = data;
-                            plotarEstadosSelect(estados)
-                        })
-                    } else {
-                        console.log("Erro ao Buscar Dados!");
-                    }
-                });
-        }
-
-        function plotarEstadosSelect(estados) {
-            var option = `<option value="">Selecione uma opção</option>`;
-
-            for (var i = 0; i < estados.length; i++) {
-                option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
-            }
-
-            estado_atuacao.innerHTML = option;
-        }
-
-        var regioes = [];
-        function atualizarCampos() {
-            var selectEstado = document.getElementById("estado_atuacao");
-            var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
-            const estado = estado_atuacao.value;
-            const cargo = cargos.value;
-            const regiaoContainer = regioes;
-            const zonaContainer = zonas;
-
-            fetch("/endereco/buscarRegioes", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    idEstadoServer: estado
-                }),
-            })
-                .then(function (resposta) {
-                    if (resposta.ok) {
-                        resposta.json().then(data => {
-                            console.log(data);
-                            regioes = data;
-                            plotarRegioesSelect(regioes);
-                        })
-                    } else {
-                        console.log("Erro ao Buscar Dados!");
-                    }
-                })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
-        }
-
-        function plotarRegioesSelect(regioes) {
-            var option = `<option value="">Selecione uma opção</option>`;
-
-            for (var i = 0; i < regioes.length; i++) {
-                option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
-            }
-
-            regiao_atuacao.innerHTML = option;
-        }
-
-        var zonas = []
-        function procurarZonas() {
-            var cargo = cargos.value;
-
-            if (cargo == "Técnico") {
-                var selectRegiao = document.getElementById("regiao_atuacao");
-                var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
-                const regiao = regiao_atuacao.value;
-
-                fetch("/endereco/buscarZonas", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        idRegiaoServer: regiao
-                    }),
-                })
-                    .then(function (resposta) {
-                        if (resposta.ok) {
-                            resposta.json().then(data => {
-                                zonas = data;
-                                if (zonas.length > 0) {
-                                    plotarZonasSelect(zonas);
-                                } else {
-                                    zona_atuacao.innerHTML = "";
-                                }
-                            })
-                        } else {
-                            console.log("Erro ao Buscar Dados!");
-                        }
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        estados = data;
+                        plotarEstadosSelect(estados)
                     })
-                    .catch(function (resposta) {
-                        console.log(`#ERRO: ${resposta}`);
-                    });
-            }
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            });
+    }
+
+    function plotarEstadosSelect(estados) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < estados.length; i++) {
+            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
         }
 
-        function plotarZonasSelect(zonas) {
-            var option = `<option value="">Selecione uma opção</option>`;
+        estado_atuacao.innerHTML = option;
+    }
 
-            for (var i = 0; i < zonas.length; i++) {
-                option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
-            }
+    var regioes = [];
+    function atualizarCampos() {
+        var selectEstado = document.getElementById("estado_atuacao");
+        var labelSelecionada = selectEstado.options[selectEstado.selectedIndex].text;
+        const estado = estado_atuacao.value;
+        const cargo = cargos.value;
+        const regiaoContainer = regioes;
+        const zonaContainer = zonas;
 
-            zona_atuacao.innerHTML = option;
+        fetch("/endereco/buscarRegioes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idEstadoServer: estado
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        console.log(data);
+                        regioes = data;
+                        plotarRegioesSelect(regioes);
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+    function plotarRegioesSelect(regioes) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < regioes.length; i++) {
+            option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
         }
 
-        function cadastrarFuncionario() {
-            var nome = input_nome.value;
-            var email = input_email.value;
-            var cpf = input_cpf.value;
-            var telefone = input_telefone.value;
-            var senha = input_senha.value;
-            var estadoAtuacao = estado_atuacao.value;
-            var zonaAtuacao = zona_atuacao.value;
-            var regiaoAtuacao = regiao_atuacao.value;
-            var cargo = cargos.value
-            var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+        regiao_atuacao.innerHTML = option;
+    }
 
-            fetch("/usuarios/cadastrarFuncionario", {
+    var zonas = []
+    function procurarZonas() {
+        var cargo = cargos.value;
+
+        if (cargo == "Técnico") {
+            var selectRegiao = document.getElementById("regiao_atuacao");
+            var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+            const regiao = regiao_atuacao.value;
+
+            fetch("/endereco/buscarZonas", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    nomeServer: nome,
-                    emailServer: email,
-                    senhaServer: senha,
-                    cpfServer: cpf,
-                    telefoneServer: telefone,
-                    cargoServer: cargo,
-                    regiaoAtuacaoServer: regiaoAtuacao,
-                    estadoAtuacaoServer: estadoAtuacao,
-                    zonaAtuacaoServer: zonaAtuacao,
-                    fkEmpresa: idEmpresa
+                    idRegiaoServer: regiao
                 }),
             })
                 .then(function (resposta) {
-                    console.log("resposta: ", resposta);
-
                     if (resposta.ok) {
-                        alert("Cadastro realizado com sucesso!");
-
-                        input_nome.value = "";
-                        input_email.value = "";
-                        input_cpf.value = "";
-                        input_senha.value = "";
-                        input_telefone.value = "";
-                        cargos.value = "";
-
+                        resposta.json().then(data => {
+                            zonas = data;
+                            if (zonas.length > 0) {
+                                plotarZonasSelect(zonas);
+                            } else {
+                                zona_atuacao.innerHTML = "";
+                            }
+                        })
                     } else {
-                        resposta.innerHTML = "Erro ao Logar"
+                        console.log("Erro ao Buscar Dados!");
                     }
                 })
                 .catch(function (resposta) {
                     console.log(`#ERRO: ${resposta}`);
                 });
-            return false;
+        }
+    }
+
+    function plotarZonasSelect(zonas) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < zonas.length; i++) {
+            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
         }
 
-        function limparFuncionarios(id) {
-            var idUsuario = id;
+        zona_atuacao.innerHTML = option;
+    }
 
-            if (
-                idUsuario == ""
-            ) {
-                return false;
-            }
+    function cadastrarFuncionario() {
+        var nome = input_nome.value;
+        var email = input_email.value;
+        var cpf = input_cpf.value;
+        var telefone = input_telefone.value;
+        var senha = input_senha.value;
+        var estadoAtuacao = estado_atuacao.value;
+        var zonaAtuacao = zona_atuacao.value;
+        var regiaoAtuacao = regiao_atuacao.value;
+        var cargo = cargos.value
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
-            fetch("/usuarios/deletarFuncionario", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    idUsuarioServer: idUsuario
-                }),
+        fetch("/usuarios/cadastrarFuncionario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nome,
+                emailServer: email,
+                senhaServer: senha,
+                cpfServer: cpf,
+                telefoneServer: telefone,
+                cargoServer: cargo,
+                regiaoAtuacaoServer: regiaoAtuacao,
+                estadoAtuacaoServer: estadoAtuacao,
+                zonaAtuacaoServer: zonaAtuacao,
+                fkEmpresa: idEmpresa
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Cadastro realizado com sucesso!");
+
+                    input_nome.value = "";
+                    input_email.value = "";
+                    input_cpf.value = "";
+                    input_senha.value = "";
+                    input_telefone.value = "";
+                    cargos.value = "";
+
+                } else {
+                    resposta.innerHTML = "Erro ao Logar"
+                }
             })
-                .then(function (resposta) {
-                    console.log("resposta: ", resposta);
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
 
-                    if (resposta.ok) {
-                        window.location.reload()
-                    } else {
-                        console.log("Erro ao Deletar");
+    function limparFuncionarios(id) {
+        var idUsuario = id;
 
-                    }
-                })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
+        if (
+            idUsuario == ""
+        ) {
             return false;
         }
 
-        function gerarSenha() {
-            const teclado = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var senhaAleatoria = "";
-            for (var i = 0; i < 20; i++) {
-                var indice = Math.floor(Math.random() * teclado.length); senhaAleatoria
-                    += teclado[indice];
-            } document.getElementById("input_senha").value = senhaAleatoria;
-        }
+        fetch("/usuarios/deletarFuncionario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idUsuarioServer: idUsuario
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
 
-        function abrirPopupUsuario() {
-            document.getElementById("popupusuario").style.display = "flex";
-            carregarEstados();
-        }
+                if (resposta.ok) {
+                    window.location.reload()
+                } else {
+                    console.log("Erro ao Deletar");
 
-        function fecharPopupUsuario() {
-            document.getElementById("popupusuario").style.display = "none"; window.location.reload();
-        }
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
 
-    </script>
-</body>
+    function gerarSenha() {
+        const teclado = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var senhaAleatoria = "";
+        for (var i = 0; i < 20; i++) {
+            var indice = Math.floor(Math.random() * teclado.length); senhaAleatoria
+                += teclado[indice];
+        } document.getElementById("input_senha").value = senhaAleatoria;
+    }
+
+    function abrirPopupUsuario() {
+        document.getElementById("popupusuario").style.display = "flex";
+        carregarEstados();
+    }
+
+    function fecharPopupUsuario() {
+        document.getElementById("popupusuario").style.display = "none"; window.location.reload();
+    }
+
+</script>
 
 </html>
