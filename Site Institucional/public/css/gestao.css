@@ -780,6 +780,7 @@ select {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    transition: 0.3s;
 }
 
 .aprove-card .t {
@@ -826,5 +827,77 @@ select {
     color: var(--principal);
 }
 .popup-infos .infos-content .up h1{
+    color: var(--principal);
+}
+.infos-dados{
+    display: flex;
+    height: 45vh;
+    width: 95%;
+    margin-top: 40px;
+    justify-content: space-between;
+    gap: 50px;
+}
+.infos-dados .part{
+    width: 50%;
+}
+.infos-dados .part .botoes{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.infos-dados .part .botoes button{
+    padding: 20px;
+    font-size: 18px;
+    background-color: var(--principal);
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    border: 1px solid var(--principal);
+}
+.infos-dados #special{
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    gap: 5px;
+    color: var(--principal);
+}
+.infos-dados #special span{
+    color: black;
+}
+.infos-dados .regioes h1{
+    color: var(--principal);
+    font-size: 20px;
+}
+.infos-dados .regioes .regioes-user{
+    height: 35vh;
+    box-shadow: 0 0 10px 5px #451c8b2a;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: auto;
+}
+.part .regioes-user .regiao{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    transition: 0.3s;
+    align-items: center;
+    height: 8vh;
+}
+.part .regioes-user .regiao:hover{
+    background-color: var(--fundo);
+}
+.part .regioes-user .regiao h1{
+    font-size: 15px;
+}
+.part .regioes-user .regiao p{
+    font-size: 18px;
+}
+.manipulacao{
+    display: flex;
+    flex-direction: column;
+}
+.manipulacao i{
+    transform: scale(0.5);
     color: var(--principal);
 }
