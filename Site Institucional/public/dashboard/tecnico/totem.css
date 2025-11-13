@@ -459,7 +459,7 @@ header .header-navigation .alert {
 
 /* KPIS */
 .conteudo {
-    width: 100%;
+    width: fit-content;
     padding: 30px;
 }
 
