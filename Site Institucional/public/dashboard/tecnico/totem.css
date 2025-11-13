@@ -1,0 +1,675 @@
+:root {
+    --principal: #451c8b;
+    --contraste: #c8c1ff;
+    --fundo: #eeecff;
+    --bem: #65fa8f;
+    --atencao: #fada64;
+    --perigo: #f98a25;
+    --mperigo: #ff3131;
+}
+
+/* TUDO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--fundo);
+}
+
+.tudo {
+    display: flex;
+}
+
+/* HEADER */
+header .header-container {
+    background-color: var(--principal);
+    width: 150px;
+    height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .header-container i {
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    z-index: 900;
+    transition: 0.3s;
+}
+
+#menu {
+    transition: 0.3s;
+}
+
+#menu:hover {
+    transform: scale(1.1);
+}
+
+/* NAVEGAÇÃO DO HEADER */
+header .header-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+header .header-navigation .home,
+header .header-navigation .eficiencia,
+header .header-navigation .alert {
+    display: flex;
+    align-items: center;
+    height: 13vh;
+}
+
+/* ANIMAÇÃO DE NAVEGAÇÃO */
+.fundo {
+    position: absolute;
+    height: 13vh;
+    width: 150px;
+    left: 0;
+    background-color: var(--contraste);
+    z-index: 1;
+    transform-origin: right;
+    animation: expandirEsquerda 0.5s ease forwards;
+}
+
+@keyframes expandirEsquerda {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherDireita {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ANIMAÇÃO DE MENU */
+.menu-extend {
+    width: 30%;
+    top: 0;
+    left: 150px;
+    background-color: var(--principal);
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    animation: expandirDireita 0.5s ease forwards;
+    transform-origin: left;
+    border-left: 1px solid var(--contraste);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+@keyframes expandirDireita {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherEsquerda {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* MENU EXTEND */
+.menu-extend .jira-slack {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-extend .jira-slack .card {
+    display: flex;
+    gap: 10px;
+    width: 50%;
+    padding: 20px;
+    background-color: var(--contraste);
+    border-radius: 10px;
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu-extend .jira-slack .card:hover {
+    background-color: white;
+}
+
+.menu-extend .jira-slack .card img {
+    width: 33%;
+}
+
+.menu-extend .widgets {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 5px;
+}
+
+.menu-extend .widgets .email,
+.menu-extend .widgets .telefone {
+    font-size: 20px;
+}
+
+.menu-extend .widgets .email i,
+.menu-extend .widgets .telefone i {
+    color: white;
+}
+
+.menu-extend .widgets p {
+    color: var(--contraste);
+    font-size: 18px;
+    text-align: justify;
+}
+
+.menu-extend .infos-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.menu-extend .infos-user h1 {
+    font-weight: 500;
+    color: white;
+}
+
+.menu-extend .infos-user h2 {
+    font-weight: 500;
+    color: var(--contraste);
+}
+
+/* CONTENT */
+.content .information {
+    width: 1340px;
+    height: 15vh;
+    background-color: var(--contraste);
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.content .information h1 {
+    font-weight: 500;
+    color: var(--principal);
+}
+
+.content .information .title {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.content .information .title p {
+    font-size: 25px;
+    color: var(--principal);
+    font-weight: bold;
+}
+
+.content .information .alterar-regiao i {
+    cursor: pointer;
+}
+
+.content .information .alterar-regiao {
+    margin-top: 10px;
+    font-size: 35px;
+    color: var(--principal);
+}
+
+/* WIDGETS */
+.widgets select {
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.widgets .card {
+    display: flex;
+}
+
+.widgets .card img {
+    width: 50%;
+}
+
+/* POPUP PARA LOGOUT */
+.popup-logout {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-logout .popup-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-logout .popup-content i {
+    font-size: 30px;
+    color: var(--principal);
+    cursor: pointer;
+}
+
+.popup-logout .popup-content h1 {
+    color: var(--principal);
+    text-align: center;
+}
+
+.popup-logout .popup-content button {
+    padding: 30px;
+    font-size: 20px;
+    width: 90%;
+    background-color: var(--principal);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.popup-logout .popup-content .box-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* POPUP PARA ESCOLHA DE REGIÃO */
+.popup-escolha {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-escolha .escolha-content {
+    width: 50%;
+    height: 80vh;
+    background-color: white;
+    padding: 30px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-escolha .escolha-content i {
+    font-size: 30px;
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content h1 {
+    color: var(--principal);
+    font-weight: 500;
+}
+
+.popup-escolha .escolha-content .initial-escolha {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box select {
+    border: 1px solid var(--principal);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.popup-escolha .escolha-content .priorizar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    height: 45vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .aguardando p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA PRODUÇÃO */
+.popup-escolha .escolha-content .producao {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    height: 45vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .producao h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .producao p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA AS REGIÕES */
+.popup-escolha .escolha-content .regioes {
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    overflow: auto;
+    margin-top: 30px;
+}
+
+.popup-escolha .escolha-content .regioes .regiao {
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.popup-escolha .escolha-content .regioes .regiao:hover {
+    background-color: var(--fundo);
+}
+
+.popup-escolha .escolha-content .regioes .regiao h1 {
+    font-size: 25px;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar h3 {
+    font-size: 25px;
+    color: var(--principal);
+}
+
+/* KPIS */
+.conteudo {
+    width: 100%;
+    padding: 30px;
+}
+
+.conteudo .kpis {
+    display: flex;
+    justify-content: space-between;
+}
+
+.conteudo .kpis .kpi {
+    background-color: white;
+    padding: 15px;
+    width: 24.5%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteudo .kpis .kpi h1 {
+    color: var(--principal);
+}
+
+.conteudo .kpis .kpi .titulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.conteudo .kpis .kpi .dado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteudo .kpis .kpi .dado h1 {
+    font-size: 40px;
+    color: var(--principal);
+}
+
+.conteudo .kpis .kpi .titulo h1 {
+    font-size: 25px;
+}
+
+.conteudo .kpis .kpi .titulo h2 {
+    font-size: 20px;
+}
+
+/* LEGENDA DE DADOS */
+.dados {
+    display: flex;
+    gap: 10px;
+}
+
+.dados .modelos {
+    background-color: white;
+    width: 40%;
+    height: 51.3vh;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dados .modelos .legenda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dados .modelos .legenda p {
+    color: var(--principal);
+}
+
+.dados .modelos .list-modelos {
+    margin-top: 30px;
+    height: 38vh;
+    overflow: auto;
+    width: 85%;
+}
+
+.dados .modelos .list-modelos .modelo {
+    padding: 15px;
+    transition: 0.3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dados .modelos .list-modelos .modelo:hover {
+    background-color: var(--fundo);
+}
+
+.dados .modelos .list-modelos .modelo p {
+    font-size: 20px;
+}
+
+.dados .modelos .list-modelos .modelo .color {
+    height: 1.7vh;
+    width: 25%;
+    border-radius: 20px;
+    background-color: #ff3131;
+}
+
+.barra-legenda {
+    display: flex;
+    border-radius: 50px;
+    width: fit-content;
+    height: 7vh;
+    align-items: center;
+    font-weight: bold;
+}
+
+.item {
+    padding: 8px 18px;
+    color: var(--principal);
+    text-align: center;
+}
+
+.item:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+.item:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.ione {
+    background-color: #65fa8f;
+}
+
+.itwo {
+    background-color: #fada64;
+}
+
+.ithree {
+    background-color: #f98a25;
+}
+
+.ifour {
+    background-color: #ff3131;
+}
+
+/* GRÁFICO DE LINHA */
+.grafico {
+    background-color: white;
+    margin-top: 10px;
+    width: 60%;
+    border-radius: 10px;
+}
+
+/* AGUARDANDO SELECIONAR REGIÃO */
+.waiting {
+    padding: 30px;
+}
+
+.waiting .box {
+    height: 77vh;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.waiting .box .text {
+    width: 70%;
+    text-align: center;
+}
+
+.waiting .box .text h1 {
+    color: var(--principal);
+}
+
+.waiting .box .text p {
+    font-size: 20px;
+}
+
+.waiting .box .text img {
+    width: 20%;
+    margin-top: 50px;
+}
+
+/* POPUP DE PASSO À PASSO */
+.popup-passos {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-passos .passos-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
