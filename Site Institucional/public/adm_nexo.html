@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADM - NEXO</title>
+    <link rel="stylesheet" href="./css/adm_nexo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="tudo">
+        <header>
+            <div class="header-container">
+                <!-- MENU -->
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenu()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
+
+                <!-- NAVEGAÇÃO -->
+                <div class="header-navigation">
+                    <div class="pendent">
+                        <div class="fundo" id="fundo3" style="display: none;"></div>
+                        <i class="bi bi-buildings"><a href="#principal"></a></i>
+                    </div>
+                    <div class="alert">
+                        <div class="fundo" id="fundo3" style="display: none;"></div>
+                        <i class="bi bi-clock-history"><a href="#segundo"></a></i>
+                    </div>
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1>Guilherme Silva</h1>
+                    <h2 style="align-self: center;">Administrador</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card"
+                        onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="./assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card"
+                        onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="./assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- POPUP DE LOGOUT -->
+        <div class="popup-logout" style="display: none;" id="popup-logout">
+            <div class="popup-content">
+                <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
+                <h1>Deseja Sair?</h1>
+                <div class="box-button">
+                    <button>Fazer Logout</button>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="information">
+                <div class="title">
+                    <h1 id="regiao-escolhida">Empresas Cadastras</h1>
+                    <p id="sigla-regiao">RMSP</p>
+                </div>
+            </div>
+            <div class="baixo">
+                <div class="conteudo">
+                    <h1>Empresas Cadastradas</h1>
+                    <div class="div_aprovados" id="div_aprovados">
+                        
+                    </div>
+                </div>
+                <div class="adicionar-parametro" id="segundo">
+                    <h1>Empresas Pendentes</h1>
+                    <div class="pendentes" id="div_pendentes">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function abrirMenu() {
+        menu_icon = document.getElementById('icone');
+        menu = document.querySelector('.menu-extend');
+        if (menu_icon.classList.contains("bi-list")) {
+            console.log("entrei");
+            document.getElementById('extend').style.display = "flex";
+            menu.style.animation = "expandirDireita 0.5s ease forwards";
+            menu_icon.classList.remove("bi-list");
+            menu_icon.classList.add("bi-x-lg")
+
+        } else {
+            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+            menu_icon.classList.remove("bi-x-lg");
+            menu_icon.classList.add("bi-list")
+        }
+    }
+
+    function ativarPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+
+    function abrirEscolha() {
+        popup = $("#popup-escolha");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharEscolha() {
+        popup = $("#popup-escolha");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+    function abrirPassos() {
+        popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPassos() {
+        popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+</script>
