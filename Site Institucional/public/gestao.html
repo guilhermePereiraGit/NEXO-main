@@ -59,15 +59,16 @@
     <div class="popup-infos" style="display: none;" id="popup-infos">
         <div class="infos-content">
             <div class="up">
-                <h1>Informações do Funcionário <span id="spn_cargo"></span>:</h1>
+                <h1 style="color: black;">Informações do Funcionário <span id="spn_cargo"
+                        style="color: #451c8b;"></span>:</h1>
                 <i class="bi bi-x-lg" onclick="fecharInfos()"></i>
             </div>
             <div class="infos-dados">
                 <div class="part" id="special">
-                    <label>Nome: <span id="spn_nome">Guilherme Silva de Oliveira</span></label>
-                    <label>Email: <span id="spn_email">guilhermesilva@gmail.com</span></label>
-                    <label>Senha: <span id="spn_senha">ofhp3j193hpeifhjo</span></label>
-                    <label>Estado: <span id="spn_estado">São Paulo</span></label>
+                    <label>Nome: <span id="spn_nome"></span></label>
+                    <label>Email: <span id="spn_email"></span></label>
+                    <label>Senha: <span id="spn_senha"></span></label>
+                    <label>Estado: <span id="spn_estado"></span></label>
                     <div class="botoes">
                         <button>Adicionar Região</button>
                         <button onclick="limparFuncionarios(id)">Cancelar Usuário</button>
@@ -75,49 +76,7 @@
                 </div>
                 <div class="part regioes">
                     <h1>Regiões Associadas:</h1>
-                    <div class="regioes-user">
-                        <div class="regiao">
-                            <div class="name">
-                                <h1>Região</h1>
-                                <p>RM São Paulo</p>
-                            </div>
-                            <div class="zona">
-                                <h1>Zona</h1>
-                                <p id="ipt_zona1">Zona Norte</p>
-                            </div>
-                            <div class="manipulacao">
-                                <i class="bi bi-trash3" id="excluir"></i>
-                                <i class="bi bi-arrow-repeat" id="alterar" onclick="alterarZona('ipt_zona1')"></i>
-                            </div>
-                        </div>
-                        <div class="regiao">
-                            <div class="name">
-                                <h1>Região</h1>
-                                <p>RM São Paulo</p>
-                            </div>
-                            <div class="zona">
-                                <h1>Zona</h1>
-                                <p id="ipt_zona2">Zona Norte</p>
-                            </div>
-                            <div class="manipulacao">
-                                <i class="bi bi-trash3" id="excluir"></i>
-                                <i class="bi bi-arrow-repeat" id="alterar" onclick="alterarZona('ipt_zona2')"></i>
-                            </div>
-                        </div>
-                        <div class="regiao">
-                            <div class="name">
-                                <h1>Região</h1>
-                                <p>RM São Paulo</p>
-                            </div>
-                            <div class="zona">
-                                <h1>Zona</h1>
-                                <p id="ipt_zona3">Zona Norte</p>
-                            </div>
-                            <div class="manipulacao">
-                                <i class="bi bi-trash3" id="excluir"></i>
-                                <i class="bi bi-arrow-repeat" id="alterar" onclick="alterarZona('ipt_zona3')"></i>
-                            </div>
-                        </div>
+                    <div class="regioes-user" id="regioes_user">
                     </div>
                 </div>
             </div>
@@ -192,9 +151,10 @@
 </body>
 
 <script>
-    function alterarZona(zona){
+    function alterarZona(zona) {
         document.getElementById(`${zona}`).innerHTML = '<select name="zona_atuacao" id="zona_atuacao"></select>'
         plotarZonasSelect();
+        procurarZonas();
     }
 
     function ativarOpcao1() {
@@ -251,6 +211,46 @@
     function abrirInfos(funcionario) {
         infos = $("#popup-infos");
         infos.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+        carregarDadosAprovados();
+        console.log(aprovados);
+        console.log("opa");
+        //spn_cargo,spn_nome,spn_email,spn_senha,spn_estado
+        spn_cargo.innerHTML = aprovados[funcionario].cargo
+        spn_nome.innerHTML = aprovados[funcionario].nome
+        spn_email.innerHTML = aprovados[funcionario].email
+        spn_estado.innerHTML = aprovados[funcionario].NomeEstado
+        spn_senha.innerHTML = aprovados[funcionario].senha
+
+        regiao = aprovados[funcionario].NomeRegiao.replace("Região Metropolitana de", "");
+        zona = aprovados[funcionario].NomeZona;
+
+        if (zona != null) {
+            regioes_user.innerHTML = `
+            <div class="regiao">
+            <div class="name">
+            <h1>Região</h1>
+            <p>RM ${regiao}</p>
+            </div>
+            <div class="zona">
+            <h1>Zona</h1>
+            <p id="ipt_zona1">${zona}</p>
+            </div>
+            <div class="manipulacao">
+            <i class="bi bi-trash3" id="excluir"></i>
+            <i class="bi bi-arrow-repeat" id="alterar" onclick="alterarZona('ipt_zona1')"></i>
+            </div>
+            </div>
+            `;
+        } else {
+            regioes_user.innerHTML = `
+            <div class="regiao" style="justify-content:center">
+            <div class="name">
+            <h1>Região</h1>
+            <p>RM ${regiao}</p>
+            </div>
+            </div>
+            `;
+        }
     }
 
     function fecharInfos() {
