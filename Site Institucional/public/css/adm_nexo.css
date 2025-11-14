@@ -317,3 +317,87 @@ header .header-navigation .alert {
     justify-content: center;
     margin-top: 40px;
 }
+
+.main {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vw;
+}
+
+.topo {
+    display: flex;
+    flex-direction: row;
+    width: 90vw;
+    height: 10%;
+    background-color: #c8c1ff;
+    justify-content: space-between;
+    align-items: center;
+    color: #451c8b;
+}
+
+.topo button {
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #eeecff;
+    border: 0;
+    color: #451c8b;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.baixo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #eeecff;
+    width: 90vw;
+    height: 90vh;
+}
+
+.img-nexo {
+    width: 200px;
+    height: 50px;
+    margin-top: 50px;
+}
+
+.baixo-popup h1 {
+    color: #451c8b;
+}
+
+.conteudo {
+    height: 80vh;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.aprove-card {
+    flex: 1 1 calc(50% - 40px);
+    max-width: 50%;
+    box-sizing: border-box;
+    font-size: 20px;
+    padding: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: 0.3s;
+}
+
+.aprove-card .t {
+    color: var(--principal);
+}
+
+.aprove-card:hover {
+    background-color: var(--fundo);
+}
+
+.aprove-card * {
+    pointer-events: none;
+}

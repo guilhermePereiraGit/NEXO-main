@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body onload="carregarDados(),carregarDadosAprovados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -28,11 +28,11 @@
                 <div class="header-navigation">
                     <div class="pendent">
                         <div class="fundo" id="fundo3" style="display: none;"></div>
-                        <i class="bi bi-buildings"><a href="#principal"></a></i>
+                        <i class="bi bi-buildings"><a href="#div_aprovados"></a></i>
                     </div>
                     <div class="alert">
                         <div class="fundo" id="fundo3" style="display: none;"></div>
-                        <i class="bi bi-clock-history"><a href="#segundo"></a></i>
+                        <i class="bi bi-clock-history"><a href="#div_pendentes"></a></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -42,14 +42,14 @@
             </div>
             <div class="menu-extend" style="display: none;" id="extend">
                 <div class="infos-user">
-                    <h1>Guilherme Silva</h1>
+                    <h1 id="lbl_nome">Guilherme Silva</h1>
                     <h2 style="align-self: center;">Administrador</h2>
                 </div>
                 <div class="widgets">
                     <p>Caso se depare com algum problema, entre em contato via:</p>
                     <div class="email" style="margin-top: 20px;">
                         <i class="bi bi-envelope"></i>
-                        <p>Email: nexoadm9328@outlook.com</p>
+                        <p id="lbl_email"></p>
                     </div>
                     <div class="telefone" style="margin-top: 20px;">
                         <i class="bi bi-telephone"></i>
@@ -81,24 +81,19 @@
                 </div>
             </div>
         </div>
-        <div class="content">
-            <div class="information">
-                <div class="title">
-                    <h1 id="regiao-escolhida">Empresas Cadastras</h1>
-                    <p id="sigla-regiao">RMSP</p>
+        <div class="main">
+            <div class="topo">
+                <h2 style="margin-left: 70px;">Empresas no sistema</h2>
+            </div>
+            <div class="baixo">
+                <div class="conteudo">
+                    <div class="aprovados" id="div_aprovados">
+                    </div>
                 </div>
             </div>
             <div class="baixo">
                 <div class="conteudo">
-                    <h1>Empresas Cadastradas</h1>
-                    <div class="div_aprovados" id="div_aprovados">
-                        
-                    </div>
-                </div>
-                <div class="adicionar-parametro" id="segundo">
-                    <h1>Empresas Pendentes</h1>
                     <div class="pendentes" id="div_pendentes">
-
                     </div>
                 </div>
             </div>
@@ -107,6 +102,239 @@
 </body>
 
 <script>
+aprovados = [];
+    //Funções de Nada por Aqui
+    function nadaPorAquiAprovados() {
+        div_aprovados.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function nadaPorAquiPendentes() {
+        div_pendentes.innerHTML = `
+            <div class="card-nothing">
+                <h1>Sem Registros para Aprovação</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    empresas = [];
+    function carregarDados() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+
+        fetch("/aprovacao/verificar", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    empresas = data;
+                    if (empresas.length > 0) {
+                        gerarCards();
+                    } else {
+                        nadaPorAquiPendentes();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function gerarCards() {
+        for (var i = 0; i < empresas.length; i++) {
+            div_pendentes.innerHTML += `
+            <div class = "card-user">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${empresas[i].nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${empresas[i].cnpj}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${empresas[i].email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${empresas[i].telefone}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class = "aprovar" onclick = "aprovar(${empresas[i].idEmpresa})">Aprovar</button>
+                        <button class = "reprovar" onclick = "recusar(${empresas[i].idEmpresa})">Reprovar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    aprovados = [];
+    function carregarDadosAprovados() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+
+        fetch("/aprovacao/verificarAprovados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(function (resposta) {
+            console.log(resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    console.log(data);
+                    aprovados = data;
+                    if (aprovados.length > 0) {
+                        gerarCardsAprovados();
+                    } else {
+                        nadaPorAquiAprovados();
+                    }
+                })
+            } else {
+                console.log("Erro ao Buscar Dados!");
+            }
+        });
+    }
+
+    function gerarCardsAprovados() {
+        for (var i = 0; i < aprovados.length; i++) {
+            div_aprovados.innerHTML += `
+            <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
+                <div class = "card-first">
+                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
+                </div>
+                <div class = "card-second">
+                    <div class = "buttons">
+                        <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    }
+
+    function aprovar(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/aprovacao/aprovar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresaServer: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload();
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function limparFuncionarios(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/limparFuncionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ fkEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    removerEmpresa(idEmpresaVar);
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function removerEmpresa(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/deletarEmpresa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload()
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function recusar(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/aprovacao/recusar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresaServer: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Erro ao Recusar")
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+    function carregarModelos(idEmpresa) {
+        window.location.href = `modelos.html?id=${idEmpresa}`;
+    }
+
     function abrirMenu() {
         menu_icon = document.getElementById('icone');
         menu = document.querySelector('.menu-extend');
