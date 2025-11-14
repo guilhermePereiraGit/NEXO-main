@@ -27,7 +27,7 @@
                 <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
                     <div class="cadastradas">
-                        <div class="fundo" id="fundo" style="display: block;"></div>
+                        <div class="fundo" id="fundo" style="display: npne;"></div>
                         <i class="bi bi-buildings" onclick="ativar('fundo');irPara('cadastradas')" id="first"></i>
                     </div>
                     <div class="pendentes">
@@ -179,7 +179,7 @@
 
     function gerarCards() {
         for (var i = 0; i < empresas.length; i++) {
-            div_pendentes.innerHTML += `
+            pendentes.innerHTML += `
             <div class = "card-user">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${empresas[i].nome}</label></div>
@@ -233,7 +233,7 @@
 
     function gerarCardsAprovados() {
         for (var i = 0; i < aprovados.length; i++) {
-            div_aprovados.innerHTML += `
+            cadastradas.innerHTML += `
             <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
                 <div class = "card-first">
                     <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
