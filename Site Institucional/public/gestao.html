@@ -69,9 +69,7 @@
                     <label>Email: <span id="spn_email"></span></label>
                     <label>Senha: <span id="spn_senha"></span></label>
                     <label>Estado: <span id="spn_estado"></span></label>
-                    <div class="botoes">
-                        <button>Adicionar Região</button>
-                        <button onclick="limparFuncionarios(id)">Cancelar Usuário</button>
+                    <div class="botoes" id="topo">
                     </div>
                 </div>
                 <div class="part regioes">
@@ -152,9 +150,41 @@
 
 <script>
     function alterarZona(zona) {
-        document.getElementById(`${zona}`).innerHTML = '<select name="zona_atuacao" id="zona_atuacao"></select>'
-        plotarZonasSelect();
-        procurarZonas();
+        document.getElementById(`${zona}`).innerHTML = `<select name="zona_mudar" id="zona_mudar"></select>`
+        console.log(zonas_mudar);
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < zonas_mudar.length; i++) {
+            option += `<option value="${zonas_mudar[i].idZona}">${zonas_mudar[i].nomeZona}</option>`;
+        }
+        zona_mudar.innerHTML = option;
+        document.getElementById(`${zona}`).innerHTML += `<button id='update'><i class='bi bi-bookmark-check' id='teste' onclick='alterarFinal()'></i></button>`
+    }
+    function alterarFinal() {
+        nova_zona = document.getElementById('zona_mudar').value;
+        console.log(nova_zona);
+
+        for (let i = 0; i < zonas_mudar.length; i++) {
+            if (zonas_mudar[i].idZona == nova_zona) {
+                metricas = {
+                    idZona: zonas_mudar[i].idZona,
+                    idRegiao: zonas_mudar[i].idRegiao,
+                    idUsuario: sessionStorage.getItem('USUARIO_ESCOLHIDO'),
+                    novaZona: nova_zona
+                };
+
+                fetch("/regiao/alterar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        alterar_itens: metricas
+                    }),
+                })
+            }
+        }
+        window.location.reload();
     }
 
     function ativarOpcao1() {
@@ -220,6 +250,9 @@
         spn_email.innerHTML = aprovados[funcionario].email
         spn_estado.innerHTML = aprovados[funcionario].NomeEstado
         spn_senha.innerHTML = aprovados[funcionario].senha
+        console.log(aprovados);
+
+        sessionStorage.setItem("USUARIO_ESCOLHIDO", aprovados[funcionario].idUsuario)
 
         regiao = aprovados[funcionario].NomeRegiao.replace("Região Metropolitana de", "");
         zona = aprovados[funcionario].NomeZona;
@@ -251,6 +284,38 @@
             </div>
             `;
         }
+        topo.innerHTML = `<button>Adicionar Região</button><button onclick="limparFuncionarios(${aprovados[funcionario].idUsuario})">Cancelar Usuário</button>`;
+        console.log("Funcionario:", funcionario);
+        guardarZonas(aprovados[funcionario].NomeRegiao);
+        alterarFinal(aprovados[funcionario].idRegiao)
+    }
+
+    zonas_mudar = [];
+    function guardarZonas(regiao) {
+        console.log('oi');
+
+        fetch("/regiao/guardar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                regiao: regiao
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        regiao = data
+                        console.log(regiao);
+                        zonas_mudar = data;
+                        console.log('oie');
+
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            });
     }
 
     function fecharInfos() {
@@ -545,7 +610,6 @@
         popup = $("#popup-logout");
         popup.css({ display: "flex", opacity: 1, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
     }
-
 </script>
 
 </html>

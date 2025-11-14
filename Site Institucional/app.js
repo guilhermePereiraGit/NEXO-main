@@ -18,6 +18,7 @@ var aprovacaoRouter = require("./src/routes/aprovacao");
 var modeloRouter = require("./src/routes/modelo");
 var enderecoRouter = require("./src/routes/endereco");
 var totemRouter = require("./src/routes/totem");
+var regiaoRouter = require("./src/routes/regiao");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,6 +32,7 @@ app.use("/aprovacao", aprovacaoRouter);
 app.use("/modelo", modeloRouter);
 app.use("/endereco", enderecoRouter);
 app.use("/totem", totemRouter);
+app.use("/regiao", regiaoRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
