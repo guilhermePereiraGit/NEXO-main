@@ -26,13 +26,13 @@
 
                 <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
-                    <div class="pendent">
-                        <div class="fundo" id="fundo3" style="display: none;"></div>
-                        <i class="bi bi-buildings"><a href="#div_aprovados"></a></i>
+                    <div class="cadastradas">
+                        <div class="fundo" id="fundo" style="display: block;"></div>
+                        <i class="bi bi-buildings" onclick="ativar('fundo');irPara('cadastradas')" id="first"></i>
                     </div>
-                    <div class="alert">
-                        <div class="fundo" id="fundo3" style="display: none;"></div>
-                        <i class="bi bi-clock-history"><a href="#div_pendentes"></a></i>
+                    <div class="pendentes">
+                        <div class="fundo" id="fundo2" style="display: none;"></div>
+                        <i class="bi bi-clock-history" onclick="ativar('fundo2');irPara('pendentes')" id="second"></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -87,13 +87,13 @@
             </div>
             <div class="baixo">
                 <div class="conteudo">
-                    <div class="aprovados" id="div_aprovados">
+                    <div class="aprovados" id="cadastradas" style="display: block;">
+                        <h1>Empresas Cadastradas</h1>
                     </div>
                 </div>
-            </div>
-            <div class="baixo">
                 <div class="conteudo">
-                    <div class="pendentes" id="div_pendentes">
+                    <div class="pendentes" id="pendentes" style="display: none;">
+                        <h1>Empresas Pendentes</h1>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,29 @@
 </body>
 
 <script>
-aprovados = [];
+    function irPara(escolhida) {
+        $("#cadastradas, #pendentes").stop().animate({ opacity: 0 }, 200, function () {
+            $(this).css("display", "none");
+        });
+        $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
+        carregarDados();
+    }
+
+    function ativar(escolha) {
+        document.getElementById(escolha).style.display = 'block';
+        document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
+        if (escolha == "fundo") {
+            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('first').style.color = "#451c8b";
+            document.getElementById('second').style.color = "white";
+        } else if (escolha == "fundo2") {
+            document.getElementById('fundo').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('second').style.color = "#451c8b";
+            document.getElementById('first').style.color = "white";
+        }
+    }
+
+    aprovados = [];
     //Funções de Nada por Aqui
     function nadaPorAquiAprovados() {
         div_aprovados.innerHTML = `

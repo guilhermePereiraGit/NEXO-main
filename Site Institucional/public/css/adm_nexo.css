@@ -347,7 +347,6 @@ header .header-navigation .alert {
 }
 
 .baixo {
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -378,26 +377,146 @@ header .header-navigation .alert {
     overflow: auto;
 }
 
-.aprove-card {
-    flex: 1 1 calc(50% - 40px);
-    max-width: 50%;
-    box-sizing: border-box;
-    font-size: 20px;
+/* Cards */
+.card-user {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    align-items: center;
+    gap: 20px;
+    font-size: 25px;
     padding: 30px;
+    border-radius: 20px;
+    border: solid 2px var(--primaria);
     cursor: pointer;
+    cursor: pointer;
+}
+
+.card-second button {
+    padding: 30px;
+    width: 250px;
+    border-radius: 20px;
+    font-size: 20px;
+    border: solid 2px var(--primaria);
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.buttons {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.card-user #first {
+    color: var(--primaria);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+#pendentes,#cadastradas {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 30px;
+    overflow: auto;
+    height: 500px;
+}
+
+.aprovar {
+    background-color: lightgreen;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.aprovar:hover{
+    transform: scale(1.03);
+}
+
+.reprovar, .desativar {
+    background-color: lightcoral;
+    cursor: pointer;
     transition: 0.3s;
 }
 
-.aprove-card .t {
-    color: var(--principal);
+.reprovar:hover, .desativar:hover, .definir-parametros:hover {
+    transform: scale(1.03);
 }
 
-.aprove-card:hover {
-    background-color: var(--fundo);
+.ativar{
+    background-color: lightgreen;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.aprove-card * {
-    pointer-events: none;
+.ativar:hover   {
+    transform: scale(1.03);
+}
+
+#principal h1 {
+    color: var(--primaria);
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+#segundo {
+    padding-top: 10%;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+#segundo h1 {
+    color: var(--primaria);
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+/* Cards Nothing */
+.card-nothing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primaria);
+    height: 55vh;
+    border-radius: 20px;
+}
+.card-nothing p{
+    font-size: 20px;
+}
+
+header .header-navigation .cadastradas,
+header .header-navigation .pendentes {
+    display: flex;
+    align-items: center;
+    height: 13vh;
+}
+
+.fundo {
+    position: absolute;
+    height: 13vh;
+    width: 150px;
+    left: 0;
+    background-color: var(--contraste);
+    z-index: 1;
+    transform-origin: right;
+    animation: expandirEsquerda 0.5s ease forwards;
+}
+
+@keyframes expandirEsquerda {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherDireita {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
 }
