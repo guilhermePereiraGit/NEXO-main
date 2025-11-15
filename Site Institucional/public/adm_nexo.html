@@ -125,8 +125,8 @@
 
     //Funções de Nada por Aqui
     function nadaPorAquiAprovados() {
-        div_aprovados.innerHTML = ``
-        div_aprovados.innerHTML = `
+        cadastradas.innerHTML = ``
+        cadastradas.innerHTML = `
         <div class="card-nothing">
                 <h1>Sem Registros Aprovados</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
@@ -136,8 +136,8 @@
     }
 
     function nadaPorAquiPendentes() {
-        div_pendentes.innerHTML = ``
-        div_pendentes.innerHTML = `
+        pendentes.innerHTML = ``
+        pendentes.innerHTML = `
             <div class="card-nothing">
                 <h1>Sem Registros para Aprovação</h1>
                 <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
@@ -179,25 +179,30 @@
 
     function gerarCards() {
         pendentes.innerHTML += ``
-        for (var i = 0; i < empresas.length; i++) {
-            pendentes.innerHTML += `
-            <div class = "card-user">
-                <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${empresas[i].nome}</label></div>
-                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${empresas[i].cnpj}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${empresas[i].email}</label></div>
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${empresas[i].telefone}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class = "buttons">
-                        <button class = "aprovar" onclick = "aprovar(${empresas[i].idEmpresa})">Aprovar</button>
-                        <button class = "reprovar" onclick = "recusar(${empresas[i].idEmpresa})">Reprovar</button>    
+        if (empresas.length == 0) {
+            nadaPorAquiPendentes()
+        } else {
+            for (var i = 0; i < empresas.length; i++) {
+                pendentes.innerHTML += `
+                <div class = "card-user">
+                    <div class = "card-first">
+                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${empresas[i].nome}</label></div>
+                        <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${empresas[i].cnpj}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class="labels"><label id="first">Email:</label><label class="label-item">${empresas[i].email}</label></div>
+                        <div class="labels"><label id="first">Telefone:</label><label class="label-item">${empresas[i].telefone}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class = "buttons">
+                            <button class = "aprovar" onclick = "aprovar(${empresas[i].idEmpresa})">Aprovar</button>
+                            <button class = "reprovar" onclick = "recusar(${empresas[i].idEmpresa})">Reprovar</button>    
+                        </div>
                     </div>
                 </div>
-            </div>
-            `;
+                `;
+            }
+
         }
     }
 
@@ -234,25 +239,30 @@
 
     function gerarCardsAprovados() {
         cadastradas.innerHTML += ``
-        for (var i = 0; i < aprovados.length; i++) {
+        if(aprovados.length == 0) {
+            nadaPorAquiAprovados()
+        } else {
+            for (var i = 0; i < aprovados.length; i++) {
             cadastradas.innerHTML += `
-            <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
-                <div class = "card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
-                    <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
-                    <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
-                </div>
-                <div class = "card-second">
-                    <div class = "buttons">
-                        <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
+                    <div class = "card-first">
+                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                        <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                        <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class = "buttons">
+                            <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                        </div>
                     </div>
                 </div>
-            </div>
             `;
         }
+        }
+        
     }
 
     function aprovar(idEmpresa) {
