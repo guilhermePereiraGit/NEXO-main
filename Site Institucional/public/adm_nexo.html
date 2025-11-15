@@ -86,13 +86,13 @@
                 <h2 style="margin-left: 70px;">Empresas no sistema</h2>
             </div>
             <div class="baixo">
-                <div class="conteudo">
-                    <div class="aprovados" id="cadastradas" style="display: block;">
+                <div class="conteudo" id="cadastradas" style="display: block;">
+                    <div class="aprovados">
                         <h1>Empresas Cadastradas</h1>
                     </div>
                 </div>
-                <div class="conteudo">
-                    <div class="pendentes" id="pendentes" style="display: none;">
+                <div class="conteudo" id="pendentes" style="display: none;">
+                    <div class="pendentes">
                         <h1>Empresas Pendentes</h1>
                     </div>
                 </div>
@@ -107,7 +107,6 @@
             $(this).css("display", "none");
         });
         $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
-        carregarDados();
     }
 
     function ativar(escolha) {
@@ -124,9 +123,9 @@
         }
     }
 
-    aprovados = [];
     //Funções de Nada por Aqui
     function nadaPorAquiAprovados() {
+        div_aprovados.innerHTML = ``
         div_aprovados.innerHTML = `
         <div class="card-nothing">
                 <h1>Sem Registros Aprovados</h1>
@@ -137,6 +136,7 @@
     }
 
     function nadaPorAquiPendentes() {
+        div_pendentes.innerHTML = ``
         div_pendentes.innerHTML = `
             <div class="card-nothing">
                 <h1>Sem Registros para Aprovação</h1>
@@ -178,6 +178,7 @@
     }
 
     function gerarCards() {
+        pendentes.innerHTML += ``
         for (var i = 0; i < empresas.length; i++) {
             pendentes.innerHTML += `
             <div class = "card-user">
@@ -232,6 +233,7 @@
     }
 
     function gerarCardsAprovados() {
+        cadastradas.innerHTML += ``
         for (var i = 0; i < aprovados.length; i++) {
             cadastradas.innerHTML += `
             <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">

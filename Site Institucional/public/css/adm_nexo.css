@@ -353,6 +353,7 @@ header .header-navigation .alert {
     background-color: #eeecff;
     width: 90vw;
     height: 90vh;
+    padding: 5vh;
 }
 
 .img-nexo {
@@ -366,34 +367,46 @@ header .header-navigation .alert {
 }
 
 .conteudo {
-    height: 80vh;
-    width: 95%;
-    display: flex;
+    height: 77vh;
+    width: 100%;
+    display: block;
     flex-direction: column;
     background-color: white;
     border-radius: 10px;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
     overflow: auto;
+}
+
+.conteudo h1 {
+    text-align: center;
 }
 
 /* Cards */
 .card-user {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
-    align-items: center;
+    align-items: flex-start;
     gap: 20px;
-    font-size: 25px;
+    font-size: 18px;
     padding: 30px;
     border-radius: 20px;
     border: solid 2px var(--primaria);
     cursor: pointer;
+}
+
+.card-user *{
     cursor: pointer;
 }
 
+.card-user:hover {
+    background-color: #eeecff;
+    transition: 0.3s;
+}
+
 .card-second button {
-    padding: 30px;
-    width: 250px;
+    padding: 3vh;
+    width: 30vh;
     border-radius: 20px;
     font-size: 20px;
     border: solid 2px var(--primaria);
