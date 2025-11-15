@@ -74,11 +74,12 @@ async function cadastrarFuncionario(req, res) {
             nome, email, cpf, senha, telefone, cargo, fkEmpresa
         );
 
-        if (zonaAtuacao != "") {
+        // if (zonaAtuacao != "") {
+        if(zonaAtuacao == ""){zonaAtuacao = 1}
             await enderecoModel.cadastrarUsuarioComZona(zonaAtuacao, retornoIdUsuario, regiaoAtuacao);
-        }
+        // }
 
-        await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, regiaoAtuacao);
+        // await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, regiaoAtuacao);
 
         res.status(200).send("Funcionário cadastrado com sucesso!");
     }

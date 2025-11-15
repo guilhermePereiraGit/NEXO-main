@@ -54,12 +54,12 @@ function cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegia
     return database.executar(instrucaoSql);
 }
 
-function cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao) {
-    const instrucaoSql = `
-        INSERT INTO regioesAtuacao (fkRegiao, fkUsuario) values (${retornoIdRegiao}, ${retornoIdUsuario});
-    `
-    return database.executar(instrucaoSql);
-}
+// function cadastrarUsuarioComRegiao(retornoIdUsuario, retornoIdRegiao) {
+//     const instrucaoSql = `
+//         INSERT INTO regioesAtuacao (fkRegiao, fkUsuario) values (${retornoIdRegiao}, ${retornoIdUsuario});
+//     `
+//     return database.executar(instrucaoSql);
+// } 
 
 function buscarEstados() {
     const instrucaoSql = `
@@ -97,6 +97,6 @@ async function cadastrarEndereco(cep, regiaoAtuacao, zonaAtuacao, bairro, cidade
 
 module.exports = {
     cadastrarEnderecoSemRegiao, buscarEnderecoExistente, cadastrarEnderecoComRegiao, buscarIdEstado,
-    buscarIdRegiao, buscarIdZona, cadastrarUsuarioComZona, cadastrarUsuarioComRegiao, buscarEstados,
+    buscarIdRegiao, buscarIdZona, cadastrarUsuarioComZona, buscarEstados,
     buscarRegioes, buscarZonas, cadastrarEndereco
 };

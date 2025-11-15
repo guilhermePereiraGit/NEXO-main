@@ -151,14 +151,14 @@
 <script>
     function alterarZona(zona) {
         document.getElementById(`${zona}`).innerHTML = `<select name="zona_mudar" id="zona_mudar"></select>`
-        console.log(zonas_mudar);
         var option = `<option value="">Selecione uma opção</option>`;
 
-        for (var i = 0; i < zonas_mudar.length; i++) {
+        for (var i = 1; i < zonas_mudar.length; i++) {
             option += `<option value="${zonas_mudar[i].idZona}">${zonas_mudar[i].nomeZona}</option>`;
         }
         zona_mudar.innerHTML = option;
         document.getElementById(`${zona}`).innerHTML += `<button id='update'><i class='bi bi-bookmark-check' id='teste' onclick='alterarFinal()'></i></button>`
+
     }
     function alterarFinal() {
         nova_zona = document.getElementById('zona_mudar').value;
@@ -213,8 +213,10 @@
 
             if (resposta.ok) {
                 resposta.json().then(data => {
-                    aprovados = data;
-                    if (aprovados.length > 0) {
+                    aprovadosNew = data;
+                    console.log(aprovados);
+
+                    if (aprovadosNew.length > 0) {
                         gerarCardsUsuarios();
                     } else {
                         nadaPorAquiUsuarios();
@@ -241,58 +243,204 @@
     function abrirInfos(funcionario) {
         infos = $("#popup-infos");
         infos.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-        carregarDadosAprovados();
-        console.log(aprovados);
-        console.log("opa");
+        console.log(userIndividual);
+
+
         //spn_cargo,spn_nome,spn_email,spn_senha,spn_estado
-        spn_cargo.innerHTML = aprovados[funcionario].cargo
-        spn_nome.innerHTML = aprovados[funcionario].nome
-        spn_email.innerHTML = aprovados[funcionario].email
-        spn_estado.innerHTML = aprovados[funcionario].NomeEstado
-        spn_senha.innerHTML = aprovados[funcionario].senha
-        console.log(aprovados);
+        spn_cargo.innerHTML = userIndividual[funcionario].cargo
+        spn_nome.innerHTML = userIndividual[funcionario].nome
+        spn_email.innerHTML = userIndividual[funcionario].email
+        spn_estado.innerHTML = userIndividual[funcionario].NomeEstado
+        spn_senha.innerHTML = userIndividual[funcionario].senha
+        sessionStorage.setItem("USUARIO_ESCOLHIDO", userIndividual[funcionario].idUsuario)
+        regioes_user.innerHTML = "";
 
-        sessionStorage.setItem("USUARIO_ESCOLHIDO", aprovados[funcionario].idUsuario)
+        prim_usuario = userIndividual[funcionario];
+        prim_id_user = prim_usuario.idUsuario;
+        let ultimaRegiaoDoUsuario = null;
 
-        regiao = aprovados[funcionario].NomeRegiao.replace("Região Metropolitana de", "");
-        zona = aprovados[funcionario].NomeZona;
+        let identificadorZona = 1;
+        for (var i = 0; i < aprovadosNew.length; i++) {
+            usuario = aprovadosNew[i];
 
-        if (zona != null) {
-            regioes_user.innerHTML = `
+            if (usuario.idUsuario == prim_id_user) {
+                ultimaRegiaoDoUsuario = usuario;
+                console.log("usuarioaaaaa");
+                console.log(usuario);
+                console.log(ultimaRegiaoDoUsuario);
+                
+                regiao = usuario.NomeRegiao.replace("Região Metropolitana de", "");
+                zona = usuario.NomeZona;
+                console.log(regiao);
+
+                regioes_user.innerHTML += `
+                    <div class="regiao">
+                        <div class="name">
+                            <h1>Região</h1>
+                            <p>RM ${regiao}</p>
+                        </div>
+                        <div class="zona">
+                            <h1>Zona</h1>
+                            <p id="ipt_zona_${identificadorZona}">${zona}</p>
+                        </div>
+                        <div class="manipulacao">
+                            <i class="bi bi-trash3" onclick="excluirRegiao(${usuario.idRegiao})"></i>
+                            <i class="bi bi-arrow-repeat" onclick="alterarZona('ipt_zona_${identificadorZona}')"></i>
+                        </div>
+                    </div>
+                `;
+                identificadorZona++;
+            }
+
+        }
+        topo.innerHTML = `
+        <button onclick="adicionarRegiao(${userIndividual[funcionario].idUsuario})">Adicionar Região</button>
+        <button onclick="limparFuncionarios(${userIndividual[funcionario].idUsuario})">Cancelar Usuário</button>`;
+        if (ultimaRegiaoDoUsuario) {
+            console.log("AAAAAAAAAAA");
+            console.log(ultimaRegiaoDoUsuario);
+            guardarZonas(ultimaRegiaoDoUsuario.idRegiao);
+            alterarFinal(ultimaRegiaoDoUsuario.idRegiao);
+        } else {
+            console.warn("Nenhuma região encontrada para este usuário.");
+        }
+    }
+
+    function adicionarRegiao(usuario) {
+        carregarDadosAprovados()
+        usuario_escolhido = sessionStorage.getItem('USUARIO_ESCOLHIDO');
+        for (var i = 0; i < aprovados.length; i++) {
+            if (aprovados[i].idUsuario == usuario_escolhido) {
+                estado = aprovados[i].IdEstado;
+            }
+        }
+
+        fetch("/endereco/buscarRegioes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idEstadoServer: estado
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        console.log(data);
+                        regioes = data;
+                        plotarRegioesSelect(regioes);
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        regioes_user.innerHTML += `
             <div class="regiao">
             <div class="name">
             <h1>Região</h1>
-            <p>RM ${regiao}</p>
+            <select name="regiao_atuacao_adicionar" class="reg_adicionar" id="regiao_atuacao_adicionar" onchange="plotarZonasAdicionar()"></select>
             </div>
             <div class="zona">
-            <h1>Zona</h1>
-            <p id="ipt_zona1">${zona}</p>
+            <h1 id="tit_zona">Zona</h1>
+            <select name="zona_atuacao_adicionar" class="zon_adicionar" id="zona_atuacao_adicionar"></select>
             </div>
+            <button class="btn_adicionar" onclick="adicionarRegiaoFinal()">+</button>
             <div class="manipulacao">
             <i class="bi bi-trash3" id="excluir"></i>
             <i class="bi bi-arrow-repeat" id="alterar" onclick="alterarZona('ipt_zona1')"></i>
             </div>
             </div>
             `;
-        } else {
-            regioes_user.innerHTML = `
-            <div class="regiao" style="justify-content:center">
-            <div class="name">
-            <h1>Região</h1>
-            <p>RM ${regiao}</p>
-            </div>
-            </div>
-            `;
+    }
+
+    function adicionarRegiaoFinal() {
+        carregarDadosAprovados()
+        // ENCONTRAR FUNCIONARIO
+        for (var i = 0; i < aprovados.length; i++) {
+            if (aprovados[i].idUsuario == sessionStorage.getItem('USUARIO_ESCOLHIDO')) {
+                cargo = aprovados[i].cargo;
+                usuario = aprovados[i].idUsuario;
+                zona = zona_atuacao_adicionar.value;
+                regiao = regiao_atuacao_adicionar.value;
+            }
         }
-        topo.innerHTML = `<button>Adicionar Região</button><button onclick="limparFuncionarios(${aprovados[funcionario].idUsuario})">Cancelar Usuário</button>`;
-        console.log("Funcionario:", funcionario);
-        guardarZonas(aprovados[funcionario].NomeRegiao);
-        alterarFinal(aprovados[funcionario].idRegiao)
+        if (zona == "" || zona == null || zona == undefined) { zona = 1 };
+        console.log("Zona", zona);
+        console.log("Regiao", regiao);
+        console.log("Usuario", usuario);
+
+
+
+        fetch("/adicionarRegiao/cadastrarEndZona", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                retornoIdZona: zona,
+                retornoIdUsuario: usuario,
+                retornoIdRegiao: regiao
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    console.log("Cadastro com Sucesso");
+                    window.location.reload();
+                } else {
+                    console.log("Cadastro Falhou");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+    function plotarZonasAdicionar() {
+        console.log("entrei");
+        
+        regiao = regiao_atuacao_adicionar.value;
+        fetch("/endereco/buscarZonas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idRegiaoServer: regiao
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        zonas = data;
+                        if (zonas.length > 0) {
+                            console.log(zonas);
+                            zona_atuacao_adicionar.style.display = 'block';
+                            tit_zona.style.display = 'block';
+                            plotarZonasSelect(zonas);
+                        } else {
+                            zona_atuacao_adicionar.style.display = 'none';
+                            tit_zona.style.display = 'none';
+                        }
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
     }
 
     zonas_mudar = [];
     function guardarZonas(regiao) {
-        console.log('oi');
+        console.log("REGIÃO RECEBIDA:", regiao);
 
         fetch("/regiao/guardar", {
             method: "POST",
@@ -300,16 +448,15 @@
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                regiao: regiao
+                idRegiao: regiao
             }),
         })
             .then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(data => {
-                        regiao = data
-                        console.log(regiao);
                         zonas_mudar = data;
                         console.log('oie');
+                        console.log(zonas_mudar);
 
                     })
                 } else {
@@ -325,9 +472,25 @@
 
     function gerarCardsUsuarios() {
         div_aprovados.innerHTML = "";
-        for (var i = 0; i < aprovados.length; i++) {
-            user = aprovados[i];
-            card = ``;
+        userIndividual = [];
+        for (var i = 0; i < aprovadosNew.length; i++) {
+            user = aprovadosNew[i];
+            igual = false;
+
+            //For para ver se ele tem mais de uma região ou zona
+            for (var j = 0; j < userIndividual.length; j++) {
+                if (userIndividual[j].idUsuario == user.idUsuario) {
+                    igual = true;
+                    break;
+                }
+            }
+            if (!igual) {
+                userIndividual.push(user)
+            }
+        }
+
+        for (var i = 0; i < userIndividual.length; i++) {
+            user = userIndividual[i];
 
             card = `<div class="aprove-card" onclick="abrirInfos(${i})">
                         <div class="block">
@@ -353,8 +516,8 @@
                     </div>`;
             div_aprovados.innerHTML += card;
         }
+        aprovados = userIndividual;
     }
-
 
     var estados = []
     function carregarEstados() {
@@ -429,6 +592,7 @@
         }
 
         regiao_atuacao.innerHTML = option;
+        regiao_atuacao_adicionar.innerHTML = option;
     }
 
     var zonas = []
@@ -456,12 +620,6 @@
                     if (resposta.ok) {
                         resposta.json().then(data => {
                             zonas = data;
-                            todos = {
-                                IdZona: zonas.length + 1,
-                                Nome: "Todas"
-                            }
-
-                            zonas.push(todos);
                             if (zonas.length > 0) {
                                 plotarZonasSelect(zonas);
                             } else {
@@ -481,11 +639,12 @@
     function plotarZonasSelect(zonas) {
         var option = `<option value="">Selecione uma opção</option>`;
 
-        for (var i = 0; i < zonas.length; i++) {
+        for (var i = 1; i < zonas.length; i++) {
             option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
         }
 
         zona_atuacao.innerHTML = option;
+        zona_atuacao_adicionar.innerHTML = option;
     }
 
     function cadastrarFuncionario() {

@@ -1,6 +1,6 @@
 var database = require("../database/config")
 
-function guardar(regiao) {
+function guardar(idRegiao) {
   var instrucaoSql = `
     SELECT 
     zona.idZona,
@@ -9,7 +9,7 @@ function guardar(regiao) {
     regiao.nome as nomeRegiao
     FROM zona
     INNER JOIN regiao ON regiao.idRegiao = zona.fkRegiao
-    WHERE regiao.nome = "${regiao}";
+    WHERE regiao.idRegiao = ${idRegiao};
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

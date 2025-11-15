@@ -78,28 +78,24 @@ function deletarEmpresa(idEmpresa) {
 
 function verificarAprovados(idEmpresa) {
   var instrucaoSql = `
-    SELECT 
-        u.idUsuario,
-        u.nome,
-        u.email,
-        u.senha,
-        u.cargo,
-        u.telefone,
-        COALESCE(z.nome, NULL) AS NomeZona,
-        COALESCE(r1.nome, r2.nome) AS NomeRegiao,
-        COALESCE(e1.nome, e2.nome) AS NomeEstado
+SELECT 
+    u.idUsuario,
+    u.nome,
+    u.email,
+    u.senha,
+    u.cargo,
+    u.telefone,
+    z.nome AS NomeZona,
+    r1.nome AS NomeRegiao,
+    r1.idRegiao AS idRegiao,
+    e1.nome AS NomeEstado,
+    e1.idEstado AS IdEstado
     FROM usuario u
-    -- 🔹 Caso o usuário esteja em uma área (com ou sem zona)
     LEFT JOIN areasAtuacao a ON a.fkUsuario = u.idUsuario
     LEFT JOIN zona z ON a.fkZona = z.idZona
-    LEFT JOIN regiao r1 ON COALESCE(z.fkRegiao, a.fkRegiao) = r1.idRegiao
+    LEFT JOIN regiao r1 ON a.fkRegiao = r1.idRegiao
     LEFT JOIN estado e1 ON r1.fkEstado = e1.idEstado
-    -- 🔹 Caso o usuário esteja apenas em uma região (sem zona)
-    LEFT JOIN regioesAtuacao ra ON ra.fkUsuario = u.idUsuario
-    LEFT JOIN regiao r2 ON ra.fkRegiao = r2.idRegiao
-    LEFT JOIN estado e2 ON r2.fkEstado = e2.idEstado
     WHERE u.fkEmpresa = ${idEmpresa};
-
   `;
   return database.executar(instrucaoSql);
 }
