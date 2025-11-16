@@ -211,54 +211,7 @@ header .header-navigation .alert {
     color: var(--contraste);
 }
 
-/* CONTENT */
-.content .information {
-    width: 1340px;
-    height: 15vh;
-    background-color: var(--contraste);
-    padding-left: 40px;
-    padding-right: 40px;
-    display: flex;
-    gap: 30px;
-}
-
-.content .information h1 {
-    font-weight: 500;
-    color: var(--principal);
-}
-
-.content .information .title {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-}
-
-.content .information .title p {
-    font-size: 25px;
-    color: var(--principal);
-    font-weight: bold;
-}
-
-.content .information .alterar-regiao i {
-    cursor: pointer;
-}
-
-.content .information .alterar-regiao {
-    margin-top: 10px;
-    font-size: 35px;
-    color: var(--principal);
-}
-
 /* WIDGETS */
-.widgets select {
-    padding: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
-}
-
 .widgets .card {
     display: flex;
 }
@@ -356,20 +309,10 @@ header .header-navigation .alert {
     padding: 5vh;
 }
 
-.img-nexo {
-    width: 200px;
-    height: 50px;
-    margin-top: 50px;
-}
-
-.baixo-popup h1 {
-    color: #451c8b;
-}
-
 .conteudo {
     height: 77vh;
     width: 100%;
-    display: block;
+    display: flex;
     flex-direction: column;
     background-color: white;
     border-radius: 10px;
@@ -444,13 +387,13 @@ header .header-navigation .alert {
     transform: scale(1.03);
 }
 
-.reprovar, .desativar {
+.reprovar {
     background-color: lightcoral;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.reprovar:hover, .desativar:hover, .definir-parametros:hover {
+.reprovar:hover {
     transform: scale(1.03);
 }
 
@@ -464,24 +407,6 @@ header .header-navigation .alert {
     transform: scale(1.03);
 }
 
-#principal h1 {
-    color: var(--primaria);
-    font-size: 50px;
-    margin-bottom: 30px;
-}
-
-#segundo {
-    padding-top: 10%;
-    padding-left: 80px;
-    padding-right: 80px;
-}
-
-#segundo h1 {
-    color: var(--primaria);
-    font-size: 50px;
-    margin-bottom: 30px;
-}
-
 /* Cards Nothing */
 .card-nothing{
     display: flex;
@@ -492,6 +417,7 @@ header .header-navigation .alert {
     height: 55vh;
     border-radius: 20px;
 }
+
 .card-nothing p{
     font-size: 20px;
 }

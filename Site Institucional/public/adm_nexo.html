@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body onload="carregarDados(),carregarDadosAprovados()">
@@ -27,7 +26,7 @@
                 <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
                     <div class="cadastradas">
-                        <div class="fundo" id="fundo" style="display: npne;"></div>
+                        <div class="fundo" id="fundo" style="display: none;"></div>
                         <i class="bi bi-buildings" onclick="ativar('fundo');irPara('cadastradas')" id="first"></i>
                     </div>
                     <div class="pendentes">
@@ -39,7 +38,10 @@
                         <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
                     </div>
                 </div>
+
             </div>
+
+            <!-- MENU EXTENDIDO -->
             <div class="menu-extend" style="display: none;" id="extend">
                 <div class="infos-user">
                     <h1 id="lbl_nome">Guilherme Silva</h1>
@@ -69,6 +71,7 @@
                     </div>
                 </div>
             </div>
+
         </header>
 
         <!-- POPUP DE LOGOUT -->
@@ -81,6 +84,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- MAIN -->
         <div class="main">
             <div class="topo">
                 <h2 style="margin-left: 70px;">Empresas no sistema</h2>
@@ -91,7 +96,7 @@
                         <h1>Empresas Cadastradas</h1>
                     </div>
                 </div>
-                <div class="conteudo" id="pendentes" style="display: none;">
+                <div class="conteudo" id="pendentes" style="display: block; opacity: 0;">
                     <div class="pendentes">
                         <h1>Empresas Pendentes</h1>
                     </div>
@@ -102,13 +107,13 @@
 </body>
 
 <script>
+    /* ---------- NAVEGAÇÃO ENTRE TELAS ---------- */
     function irPara(escolhida) {
-        $("#cadastradas, #pendentes").stop().animate({ opacity: 0 }, 200, function () {
-            $(this).css("display", "none");
-        });
-        $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
+        $("#cadastradas, #pendentes").hide();
+        $("#" + escolhida).fadeIn(200);
     }
 
+    /* ---------- ANIMAÇÃO DOS BOTÕES DO MENU ---------- */
     function ativar(escolha) {
         document.getElementById(escolha).style.display = 'block';
         document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
@@ -120,33 +125,41 @@
             document.getElementById('fundo').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById('second').style.color = "#451c8b";
             document.getElementById('first').style.color = "white";
+            document.getElementById('pendentes').style.opacity = "1";
         }
     }
 
-    //Funções de Nada por Aqui
-    function nadaPorAquiAprovados() {
-        cadastradas.innerHTML = ``
-        cadastradas.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros Aprovados</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
+    /* ---------- POPUP LOGOUT ---------- */
+    function ativarPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
     }
 
-    function nadaPorAquiPendentes() {
-        pendentes.innerHTML = ``
-        pendentes.innerHTML = `
-            <div class="card-nothing">
-                <h1>Sem Registros para Aprovação</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
+    /* ---------- MENU LATERAL ---------- */
+    function abrirMenu() {
+        menu_icon = document.getElementById('icone');
+        menu = document.querySelector('.menu-extend');
+        if (menu_icon.classList.contains("bi-list")) {
+            console.log("entrei");
+            document.getElementById('extend').style.display = "flex";
+            menu.style.animation = "expandirDireita 0.5s ease forwards";
+            menu_icon.classList.remove("bi-list");
+            menu_icon.classList.add("bi-x-lg")
+
+        } else {
+            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+            menu_icon.classList.remove("bi-x-lg");
+            menu_icon.classList.add("bi-list")
+        }
     }
 
+    /* ---------- LISTAGEM DE EMPRESAS ---------- */
     empresas = [];
+
     function carregarDados() {
         nome = sessionStorage.getItem("NOME_USUARIO");
         email = sessionStorage.getItem("EMAIL_USUARIO")
@@ -177,6 +190,7 @@
         });
     }
 
+    /* ---------- CARDS ---------- */
     function gerarCards() {
         pendentes.innerHTML += ``
         if (empresas.length == 0) {
@@ -204,6 +218,83 @@
             }
 
         }
+    }
+
+    function gerarCardsAprovados() {
+        cadastradas.innerHTML += ``
+        if (aprovados.length == 0) {
+            nadaPorAquiAprovados()
+        } else {
+            for (var i = 0; i < aprovados.length; i++) {
+                cadastradas.innerHTML += `
+                <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
+                    <div class = "card-first">
+                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
+                        <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
+                        <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
+                    </div>
+                    <div class = "card-second">
+                        <div class = "buttons">
+                            <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+        }
+    }
+
+    function limparFuncionarios(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/limparFuncionarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ fkEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    removerEmpresa(idEmpresaVar);
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+
+
+    function removerEmpresa(idEmpresa) {
+        var idEmpresaVar = idEmpresa;
+
+        fetch("/usuarios/deletarEmpresa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idEmpresa: idEmpresaVar }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    window.location.reload()
+                } else {
+                    resposta.innerHTML = "Erro ao Aprovar"
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
     }
 
     aprovados = [];
@@ -237,34 +328,7 @@
         });
     }
 
-    function gerarCardsAprovados() {
-        cadastradas.innerHTML += ``
-        if(aprovados.length == 0) {
-            nadaPorAquiAprovados()
-        } else {
-            for (var i = 0; i < aprovados.length; i++) {
-            cadastradas.innerHTML += `
-                <div class = "card-user" onclick="carregarModelos(${aprovados[i].idEmpresa})">
-                    <div class = "card-first">
-                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${aprovados[i].nome}</label></div>
-                        <div class="labels"><label id="first">CNPJ:</label><label class="label-item">${aprovados[i].cnpj}</label></div>
-                    </div>
-                    <div class = "card-second">
-                        <div class="labels"><label id="first">Email:</label><label class="label-item">${aprovados[i].email}</label></div>
-                        <div class="labels"><label id="first">Telefone:</label><label class="label-item">${aprovados[i].telefone}</label></div>
-                    </div>
-                    <div class = "card-second">
-                        <div class = "buttons">
-                            <button class="reprovar" onclick="event.stopPropagation(); limparFuncionarios(${aprovados[i].idEmpresa})">Cancelar</button>    
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        }
-        
-    }
-
+    /* ---------- APROVAR / RECUSAR ---------- */
     function aprovar(idEmpresa) {
         var idEmpresaVar = idEmpresa;
 
@@ -280,56 +344,6 @@
 
                 if (resposta.ok) {
                     window.location.reload();
-                } else {
-                    resposta.innerHTML = "Erro ao Aprovar"
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-            });
-        return false;
-    }
-
-    function limparFuncionarios(idEmpresa) {
-        var idEmpresaVar = idEmpresa;
-
-        fetch("/usuarios/limparFuncionarios", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ fkEmpresa: idEmpresaVar }),
-        })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
-                if (resposta.ok) {
-                    removerEmpresa(idEmpresaVar);
-                } else {
-                    resposta.innerHTML = "Erro ao Aprovar"
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-            });
-        return false;
-    }
-
-    function removerEmpresa(idEmpresa) {
-        var idEmpresaVar = idEmpresa;
-
-        fetch("/usuarios/deletarEmpresa", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ idEmpresa: idEmpresaVar }),
-        })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
-                if (resposta.ok) {
-                    window.location.reload()
                 } else {
                     resposta.innerHTML = "Erro ao Aprovar"
                 }
@@ -369,46 +383,26 @@
         window.location.href = `modelos.html?id=${idEmpresa}`;
     }
 
-    function abrirMenu() {
-        menu_icon = document.getElementById('icone');
-        menu = document.querySelector('.menu-extend');
-        if (menu_icon.classList.contains("bi-list")) {
-            console.log("entrei");
-            document.getElementById('extend').style.display = "flex";
-            menu.style.animation = "expandirDireita 0.5s ease forwards";
-            menu_icon.classList.remove("bi-list");
-            menu_icon.classList.add("bi-x-lg")
-
-        } else {
-            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
-            menu_icon.classList.remove("bi-x-lg");
-            menu_icon.classList.add("bi-list")
-        }
+    //Funções de Nada por Aqui
+    function nadaPorAquiAprovados() {
+        cadastradas.innerHTML = ``
+        cadastradas.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros Aprovados</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
     }
 
-    function ativarPopup() {
-        popup = $("#popup-logout");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-    }
-    function fecharPopup() {
-        popup = $("#popup-logout");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-    }
-
-    function abrirEscolha() {
-        popup = $("#popup-escolha");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-    }
-    function fecharEscolha() {
-        popup = $("#popup-escolha");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-    }
-    function abrirPassos() {
-        popup = $("#popup-passos");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-    }
-    function fecharPassos() {
-        popup = $("#popup-passos");
-        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    function nadaPorAquiPendentes() {
+        pendentes.innerHTML = ``
+        pendentes.innerHTML = `
+            <div class="card-nothing">
+                <h1>Sem Registros para Aprovação</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
     }
 </script>
