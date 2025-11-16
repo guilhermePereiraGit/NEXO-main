@@ -260,20 +260,18 @@
         let ultimaRegiaoDoUsuario = null;
 
         let identificadorZona = 1;
+        let corpo = "";
         for (var i = 0; i < aprovadosNew.length; i++) {
             usuario = aprovadosNew[i];
 
             if (usuario.idUsuario == prim_id_user) {
                 ultimaRegiaoDoUsuario = usuario;
-                console.log("usuarioaaaaa");
-                console.log(usuario);
-                console.log(ultimaRegiaoDoUsuario);
-                
+
                 regiao = usuario.NomeRegiao.replace("Região Metropolitana de", "");
                 zona = usuario.NomeZona;
                 console.log(regiao);
 
-                regioes_user.innerHTML += `
+                corpo += `
                     <div class="regiao">
                         <div class="name">
                             <h1>Região</h1>
@@ -284,12 +282,22 @@
                             <p id="ipt_zona_${identificadorZona}">${zona}</p>
                         </div>
                         <div class="manipulacao">
-                            <i class="bi bi-trash3" onclick="excluirRegiao(${usuario.idRegiao})"></i>
-                            <i class="bi bi-arrow-repeat" onclick="alterarZona('ipt_zona_${identificadorZona}')"></i>
-                        </div>
-                    </div>
+                            <i class="bi bi-trash3" onclick="excluirRegiao(${usuario.idRegiao},${usuario.idUsuario})"></i>
+                            
+                `;
+
+                if (zona != "Nenhum") {
+                    corpo += `
+                            <i class="bi bi-arrow-repeat" onclick="alterarZona('ipt_zona_${identificadorZona}')" id="btn_alt_${identificadorZona}"></i>
+                    `;
+                }
+                corpo += `
+                </div>
+                </div>
                 `;
                 identificadorZona++;
+
+                regioes_user.innerHTML = corpo;
             }
 
         }
@@ -297,13 +305,37 @@
         <button onclick="adicionarRegiao(${userIndividual[funcionario].idUsuario})">Adicionar Região</button>
         <button onclick="limparFuncionarios(${userIndividual[funcionario].idUsuario})">Cancelar Usuário</button>`;
         if (ultimaRegiaoDoUsuario) {
-            console.log("AAAAAAAAAAA");
             console.log(ultimaRegiaoDoUsuario);
             guardarZonas(ultimaRegiaoDoUsuario.idRegiao);
             alterarFinal(ultimaRegiaoDoUsuario.idRegiao);
         } else {
             console.warn("Nenhuma região encontrada para este usuário.");
         }
+    }
+
+    function excluirRegiao(regiao, usuario) {
+        fetch("/regiao/excluirArea", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                regiao: regiao,
+                usuario: usuario
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    console.log("Deletado com Sucesso!");
+                    
+                } else {
+                    console.log("Erro ao Deletar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+            window.location.reload();
     }
 
     function adicionarRegiao(usuario) {
@@ -404,7 +436,7 @@
 
     function plotarZonasAdicionar() {
         console.log("entrei");
-        
+
         regiao = regiao_atuacao_adicionar.value;
         fetch("/endereco/buscarZonas", {
             method: "POST",

@@ -15,9 +15,7 @@ function guardar(idRegiao) {
   return database.executar(instrucaoSql);
 }
 
-function alterar(alterar_itens) {
-  console.log("PEEENIS",alterar_itens);
-  
+function alterar(alterar_itens) {  
   var instrucaoSql = `
     UPDATE areasAtuacao SET
     fkZona = ${alterar_itens.novaZona}
@@ -28,6 +26,16 @@ function alterar(alterar_itens) {
   return database.executar(instrucaoSql);
 }
 
+function excluirArea(regiao,usuario) {  
+  var instrucaoSql = `
+    DELETE FROM areasAtuacao
+    WHERE fkRegiao = ${regiao} AND
+    fkUsuario = ${usuario};
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
-  guardar,alterar
+  guardar,alterar,excluirArea
 };

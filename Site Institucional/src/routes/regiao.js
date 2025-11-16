@@ -11,4 +11,8 @@ router.post("/alterar", function (req, res) {
     regiaoController.alterar(req, res);
 })
 
+router.post("/excluirArea", function (req, res) {
+    regiaoController.excluirArea(req, res);
+})
+
 module.exports = router;
