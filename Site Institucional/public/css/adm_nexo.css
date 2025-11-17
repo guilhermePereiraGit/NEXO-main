@@ -459,3 +459,9 @@ header .header-navigation .pendentes {
         transform: scaleX(0);
     }
 }
+
+#aprovacao {
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+}
