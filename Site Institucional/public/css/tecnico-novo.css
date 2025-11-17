@@ -217,6 +217,7 @@ header .header-navigation {
     flex-direction: column;
     max-height: 100vw;
 }
+
 .information {
     display: flex;
     flex-direction: row;
@@ -264,6 +265,15 @@ header .header-navigation {
     align-items: center;
     margin: 28px;
 }
+#box-perfil {
+    height: 77vh;
+    width: 45%;
+    background-color: white;
+    border-radius: 10px;
+    margin: 60px;
+    align-self: center;
+    display: block;
+}
 
 .box .text {
     width: 70%;
@@ -286,6 +296,7 @@ header .header-navigation {
 .box .waiting {
     display: none;
 }
+
 .waiting {
     padding: 30px;
 }
@@ -347,16 +358,17 @@ header .header-navigation {
     height: 30%;
     text-align: start;
 }
-
-.box .infos-user img {
-    width: 25%;
+.box-perfil img {
+    width: 80%;
     height: 30%;
 }
 
+
 /*CADASTRAR TOTENS*/
-.popuptotem{
+.popuptotem {
     display: none;
 }
+
 .cima {
     display: flex;
     justify-content: space-between;
@@ -379,6 +391,7 @@ header .header-navigation {
 .cima button:hover {
     transform: scale(1.05);
 }
+
 /*TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE*/
 
 .card {
@@ -726,16 +739,19 @@ select {
         max-height: 220px;
     }
 }
+
 /*FIM TESTEEEEEEEEEEEEEEEEEEEEEEEEEE*/
-.cadastrar-totens{
+.cadastrar-totens {
     display: none;
 }
+
 .cadastrar-totens .segundo {
     display: none;
     margin: 2%;
     width: 100%;
     height: 100%;
 }
+
 .cadastrar-totens button {
     width: 400px;
     height: 10vh;
@@ -909,7 +925,7 @@ select {
     background-color: #ff3131;
 }
 
-    /* GRÁFICO DE LINHA */
+/* GRÁFICO DE LINHA */
 .grafico {
     background-color: white;
     margin-top: 10px;
