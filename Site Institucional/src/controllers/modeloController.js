@@ -1,14 +1,10 @@
 var modeloModel = require("../models/modeloModel");
-const { param } = require("../routes/modelo");
 
 async function cadastrarModelo(req, res) {
     var nomeModelo = req.body.nomeModeloServer;
     var descricao = req.body.descricaoServer;
-    var parametros = req.body.parametrosServer;
+    var parametros = req.body.parametrosServer; 
     var fkEmpresa = req.body.fkEmpresaServer;
-    var fkTipoParametroVariavel = 0;
-    var fkTipoParametro = [];
-    var fkModelo = 0;
 
     if (!nomeModelo) {
         return res.status(400).send("Nome do modelo está undefined!");
@@ -21,32 +17,26 @@ async function cadastrarModelo(req, res) {
     }
 
     try {
-
         for (var i = 0; i < parametros.length; i++) {
-
             const resultadoBuscarSeTipoParametroJaExiste =
-                await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente);
+                await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente.toUpperCase()); 
 
-            if (resultadoBuscarSeTipoParametroJaExiste.length > 0) {
-                fkTipoParametroVariavel = resultadoBuscarSeTipoParametroJaExiste[0].idComponente;
-            } else {
-                await modeloModel.cadastrarTipoParametro(parametros[i].componente);
-
-                const resultadoBuscarIdTipoParametro = await modeloModel.buscarIdTipoParametro();
-                fkTipoParametroVariavel = resultadoBuscarIdTipoParametro[0].idComponente;
+            if (resultadoBuscarSeTipoParametroJaExiste.length == 0) {
+                 await modeloModel.cadastrarTipoParametro(parametros[i].componente.toUpperCase());
             }
-
-            fkTipoParametro.push(fkTipoParametroVariavel);
         }
 
-        await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);
-
-        const resultadoBuscarIdModelo = await modeloModel.buscarIdModelo();
-
-        fkModelo = resultadoBuscarIdModelo[0];
+        const resultadoCadastroModelo = await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);
+        
+        var idModeloCadastrado = resultadoCadastroModelo.insertId;
 
         for (var i = 0; i < parametros.length; i++) {
-            await modeloModel.cadastrarParametro(fkModelo.idModelo, fkTipoParametro[i]);
+            await modeloModel.cadastrarValoresParametro(
+                idModeloCadastrado,
+                parametros[i].componente, 
+                parametros[i].limiteMin,
+                parametros[i].limiteMax
+            );
         }
 
         res.status(200).send("Modelo e parâmetros cadastrados com sucesso!");
@@ -133,9 +123,18 @@ async function buscarModelosCadastrados(req, res) {
     }
 }
 
+async function buscarDefaults(req, res) {
+    try {
+        var defaults = await modeloModel.buscarDefaults();
+        res.status(200).json(defaults);
+    } catch (erro) {
+        console.error("Erro ao buscar defaults:", erro.sqlMessage || erro);
+        res.status(500).json(erro.sqlMessage || erro);
+    }
+}
+
 async function cadastrarParametro(req, res) {
     var parametros = req.body;
-
     try {
         var resultadoBuscarParametro = await modeloModel.buscarParametro(parametros[0].idModelo)
         if (resultadoBuscarParametro.length > 0) {
@@ -166,7 +165,63 @@ async function cadastrarParametro(req, res) {
     }
 }
 
+async function buscarModeloPorId(req, res) {
+    var idModelo = req.query.id;
+
+    if (!idModelo) {
+        return res.status(400).send("ID do modelo não foi fornecido.");
+    }
+
+    try {
+        const info = await modeloModel.buscarInfoModelo(idModelo);
+        const parametros = await modeloModel.buscarParametrosDoModelo(idModelo);
+
+        if (info.length > 0) {
+            res.json({
+                info: info[0],
+                parametros: parametros 
+            });
+        } else {
+            res.status(404).send("Modelo não encontrado.");
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar modelo por ID:", erro.sqlMessage || erro);
+        res.status(500).json(erro.sqlMessage || erro);
+    }
+}
+
+async function atualizarModelo(req, res) {
+    var idModelo = req.body.idModeloServer;
+    var nomeModelo = req.body.nomeModeloServer;
+    var descricao = req.body.descricaoServer;
+    var parametros = req.body.parametrosServer; 
+
+    if (!idModelo || !nomeModelo || !descricao || !parametros) {
+        return res.status(400).send("Dados incompletos para atualização.");
+    }
+
+    try {
+        await modeloModel.atualizarInfoModelo(idModelo, nomeModelo, descricao);
+        await modeloModel.deletarParametrosDoModelo(idModelo);
+
+        for (var i = 0; i < parametros.length; i++) {
+            await modeloModel.cadastrarValoresParametro(
+                idModelo,
+                parametros[i].componente,
+                parametros[i].limiteMin,
+                parametros[i].limiteMax
+            );
+        }
+
+        res.status(200).send("Modelo atualizado com sucesso!");
+    } catch (erro) {
+        console.error("Erro ao atualizar modelo:", erro.sqlMessage || erro);
+        res.status(500).json(erro.sqlMessage || erro);
+    }
+}
+
+
 module.exports = {
-    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados,
-    buscarModelosCadastrados, cadastrarParametro
+    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados,buscarModelosCadastrados, cadastrarParametro, 
+    buscarDefaults, buscarModeloPorId, atualizarModelo
 };

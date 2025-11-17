@@ -27,4 +27,17 @@ router.post("/cadastrarParametro", function(req, res){
     modeloController.cadastrarParametro(req, res)
 })
 
+router.post("/buscarDefaults", function (req, res){
+    modeloController.buscarDefaults(req, res);
+})
+
+router.get("/buscarModeloPorId", function (req, res) {
+    modeloController.buscarModeloPorId(req, res);
+});
+
+router.put("/atualizarModelo", function (req, res) {
+    modeloController.atualizarModelo(req, res);
+});
+
+
 module.exports = router;

@@ -80,3 +80,9 @@ CREATE TABLE IF NOT EXISTS usuario_nexo (
     email VARCHAR(70),
     senha VARCHAR(30)
 );
+
+CREATE TABLE IF NOT EXISTS parametros_default (
+    idParamDefault INT PRIMARY KEY AUTO_INCREMENT,
+    componente VARCHAR(45) NOT NULL UNIQUE,
+    valor_default INT NOT NULL
+);

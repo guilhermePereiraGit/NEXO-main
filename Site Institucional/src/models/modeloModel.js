@@ -4,20 +4,13 @@ function cadastrarModelo(nomeModelo, descricao, fkEmpresa) {
     var instrucaoSql = `
         INSERT INTO modelo (nome, descricao_arq, fkEmpresa, status) 
         VALUES ('${nomeModelo}', '${descricao}', '${fkEmpresa}', 'ATIVO');`;
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql); 
 }
 
 function cadastrarTipoParametro(componente) {
     var instrucaoSql = `
         INSERT INTO componente (nome, status) 
-        VALUES ('${componente}', 'ATIVO');`;
-    return database.executar(instrucaoSql);
-}
-
-function buscarIdModelo() {
-    var instrucaoSql = `
-        SELECT idModelo FROM modelo ORDER BY idModelo DESC LIMIT 1;
-    `;
+        VALUES ('${componente.toUpperCase()}', 'ATIVO');`;
     return database.executar(instrucaoSql);
 }
 
@@ -30,7 +23,7 @@ function buscarIdTipoParametro() {
 
 function buscarSeTipoParametroJaExiste(componente) {
     var instrucaoSql = `
-        SELECT idComponente FROM componente where nome = '${componente}';
+        SELECT idComponente FROM componente where nome = '${componente.toUpperCase()}';
     `
     return database.executar(instrucaoSql);
 }
@@ -95,24 +88,67 @@ function buscarParametro(idModelo){
     return database.executar(instrucaoSql);
 }
 
+function buscarDefaults() {
+    var instrucaoSql = `
+        SELECT componente, valor_default as valor FROM parametros_default;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+function buscarInfoModelo(idModelo) {
+    var instrucaoSql = `
+        SELECT nome, descricao_arq FROM modelo WHERE idModelo = ${idModelo};
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function buscarParametrosDoModelo(idModelo) {
+    var instrucaoSql = `
+        SELECT c.nome, p.limiteMin, p.limiteMax 
+        FROM parametro p
+        JOIN componente c ON p.fkComponente = c.idComponente
+        WHERE p.fkModelo = ${idModelo};
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function atualizarInfoModelo(idModelo, nome, descricao) {
+    var instrucaoSql = `
+        UPDATE modelo SET nome = '${nome}', descricao_arq = '${descricao}'
+        WHERE idModelo = ${idModelo};
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function deletarParametrosDoModelo(idModelo) {
+    var instrucaoSql = `
+        DELETE FROM parametro WHERE fkModelo = ${idModelo};
+    `;
+    return database.executar(instrucaoSql);
+}
+
 function cadastrarValoresParametro(idModelo, nomeParametro, limiteMin, limiteMax){
+    var nomeParametroUpper = nomeParametro.toUpperCase();
+
     var instrucaoSql = `
         INSERT INTO parametro (limiteMin, limiteMax, fkModelo, fkComponente) 
-            VALUES (${limiteMin}, ${limiteMax}, ${idModelo}, (SELECT idComponente FROM componente WHERE nome = '${nomeParametro}'));
+            VALUES (${limiteMin}, ${limiteMax}, ${idModelo}, (SELECT idComponente FROM componente WHERE nome = '${nomeParametroUpper}'));
     `
     return database.executar(instrucaoSql);
 }
 
 function atualizarParametro(idModelo, nomeParametro, limiteMin, limiteMax) {
+    var nomeParametroUpper = nomeParametro.toUpperCase();
+
     var instrucaoSql = `
         UPDATE parametro set limiteMin = ${limiteMin}, limiteMax = ${limiteMax}
-            where fkModelo = ${idModelo} and fkComponente = (select idComponente from componente where nome = '${nomeParametro}');
+            where fkModelo = ${idModelo} and fkComponente = (select idComponente from componente where nome = '${nomeParametroUpper}');
     `;
     return database.executar(instrucaoSql);
 }
 
 module.exports = {
-    cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro, buscarIdModelo,
+    cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro,
     buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados,
-    buscarModelosCadastrados, buscarParametro, atualizarParametro, cadastrarValoresParametro
+    buscarModelosCadastrados, buscarParametro, atualizarParametro, cadastrarValoresParametro, buscarDefaults, buscarInfoModelo,buscarParametrosDoModelo, atualizarInfoModelo, deletarParametrosDoModelo
 };
