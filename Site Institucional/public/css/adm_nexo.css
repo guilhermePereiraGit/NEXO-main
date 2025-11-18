@@ -335,11 +335,6 @@ header .header-navigation .alert {
     padding: 30px;
     border-radius: 20px;
     border: solid 2px var(--primaria);
-    cursor: pointer;
-}
-
-.card-user *{
-    cursor: pointer;
 }
 
 .card-user:hover {
