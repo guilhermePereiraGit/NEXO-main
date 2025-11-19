@@ -15,4 +15,8 @@ router.post("/modificarStatusTotem", function(req, res){
     totemController.modificarStatusTotem(req, res);
 })
 
+router.get("/buscarTotens", function (req, res) {
+    totemController.buscarTotens(req, res);
+})
+
 module.exports = router;

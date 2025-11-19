@@ -20,6 +20,24 @@ function verificarAprovados(req, res) {
         );
 }
 
+async function buscarTotens(req, res) {
+    var fkEmpresa = req.body.fkEmpresaServer;
+    var totens = []
+
+    if (fkEmpresa == undefined) {
+        console.log('O ID da empresa está undefined')
+    } else {
+        totens = await totemModel.buscarTotens(fkEmpresa)
+
+        if (modelos.length > 0) {
+            res.json(totens)
+        } else {
+            console.log('Erro ao buscar os totens')
+            res.status(500)
+        }
+    }
+}
+
 async function cadastrarTotem(req, res) {
     var modelo = req.body.modeloServer;
     var enderecosMac = req.body.enderecosMacServer;

@@ -8,6 +8,15 @@ function cadastrarTotem(modelo, enderecoMac, fkEndereco){
     return database.executar(instrucaoSql);
 }
 
+function buscarTotens(idEmpresa) {
+    var instrucaoSql = `
+            select totem.idTotem as IdTotem, totem.numMAC, modelo.fkEmpresa from totem 
+            inner join modelo on modelo.idModelo = totem.fkTotem 
+            where modelo.fkEmpresa = ${idEmpresa};
+        `
+        return database.executar(instrucaoSql);
+}
+
 function verificarAprovados(idEmpresa) {
     var instrucaoSql = `
     SELECT idTotem, t.numMAC, t.status, m.nome from totem t 
