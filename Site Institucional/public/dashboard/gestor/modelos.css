@@ -215,11 +215,11 @@ header .header-navigation .alert {
     height: 15vh;
     background-color: var(--contraste);
     padding-left: 40px;
-    padding-right: 40px;
+    padding-right: 100px;
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
+    align-items: center;
 }
-
 .content .information h1 {
     font-weight: 500;
     color: var(--principal);
@@ -457,165 +457,6 @@ header .header-navigation .alert {
     color: var(--principal);
 }
 
-/* KPIS */
-.conteudo {
-    padding: 30px;
-}
-
-.conteudo .kpis {
-    display: flex;
-    justify-content: space-between;
-}
-
-.conteudo .kpis .kpi {
-    background-color: white;
-    padding: 15px;
-    width: 24.5%;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.conteudo .kpis .kpi h1 {
-    color: var(--principal);
-}
-
-.conteudo .kpis .kpi .titulo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.conteudo .kpis .kpi .dado {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.conteudo .kpis .kpi .dado h1 {
-    font-size: 40px;
-    color: var(--principal);
-}
-
-.conteudo .kpis .kpi .titulo h1 {
-    font-size: 25px;
-}
-
-.conteudo .kpis .kpi .titulo h2 {
-    font-size: 20px;
-}
-
-/* LEGENDA DE DADOS */
-.dados {
-    display: flex;
-    gap: 10px;
-}
-
-.dados .modelos {
-    background-color: white;
-    width: 40%;
-    height: 51.3vh;
-    margin-top: 10px;
-    padding: 20px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.dados .modelos .legenda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.dados .modelos .legenda p {
-    color: var(--principal);
-}
-
-.dados .modelos .list-modelos {
-    margin-top: 30px;
-    height: 38vh;
-    overflow: auto;
-    width: 85%;
-}
-
-.dados .modelos .list-modelos .modelo {
-    padding: 15px;
-    transition: 0.3s;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dados .modelos .list-modelos .modelo:hover {
-    background-color: var(--fundo);
-}
-
-.dados .modelos .list-modelos .modelo p {
-    font-size: 20px;
-}
-
-.dados .modelos .list-modelos .modelo .color {
-    height: 1.7vh;
-    width: 25%;
-    border-radius: 20px;
-    background-color: #ff3131;
-}
-
-.barra-legenda {
-    display: flex;
-    border-radius: 50px;
-    width: fit-content;
-    height: 7vh;
-    align-items: center;
-    font-weight: bold;
-}
-
-.item {
-    padding: 8px 18px;
-    color: var(--principal);
-    text-align: center;
-}
-
-.item:first-child {
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-}
-
-.item:last-child {
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-
-.ione {
-    background-color: #65fa8f;
-}
-
-.itwo {
-    background-color: #fada64;
-}
-
-.ithree {
-    background-color: #f98a25;
-}
-
-.ifour {
-    background-color: #ff3131;
-}
-
-/* GRÁFICO DE LINHA */
-.grafico {
-    background-color: white;
-    margin-top: 10px;
-    width: 60%;
-    border-radius: 10px;
-}
-
 /* AGUARDANDO SELECIONAR REGIÃO */
 .waiting {
     padding: 30px;
@@ -671,4 +512,213 @@ header .header-navigation .alert {
     padding: 20px;
     transition: 0.3s;
     border-radius: 10px;
+}
+/* AJUSTES */
+.information-first{
+    display: flex;
+    gap: 20px;
+}
+/* DADOS + KPIS */
+.conteudo{
+    padding: 22px;
+}
+.conteudo .kpis{
+    display: flex;
+    gap: 10px;
+}
+.conteudo .kpis .kpi{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    height: 220px;
+}
+.conteudo .kpis .kpi .titulo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.conteudo .kpis .kpi .titulo h1{
+    font-size: 25px;
+    color: var(--principal);
+}
+.conteudo .kpis .kpi .titulo h2{
+    font-size: 20px;
+    margin-top: -10px;
+}
+.conteudo .kpis #first-kpi{
+    border-left: 10px solid #fada64;
+}
+.conteudo .kpis .kpi .dados{
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+    align-items: center;
+    justify-content: center;
+}
+.conteudo .kpis .kpi .dados .texto{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    height: 1vh;
+}
+.texto2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 60%;
+}
+.texto2 p{
+    font-size: 20px;
+}
+#grafico-pizza{
+    width: 80px;
+}
+#grafico-pizza2{
+    width: 80px;
+}
+.conteudo .kpis .kpi .dados-modelo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.conteudo .kpis .kpi .dados-modelo h1{
+    color: var(--principal);
+    font-size: 30px;
+}
+.conteudo .kpis .kpi .dados-modelo p{
+    margin-top: -10px;
+    font-weight: bold;
+}
+.conteudo .kpis .kpi .complement{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+.conteudo .kpis .kpi .complement p{
+    color: var(--principal);
+    font-weight: bold;
+}
+.conteudo .kpis .kpi .modelos-kpi{
+    height: 15vh;
+    overflow: auto;
+    margin-top: 20px;
+}
+.conteudo .kpis .kpi .modelos-kpi .modelo{
+    display: flex;
+    gap: 40px;
+    padding: 15px 30px 15px 30px;
+    align-items: center;
+    background-color: var(--fundo);
+}
+
+.conteudo .kpis .kpi .modelos-kpi .modelo h2{
+    font-size: 15px;
+    width: 50%;
+}
+.conteudo .kpis .kpi .dados-previsao{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+.conteudo .kpis .kpi .dados-previsao h1{
+    font-size: 40px;
+    color: var(--principal);
+}
+.conteudo .kpis .kpi .dados-previsao h2{
+    font-size: 20px;
+}
+.half p{
+    font-weight: bold;
+}
+/* MODELOS */
+.dados-all{
+    display: flex;
+    gap: 10px;
+}
+.dados-all .modelos .legenda{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.dados-all .modelos .legenda h1{
+    font-size: 25px;
+    color: var(--principal);
+}
+.dados-all .modelos .legenda p{
+    margin-top: -10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.modelos{
+    height: 48vh;
+    width: 40%;
+    background-color: white;
+    margin-top: 10px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.grafico-linhas{
+    height: 48vh;
+    width: 60%;
+    background-color: white;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+.list-modelos h1{
+    font-size: 25px;
+    color: var(--principal);
+}
+.filter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+}
+.filter select{
+    height: 4vh;
+    width: 50%;
+    border-radius: 5px;
+    border: 1px solid var(--principal);
+}
+
+/* LISTA DE MODELOS */
+.modelos-all{
+    display: flex;
+    align-items: center;
+    height: 30vh;
+    overflow-y: auto;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.modelos-all .modelo{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    width: 50%;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.modelos-all .modelo:hover{
+    background-color: var(--fundo);
+}
+.modelos-all .modelo h2{
+    font-size: 15px;
+}
+.modelos-all .modelo .color{
+    height: 2vh;
+    width: 30%;
+    background-color: #ff3131;
+    border-radius: 20px;
 }
