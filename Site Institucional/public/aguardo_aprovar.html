@@ -4,30 +4,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Aguardo de Aprovação de Cadastro</title>
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/institucional.css">
-    <link rel="stylesheet" href="./css/aguardo_aprovacao.css">
+    <title>ADM - NEXO</title>
+    <link rel="stylesheet" href="./css/adm_nexo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
-    <div id="cabecalho">
-        <div class="cabecalho-container">
-            <div class="logo"><a href="index.html"><img id="logo" src="./assets/imgs/Nexo-Logo.png" alt="Nexo-Logo"></a>
+<body onload="carregarDados()">
+    <div class="tudo">
+        <header>
+            <div class="header-container">
+                <!-- MENU -->
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenu()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
+
+                <!-- NAVEGAÇÃO -->
+                <div class="header-navigation">
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+                    </div>
+                </div>
+
             </div>
-            <div class="cabecalho-links" id="cabecalhoLinks">
-                <a href="index.html" class="botao-principal" id="login">Retornar à Página Principal</a>
+
+            <!-- MENU EXTENDIDO -->
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1 id="lbl_nome"></h1>
+                    <h2 style="align-self: center;">Administrador</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card"
+                        onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="./assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card"
+                        onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="./assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- POPUP DE LOGOUT -->
+        <div class="popup-logout" style="display: none;" id="popup-logout">
+            <div class="popup-content" id="icone">
+                <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
+                <h1>Deseja Sair?</h1>
+                <div class="box-button">
+                    <button>Fazer Logout</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="text-aguard">
-        <div class="log-analise">
-            <h1>Aguarde a Aprovação do Cadastro</h1>
-            <p>Parece que seu cadastro ainda não foi aprovado pela nossa equipe, aguarde até que entremos em contato com
-                você, ou caso queira, pode entrar em contato diretamente em nossas plataformas de atendimento para
-                desfrutar dos benefícios de ser um cliente NEXO.</p>
+
+        <!-- MAIN -->
+        <div class="main">
+            <div class="topo">
+                <h2 style="margin-left: 70px;">Cadastro em análise</h2>
+            </div>
+            <div class="baixo">
+                <div class="conteudo" id="aprovacao">
+                    <h1>Aguarde a Aprovação do Cadastro</h1>
+                    <p>Parece que seu cadastro ainda não foi aprovado pela nossa equipe, aguarde até que entremos em contato com você, ou caso queira, pode entrar em contato diretamente em nossas plataformas de atendimento para desfrutar dos benefícios de ser um cliente NEXO.</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<script>
+    /* ---------- POPUP LOGOUT ---------- */
+    function ativarPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+    function fecharPopup() {
+        popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
 
-</html>
+    /* ---------- MENU LATERAL ---------- */
+    function abrirMenu() {
+        menu_icon = document.getElementById('icone');
+        menu = document.querySelector('.menu-extend');
+        if (menu_icon.classList.contains("bi-list")) {
+            console.log("entrei");
+            document.getElementById('extend').style.display = "flex";
+            menu.style.animation = "expandirDireita 0.5s ease forwards";
+            menu_icon.classList.remove("bi-list");
+            menu_icon.classList.add("bi-x-lg")
+
+        } else {
+            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+            menu_icon.classList.remove("bi-x-lg");
+            menu_icon.classList.add("bi-list")
+        }
+    }
+
+    function carregarDados() {
+        nome = sessionStorage.getItem("NOME_USUARIO");
+        email = sessionStorage.getItem("EMAIL_USUARIO")
+        lbl_nome.innerHTML = nome;
+        lbl_email.innerHTML = email;
+    }
+
+</script>
