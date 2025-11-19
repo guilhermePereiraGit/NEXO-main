@@ -265,16 +265,6 @@ header .header-navigation {
     align-items: center;
     margin: 28px;
 }
-#box-perfil {
-    height: 77vh;
-    width: 45%;
-    background-color: white;
-    border-radius: 10px;
-    margin: 60px;
-    align-self: center;
-    display: block;
-}
-
 .box .text {
     width: 70%;
     text-align: center;
@@ -358,11 +348,6 @@ header .header-navigation {
     height: 30%;
     text-align: start;
 }
-.box-perfil img {
-    width: 80%;
-    height: 30%;
-}
-
 
 /*CADASTRAR TOTENS*/
 .popuptotem {
