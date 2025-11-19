@@ -692,7 +692,8 @@ select {
 
 /*FIM TESTEEEEEEEEEEEEEEEEEEEEEEEEEE*/
 .cadastrar-totens {
-    display: none;
+    display: flex;
+    align-self: center;
 }
 
 .cadastrar-totens .segundo {

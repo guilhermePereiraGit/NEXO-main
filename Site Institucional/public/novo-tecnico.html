@@ -28,8 +28,8 @@
                 <div class="header-navigation">
                     <div class="icones">
                         <div class="cadastrar-totens">
-                            <div class="fundo" id="fundo2" style="display: none;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('cadastrar-totens')"
+                            <div class="fundo" id="fundo2" style="display: block;"></div>
+                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box')"
                                 id="second"></i>
                         </div>
                         <div class="dashboard">
@@ -95,7 +95,7 @@
             </div>
             <!-- CADASTRO TOTENS -->
             <div class="box" id="box">
-                <div class="cadastrar-totens" id="cadastrar-totens"  style="display: block;">
+                <div class="cadastrar-totens" id="cadastrar-totens">
                     <div id="segundo">
                         <div class="more" id="more">
                             <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
@@ -288,33 +288,45 @@
 </body>
 <script>
     function ativar(escolha) {
-        document.getElementById(escolha).style.display = 'block';
-        document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
-        if (escolha == "fundo2") {
-            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('second').style.color = "#451c8b";
-            document.getElementById('third').style.color = "white";
-            document.getElementById('fourth').style.color = "white";
-            document.getElementById('box').style.display = "block";
-        } else if (escolha == "fundo3") {
-            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('second').style.color = "white";
-            document.getElementById('fourth').style.color = "white";
-            document.getElementById('third').style.color = "#451c8b";
-            document.getElementById('box').style.display = "none";
-
-        } else if (escolha == "fundo4") {
-            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
-            document.getElementById('second').style.color = "white";
-            document.getElementById('third').style.color = "white";
-            document.getElementById('fourth').style.color = "#451c8b";
-            document.getElementById('box').style.display = "none";
-        }
+    document.getElementById(escolha).style.display = 'block';
+    document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
+    if(escolha === 'fundo2') {
+        mostrarBox();
+        document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById("second").style.color = "#451c8b";
+        document.getElementById("third").style.color = "white";
+        document.getElementById("fourth").style.color = "white";
+    } else if (escolha === 'fundo3') {
+        esconderBox();
+        document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById("third").style.color = "#451c8b";
+        document.getElementById("second").style.color = "white";
+        document.getElementById("fourth").style.color = "white";
+    }else if(escolha === 'fundo4') {
+        esconderBox();
+        document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+        document.getElementById("fourth").style.color = "#451c8b";
+        document.getElementById("second").style.color = "white";
+        document.getElementById("third").style.color = "white";
     }
-
+}
+function esconderBox() {
+    box = document.getElementById("box");
+    box.style.opacity = "0";
+    box.style.visibility = "hidden";
+    box.style.height = "0px";
+    box.style.overflow = "hidden";
+}
+function mostrarBox() {
+    box = document.getElementById("box");
+    box.style.opacity = "1";
+    box.style.visibility = "visible";
+    box.style.height = "auto"; 
+    box.style.overflow = "visible";
+}
     aprovados = [];
     function carregarDadosAprovados() {
         var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
@@ -915,7 +927,7 @@
 
     /*Usando*/
     function irPara(escolhida) {
-        $("#cadastrar-totens, #dashboard, #dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
+        $("#box, #dashboard, #dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
             $(this).css("display", "none");
         });
         $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
