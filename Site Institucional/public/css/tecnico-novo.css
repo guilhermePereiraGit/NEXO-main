@@ -319,36 +319,6 @@ header .header-navigation {
     width: 20%;
     margin-top: 50px;
 }
-
-/*PERFIL*/
-.infos-user {
-    display: flex;
-    margin: 2%;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-#infos-user-card-tecnico {
-    display: flex;
-    width: 30%;
-    height: 90%;
-    gap: 6%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-}
-
-#infos-users-labels {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    height: 30%;
-    text-align: start;
-}
-
 /*CADASTRAR TOTENS*/
 .popuptotem {
     display: none;
