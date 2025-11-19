@@ -171,8 +171,8 @@
                             </div>
                             <div class="totens-scroll" id="totens"></div>
                             <div class="part-dois">
-                                <button class="cadastrar" onclick="adicionarMaisUmTotem()">Adicionar Totem</button>
-                                <button class="cadastrar" onclick="cadastrarEndereco()">Cadastrar</button>
+                                <button class="cadastrar" onclick="adicionarMaisUmTotem()" id="botao-popup">Adicionar Totem</button>
+                                <button class="cadastrar" onclick="cadastrarEndereco()" id="botao-popup">Cadastrar</button>
                             </div>
                         </div>
                     </div>
@@ -287,8 +287,6 @@
     </div>
 </body>
 <script>
-    window.onload('cadastrar-totens');
-
     function ativar(escolha) {
         document.getElementById(escolha).style.display = 'block';
         document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
