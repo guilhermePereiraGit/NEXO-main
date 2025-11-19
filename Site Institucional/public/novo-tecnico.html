@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarDadosUsuario(), carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha()">
+<body onload="carregarTelaPrincipal(),carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -27,8 +27,8 @@
                 <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
                     <div class="cadastrar-totens">
-                        <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-display" onclick="ativar('fundo2');irPara('cadastrar-totens')" id="second"></i>
+                        <div class="fundo" id="fundo2" style="display: block;"></div>
+                        <i class="bi bi-display" onclick="ativar('fundo2');irPara('cadastrar-totens')" id="second" style="color: #451c8b;"></i>
                     </div>
                     <div class="dashboard">
                         <div class="fundo" id="fundo3" style="display: none;"></div>
@@ -91,8 +91,8 @@
                 <h2 style="margin-left: 70px;">Tela Técnico</h2>
             </div>
             <!-- CADASTRO TOTENS -->
-            <div class="box" id="box">
-                <div class="cadastrar-totens" id="cadastrar-totens">
+            <div class="box" id="box" style="display: block;">
+                <div class="cadastrar-totens" id="cadastrar-totens"  style="display: block;">
                     <div id="segundo">
                         <div class="more" id="more">
                             <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
@@ -274,13 +274,7 @@
     </div>
 </body>
 <script>
-
-    function carregarDadosUsuario() {
-        nome = sessionStorage.getItem("NOME_USUARIO");
-        email = sessionStorage.getItem("EMAIL_USUARIO")
-        lbl_nome.innerHTML = nome;
-        lbl_email.innerHTML = email;
-    }
+    window.onload('cadastrar-totens');
 
     function ativar(escolha) {
         document.getElementById(escolha).style.display = 'block';
@@ -298,7 +292,6 @@
             document.getElementById('second').style.color = "white";
             document.getElementById('fourth').style.color = "white";
             document.getElementById('third').style.color = "#451c8b";
-            document.getElementById('box').style.display = "none";;
 
         } else if (escolha == "fundo4"){
             document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
@@ -306,7 +299,6 @@
             document.getElementById('second').style.color = "white";
             document.getElementById('third').style.color = "white";
             document.getElementById('fourth').style.color = "#451c8b";
-            document.getElementById('box').style.display = "none";
         }
     }
 
@@ -910,7 +902,7 @@
 
     /*Usando*/
     function irPara(escolhida) {
-        $("#perfil, #cadastrar-totens, #dashboard", "dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
+        $("#cadastrar-totens, #dashboard, #dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
             $(this).css("display", "none");
         });
         $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
