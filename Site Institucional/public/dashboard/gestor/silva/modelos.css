@@ -722,3 +722,46 @@ header .header-navigation .alert {
     background-color: #ff3131;
     border-radius: 20px;
 }
+
+/* GRÁFICO DE LINHAS */
+.grafico-linhas{
+    padding: 20px;
+}
+.grafico-linhas .titulo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.grafico-linhas .titulo h1{
+    font-size: 25px;
+    color: var(--principal);
+}
+.grafico-linhas .titulo h2{
+    font-size: 20px;
+    margin-top: -10px;
+}
+.selecionar_modelo{
+    position: absolute;
+    width: 49%;
+    display: flex;
+    justify-content: right;
+}
+.selecionar_modelo select{
+    border: 1px solid var(--principal);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* COMPONENTES MONITORADOS */
+.metrica{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+.metrica i{
+    font-size: 50px;
+    color: var(--principal);
+    cursor: pointer;
+}

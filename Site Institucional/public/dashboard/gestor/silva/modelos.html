@@ -34,7 +34,8 @@
                     </div>
                     <div class="eficiencia">
                         <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data" onclick="window.location.href = '../gabriel/eficiencia.html'" id="second"></i>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = '../gabriel/eficiencia.html'"
+                            id="second"></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -271,17 +272,6 @@
                     </div>
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Componentes</h1>
-                            <h2>Análise da Região</h2>
-                        </div>
-                        <div class="dados-previsao">
-                            <div class="metrica">
-                                <h1>CPU</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
                             <h1>Modelos Críticos</h1>
                             <h2>por Métrica</h2>
                         </div>
@@ -304,22 +294,22 @@
                             </div>
                         </div>
                     </div>
-                    <!-- TALVEZ -->
-                    <!-- <div class="kpi">
+                    <div class="kpi">
                         <div class="titulo">
-                            <h1>Suporte à Região</h1>
-                            <h2>Alertas por Técnico</h2>
+                            <h1>Componentes</h1>
+                            <h2>Análise da Região</h2>
                         </div>
-                        <div class="dados">
-                            <div class="texto">
-                                <p>60 Técnicos</p>
-                                <p style="color: #451c8b;">120 Alertas</p>
-                            </div>
-                            <div class="grafico">
-                                <canvas id="grafico-pizza2" class="chart-container"></canvas>
+                        <div class="dados-previsao">
+                            <div class="metrica">
+                                <div class="infos-metrica">
+                                    <h1>CPU</h1>
+                                    <p>Total de Modelos <span>40</span></p>
+                                    <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+                                </div>
+                                <i class="bi bi-arrow-right"></i>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="kpi">
                         <div class="titulo">
                             <h1>Downtime Modelo</h1>
@@ -415,38 +405,36 @@
                         </div>
                     </div>
                     <div class="grafico-linhas">
-
+                        <div class="selecionar_modelo">
+                            <select name="select_modelo">
+                                <option value="X">Selecione um Modelo</option>
+                                <option value="all">Todos os Modelos</option>
+                            </select>
+                        </div>
+                        <div class="titulo">
+                            <h1>Difusão de Downtime</h1>
+                            <h2>Inatividade em Horas</h2>
+                        </div>
+                        <div class="case-linha">
+                            <canvas id="grafico-linha" class="chart-container"
+                                style="width: 750px;height: 250px;margin-top: 10px;"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="eficiencia" id="eficiencia" style="display: none;">
-            <h1>AAAAAAAAAAAAAA</h1>
-        </div>
-
-        <!-- CASO A REGIÃO NÃO TENHA SIDO SELECIONADA -->
-        <div class="waiting" id="waiting">
-            <div class="box">
-                <div class="text">
-                    <h1>Aguardando Seleção de Região</h1>
-                    <p>Aguardando a seleção de uma região para que os dados sejam carregados corretamente, caso
-                        tenha selecionado a região e os dados não apareceram, entre em contato com nossa equipe de
-                        suporte.</p>
-                    <img src="../../assets/imgs/icon-nexo.png">
+            <!-- CASO A REGIÃO NÃO TENHA SIDO SELECIONADA -->
+            <div class="waiting" id="waiting">
+                <div class="box">
+                    <div class="text">
+                        <h1>Aguardando Seleção de Região</h1>
+                        <p>Aguardando a seleção de uma região para que os dados sejam carregados corretamente, caso
+                            tenha selecionado a região e os dados não apareceram, entre em contato com nossa equipe de
+                            suporte.</p>
+                        <img src="../../assets/imgs/icon-nexo.png">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script>
-    function irPara(escolhida) {
-        $("#conteudo, #eficiencia, #alertas").stop().animate({ opacity: 0 }, 200, function () {
-            $(this).css("display", "none");
-        });
-        $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
-        carregarDados();
-    }
-</script>
-
 </html>

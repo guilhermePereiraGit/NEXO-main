@@ -7,7 +7,7 @@ window.onload = function() {
 //o canvas corretamente para plotar)
 window.addEventListener("load", () => {
         gerarGraficoPizza();
-        gerarGraficoPizza2();
+        gerarGraficoLinha();
 });
 
 function gerarGraficoPizza() {
@@ -32,28 +32,6 @@ function gerarGraficoPizza() {
     });
 }
 
-function gerarGraficoPizza2() {
-    const barra = document.getElementById('grafico-pizza2');
-    new Chart(barra, {
-        type: 'doughnut',
-        data: {
-            labels: ['Alertas', 'Técnicos'],
-            datasets: [{
-                data: [120, 60],
-                backgroundColor: ["#451c8b","#c8c1ff"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-            }
-        },
-    });
-}
-
 function gerarGraficoLinha() {
     const linha = document.getElementById('grafico-linha');
     new Chart(linha, {
@@ -62,34 +40,24 @@ function gerarGraficoLinha() {
             labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
             datasets: [
                 {
-                    label: 'Atenção',
+                    label: 'Tempo Downtime',
                     data: [10, 15, 5, 10, 13, 20, 15],
-                    borderColor: '#fada64',
-                    tension: 0.4
-                },
-                {
-                    label: 'Perigoso',
-                    data: [5, 2, 7, 12, 3, 6, 9],
-                    borderColor: '#f98a25',
-                    tension: 0.4
-                },
-                {
-                    label: 'Crítico',
-                    data: [1, 2, 1, 4, 2, 3, 1],
-                    borderColor: '#ff3131',
+                    borderColor: '#451c8bd6',
+                    backgroundColor: '#451c8b6c',
+                    fill: true,
                     tension: 0.4
                 }
             ]
         },
         options: {
-            responsive: true,
+            responsive: false,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
                 },
                 title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
+                    display: false                
                 }
             }
         },
