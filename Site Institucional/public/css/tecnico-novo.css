@@ -240,7 +240,7 @@ header .header-navigation {
 .box {
     height: 77vh;
     width: 100%;
-    background-color: rgb(111, 62, 62);
+    background-color: rgb(231, 209, 209);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -248,6 +248,7 @@ header .header-navigation {
     align-items: center;
     margin: 28px;
 }
+
 .box .text {
     width: 70%;
     text-align: center;
@@ -305,7 +306,6 @@ header .header-navigation {
 /*CADASTRAR TOTENS*/
 .popuptotem {
     display: none;
-    width: 100%;
 }
 
 .cima {
@@ -330,8 +330,6 @@ header .header-navigation {
 .cima button:hover {
     transform: scale(1.05);
 }
-
-/*TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE*/
 
 .card {
     background-color: white;
@@ -690,7 +688,6 @@ select {
     }
 }
 
-/*FIM TESTEEEEEEEEEEEEEEEEEEEEEEEEEE*/
 .cadastrar-totens {
     display: flex;
     align-self: center;
