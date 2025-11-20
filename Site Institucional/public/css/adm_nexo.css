@@ -310,6 +310,7 @@ header .header-navigation .alert {
 }
 
 .conteudo {
+    padding: 5vh;
     height: 77vh;
     width: 100%;
     display: flex;
@@ -323,6 +324,7 @@ header .header-navigation .alert {
 
 .conteudo h1 {
     text-align: center;
+    margin-bottom: 5vh;
 }
 
 /* Cards */
@@ -415,6 +417,8 @@ header .header-navigation .alert {
 
 .card-nothing p{
     font-size: 20px;
+    text-align: center;
+    width: 120vh;
 }
 
 header .header-navigation .cadastradas,
