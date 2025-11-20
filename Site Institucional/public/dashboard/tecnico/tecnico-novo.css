@@ -305,7 +305,7 @@ header .header-navigation {
 }
 /*CADASTRAR TOTENS*/
 .popuptotem {
-    display: none;
+    background-color: black;
 }
 
 .cima {
@@ -335,7 +335,7 @@ header .header-navigation {
     background-color: white;
     height: 75vh;
     width: 90%;
-    padding: 0px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 20px var(--primaria);
 }

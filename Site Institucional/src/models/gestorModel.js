@@ -52,14 +52,17 @@ function buscarAlertas(regiaoAtual) {
     const instrucaoSql = `
     select 
     c.nome as NomeComponente,
-    m.idModelo as idModelo
+    m.idModelo as idModelo,
+    m.nome as NomeModelo,
+    count(*) as totalAlertas
     from historico_alertas as ha 
     inner join modelo as m on ha.fkModelo = m.idModelo
     inner join componente as c on ha.fkComponente = c.idComponente
-    inner join totem as t on t.fkModelo = m.idModelo
+    inner join (select distinct t.fkModelo from totem t
     inner join endereco as e on t.fkEndereco = e.idEndereco
     inner join regiao as r on r.idRegiao = e.fkRegiao
-    where r.nome = '${regiaoAtual}';
+    where r.nome = '${regiaoAtual}') as modelosRegiao on m.idModelo = modelosRegiao.fkModelo
+    group by m.idModelo, m.nome, c.nome;
     `
     console.log(instrucaoSql)
     return database.executar(instrucaoSql);

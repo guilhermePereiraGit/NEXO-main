@@ -88,6 +88,50 @@ function plotarModelosCriticos(componentes) {
                     alertas = data;
                     console.log(alertas);
                     document.getElementById('total_alertas').innerHTML = `${alertas.length} Alertas`;
+
+                    listaMaiores = [];
+                    //Para separar por componente
+                    for (var i = 0; i < componentes.length; i++) {
+                        var listaAuxiliar = [];
+                        for (var j = 0; j < alertas.length; j++) {
+                            if (alertas[j].NomeComponente == componentes[i].nome) {
+                                listaAuxiliar.push(alertas[j]);
+                            }
+                        }
+
+                        console.log(listaAuxiliar);
+
+                        totalMaior = 0;
+                        indiceMaior = null;
+                        for (var g = 0; g < listaAuxiliar.length; g++) {
+                            if (listaAuxiliar[g].totalAlertas > totalMaior) {
+                                totalMaior = listaAuxiliar[g].totalAlertas
+                                indiceMaior = g;
+                            }
+                        }
+
+                        listaMaiores.push(listaAuxiliar[indiceMaior]);
+                    }
+                    console.log(listaMaiores);
+
+
+                    //Plotando informações
+                    modelos_criticos = document.getElementById('modelos_criticos');
+
+                    for (var i = 0; i < componentes.length; i++) {
+                        modelos_criticos.innerHTML += `
+                        <div class="modelo">
+                        <h2>${componentes[i].nome}</h2>
+                        <p>${listaMaiores[i].NomeModelo}</p>
+                        </div>
+                        `;
+                    }
+                    modelos_criticos.innerHTML += `
+                        <div class="modelo">
+                        <h2>DOWNTIME</h2>
+                        <p>AA0385</p>
+                        </div>
+                        `;
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");
@@ -97,45 +141,12 @@ function plotarModelosCriticos(componentes) {
         .catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-
-    // //Pegando Modelos Mais críticos para cada componente
-    // maiorAlertas = 0;
-    // indiceMaior = null;
-    // indiceAtual = j;
-    // indiceAnterior = i;
-
-    // // FINALIZAR ISSO
-    // // for(var i = 0; i < componentes.length; i++){
-    // //     for(var j = 0; j < alertas.length; j++){
-    // //         if(componentes[i].nome == alertas[j].NomeComponente){
-                
-    // //             if()
-    // //         }
-    // //     }
-    // // }
-
-    //Plotando informações
-    modelos_criticos = document.getElementById('modelos_criticos');
-
-    for (var i = 0; i < componentes.length; i++) {
-        modelos_criticos.innerHTML += `
-    <div class="modelo">
-    <h2>${componentes[i].nome}</h2>
-    <p>AA0385</p>
-    </div>
-    `;
-    }
-    modelos_criticos.innerHTML += `
-    <div class="modelo">
-    <h2>DOWNTIME</h2>
-    <p>AA0385</p>
-    </div>
-    `;
 }
 
-function gerarGraficoPizza(totens) {
-    console.log(totens);
-
+function gerarGraficoPizza(totens,alertas) {
+    console.log('totens',totens);
+    console.log('alertas',alertas);
+    
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
         type: 'doughnut',
@@ -230,7 +241,7 @@ function plotarModelos(modelos) {
     for (var i = 0; i < modelos.length; i++) {
         div_modelos.innerHTML += `
     <div class="modelo">
-    <h2>${modelos[i].NomeModelo}</h2>
+    <h2>Modelo ${modelos[i].NomeModelo}</h2>
     <div class="color"></div>
     </div>
     `;
@@ -255,7 +266,7 @@ function carregarTotens() {
                     totens = data;
                     console.log(totens);
                     plotarTotens(totens);
-                    gerarGraficoPizza(totens.length)
+                    gerarGraficoPizza(totens.length);
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");
