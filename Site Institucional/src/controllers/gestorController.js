@@ -77,7 +77,8 @@ function buscarTotens(req, res) {
 }
 
 function buscarAlertas(req, res) {
-    gestorModel.buscarAlertas()
+    var regiaoAtual = req.body.regiaoAtual;
+    gestorModel.buscarAlertas(regiaoAtual)
         .then(
             function (resultado) {
                 res.json(resultado);

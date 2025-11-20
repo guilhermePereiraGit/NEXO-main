@@ -69,12 +69,16 @@ function buscarComponentes() {
 }
 
 function plotarModelosCriticos(componentes) {
+    regiao_selecionar = sessionStorage.getItem('REGIAO_ESCOLHIDA');
     //Separar Modelos Críticos por cada Componente
     fetch("/gestor/buscarAlertas", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-        }
+        },
+        body: JSON.stringify({
+            regiaoAtual: regiao_selecionar
+        }),
     })
         .then(function (resposta) {
             console.log("resposta: ", resposta);
@@ -83,6 +87,7 @@ function plotarModelosCriticos(componentes) {
                 resposta.json().then(data => {
                     alertas = data;
                     console.log(alertas);
+                    document.getElementById('total_alertas').innerHTML = `${alertas.length} Alertas`;
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");
@@ -93,21 +98,21 @@ function plotarModelosCriticos(componentes) {
             console.log(`#ERRO: ${resposta}`);
         });
 
-    //Pegando Modelos Mais críticos para cada componente
-    maiorAlertas = 0;
-    indiceMaior = null;
-    indiceAtual = j;
-    indiceAnterior = i;
+    // //Pegando Modelos Mais críticos para cada componente
+    // maiorAlertas = 0;
+    // indiceMaior = null;
+    // indiceAtual = j;
+    // indiceAnterior = i;
 
-    //FINALIZAR ISSO
-    // for(var i = 0; i < componentes.length; i++){
-    //     for(var j = 0; j < alertas.length; j++){
-    //         if(componentes[i].nome == alertas[j].NomeComponente){
+    // // FINALIZAR ISSO
+    // // for(var i = 0; i < componentes.length; i++){
+    // //     for(var j = 0; j < alertas.length; j++){
+    // //         if(componentes[i].nome == alertas[j].NomeComponente){
                 
-    //             if()
-    //         }
-    //     }
-    // }
+    // //             if()
+    // //         }
+    // //     }
+    // // }
 
     //Plotando informações
     modelos_criticos = document.getElementById('modelos_criticos');
@@ -374,6 +379,7 @@ function carregarRegioesCadastradas() {
 
 function plotarRegioes(regioes) {
     div_regioes = document.getElementById('regioes');
+    div_regioes.innerHTML = ``;
     for (var i = 0; i < regioes.length; i++) {
         div_regioes.innerHTML += `
     <div class="regiao" onclick="escolherRegiao('${regioes[i].NomeRegiao}','${regioes[i].SiglaRegiao}')">
