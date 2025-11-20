@@ -159,15 +159,6 @@ function fecharPopup() {
     popup = $("#popup-logout");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }
-
-function abrirEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
 function abrirPassos() {
     popup = $("#popup-passos");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);

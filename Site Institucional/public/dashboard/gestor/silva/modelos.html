@@ -11,7 +11,8 @@
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="modelos.js"></script>
+    <script src="script.js"></script>
+    <script src="carregarDados.js"></script>
 </head>
 
 <body>
@@ -50,7 +51,7 @@
             </div>
             <div class="menu-extend" style="display: none;" id="extend">
                 <div class="infos-user">
-                    <h1>Guilherme Silva</h1>
+                    <h1 id="nome_user"></h1>
                     <h2>Gestor de Operações</h2>
                 </div>
                 <div class="widgets">
@@ -150,83 +151,6 @@
 
                 <!-- APÓS ESCOLHER UM ESTADO -->
                 <div class="regioes" id="regioes" style="display: none;">
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de São Paulo','RMSP')">
-                        <h1>Região Metropolitana de São Paulo - RMSP</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Campinas','RMC')">
-                        <h1>Região Metropolitana de Campinas - RMC</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Santos','RMBS')">
-                        <h1>Região Metropolitana de Santos - RMBS</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana do Vale do Paraíba','RMVPLN')">
-                        <h1>Região Metropolitana do Vale do Paraíba - RMVPLN</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Sorocaba','RMS')">
-                        <h1>Região Metropolitana de Sorocaba - RMS</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Ribeirão Preto','RMRP')">
-                        <h1>Região Metropolitana de Ribeirão Preto - RMRP</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de S.J do Rio Preto','RMSJRP')">
-                        <h1>Região Metropolitana de S.J do Rio Preto - RMSJRP</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Bauru','RMB')">
-                        <h1>Região Metropolitana de Bauru - RMB</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Piracicaba','RMP')">
-                        <h1>Região Metropolitana de Piracicaba - RMP</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Jundiaí','RMJ')">
-                        <h1>Região Metropolitana de Jundiaí - RMJ</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
-                    <div class="regiao" onclick="escolherRegiao('Região Metropolitana de Franca','RMF')">
-                        <h1>Região Metropolitana de Franca - RMF</h1>
-                        <div class="priorizar">
-                            <h2>Disponibilidade</h2>
-                            <h3>60%</h3>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- EM PRODUÇÃO -->

@@ -20,6 +20,7 @@ var enderecoRouter = require("./src/routes/endereco");
 var totemRouter = require("./src/routes/totem");
 var regiaoRouter = require("./src/routes/regiao");
 var adicionarRouter = require("./src/routes/adicionarRegiao");
+var gestorRouter = require("./src/routes/gestor");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ app.use("/endereco", enderecoRouter);
 app.use("/totem", totemRouter);
 app.use("/regiao", regiaoRouter);
 app.use("/adicionarRegiao", adicionarRouter);
+app.use("/gestor", gestorRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
