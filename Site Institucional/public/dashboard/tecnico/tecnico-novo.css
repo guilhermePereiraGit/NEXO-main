@@ -951,7 +951,7 @@ select {
 }
 
 .content .information .title {
-    display: flex;
+    display: block;
     flex-direction: column;
     margin-top: 10px;
 }
