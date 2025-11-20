@@ -240,7 +240,7 @@ header .header-navigation {
 .box {
     height: 77vh;
     width: 100%;
-    background-color: rgb(231, 209, 209);
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -376,8 +376,9 @@ header .header-navigation {
 }
 #botao-popup{
     width: 300px;
-    height: 10vh;
+    height: 5vh;
     border-radius: 20px;
+    padding: 15px;
     border: 2px solid var(--principal);
     color: rgb(255, 255, 255);
     background-color: var(--principal);
@@ -549,7 +550,7 @@ header .header-navigation {
     cursor: pointer;
     transition: 0.3s;
     padding: 10px;
-    height: 48px;
+    height: 30px;
 }
 
 .part-dois .cadastrar:hover,
@@ -946,7 +947,7 @@ select {
 /* CONTENT */
 .content .information h1 {
     font-weight: 500;
-    color: var(--principal);
+    color: black;
 }
 
 .content .information .title {
