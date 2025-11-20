@@ -54,14 +54,6 @@ function gerarGraficoPizza2() {
     });
 }
 
-function irPara(escolhida) {
-    $("#conteudo, #eficiencia, #alertas").stop().animate({ opacity: 0 }, 200, function () {
-        $(this).css("display", "none");
-    });
-    $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
-    carregarDados();
-}
-
 function gerarGraficoLinha() {
     const linha = document.getElementById('grafico-linha');
     new Chart(linha, {

@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DASHBOARD - MODELOS</title>
-    <link rel="stylesheet" href="modelos.css">
+    <link rel="stylesheet" href="eficiencia.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="modelos.js"></script>
+    <script src="eficiencia.js"></script>
 </head>
 
 <body>
@@ -28,13 +28,13 @@
                 <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
                     <div class="home">
-                        <div class="fundo" id="fundo" style="display: block;"></div>
-                        <i class="bi bi-house" onclick="ativar('fundo');irPara('conteudo')" id="first"
-                            style="color: #451c8b;"></i>
+                        <div class="fundo" id="fundo2" style="display: none;"></div>
+                        <i class="bi bi-house" onclick="window.location.href = '../silva/modelos.html'"></i>
                     </div>
                     <div class="eficiencia">
-                        <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data" onclick="ativar('fundo2');irPara('eficiencia')" id="second"></i>
+                        <div class="fundo" id="fundo" style="display: block;"></div>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'eficiencia.html'" id="first"
+                        style="color: #451c8b;"></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -275,14 +275,8 @@
                             <h2>Análise da Região</h2>
                         </div>
                         <div class="dados-previsao">
-                            <div class="half">
-                                <h2>170 Alertas</h2>
-                                <p style="margin-top: -7px; color: #fada64;">Atenção 60</p>
-                                <p style="color: #f98a25;">Perigoso 70</p>
-                                <p style="color: #ff3131;">Muito Perigoso 40</p>
-                            </div>
-                            <div class="half">
-                                <h1>+50</h1>
+                            <div class="metrica">
+                                <h1>CPU</h1>
                             </div>
                         </div>
                     </div>
@@ -444,9 +438,5 @@
             </div>
         </div>
     </div>
-    </div>
 </body>
-<script>
-</script>
-
 </html>
