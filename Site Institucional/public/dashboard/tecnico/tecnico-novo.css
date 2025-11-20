@@ -305,7 +305,7 @@ header .header-navigation {
 }
 /*CADASTRAR TOTENS*/
 .popuptotem {
-    background-color: black;
+    display: none;
 }
 
 .cima {
