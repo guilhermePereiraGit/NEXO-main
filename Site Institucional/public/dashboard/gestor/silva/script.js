@@ -2,7 +2,21 @@
 window.onload = function () {
     carregarDados();
     carregarDadosUser();
+    carregarUltimos7Dias();
 };
+
+// CARREGAR ÚLTIMOS 7 DIAS
+function carregarUltimos7Dias() {
+    dataAtual = new Date();
+    dataAtualFormatada = dataAtual.toLocaleDateString();
+
+    //Conversão de milisegundos (Captura do Date) para dias
+    seteDias = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    seteDiasFormatada = seteDias.toLocaleDateString();
+
+    p_data = document.getElementById('p_data');
+    p_data.innerHTML = `${seteDiasFormatada} à ${dataAtualFormatada}`;
+}
 
 function carregarDados() {
     regiao_escolhida = document.getElementById('regiao-escolhida');
@@ -17,6 +31,7 @@ function carregarDados() {
         carregarModelos();
         carregarTotens();
         gerarGraficoLinha();
+        buscarComponentes();
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
         sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
@@ -27,9 +42,95 @@ function carregarDados() {
     }
 }
 
+function buscarComponentes() {
+    fetch("/gestor/buscarComponentes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    componentes = data;
+                    console.log(componentes);
+                    plotarModelosCriticos(componentes);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+function plotarModelosCriticos(componentes) {
+    //Separar Modelos Críticos por cada Componente
+    fetch("/gestor/buscarAlertas", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    alertas = data;
+                    console.log(alertas);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+    //Pegando Modelos Mais críticos para cada componente
+    maiorAlertas = 0;
+    indiceMaior = null;
+    indiceAtual = j;
+    indiceAnterior = i;
+
+    //FINALIZAR ISSO
+    // for(var i = 0; i < componentes.length; i++){
+    //     for(var j = 0; j < alertas.length; j++){
+    //         if(componentes[i].nome == alertas[j].NomeComponente){
+                
+    //             if()
+    //         }
+    //     }
+    // }
+
+    //Plotando informações
+    modelos_criticos = document.getElementById('modelos_criticos');
+
+    for (var i = 0; i < componentes.length; i++) {
+        modelos_criticos.innerHTML += `
+    <div class="modelo">
+    <h2>${componentes[i].nome}</h2>
+    <p>AA0385</p>
+    </div>
+    `;
+    }
+    modelos_criticos.innerHTML += `
+    <div class="modelo">
+    <h2>DOWNTIME</h2>
+    <p>AA0385</p>
+    </div>
+    `;
+}
+
 function gerarGraficoPizza(totens) {
     console.log(totens);
-    
+
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
         type: 'doughnut',
@@ -284,11 +385,6 @@ function plotarRegioes(regioes) {
     </div>
     `;
     }
-}
-
-// CARREGAR ÚLTIMOS 7 DIAS
-function carregarUltimos7Dias(){
-    
 }
 
 function ativarPopup() {

@@ -765,3 +765,6 @@ header .header-navigation .alert {
     color: var(--principal);
     cursor: pointer;
 }
+#p_data{
+    font-weight: bold;
+}

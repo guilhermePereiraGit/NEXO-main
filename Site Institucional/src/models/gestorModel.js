@@ -40,6 +40,27 @@ function buscarTotens(nomeRegiao) {
     return database.executar(instrucaoSql);
 }
 
+function buscarComponentes() {
+    const instrucaoSql = `
+    select nome from componente;
+    `
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
+function buscarAlertas() {
+    const instrucaoSql = `
+    select 
+    c.nome as NomeComponente,
+    m.idModelo as idModelo
+    from historico_alertas as ha 
+    inner join modelo as m on ha.fkModelo = m.idModelo
+    inner join componente as c on ha.fkComponente = c.idComponente;
+    `
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    buscarRegioes,buscarModelos,buscarTotens
+    buscarRegioes,buscarModelos,buscarTotens,buscarComponentes,buscarAlertas
 };
