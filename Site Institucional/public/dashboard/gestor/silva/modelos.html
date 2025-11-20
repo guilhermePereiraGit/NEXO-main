@@ -11,8 +11,6 @@
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-    <script src="carregarDados.js"></script>
 </head>
 
 <body>
@@ -165,8 +163,8 @@
             <div class="information">
                 <div class="information-first">
                     <div class="title">
-                        <h1 id="regiao-escolhida">Região Metropolitana de São Paulo</h1>
-                        <p id="sigla-regiao">RMSP</p>
+                        <h1 id="regiao-escolhida"></h1>
+                        <p id="sigla-regiao"></p>
                     </div>
                     <div class="alterar-regiao">
                         <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
@@ -174,7 +172,7 @@
                 </div>
                 <div class="interval">
                     <h1>Últimos 7 Dias</h1>
-                    <p>12/11/2025 à 19/11/2025</p>
+                    <p id="p_data">12/11/2025 à 19/11/2025</p>
                 </div>
             </div>
             <div class="conteudo" id="conteudo">
@@ -186,7 +184,7 @@
                         </div>
                         <div class="dados">
                             <div class="texto2">
-                                <p>1000 Totens</p>
+                                <p id="total_totens"></p>
                                 <p style="color: #451c8b;">400 Alertas</p>
                             </div>
                             <div class="grafico">
@@ -260,71 +258,8 @@
                             <p>Taxa de Alertas</p>
                         </div>
                         <div class="list-modelos">
-                            <div class="modelos-all">
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
-                                <div class="modelo">
-                                    <h2>Modelo AA0385</h2>
-                                    <div class="color"></div>
-                                </div>
+                            <div class="modelos-all" id="modelos">
+
                             </div>
                         </div>
                     </div>
@@ -361,4 +296,6 @@
         </div>
     </div>
 </body>
+<script src="graficos.js"></script>
+<script src="script.js"></script>
 </html>

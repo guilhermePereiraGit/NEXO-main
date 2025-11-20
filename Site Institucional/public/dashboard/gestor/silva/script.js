@@ -1,24 +1,43 @@
 //Chamar Funções de Carregamento de Dados
-window.onload = function() {
+window.onload = function () {
     carregarDados();
+    carregarDadosUser();
 };
 
-//Chamar Função de Plotar Gráficos (Detalhe, usando o método de EventListener para aguardar surgir
-//o canvas corretamente para plotar)
-window.addEventListener("load", () => {
-        gerarGraficoPizza();
-        gerarGraficoLinha();
-});
+function carregarDados() {
+    regiao_escolhida = document.getElementById('regiao-escolhida');
+    sigla_escolhida = document.getElementById('sigla-regiao');
 
-function gerarGraficoPizza() {
+    if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+        regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+        sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
+        document.getElementById('waiting').style.display = 'none';
+        document.getElementById('conteudo').style.display = 'block';
+        document.getElementById('escolhaNew').style.display = 'block';
+        carregarModelos();
+        carregarTotens();
+        gerarGraficoLinha();
+    } else {
+        regiao_escolhida.innerHTML = "Região não Selecionada";
+        sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+        document.getElementById('escolhaNew').style.display = 'none';
+        document.getElementById('conteudo').style.display = 'none';
+        document.getElementById('eficiencia').style.display = 'none';
+        document.getElementById('alertas').style.display = 'none';
+    }
+}
+
+function gerarGraficoPizza(totens) {
+    console.log(totens);
+    
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
         type: 'doughnut',
         data: {
             labels: ['Alertas', 'Totens'],
             datasets: [{
-                data: [400, 1000],
-                backgroundColor: ["#451c8b","#c8c1ff"]
+                data: [20, totens],
+                backgroundColor: ["#451c8b", "#c8c1ff"]
             }]
         },
         options: {
@@ -57,41 +76,94 @@ function gerarGraficoLinha() {
                     position: 'top',
                 },
                 title: {
-                    display: false                
+                    display: false
                 }
             }
         },
     });
 }
+
 function escolherRegiao(regiao, sigla) {
     sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
     sessionStorage.setItem('SIGLA_REGIAO', sigla);
+    carregarModelos();
+    carregarTotens();
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
 }
 
-function carregarDados() {
-    regiao_escolhida = document.getElementById('regiao-escolhida');
-    sigla_escolhida = document.getElementById('sigla-regiao');
+function carregarModelos() {
+    fetch("/gestor/buscarModelos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
 
-    if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
-        regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-        sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-        document.getElementById('waiting').style.display = 'none';
-        document.getElementById('conteudo').style.display = 'block';
-        document.getElementById('escolhaNew').style.display = 'block';
-        document.getElementById('eficiencia').style.display = 'block';
-        document.getElementById('alertas').style.display = 'block';
-        
-    } else {
-        regiao_escolhida.innerHTML = "Região não Selecionada";
-        sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
-        document.getElementById('escolhaNew').style.display = 'none';
-        document.getElementById('conteudo').style.display = 'none';
-        document.getElementById('eficiencia').style.display = 'none';
-        document.getElementById('alertas').style.display = 'none';
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    modelos = data;
+                    console.log(modelos);
+                    plotarModelos(modelos);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+function plotarModelos(modelos) {
+    div_modelos = document.getElementById('modelos');
+    for (var i = 0; i < modelos.length; i++) {
+        div_modelos.innerHTML += `
+    <div class="modelo">
+    <h2>${modelos[i].NomeModelo}</h2>
+    <div class="color"></div>
+    </div>
+    `;
     }
+}
+
+function carregarTotens() {
+    nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+    fetch("/gestor/buscarTotens", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nomeRegiao: nomeRegiao
+        }),
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    totens = data;
+                    console.log(totens);
+                    plotarTotens(totens);
+                    gerarGraficoPizza(totens.length)
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+function plotarTotens(totens) {
+    p_totaltotens = document.getElementById('total_totens');
+    p_totaltotens.innerHTML = `${totens.length} Totens`;
 }
 
 function carregarRegioes() {
@@ -149,6 +221,74 @@ function abrirMenu() {
         menu_icon.classList.remove("bi-x-lg");
         menu_icon.classList.add("bi-list")
     }
+}
+
+
+function carregarDadosUser() {
+    document.getElementById('nome_user').innerHTML = sessionStorage.getItem('NOME_USUARIO')
+}
+
+// ESCOLHA DE REGIÃO
+function abrirEscolha() {
+    popup = $("#popup-escolha");
+    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    carregarRegioesCadastradas();
+}
+function fecharEscolha() {
+    popup = $("#popup-escolha");
+    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+}
+
+function carregarRegioesCadastradas() {
+    emailUsuario = sessionStorage.getItem('EMAIL_USUARIO');
+
+    fetch("/gestor/buscarRegioes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            emailUsuario: emailUsuario
+        }),
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    regioes = data;
+                    console.log(regioes);
+                    plotarRegioes(regioes)
+
+                });
+            } else {
+                console.log("Erro ao Pegar Regiões");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+function plotarRegioes(regioes) {
+    div_regioes = document.getElementById('regioes');
+    for (var i = 0; i < regioes.length; i++) {
+        div_regioes.innerHTML += `
+    <div class="regiao" onclick="escolherRegiao('${regioes[i].NomeRegiao}','${regioes[i].SiglaRegiao}')">
+    <h1>${regioes[i].NomeRegiao} - ${regioes[i].SiglaRegiao}</h1>
+    <div class="priorizar">
+    <h2>Disponibilidade</h2>
+    <h3>60%</h3>
+    </div>
+    </div>
+    `;
+    }
+}
+
+// CARREGAR ÚLTIMOS 7 DIAS
+function carregarUltimos7Dias(){
+    
 }
 
 function ativarPopup() {

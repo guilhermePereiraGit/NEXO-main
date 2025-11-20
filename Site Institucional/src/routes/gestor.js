@@ -11,4 +11,12 @@ router.post("/buscarRegioes", function (req, res){
     gestorController.buscarRegioes(req, res);
 })
 
+router.post("/buscarModelos", function (req, res){
+    gestorController.buscarModelos(req, res);
+})
+
+router.post("/buscarTotens", function (req, res){
+    gestorController.buscarTotens(req, res);
+})
+
 module.exports = router;
