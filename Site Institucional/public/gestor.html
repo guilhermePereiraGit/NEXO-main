@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprovação NEXO</title>
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="dashboard/gestor/silva/modelos.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -16,13 +17,73 @@
 <body onload="carregarDadosAprovados()">
 
     <div class="container">
-        <div class="nav-bar">
-            <div class="sair" style="margin-top: 40px;">
-                <a href="cards_gestor.html" style="text-decoration: none;">
-                    <i class="bi bi-box-arrow-left" style="color: white;" title="Voltar"></i>
-                </a>
+        <header>
+            <div class="header-container">
+                <!-- MENU -->
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenu()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
+
+                <!-- NAVEGAÇÃO -->
+                <div class="header-navigation">
+                    <div class="home">
+                        <div class="fundo" style="display: block;"></div>
+                        <i class="bi bi-house" onclick="window.location.href = 'dashboard/gestor/silva/modelos.html'"
+                            style="color: #451c8b;"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" id="fundo2" style="display: none;"></div>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'dashboard/gestor/gabriel/eficiencia.html'"
+                            id="second"></i>
+                    </div>
+                    <div class="modelos">
+                        <div class="fundo" id="fundo2" style="display: none;"></div>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'gestor.html'"
+                            id="hi"></i>
+                    </div>
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+                    </div>
+                </div>
+
+                <!-- HELP - MÉTRICAS -->
+                <div class="header-help">
+                    <i class="bi bi-info-circle" onclick="abrirPassos()"></i>
+                </div>
             </div>
-        </div>
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1 id="nome_user"></h1>
+                    <h2>Gestor de Operações</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card"
+                        onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="../../../assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card"
+                        onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="../../../assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
         <div class="main">
             <div class="topo">
                 <h2 style="margin-left: 70px;">Modelos Cadastrados</h2>
@@ -31,72 +92,78 @@
             <div class="baixo">
                 <div class="conteudo">
                     <div class="div_aprovados" id="div_aprovados">
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="popup-cadastro" id="popupmodelo" style="display: none;"> 
-        <div class="cadastro-content" style="height: auto; max-height: 85vh;"> 
-            
-            <i class="bi bi-x-lg" onclick="fecharPopupModelo()"></i> 
+
+    <div class="popup-cadastro" id="popupmodelo" style="display: none;">
+        <div class="cadastro-content" style="height: auto; max-height: 85vh;">
+
+            <i class="bi bi-x-lg" onclick="fecharPopupModelo()"></i>
             <h1 id="popup_titulo" style="text-align: center; margin-bottom: 20px;">Cadastro de Modelo</h1>
 
-            <div class="infos" style="flex-grow: 1; overflow-y: auto;"> 
-                
-                <div class="infos-first"> 
-                    <div class="drop"> 
-                        <h2>Nome</h2> 
+            <div class="infos" style="flex-grow: 1; overflow-y: auto;">
+
+                <div class="infos-first">
+                    <div class="drop">
+                        <h2>Nome</h2>
                         <input type="text" id="input_nome_modelo">
                     </div>
-                    <div class="drop"> 
-                        <h2>Descrição</h2> 
+                    <div class="drop">
+                        <h2>Descrição</h2>
                         <input type="text" id="input_descricao">
                     </div>
                 </div>
 
                 <h1 style="margin-top: 20px;">Métricas de Monitoramento:</h1>
-                
+
                 <p class="info-default">
-                    Ao selecionar uma métrica e clicar em <strong><u>Adicionar Parâmetro</u></strong>, um valor padrão será sugerido. 
-                    Para CPU, RAM e Disco, este é o <strong><u>percentual máximo de uso</u></strong>. 
-                    Para Processos, é a <strong><u>contagem total</u></strong>. 
+                    Ao selecionar uma métrica e clicar em <strong><u>Adicionar Parâmetro</u></strong>, um valor padrão
+                    será sugerido.
+                    Para CPU, RAM e Disco, este é o <strong><u>percentual máximo de uso</u></strong>.
+                    Para Processos, é a <strong><u>contagem total</u></strong>.
                     Sinta-se à vontade para ajustar estes valores.
                 </p>
 
-                <div class="infos-third" id="linha-input-estatica"> 
-                    <div class="drop" style="width: 60%;"> 
-                        
+                <div class="infos-third" id="linha-input-estatica">
+                    <div class="drop" style="width: 60%;">
+
                         <select id="componente_master" class="componentes" onchange="definirDefault(this)">
                             <option value="">Selecione para adicionar...</option>
-                            </select>
+                        </select>
 
-                        <input type="hidden" id="limite_master"> 
-                    </div> 
+                        <input type="hidden" id="limite_master">
+                    </div>
                     <div class="drop" style="width: 40%;">
-                        <button class="cadastrar" id="btn_adicionar_parametro" onclick="adicionarParametro()" style="background-color: var(--fundo); color: var(--principal); border: 1px solid var(--principal);" disabled>Adicionar Parâmetro</button>
+                        <button class="cadastrar" id="btn_adicionar_parametro" onclick="adicionarParametro()"
+                            style="background-color: var(--fundo); color: var(--principal); border: 1px solid var(--principal);"
+                            disabled>Adicionar Parâmetro</button>
                     </div>
                 </div>
 
 
-                <div class="parametros-scroll" id="parametros-container" style="padding-right: 15px; margin-top: 10px; border-top: 1px solid #e9ecef; padding-top: 10px;">
-                    </div>
+                <div class="parametros-scroll" id="parametros-container"
+                    style="padding-right: 15px; margin-top: 10px; border-top: 1px solid #e9ecef; padding-top: 10px;">
+                </div>
 
-            </div> <div class="infos-final"> 
+            </div>
+            <div class="infos-final">
                 <p class="error-message" id="error_message" style="display: none;"></p>
-                
+
                 <div class="drop" style="width: 100%;">
                     <button class="cadastrar" id="popup_button" onclick="cadastrarModelo()">Cadastrar Modelo</button>
                 </div>
             </div>
 
-        </div> </div>
+        </div>
+    </div>
 </body>
 
 <script>
     var valoresDefault = [];
-    var aprovados = []; 
+    var aprovados = [];
 
     function showMessage(message, isError) {
         if (isError === undefined) {
@@ -113,13 +180,13 @@
     }
 
     function definirDefault(selectElement) {
-        var valorSelecionado = selectElement.value.toLowerCase(); 
+        var valorSelecionado = selectElement.value.toLowerCase();
         var limiteInput = document.getElementById('limite_master');
         var btnAdicionar = document.getElementById('btn_adicionar_parametro');
 
         if (valorSelecionado === "") {
-             btnAdicionar.disabled = true;
-             return;
+            btnAdicionar.disabled = true;
+            return;
         }
 
         var todosOsSelects = document.querySelectorAll('.componente-item-salvo');
@@ -154,20 +221,20 @@
     }
 
     var numeroComponentes = 0;
-    
+
     function adicionarParametro(componentePreenchido, limitePreenchido) {
         var componente = componentePreenchido || document.getElementById('componente_master').value;
         if (componente === "") return;
-        
-        componente = componente.toLowerCase(); 
-        
+
+        componente = componente.toLowerCase();
+
         var limite = limitePreenchido || document.getElementById('limite_master').value;
 
         if (!componentePreenchido) {
-             var todosOsSelects = document.querySelectorAll('.componente-item-salvo');
+            var todosOsSelects = document.querySelectorAll('.componente-item-salvo');
             for (var i = 0; i < todosOsSelects.length; i++) {
                 if (todosOsSelects[i].value === componente) {
-                    showMessage("Esta métrica já foi adicionada à lista."); 
+                    showMessage("Esta métrica já foi adicionada à lista.");
                     return;
                 }
             }
@@ -224,12 +291,12 @@
     function removerParametro(botao) {
         var itemParaRemover = botao.parentNode.parentNode;
         var componenteInput = itemParaRemover.querySelector('.componente-item-salvo');
-        
-        if (!componenteInput) { 
+
+        if (!componenteInput) {
             itemParaRemover.remove();
             return;
         }
-        
+
         var componente = componenteInput.value;
 
         if (componente == 'cpu' || componente == 'ram' || componente == 'disco') {
@@ -257,12 +324,12 @@
 
         for (var i = 0; i < componentesSalvos.length; i++) {
             var componente = componentesSalvos[i].value;
-            var limite = limitesSalvos[i].value; 
+            var limite = limitesSalvos[i].value;
 
             if (limite == "") camposVazios = true;
 
             var limiteMin = limite;
-            var limiteMax = 100; 
+            var limiteMax = 100;
 
             if (componente != 'processos') {
                 if (isNaN(limite) || limite <= 0 || limite > 100) {
@@ -272,13 +339,13 @@
                 if (isNaN(limite) || limite <= 0) {
                     processosInvalido = true;
                 }
-                limiteMax = limite; 
+                limiteMax = limite;
             }
 
             parametros.push({
                 componente: componente,
                 limiteMin: limiteMin,
-                limiteMax: limiteMax 
+                limiteMax: limiteMax
             });
         }
 
@@ -299,9 +366,9 @@
         var temRAM = false;
         var temDisco = false;
         for (var i = 0; i < parametros.length; i++) {
-             if (parametros[i].componente == 'cpu') temCPU = true;
-             if (parametros[i].componente == 'ram') temRAM = true;
-             if (parametros[i].componente == 'disco') temDisco = true;
+            if (parametros[i].componente == 'cpu') temCPU = true;
+            if (parametros[i].componente == 'ram') temRAM = true;
+            if (parametros[i].componente == 'disco') temDisco = true;
         }
 
         if (!temCPU || !temRAM || !temDisco) {
@@ -313,7 +380,7 @@
     }
 
     function cadastrarModelo() {
-        hideMessage(); 
+        hideMessage();
         var nomeModelo = input_nome_modelo.value;
         var descricao = input_descricao.value;
         var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
@@ -324,7 +391,7 @@
         }
 
         var parametros = obterParametrosDaTela();
-        if (parametros == null) return; 
+        if (parametros == null) return;
 
         fetch("/modelo/cadastrarModelo", {
             method: "POST",
@@ -336,37 +403,37 @@
                 fkEmpresaServer: idEmpresa,
             }),
         })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                showMessage("Cadastro realizado com sucesso!", false); 
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1500); 
-            } else {
-                console.error("Resposta não-OK:", resposta);
-                showMessage("Erro 500: Falha ao cadastrar o modelo. Verifique o console do backend."); 
-            }
-        })
-        .catch(function (erro) {
-            console.error("#ERRO:", erro);
-            showMessage("Erro de conexão. Verifique sua rede e tente novamente."); 
-        });
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    showMessage("Cadastro realizado com sucesso!", false);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    console.error("Resposta não-OK:", resposta);
+                    showMessage("Erro 500: Falha ao cadastrar o modelo. Verifique o console do backend.");
+                }
+            })
+            .catch(function (erro) {
+                console.error("#ERRO:", erro);
+                showMessage("Erro de conexão. Verifique sua rede e tente novamente.");
+            });
     }
 
     function popularDropdownComponentes() {
         var select = document.getElementById('componente_master');
-        select.innerHTML = '<option value="">Selecione para adicionar...</option>'; 
-        
+        select.innerHTML = '<option value="">Selecione para adicionar...</option>';
+
         if (valoresDefault.length === 0) {
             console.error("Valores default não foram carregados, o dropdown ficará vazio.");
             return;
         }
 
-        for(var i = 0; i < valoresDefault.length; i++) {
+        for (var i = 0; i < valoresDefault.length; i++) {
             var item = valoresDefault[i];
             var option = document.createElement('option');
-            option.value = item.componente.toLowerCase(); 
-            option.text = item.componente.toUpperCase(); 
+            option.value = item.componente.toLowerCase();
+            option.text = item.componente.toUpperCase();
             select.appendChild(option);
         }
     }
@@ -379,17 +446,17 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fkEmpresaServer: idEmpresa })
         })
-        .then(function(response) {
-            if (response.ok) {
-                return response.json();
-            }
-        })
-        .then(function(data) {
-            console.log("Fetch 'buscarTipoParametro' OK:", data);
-        })
-        .catch(function(erro) {
-            console.log("Erro no fetch 'buscarTipoParametro':", erro);
-        });
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then(function (data) {
+                console.log("Fetch 'buscarTipoParametro' OK:", data);
+            })
+            .catch(function (erro) {
+                console.log("Erro no fetch 'buscarTipoParametro':", erro);
+            });
     }
 
     function fetchDefaults() {
@@ -399,25 +466,25 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fkEmpresaServer: idEmpresa })
         })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                return resposta.json();
-            }
-            throw new Error("Endpoint 'buscarDefaults' falhou.");
-        })
-        .then(function (data) {
-            valoresDefault = data;
-            console.log("Valores Default carregados do banco:", valoresDefault);
-        })
-        .catch(function (erro) {
-            console.warn(erro.message + " Usando valores default fixos (hard-coded).");
-            valoresDefault = [
-                { "componente": "cpu", "valor": 60 },
-                { "componente": "ram", "valor": 70 },
-                { "componente": "disco", "valor": 50 },
-                { "componente": "processos", "valor": 500 }
-            ];
-        });
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    return resposta.json();
+                }
+                throw new Error("Endpoint 'buscarDefaults' falhou.");
+            })
+            .then(function (data) {
+                valoresDefault = data;
+                console.log("Valores Default carregados do banco:", valoresDefault);
+            })
+            .catch(function (erro) {
+                console.warn(erro.message + " Usando valores default fixos (hard-coded).");
+                valoresDefault = [
+                    { "componente": "cpu", "valor": 60 },
+                    { "componente": "ram", "valor": 70 },
+                    { "componente": "disco", "valor": 50 },
+                    { "componente": "processos", "valor": 500 }
+                ];
+            });
     }
 
     function abrirPopupModelo() {
@@ -425,20 +492,20 @@
         document.getElementById('input_descricao').value = "";
         document.getElementById('btn_adicionar_parametro').disabled = true;
         document.getElementById('parametros-container').innerHTML = "";
-        hideMessage(); 
+        hideMessage();
 
         document.getElementById('popup_titulo').innerText = "Cadastro de Modelo";
         var btn = document.getElementById('popup_button');
         btn.innerText = "Cadastrar Modelo";
-        btn.onclick = cadastrarModelo; 
+        btn.onclick = cadastrarModelo;
 
         fetchDefaults()
-            .then(function() { 
+            .then(function () {
                 return fetchTipoParametro();
             })
-            .then(function() {
-                popularDropdownComponentes(); 
-                
+            .then(function () {
+                popularDropdownComponentes();
+
                 popup = $("#popupmodelo");
                 popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
             });
@@ -463,7 +530,7 @@
         }).then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (data) {
-                    aprovados = data; 
+                    aprovados = data;
                     if (aprovados.length > 0) {
                         gerarCardModelos();
                     } else {
@@ -490,7 +557,7 @@
         div_aprovados.innerHTML = "";
         for (var i = 0; i < aprovados.length; i++) {
             var modelo = aprovados[i];
-            var idDoModelo = modelo.idModelo; 
+            var idDoModelo = modelo.idModelo;
 
             if (idDoModelo == undefined) {
                 console.error("idModelo está undefined!", modelo);
@@ -516,33 +583,33 @@
             console.error("ID do modelo é inválido:", idModelo);
             return;
         }
-        
+
         document.getElementById('parametros-container').innerHTML = "";
         hideMessage();
 
         document.getElementById('popup_titulo').innerText = "Editar Modelo";
         var btn = document.getElementById('popup_button');
         btn.innerText = "Salvar Alterações";
-        
-        btn.onclick = function() { 
-            salvarAlteracoes(idModelo); 
-        }; 
-        
+
+        btn.onclick = function () {
+            salvarAlteracoes(idModelo);
+        };
+
         fetchDefaults()
-            .then(function() {
+            .then(function () {
                 return fetchTipoParametro();
             })
-            .then(function() {
+            .then(function () {
                 return fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
-                    .then(function(res) {
+                    .then(function (res) {
                         if (!res.ok) {
                             throw new Error("Falha ao buscar dados do modelo");
                         }
                         return res.json();
                     });
             })
-            .then(function(dadosDoModelo) {
-                
+            .then(function (dadosDoModelo) {
+
                 popularDropdownComponentes();
 
                 document.getElementById('input_nome_modelo').value = dadosDoModelo.info.nome;
@@ -557,7 +624,7 @@
                 popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
 
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.error("Erro ao buscar dados do modelo:", err);
                 showMessage("Não foi possível carregar os dados deste modelo.");
             });
@@ -574,7 +641,7 @@
         }
 
         var parametros = obterParametrosDaTela();
-        if (parametros == null) return; 
+        if (parametros == null) return;
 
         fetch("/modelo/atualizarModelo", {
             method: "PUT",
@@ -586,20 +653,20 @@
                 parametrosServer: parametros
             }),
         })
-        .then(function (resposta) {
-            if (resposta.ok) {
-                showMessage("Modelo atualizado com sucesso!", false);
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1500);
-            } else {
-                showMessage("Erro ao atualizar modelo. Tente novamente.");
-            }
-        })
-        .catch(function (erro) {
-            console.error("#ERRO:", erro);
-            showMessage("Erro de conexão. Verifique sua rede e tente novamente.");
-        });
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    showMessage("Modelo atualizado com sucesso!", false);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showMessage("Erro ao atualizar modelo. Tente novamente.");
+                }
+            })
+            .catch(function (erro) {
+                console.error("#ERRO:", erro);
+                showMessage("Erro de conexão. Verifique sua rede e tente novamente.");
+            });
     }
 
 </script>
