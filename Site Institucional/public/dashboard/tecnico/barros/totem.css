@@ -237,229 +237,9 @@ header .header-navigation .alert {
     font-weight: bold;
 }
 
-.content .information .alterar-regiao i {
-    cursor: pointer;
-}
-
-.content .information .alterar-regiao {
-    margin-top: 10px;
-    font-size: 35px;
-    color: var(--principal);
-}
-
-/* WIDGETS */
-.widgets select {
-    padding: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
-}
-
-.widgets .card {
-    display: flex;
-}
-
-.widgets .card img {
-    width: 50%;
-}
-
-/* POPUP PARA LOGOUT */
-.popup-logout {
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    z-index: 999;
-    background-color: rgba(0, 0, 0, 0.507);
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    opacity: 0;
-    display: none;
-}
-
-.popup-logout .popup-content {
-    width: 30%;
-    height: 40vh;
-    background-color: white;
-    padding: 20px;
-    transition: 0.3s;
-    border-radius: 10px;
-}
-
-.popup-logout .popup-content i {
-    font-size: 30px;
-    color: var(--principal);
-    cursor: pointer;
-}
-
-.popup-logout .popup-content h1 {
-    color: var(--principal);
-    text-align: center;
-}
-
-.popup-logout .popup-content button {
-    padding: 30px;
-    font-size: 20px;
-    width: 90%;
-    background-color: var(--principal);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.popup-logout .popup-content .box-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-/* POPUP PARA ESCOLHA DE REGIÃO */
-.popup-escolha {
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    z-index: 999;
-    background-color: rgba(0, 0, 0, 0.507);
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    opacity: 0;
-    display: none;
-}
-
-.popup-escolha .escolha-content {
-    width: 50%;
-    height: 80vh;
-    background-color: white;
-    padding: 30px;
-    transition: 0.3s;
-    border-radius: 10px;
-}
-
-.popup-escolha .escolha-content i {
-    font-size: 30px;
-    color: var(--principal);
-}
-
-.popup-escolha .escolha-content h1 {
-    color: var(--principal);
-    font-weight: 500;
-}
-
-.popup-escolha .escolha-content .initial-escolha {
-    display: flex;
-}
-
-.popup-escolha .escolha-content .initial-escolha .box {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    justify-content: center;
-    width: 100%;
-}
-
-.popup-escolha .escolha-content .initial-escolha .box select {
-    border: 1px solid var(--principal);
-    border-radius: 10px;
-    padding: 15px;
-    font-size: 15px;
-}
-
-.popup-escolha .escolha-content .priorizar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    justify-content: center;
-}
-
-.popup-escolha .escolha-content .aguardando {
-    border: 1px solid var(--principal);
-    margin-top: 60px;
-    padding: 40px;
-    border-radius: 10px;
-    height: 45vh;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.popup-escolha .escolha-content .aguardando h2 {
-    color: var(--principal);
-}
-
-.popup-escolha .escolha-content .aguardando p {
-    font-size: 20px;
-    margin-top: 40px;
-}
-
-/* PARA PRODUÇÃO */
-.popup-escolha .escolha-content .producao {
-    border: 1px solid var(--principal);
-    margin-top: 60px;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    height: 45vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.popup-escolha .escolha-content .producao h2 {
-    color: var(--principal);
-}
-
-.popup-escolha .escolha-content .producao p {
-    font-size: 20px;
-    margin-top: 40px;
-}
-
-/* PARA AS REGIÕES */
-.popup-escolha .escolha-content .regioes {
-    display: flex;
-    flex-direction: column;
-    height: 45vh;
-    overflow: auto;
-    margin-top: 30px;
-}
-
-.popup-escolha .escolha-content .regioes .regiao {
-    display: flex;
-    margin-top: 25px;
-    justify-content: center;
-    padding: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.popup-escolha .escolha-content .regioes .regiao:hover {
-    background-color: var(--fundo);
-}
-
-.popup-escolha .escolha-content .regioes .regiao h1 {
-    font-size: 25px;
-    width: 100%;
-}
-
-.popup-escolha .escolha-content .regioes .regiao .priorizar {
-    display: flex;
-}
-
-.popup-escolha .escolha-content .regioes .regiao .priorizar h3 {
-    font-size: 25px;
-    color: var(--principal);
-}
-
 /* KPIS */
 .conteudo {
-    width: fit-content;
+    max-width: 91%;
     padding: 30px;
 }
 
@@ -518,7 +298,7 @@ header .header-navigation .alert {
 .dados .modelos {
     background-color: white;
     width: 40%;
-    height: 51.3vh;
+    height: 45vh;
     margin-top: 10px;
     padding: 20px;
     border-radius: 10px;
@@ -613,7 +393,7 @@ header .header-navigation .alert {
 .grafico {
     background-color: white;
     margin-top: 10px;
-    width: 60%;
+    min-width: 40vw;
     border-radius: 10px;
 }
 
