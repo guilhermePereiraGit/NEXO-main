@@ -943,6 +943,10 @@ select {
     justify-content: center;
     margin-top: 40px;
 }
+.box-button a{
+    color: white;
+    text-decoration: none;
+}
 
 /* CONTENT */
 .content .information h1 {
