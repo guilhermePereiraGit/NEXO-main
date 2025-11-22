@@ -239,24 +239,22 @@ header .header-navigation .alert {
 
 /* KPIS */
 .conteudo {
-    max-width: 91%;
-    padding: 30px;
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .conteudo .kpis {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
 }
 
 .conteudo .kpis .kpi {
-    background-color: white;
-    padding: 15px;
-    width: 24.5%;
+    background: #fff;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 20px;
 }
 
 .conteudo .kpis .kpi h1 {
@@ -291,13 +289,13 @@ header .header-navigation .alert {
 
 /* LEGENDA DE DADOS */
 .dados {
-    display: flex;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 20px;
 }
 
-.dados .modelos {
+.dados .tabela-processos {
     background-color: white;
-    width: 40%;
     height: 45vh;
     margin-top: 10px;
     padding: 20px;
@@ -307,94 +305,41 @@ header .header-navigation .alert {
     align-items: center;
 }
 
-.dados .modelos .legenda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.tabela-processos table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 18px;
 }
 
-.dados .modelos .legenda p {
-    color: var(--principal);
+.tabela-processos thead {
+    background: var(--contraste);
 }
 
-.dados .modelos .list-modelos {
-    margin-top: 30px;
-    height: 38vh;
-    overflow: auto;
-    width: 85%;
+.tabela-processos th, 
+.tabela-processos td {
+    padding: 10px;
 }
 
-.dados .modelos .list-modelos .modelo {
-    padding: 15px;
-    transition: 0.3s;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dados .modelos .list-modelos .modelo:hover {
-    background-color: var(--fundo);
-}
-
-.dados .modelos .list-modelos .modelo p {
-    font-size: 20px;
-}
-
-.dados .modelos .list-modelos .modelo .color {
-    height: 1.7vh;
-    width: 25%;
-    border-radius: 20px;
-    background-color: #ff3131;
-}
-
-.barra-legenda {
-    display: flex;
-    border-radius: 50px;
-    width: fit-content;
-    height: 7vh;
-    align-items: center;
-    font-weight: bold;
-}
-
-.item {
-    padding: 8px 18px;
-    color: var(--principal);
-    text-align: center;
-}
-
-.item:first-child {
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-}
-
-.item:last-child {
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-
-.ione {
-    background-color: #65fa8f;
-}
-
-.itwo {
-    background-color: #fada64;
-}
-
-.ithree {
-    background-color: #f98a25;
-}
-
-.ifour {
-    background-color: #ff3131;
+.tabela-processos tbody tr:nth-child(even) {
+    background: #f4f4f4;
 }
 
 /* GRÁFICO DE LINHA */
-.grafico {
-    background-color: white;
+.graficos {
     margin-top: 10px;
-    min-width: 40vw;
+    background-color: white;
     border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 x 2 */
+    gap: 20px;
+    padding: 20px;
+}
+
+.componente {
+    background: #d9d9d9;
+    border-radius: 10px;
+    
 }
 
 /* AGUARDANDO SELECIONAR REGIÃO */
@@ -429,27 +374,4 @@ header .header-navigation .alert {
 .waiting .box .text img {
     width: 20%;
     margin-top: 50px;
-}
-
-/* POPUP DE PASSO À PASSO */
-.popup-passos {
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    z-index: 999;
-    background-color: rgba(0, 0, 0, 0.507);
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    opacity: 0;
-    display: none;
-}
-
-.popup-passos .passos-content {
-    width: 30%;
-    height: 40vh;
-    background-color: white;
-    padding: 20px;
-    transition: 0.3s;
-    border-radius: 10px;
 }
