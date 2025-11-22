@@ -99,7 +99,7 @@
                     <div id="segundo">
                         <div class="more" id="more">
                             <h1>Totens Cadastrados</h1>
-                            <button onclick="abrirPopupTotem()">Adicionar Totem</button>
+                            <button onclick="abrirPopupTotem()" id="botao-cadastrar">Adicionar Totem</button>
                         </div>
                         <div class="aprovados" id="div_aprovados"></div>
                         <div class="totens-scroll" id="totens-totais"></div>
@@ -315,6 +315,30 @@
             document.getElementById("second").style.color = "white";
             document.getElementById("third").style.color = "white";
             document.getElementById("box").style.display = "none";
+        }
+    }
+
+    function carregarDados() {
+        regiao_escolhida = document.getElementById('regiao-escolhida');
+        sigla_escolhida = document.getElementById('sigla-regiao');
+
+        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'block';
+            document.getElementById('escolhaNew').style.display = 'block';
+            carregarModelos();
+            carregarTotens();
+            gerarGraficoLinha();
+            buscarComponentes();
+        } else {
+            regiao_escolhida.innerHTML = "Região não Selecionada";
+            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+            document.getElementById('escolhaNew').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'none';
+            document.getElementById('eficiencia').style.display = 'none';
+            document.getElementById('alertas').style.display = 'none';
         }
     }
     //Usando
