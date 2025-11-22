@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprovação NEXO</title>
-    <link rel="stylesheet" href="./css/tecnico-novo.css">
+    <link rel="stylesheet" href="tecnico-novo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -66,12 +66,12 @@
                 <div class="jira-slack">
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-                        <img src="assets/imgs/icon-jira.png">
+                        <img src="../../assets/imgs/icon-jira.png">
                         <h1>Jira</h1>
                     </div>
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-                        <img src="assets/imgs/icon-slack.png">
+                        <img src="../../assets/imgs/icon-slack.png">
                         <h1>Slack</h1>
                     </div>
                 </div>
@@ -83,34 +83,32 @@
                 <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
                 <h1>Deseja Sair?</h1>
                 <div class="box-button">
-                    <button>Fazer Logout</button>
+                    <button> <a href="../../index.html">Fazer Logout</a></button>
                 </div>
             </div>
         </div>
 
         <div class="content">
             <div class="information">
-                <div class="title">
-                    <h1 id="regiao-escolhida"></h1>
-                    <p id="sigla-regiao"></p>
-                </div>
-
+                <h1 id="regiao-escolhida"></h1>
+                <p id="sigla-regiao"></p>
             </div>
             <!-- CADASTRO TOTENS -->
             <div class="box" id="box" display="block">
                 <div class="cadastrar-totens" id="cadastrar-totens">
                     <div id="segundo">
                         <div class="more" id="more">
-                            <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
-                            <button onclick="abrirPopupTotem()">Adicionar Totem</button>
+                            <h1>Totens Cadastrados</h1>
+                            <button onclick="abrirPopupTotem()" id="botao-cadastrar">Adicionar Totem</button>
                         </div>
                         <div class="aprovados" id="div_aprovados"></div>
+                        <div class="totens-scroll" id="totens-totais"></div>
                     </div>
                     <div class="popuptotem" id="popuptotem">
                         <div class="card">
                             <div class="cima">
                                 <h1>Cadastro de Totem</h1>
-                                <button onclick="fecharPopupTotem()"><img src="assets/imgs/close.png"></button>
+                                <button onclick="fecharPopupTotem()"><img src="../../assets/imgs/close.png"></button>
                             </div>
                             <div class="baixo" id="baixo"></div>
                             <div class="item-card">
@@ -239,7 +237,7 @@
                             <p>% de Totens em Alerta</p>
                         </div>
                         <div class="list-modelos">
-                            <div class="Totem" onclick="window.location.href='./dashboard/tecnico/barros/totem.html'">
+                            <div class="Totem">
                                 <p>Totem AA0385</p>
                                 <div class="color"></div>
                             </div>
@@ -319,6 +317,114 @@
             document.getElementById("box").style.display = "none";
         }
     }
+
+    function carregarDados() {
+        regiao_escolhida = document.getElementById('regiao-escolhida');
+        sigla_escolhida = document.getElementById('sigla-regiao');
+
+        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'block';
+            document.getElementById('escolhaNew').style.display = 'block';
+            carregarModelos();
+            carregarTotens();
+            gerarGraficoLinha();
+            buscarComponentes();
+        } else {
+            regiao_escolhida.innerHTML = "Região não Selecionada";
+            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+            document.getElementById('escolhaNew').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'none';
+            document.getElementById('eficiencia').style.display = 'none';
+            document.getElementById('alertas').style.display = 'none';
+        }
+    }
+
+
+    
+function buscarComponentes() {
+    fetch("/gestor/buscarComponentes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    componentes = data;
+                    console.log(componentes);
+                    plotarModelosCriticos(componentes);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+    function carregarTotens() {
+    nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+    fetch("/gestor/buscarTotens", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nomeRegiao: nomeRegiao
+        }),
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    totens = data;
+                    console.log(totens);
+                    plotarTotens(totens);
+                    gerarGraficoPizza(totens.length)
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+    function carregarModelos() {
+    fetch("/gestor/buscarModelos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    modelos = data;
+                    console.log(modelos);
+                    plotarModelos(modelos);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+    //Usando
     aprovados = [];
     function carregarDadosAprovados() {
         var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
@@ -933,32 +1039,6 @@
             carregarDados();
         }
     }
-
-
-    function carregarDados() {
-        regiao_escolhida = document.getElementById('regiao-escolhida');
-        sigla_escolhida = document.getElementById('sigla-regiao');
-
-        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
-            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-            document.getElementById('waiting').style.display = 'none';
-            document.getElementById('conteudo').style.display = 'block';
-            document.getElementById('escolhaNew').style.display = 'block';
-            carregarModelos();
-            carregarTotens();
-            gerarGraficoLinha();
-            buscarComponentes();
-        } else {
-            regiao_escolhida.innerHTML = "Região não Selecionada";
-            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
-            document.getElementById('escolhaNew').style.display = 'none';
-            document.getElementById('conteudo').style.display = 'none';
-            document.getElementById('eficiencia').style.display = 'none';
-            document.getElementById('alertas').style.display = 'none';
-        }
-    }
-
 
     /*Usando*/
     function abrirMenu() {
