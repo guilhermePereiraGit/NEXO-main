@@ -29,8 +29,7 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box')"
-                                id="second"></i>
+                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box')" id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
@@ -90,18 +89,19 @@
         </div>
 
         <div class="content">
-            <div class="information">
-                <h2 style="margin-left: 70px;">Tela Técnico</h2>
+            <div class="information" style="margin-left: 10000px;">
+                <h1 id="regiao-escolhida"></h1>
+                <p id="sigla-regiao"></p>
             </div>
             <!-- CADASTRO TOTENS -->
             <div class="box" id="box" display="block">
                 <div class="cadastrar-totens" id="cadastrar-totens">
                     <div id="segundo">
                         <div class="more" id="more">
-                            <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
+                            <h1>Totens Cadastrados</h1>
                             <button onclick="abrirPopupTotem()">Adicionar Totem</button>
                         </div>
-                        <div class="aprovados" id="div_aprovados"></div>
+                        <div class="aprovados" id="div_aprovados" style="height: 450px;"></div>
                     </div>
                     <div class="popuptotem" id="popuptotem">
                         <div class="card">
@@ -171,8 +171,10 @@
                             </div>
                             <div class="totens-scroll" id="totens"></div>
                             <div class="part-dois">
-                                <button class="cadastrar" onclick="adicionarMaisUmTotem()" id="botao-popup">Adicionar Totem</button>
-                                <button class="cadastrar" onclick="cadastrarEndereco()" id="botao-popup">Cadastrar</button>
+                                <button class="cadastrar" onclick="adicionarMaisUmTotem()" id="botao-popup">Adicionar
+                                    Totem</button>
+                                <button class="cadastrar" onclick="cadastrarEndereco()"
+                                    id="botao-popup">Cadastrar</button>
                             </div>
                         </div>
                     </div>
@@ -288,33 +290,33 @@
 </body>
 <script>
     function ativar(escolha) {
-    document.getElementById(escolha).style.display = 'block';
-    document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
-    if(escolha === 'fundo2') {
-        document.getElementById("box").style.display = "block";
-        document.getElementById("dashboard").style.display = "none";
-        document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById("second").style.color = "#451c8b";
-        document.getElementById("third").style.color = "white";
-        document.getElementById("fourth").style.color = "white";
-    } else if (escolha === 'fundo3') {
-        document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById("third").style.color = "#451c8b";
-        document.getElementById("second").style.color = "white";
-        document.getElementById("fourth").style.color = "white";
-         document.getElementById("box").style.display = "none";
-    }else if(escolha === 'fundo4') {
-        document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById("fourth").style.color = "#451c8b";
-        document.getElementById("second").style.color = "white";
-        document.getElementById("third").style.color = "white";
-        document.getElementById("box").style.display = "none";
+        document.getElementById(escolha).style.display = 'block';
+        document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
+        if (escolha === 'fundo2') {
+            document.getElementById("box").style.display = "block";
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById("second").style.color = "#451c8b";
+            document.getElementById("third").style.color = "white";
+            document.getElementById("fourth").style.color = "white";
+        } else if (escolha === 'fundo3') {
+            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById("third").style.color = "#451c8b";
+            document.getElementById("second").style.color = "white";
+            document.getElementById("fourth").style.color = "white";
+            document.getElementById("box").style.display = "none";
+        } else if (escolha === 'fundo4') {
+            document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
+            document.getElementById("fourth").style.color = "#451c8b";
+            document.getElementById("second").style.color = "white";
+            document.getElementById("third").style.color = "white";
+            document.getElementById("box").style.display = "none";
+        }
     }
-}
-//Usando
+    //Usando
     aprovados = [];
     function carregarDadosAprovados() {
         var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
@@ -915,21 +917,21 @@
 
     /*Usando*/
     function irPara(escolhida) {
-        if(escolhida == "box"){
+        if (escolhida == "box") {
             $("#box").stop().animate({ opacity: 0 }, 200, function () {
-            $(this).css("display", "none");
-             $("#" + escolhida).css({ display: "flex", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
-        carregarDados();
-        });
+                $(this).css("display", "none");
+                $("#" + escolhida).css({ display: "flex", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
+                carregarDados();
+            });
         } else {
-        $("#dashboard, #dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
-            $(this).css("display", "none");
-        });
-        $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
-        carregarDados();
+            $("#dashboard, #dashboard-agenda").stop().animate({ opacity: 0 }, 200, function () {
+                $(this).css("display", "none");
+            });
+            $("#" + escolhida).css({ display: "block", opacity: 0 }).stop().animate({ opacity: 1 }, 300);
+            carregarDados();
+        }
     }
-    }
-    
+
     /*Usando*/
     function abrirMenu() {
         menu_icon = document.getElementById('icone');
