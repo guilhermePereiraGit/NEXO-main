@@ -341,6 +341,89 @@
             document.getElementById('alertas').style.display = 'none';
         }
     }
+
+
+    
+function buscarComponentes() {
+    fetch("/gestor/buscarComponentes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    componentes = data;
+                    console.log(componentes);
+                    plotarModelosCriticos(componentes);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+    function carregarTotens() {
+    nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+    fetch("/gestor/buscarTotens", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nomeRegiao: nomeRegiao
+        }),
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    totens = data;
+                    console.log(totens);
+                    plotarTotens(totens);
+                    gerarGraficoPizza(totens.length)
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+    function carregarModelos() {
+    fetch("/gestor/buscarModelos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(data => {
+                    modelos = data;
+                    console.log(modelos);
+                    plotarModelos(modelos);
+                });
+            } else {
+                console.log("Erro ao Pegar Modelos");
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
     //Usando
     aprovados = [];
     function carregarDadosAprovados() {
