@@ -78,7 +78,7 @@
                         <h1>Slack</h1>
                     </div>
                 </div>
-            </div>
+            </div> 
         </header>
         <div class="main">
             <div class="topo">
@@ -159,6 +159,15 @@
     var aprovados = [];
     var indiceParametro = 0;
 
+    function abrirPopupTela() {
+        var popup = $("#popupmodelo");
+        popup.css({
+            display: "flex",
+            opacity: 0,
+            "pointer-events": "auto"
+        }).animate({ opacity: 1 }, 300);
+    }
+
     function abrirPopupModelo() {
         document.getElementById('input_nome_modelo').value = "";
         document.getElementById('input_descricao').value = "";
@@ -183,31 +192,18 @@
                     resposta.json().then(function (data) {
                         valoresDefault = data;
                         carregarSelectMetricas();
-                        var popup = $("#popupmodelo");
-                        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                        abrirPopupTela();
                     });
                 } else {
-                    valoresDefault = [
-                        { "componente": "cpu", "valor": 60 },
-                        { "componente": "ram", "valor": 70 },
-                        { "componente": "disco", "valor": 50 },
-                        { "componente": "processos", "valor": 500 }
-                    ];
+                    valoresDefault = [];
                     carregarSelectMetricas();
-                    var popup2 = $("#popupmodelo");
-                    popup2.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                    abrirPopupTela();
                 }
             })
             .catch(function () {
-                valoresDefault = [
-                    { "componente": "cpu", "valor": 60 },
-                    { "componente": "ram", "valor": 70 },
-                    { "componente": "disco", "valor": 50 },
-                    { "componente": "processos", "valor": 500 }
-                ];
+                valoresDefault = [];
                 carregarSelectMetricas();
-                var popup3 = $("#popupmodelo");
-                popup3.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                abrirPopupTela();
             });
     }
 
@@ -316,37 +312,37 @@
         var bloco = "";
 
         if (componente == "processos") {
-            bloco = `
-                <div class="infos-third item-da-lista" id="parametro_${indice}">
-                    <div class="drop drop-componente">
-                        <h2>Métrica</h2>
-                        <input type="text" id="componente_item_${indice}" value="${componente.toUpperCase()}" readonly>
-                    </div>
-                    <div class="drop drop-limite">
-                        <h2>Contagem de Alerta</h2>
-                        <input type="number" id="limite_item_${indice}" value="${limiteNumero}" min="1">
-                    </div>
-                    <div class="drop drop-lixeira">
-                        <i class="bi bi-trash3" onclick="removerParametro(${indice})"></i>
-                    </div>
-                </div>
-            `;
+            bloco = '\
+                <div class="infos-third item-da-lista" id="parametro_' + indice + '">\
+                    <div class="drop drop-componente">\
+                        <h2>Métrica</h2>\
+                        <input type="text" id="componente_item_' + indice + '" value="' + componente.toUpperCase() + '" readonly>\
+                    </div>\
+                    <div class="drop drop-limite">\
+                        <h2>Contagem de Alerta</h2>\
+                        <input type="number" id="limite_item_' + indice + '" value="' + limiteNumero + '" min="1">\
+                    </div>\
+                    <div class="drop drop-lixeira">\
+                        <i class="bi bi-trash3" onclick="removerParametro(' + indice + ')"></i>\
+                    </div>\
+                </div>\
+            ';
         } else {
-            bloco = `
-                <div class="infos-third item-da-lista" id="parametro_${indice}">
-                    <div class="drop drop-componente">
-                        <h2>Métrica</h2>
-                        <input type="text" id="componente_item_${indice}" value="${componente.toUpperCase()}" readonly>
-                    </div>
-                    <div class="drop drop-limite">
-                        <h2>Limite de Alerta (%)</h2>
-                        <input type="number" id="limite_item_${indice}" value="${limiteNumero}" min="1" max="100">
-                    </div>
-                    <div class="drop drop-lixeira">
-                        <i class="bi bi-trash3" onclick="removerParametro(${indice})"></i>
-                    </div>
-                </div>
-            `;
+            bloco = '\
+                <div class="infos-third item-da-lista" id="parametro_' + indice + '">\
+                    <div class="drop drop-componente">\
+                        <h2>Métrica</h2>\
+                        <input type="text" id="componente_item_' + indice + '" value="' + componente.toUpperCase() + '" readonly>\
+                    </div>\
+                    <div class="drop drop-limite">\
+                        <h2>Limite de Alerta (%)</h2>\
+                        <input type="number" id="limite_item_' + indice + '" value="' + limiteNumero + '" min="1" max="100">\
+                    </div>\
+                    <div class="drop drop-lixeira">\
+                        <i class="bi bi-trash3" onclick="removerParametro(' + indice + ')"></i>\
+                    </div>\
+                </div>\
+            ';
         }
 
         var container = document.getElementById("parametros-container");
@@ -527,31 +523,22 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idEmpresaServer: idEmpresa })
-        }).then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (data) {
-                    aprovados = data;
-                    if (aprovados.length > 0) {
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (listaModelos) {
+                        aprovados = listaModelos;
                         gerarCardModelos();
-                    } else {
-                        nadaPorAquiModelos();
-                    }
-                });
-            } else {
-                nadaPorAquiModelos();
-            }
-        });
-    }
-
-    function nadaPorAquiModelos() {
-        var div = document.getElementById('div_aprovados');
-        div.innerHTML = `
-            <div class="card-nothing">
-                <h1>Sem Registros</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
+                    });
+                } else {
+                    aprovados = [];
+                    gerarCardModelos();
+                }
+            })
+            .catch(function () {
+                aprovados = [];
+                gerarCardModelos();
+            });
     }
 
     function gerarCardModelos() {
@@ -562,17 +549,17 @@
             var modelo = aprovados[i];
             var idDoModelo = modelo.idModelo;
 
-            div.innerHTML += `
-                <div class="card-user" onclick="abrirPopupParaEditar(${idDoModelo})">
-                    <div class="card-first">
-                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${modelo.nome}</label></div>
-                        <div class="labels"><label id="first">Descrição:</label><label class="label-item">${modelo.descricao_arq}</label></div>
-                    </div>
-                    <div class="card-second">
-                        <div class="labels"><label id="first">Status:</label><label class="label-item">${modelo.status}</label></div>
-                    </div>
-                </div>
-            `;
+            div.innerHTML += '\
+                <div class="card-user" onclick="abrirPopupParaEditar(' + idDoModelo + ')">\
+                    <div class="card-first">\
+                        <div class="labels"><label id="first">Nome:</label><label class="label-item">' + modelo.nome + '</label></div>\
+                        <div class="labels"><label id="first">Descrição:</label><label class="label-item">' + modelo.descricao_arq + '</label></div>\
+                    </div>\
+                    <div class="card-second">\
+                        <div class="labels"><label id="first">Status:</label><label class="label-item">' + modelo.status + '</label></div>\
+                    </div>\
+                </div>\
+            ';
         }
     }
 
@@ -585,121 +572,66 @@
         indiceParametro = 0;
 
         document.getElementById('popup_titulo').innerText = "Editar Modelo";
-        var btn = document.getElementById('popup_button');
-        btn.innerText = "Salvar Alterações";
-        btn.onclick = function () {
+        var botaoPopup = document.getElementById('popup_button');
+        botaoPopup.innerText = "Salvar Alterações";
+        botaoPopup.onclick = function () {
             salvarAlteracoes(idModelo);
         };
 
         var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        function preencherModeloNaTela(dadosModelo) {
+            document.getElementById('input_nome_modelo').value = dadosModelo.info.nome;
+            document.getElementById('input_descricao').value = dadosModelo.info.descricao_arq;
+
+            indiceParametro = 0;
+            var indice = 0;
+            for (indice = 0; indice < dadosModelo.parametros.length; indice++) {
+                var parametroAtual = dadosModelo.parametros[indice];
+                adicionarParametro(parametroAtual.nome, parametroAtual.limiteMin);
+            }
+
+            abrirPopupTela();
+        }
+
+        function buscarModeloPorId() {
+            fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
+                .then(function (respostaModelo) {
+                    if (!respostaModelo.ok) {
+                        alert("Não foi possível carregar os dados deste modelo.");
+                    } else {
+                        respostaModelo.json().then(function (dadosModelo) {
+                            preencherModeloNaTela(dadosModelo);
+                        });
+                    }
+                })
+                .catch(function () {
+                    alert("Não foi possível carregar os dados deste modelo.");
+                });
+        }
 
         fetch("/modelo/buscarDefaults", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fkEmpresaServer: idEmpresa })
         })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(function (data) {
-                        valoresDefault = data;
+            .then(function (respostaDefaults) {
+                if (respostaDefaults.ok) {
+                    respostaDefaults.json().then(function (listaDefaults) {
+                        valoresDefault = listaDefaults;
                         carregarSelectMetricas();
-
-                        fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
-                            .then(function (res) {
-                                if (!res.ok) {
-                                    alert("Não foi possível carregar os dados deste modelo.");
-                                } else {
-                                    res.json().then(function (dadosDoModelo) {
-
-                                        document.getElementById('input_nome_modelo').value = dadosDoModelo.info.nome;
-                                        document.getElementById('input_descricao').value = dadosDoModelo.info.descricao_arq;
-
-                                        indiceParametro = 0;
-                                        var i = 0;
-                                        for (i = 0; i < dadosDoModelo.parametros.length; i++) {
-                                            var param = dadosDoModelo.parametros[i];
-                                            adicionarParametro(param.nome, param.limiteMin);
-                                        }
-
-                                        var popup = $("#popupmodelo");
-                                        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-                                    });
-                                }
-                            })
-                            .catch(function () {
-                                alert("Não foi possível carregar os dados deste modelo.");
-                            });
+                        buscarModeloPorId();
                     });
                 } else {
-                    valoresDefault = [
-                        { "componente": "cpu", "valor": 60 },
-                        { "componente": "ram", "valor": 70 },
-                        { "componente": "disco", "valor": 50 },
-                        { "componente": "processos", "valor": 500 }
-                    ];
+                    valoresDefault = [];
                     carregarSelectMetricas();
-
-                    fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
-                        .then(function (res2) {
-                            if (!res2.ok) {
-                                alert("Não foi possível carregar os dados deste modelo.");
-                            } else {
-                                res2.json().then(function (dadosDoModelo2) {
-
-                                    document.getElementById('input_nome_modelo').value = dadosDoModelo2.info.nome;
-                                    document.getElementById('input_descricao').value = dadosDoModelo2.info.descricao_arq;
-
-                                    indiceParametro = 0;
-                                    var i2 = 0;
-                                    for (i2 = 0; i2 < dadosDoModelo2.parametros.length; i2++) {
-                                        var param2 = dadosDoModelo2.parametros[i2];
-                                        adicionarParametro(param2.nome, param2.limiteMin);
-                                    }
-
-                                    var popup2 = $("#popupmodelo");
-                                    popup2.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-                                });
-                            }
-                        })
-                        .catch(function () {
-                            alert("Não foi possível carregar os dados deste modelo.");
-                        });
+                    buscarModeloPorId();
                 }
             })
             .catch(function () {
-                valoresDefault = [
-                    { "componente": "cpu", "valor": 60 },
-                    { "componente": "ram", "valor": 70 },
-                    { "componente": "disco", "valor": 50 },
-                    { "componente": "processos", "valor": 500 }
-                ];
+                valoresDefault = [];
                 carregarSelectMetricas();
-
-                fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
-                    .then(function (res3) {
-                        if (!res3.ok) {
-                            alert("Não foi possível carregar os dados deste modelo.");
-                        } else {
-                            res3.json().then(function (dadosDoModelo3) {
-
-                                document.getElementById('input_nome_modelo').value = dadosDoModelo3.info.nome;
-                                document.getElementById('input_descricao').value = dadosDoModelo3.info.descricao_arq;
-
-                                indiceParametro = 0;
-                                var i3 = 0;
-                                for (i3 = 0; i3 < dadosDoModelo3.parametros.length; i3++) {
-                                    var param3 = dadosDoModelo3.parametros[i3];
-                                    adicionarParametro(param3.nome, param3.limiteMin);
-                                }
-
-                                var popup3 = $("#popupmodelo");
-                                popup3.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-                            });
-                        }
-                    })
-                    .catch(function () {
-                        alert("Não foi possível carregar os dados deste modelo.");
-                    });
+                buscarModeloPorId();
             });
     }
 </script>
