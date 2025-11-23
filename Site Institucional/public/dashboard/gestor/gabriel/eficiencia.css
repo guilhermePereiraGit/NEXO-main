@@ -67,6 +67,7 @@ header .header-navigation {
 
 header .header-navigation .home,
 header .header-navigation .eficiencia,
+header .header-navigation .modelos,
 header .header-navigation .alert {
     display: flex;
     align-items: center;

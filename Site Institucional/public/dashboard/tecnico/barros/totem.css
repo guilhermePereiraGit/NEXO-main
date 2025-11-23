@@ -1,0 +1,377 @@
+:root {
+    --principal: #451c8b;
+    --contraste: #c8c1ff;
+    --fundo: #eeecff;
+    --bem: #65fa8f;
+    --atencao: #fada64;
+    --perigo: #f98a25;
+    --mperigo: #ff3131;
+}
+
+/* TUDO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--fundo);
+}
+
+.tudo {
+    display: flex;
+}
+
+/* HEADER */
+header .header-container {
+    background-color: var(--principal);
+    width: 150px;
+    height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .header-container i {
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    z-index: 900;
+    transition: 0.3s;
+}
+
+#menu {
+    transition: 0.3s;
+}
+
+#menu:hover {
+    transform: scale(1.1);
+}
+
+/* NAVEGAÇÃO DO HEADER */
+header .header-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+header .header-navigation .home,
+header .header-navigation .eficiencia,
+header .header-navigation .alert {
+    display: flex;
+    align-items: center;
+    height: 13vh;
+}
+
+/* ANIMAÇÃO DE NAVEGAÇÃO */
+.fundo {
+    position: absolute;
+    height: 13vh;
+    width: 150px;
+    left: 0;
+    background-color: var(--contraste);
+    z-index: 1;
+    transform-origin: right;
+    animation: expandirEsquerda 0.5s ease forwards;
+}
+
+@keyframes expandirEsquerda {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherDireita {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ANIMAÇÃO DE MENU */
+.menu-extend {
+    width: 30%;
+    top: 0;
+    left: 150px;
+    background-color: var(--principal);
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    animation: expandirDireita 0.5s ease forwards;
+    transform-origin: left;
+    border-left: 1px solid var(--contraste);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+@keyframes expandirDireita {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherEsquerda {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* MENU EXTEND */
+.menu-extend .jira-slack {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-extend .jira-slack .card {
+    display: flex;
+    gap: 10px;
+    width: 50%;
+    padding: 20px;
+    background-color: var(--contraste);
+    border-radius: 10px;
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu-extend .jira-slack .card:hover {
+    background-color: white;
+}
+
+.menu-extend .jira-slack .card img {
+    width: 33%;
+}
+
+.menu-extend .widgets {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 5px;
+}
+
+.menu-extend .widgets .email,
+.menu-extend .widgets .telefone {
+    font-size: 20px;
+}
+
+.menu-extend .widgets .email i,
+.menu-extend .widgets .telefone i {
+    color: white;
+}
+
+.menu-extend .widgets p {
+    color: var(--contraste);
+    font-size: 18px;
+    text-align: justify;
+}
+
+.menu-extend .infos-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.menu-extend .infos-user h1 {
+    font-weight: 500;
+    color: white;
+}
+
+.menu-extend .infos-user h2 {
+    font-weight: 500;
+    color: var(--contraste);
+}
+
+/* CONTENT */
+.content .information {
+    width: 1340px;
+    height: 15vh;
+    background-color: var(--contraste);
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.content .information h1 {
+    font-weight: 500;
+    color: var(--principal);
+}
+
+.content .information .title {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.content .information .title p {
+    font-size: 25px;
+    color: var(--principal);
+    font-weight: bold;
+}
+
+/* KPIS */
+.conteudo {
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.conteudo .kpis {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+}
+
+.conteudo .kpis .kpi {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.conteudo .kpis .kpi h1 {
+    color: var(--principal);
+}
+
+.conteudo .kpis .kpi .titulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.conteudo .kpis .kpi .dado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteudo .kpis .kpi .dado h1 {
+    font-size: 40px;
+    color: var(--principal);
+}
+
+.conteudo .kpis .kpi .titulo h1 {
+    font-size: 25px;
+}
+
+.conteudo .kpis .kpi .titulo h2 {
+    font-size: 20px;
+}
+
+/* LEGENDA DE DADOS */
+.dados {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 20px;
+}
+
+.dados .tabela-processos {
+    background-color: white;
+    height: 45vh;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tabela-processos table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 18px;
+}
+
+.tabela-processos thead {
+    background: var(--contraste);
+}
+
+.tabela-processos th, 
+.tabela-processos td {
+    padding: 10px;
+}
+
+.tabela-processos tbody tr:nth-child(even) {
+    background: #f4f4f4;
+}
+
+/* GRÁFICO DE LINHA */
+.graficos {
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 x 2 */
+    gap: 20px;
+    padding: 20px;
+}
+
+.componente {
+    background: #d9d9d9;
+    border-radius: 10px;
+    
+}
+
+/* AGUARDANDO SELECIONAR REGIÃO */
+.waiting {
+    padding: 30px;
+}
+
+.waiting .box {
+    height: 77vh;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.waiting .box .text {
+    width: 70%;
+    text-align: center;
+}
+
+.waiting .box .text h1 {
+    color: var(--principal);
+}
+
+.waiting .box .text p {
+    font-size: 20px;
+}
+
+.waiting .box .text img {
+    width: 20%;
+    margin-top: 50px;
+}
