@@ -1,154 +1,91 @@
-var database = require("../database/config")
+var database = require("../database/config");
 
-function cadastrarModelo(nomeModelo, descricao, fkEmpresa) {
+function buscarDefaults(fkEmpresa) {
     var instrucaoSql = `
-        INSERT INTO modelo (nome, descricao_arq, fkEmpresa, status) 
-        VALUES ('${nomeModelo}', '${descricao}', '${fkEmpresa}', 'ATIVO');`;
-    return database.executar(instrucaoSql); 
-}
-
-function cadastrarTipoParametro(componente) {
-    var instrucaoSql = `
-        INSERT INTO componente (nome, status) 
-        VALUES ('${componente.toUpperCase()}', 'ATIVO');`;
-    return database.executar(instrucaoSql);
-}
-
-function buscarIdTipoParametro() {
-    var instrucaoSql = `
-        SELECT idComponente FROM componente ORDER BY idComponente DESC LIMIT 1;
+        select 
+            componente,
+            valor_default as valor
+        from parametros_default;
     `;
-    return database.executar(instrucaoSql);
-}
-
-function buscarSeTipoParametroJaExiste(componente) {
-    var instrucaoSql = `
-        SELECT idComponente FROM componente where nome = '${componente.toUpperCase()}';
-    `
-    return database.executar(instrucaoSql);
-}
-
-function buscarTipoParametro(fkEmpresa) {
-    var instrucaoSql = `
-        select distinct tp.nome from componente tp
-        inner join parametro p on tp.idComponente = p.fkComponente
-        inner join modelo m on p.fkModelo = m.idModelo
-        where m.fkEmpresa = ${fkEmpresa};
-    `
-    return database.executar(instrucaoSql);
-}
-
-function buscarModelos(fkEmpresa) {
-    var instrucaoSql = `
-        select idModelo as IdModelo, nome Nome from modelo where fkEmpresa = ${fkEmpresa};
-    `
+    console.log("buscarDefaults(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function verificarAprovados(idEmpresa) {
     var instrucaoSql = `
-    SELECT idModelo, nome, descricao_arq, status from modelo where fkEmpresa = ${idEmpresa};
-  `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
-
-function buscarModelosCadastrados(idEmpresa) {
-    var instrucaoSql = `
-        SELECT 
-            e.nome AS NomeEmpresa,
-            m.idModelo AS IdModelo,
-            m.nome AS NomeModelo,
-            m.descricao_arq AS DescricaoModelo,
-            GROUP_CONCAT(tp.nome SEPARATOR ', ') AS TiposParametro
-        FROM empresa e
-        INNER JOIN modelo m 
-            ON m.fkEmpresa = e.idEmpresa
-        LEFT JOIN parametro p 
-            ON p.fkModelo = m.idModelo
-        LEFT JOIN componente tp 
-            ON tp.idComponente = p.fkComponente
-        WHERE e.idEmpresa = ${idEmpresa}
-        GROUP BY m.idModelo;
+        select 
+            idModelo,
+            nome,
+            descricao_arq,
+            status
+        from modelo
+        where fkEmpresa = ${idEmpresa};
     `;
+    console.log("verificarAprovados(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function cadastrarParametro(idModelo, fkTipoParametro){
-        var instrucaoSql = `
-        INSERT INTO parametro (fkModelo, fkComponente) VALUES (${idModelo}, ${fkTipoParametro});
+function cadastrarModelo(nomeModelo, descricao, fkEmpresa, parametros) {
+
+    var instrucaoModelo = `
+        insert into modelo (nome, descricao_arq, status, fkEmpresa)
+        values ('${nomeModelo}', '${descricao}', 'ATIVO', ${fkEmpresa});
     `;
-    return database.executar(instrucaoSql);
+    console.log("cadastrarModelo - INSERT modelo: \n" + instrucaoModelo);
+
+    return database.executar(instrucaoModelo);
 }
 
-function buscarParametro(idModelo){
+function inserirParametros(idModelo, valores) {
     var instrucaoSql = `
-        SELECT limiteMin, limiteMax from parametro where fkModelo = ${idModelo};
-    `
-    return database.executar(instrucaoSql);
-}
-
-function buscarDefaults() {
-    var instrucaoSql = `
-        SELECT componente, valor_default as valor FROM parametros_default;
+        insert into parametro (limiteMin, limiteMax, fkModelo, fkComponente)
+        values ${valores};
     `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    console.log("inserirParametros(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
-function buscarInfoModelo(idModelo) {
+
+function deletarParametros(idModelo) {
     var instrucaoSql = `
-        SELECT nome, descricao_arq FROM modelo WHERE idModelo = ${idModelo};
+        delete from parametro
+        where fkModelo = ${idModelo};
     `;
+    console.log("deletarParametros(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function buscarParametrosDoModelo(idModelo) {
+function buscarModeloPorId(idModelo) {
     var instrucaoSql = `
-        SELECT c.nome, p.limiteMin, p.limiteMax 
-        FROM parametro p
-        JOIN componente c ON p.fkComponente = c.idComponente
-        WHERE p.fkModelo = ${idModelo};
+        select
+            m.idModelo,
+            m.nome,
+            m.descricao_arq,
+            m.status,
+            p.idParametro,
+            p.limiteMin,
+            p.limiteMax,
+            c.nome as nomeComponente
+        from modelo as m
+        left join parametro as p
+            on p.fkModelo = m.idModelo
+        left join componente as c
+            on c.idComponente = p.fkComponente
+        where m.idModelo = ${idModelo};
     `;
+    console.log("buscarModeloPorId(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function atualizarInfoModelo(idModelo, nome, descricao) {
+function atualizarModelo(idModelo, nomeModelo, descricao) {
     var instrucaoSql = `
-        UPDATE modelo SET nome = '${nome}', descricao_arq = '${descricao}'
-        WHERE idModelo = ${idModelo};
+        update modelo
+        set nome = '${nomeModelo}',
+            descricao_arq = '${descricao}'
+        where idModelo = ${idModelo};
     `;
+    console.log("atualizarModelo(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function deletarParametrosDoModelo(idModelo) {
-    var instrucaoSql = `
-        DELETE FROM parametro WHERE fkModelo = ${idModelo};
-    `;
-    return database.executar(instrucaoSql);
-}
-
-function cadastrarValoresParametro(idModelo, nomeParametro, limiteMin, limiteMax){
-    var nomeParametroUpper = nomeParametro.toUpperCase();
-
-    var instrucaoSql = `
-        INSERT INTO parametro (limiteMin, limiteMax, fkModelo, fkComponente) 
-            VALUES (${limiteMin}, ${limiteMax}, ${idModelo}, (SELECT idComponente FROM componente WHERE nome = '${nomeParametroUpper}'));
-    `
-    return database.executar(instrucaoSql);
-}
-
-function atualizarParametro(idModelo, nomeParametro, limiteMin, limiteMax) {
-    var nomeParametroUpper = nomeParametro.toUpperCase();
-
-    var instrucaoSql = `
-        UPDATE parametro set limiteMin = ${limiteMin}, limiteMax = ${limiteMax}
-            where fkModelo = ${idModelo} and fkComponente = (select idComponente from componente where nome = '${nomeParametroUpper}');
-    `;
-    return database.executar(instrucaoSql);
-}
-
-module.exports = {
-    cadastrarModelo, cadastrarTipoParametro, cadastrarParametro, buscarIdTipoParametro,
-    buscarSeTipoParametroJaExiste, buscarTipoParametro, buscarModelos, verificarAprovados,
-    buscarModelosCadastrados, buscarParametro, atualizarParametro, cadastrarValoresParametro, buscarDefaults, buscarInfoModelo,buscarParametrosDoModelo, atualizarInfoModelo, deletarParametrosDoModelo
+module.exports = { buscarDefaults, verificarAprovados, cadastrarModelo, inserirParametros, deletarParametros, buscarModeloPorId, atualizarModelo
 };

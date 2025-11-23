@@ -1,227 +1,241 @@
 var modeloModel = require("../models/modeloModel");
+function buscarDefaults(req, res) {
 
-async function cadastrarModelo(req, res) {
-    var nomeModelo = req.body.nomeModeloServer;
-    var descricao = req.body.descricaoServer;
-    var parametros = req.body.parametrosServer; 
     var fkEmpresa = req.body.fkEmpresaServer;
 
-    if (!nomeModelo) {
-        return res.status(400).send("Nome do modelo está undefined!");
-    } else if (!descricao) {
-        return res.status(400).send("Descrição está undefined!");
-    } else if (!parametros || parametros.length === 0) {
-        return res.status(400).send("Parâmetros estão undefined!");
-    } else if (!fkEmpresa) {
-        return res.status(400).send("FK empresa está undefined!");
-    }
-
-    try {
-        for (var i = 0; i < parametros.length; i++) {
-            const resultadoBuscarSeTipoParametroJaExiste =
-                await modeloModel.buscarSeTipoParametroJaExiste(parametros[i].componente.toUpperCase()); 
-
-            if (resultadoBuscarSeTipoParametroJaExiste.length == 0) {
-                 await modeloModel.cadastrarTipoParametro(parametros[i].componente.toUpperCase());
-            }
-        }
-
-        const resultadoCadastroModelo = await modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa);
-        
-        var idModeloCadastrado = resultadoCadastroModelo.insertId;
-
-        for (var i = 0; i < parametros.length; i++) {
-            await modeloModel.cadastrarValoresParametro(
-                idModeloCadastrado,
-                parametros[i].componente, 
-                parametros[i].limiteMin,
-                parametros[i].limiteMax
-            );
-        }
-
-        res.status(200).send("Modelo e parâmetros cadastrados com sucesso!");
-    } catch (erro) {
-        console.error("Erro ao cadastrar modelo:", erro.sqlMessage || erro);
-        res.status(500).json(erro.sqlMessage || erro);
-    }
-}
-
-async function buscarTipoParametro(req, res) {
-    var fkEmpresa = req.body.fkEmpresaServer
-    var parametros = []
-
-    resultadoBuscaTipoParametro = await modeloModel.buscarTipoParametro(fkEmpresa)
-
-    if (resultadoBuscaTipoParametro.length > 0) {
-        for (var i = 0; i < resultadoBuscaTipoParametro.length; i++) {
-            parametros.push(resultadoBuscaTipoParametro[i])
-        }
-    } else {
-        parametros.push('CPU', 'RAM', 'DISCO')
-    }
-
-    res.json(parametros)
-}
-
-async function buscarModelos(req, res) {
-    var fkEmpresa = req.body.fkEmpresaServer;
-    var modelos = []
-
-    if (fkEmpresa == undefined) {
-        console.log('O ID da empresa está undefined')
-    } else {
-        modelos = await modeloModel.buscarModelos(fkEmpresa)
-
-        if (modelos.length > 0) {
-            res.json(modelos)
-        } else {
-            console.log('Erro ao buscar os modelos')
-            res.status(500)
-        }
-    }
+    modeloModel.buscarDefaults(fkEmpresa)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Houve um erro ao buscar defaults: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
 }
 
 function verificarAprovados(req, res) {
-    var idEmpresa = req.body.idEmpresaServer
+    var idEmpresa = req.body.idEmpresaServer;
 
-    modeloModel.verificarAprovados(idEmpresa)
-        .then(
-            function (resultado) {
+    if (idEmpresa == undefined) {
+        res.status(400).json("idEmpresaServer está undefined!");
+    } else {
+        modeloModel.verificarAprovados(idEmpresa)
+            .then(function (resultado) {
                 res.json(resultado);
-            }
-        ).catch(
-            function (erro) {
+            })
+            .catch(function (erro) {
                 console.log(erro);
-                console.log(
-                    "\nHouve um erro ao realizar Verificação! Erro: ",
-                    erro.sqlMessage
-                );
+                console.log("Houve um erro ao verificar modelos aprovados: ", erro.sqlMessage);
                 res.status(500).json(erro.sqlMessage);
-            }
-        );
-}
-
-async function buscarModelosCadastrados(req, res) {
-    try {
-        var idEmpresa = req.body.idEmpresaServer;
-
-        if (!idEmpresa) {
-            return res.status(400).send("ID da empresa não informado.");
-        }
-
-        var modelos = await modeloModel.buscarModelosCadastrados(idEmpresa);
-
-        if (modelos.length > 0) {
-            res.status(200).json(modelos);
-        } else {
-            res.status(204).send("Nenhum modelo encontrado para esta empresa.");
-        }
-
-    } catch (erro) {
-        console.error("Erro ao buscar modelos:", erro);
-        res.status(500).json(erro.sqlMessage || erro);
+            });
     }
 }
 
-async function buscarDefaults(req, res) {
-    try {
-        var defaults = await modeloModel.buscarDefaults();
-        res.status(200).json(defaults);
-    } catch (erro) {
-        console.error("Erro ao buscar defaults:", erro.sqlMessage || erro);
-        res.status(500).json(erro.sqlMessage || erro);
+function cadastrarModelo(req, res) {
+    var nomeModelo = req.body.nomeModeloServer;
+    var descricao = req.body.descricaoServer;
+    var parametros = req.body.parametrosServer;
+    var fkEmpresa = req.body.fkEmpresaServer;
+
+    if (nomeModelo == undefined || descricao == undefined || fkEmpresa == undefined) {
+        res.status(400).json("Dados do modelo estão incompletos!");
+    } else {
+
+        modeloModel.cadastrarModelo(nomeModelo, descricao, fkEmpresa, parametros)
+            .then(function (resultadoModelo) {
+
+                var idModelo = resultadoModelo.insertId;
+                var valores = "";
+                var i = 0;
+
+                if (parametros != null) {
+                    for (i = 0; i < parametros.length; i++) {
+                        var item = parametros[i];
+
+                        var componente = "";
+                        if (item.componente != null) {
+                            componente = String(item.componente).toLowerCase();
+                        }
+
+                        var fkComponente = 0;
+
+                        if (componente == "cpu") {
+                            fkComponente = 1;
+                        } else if (componente == "ram") {
+                            fkComponente = 2;
+                        } else if (componente == "disco") {
+                            fkComponente = 3;
+                        } else if (componente == "processos") {
+                            fkComponente = 4;
+                        }
+
+                        if (fkComponente > 0) {
+                            var limiteMin = item.limiteMin;
+                            var limiteMax = item.limiteMax;
+
+                            if (valores != "") {
+                                valores += ", ";
+                            }
+
+                            valores += `('${limiteMin}', '${limiteMax}', ${idModelo}, ${fkComponente})`;
+                        }
+                    }
+                }
+
+                if (valores == "") {
+                    res.status(201).json({ idModelo: idModelo });
+                    return;
+                }
+
+                modeloModel.inserirParametros(idModelo, valores)
+                    .then(function () {
+                        res.status(201).json({ idModelo: idModelo });
+                    })
+                    .catch(function (erro) {
+                        console.log(erro);
+                        console.log("Houve um erro ao inserir parâmetros do modelo: ", erro.sqlMessage);
+                        res.status(500).json(erro.sqlMessage);
+                    });
+
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao cadastrar modelo: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            });
+
     }
 }
 
-async function cadastrarParametro(req, res) {
-    var parametros = req.body;
-    try {
-        var resultadoBuscarParametro = await modeloModel.buscarParametro(parametros[0].idModelo)
-        if (resultadoBuscarParametro.length > 0) {
-            for (var i = 0; i < parametros.length; i++) {
-                await modeloModel.atualizarParametro(
-                    parametros[i].idModelo,
-                    parametros[i].nomeParametro,
-                    parametros[i].limiteMin,
-                    parametros[i].limiteMax
-                );
-            }
-            return res.status(200).send("Parâmetros cadastrados com sucesso!");
-        } else {
-            for (var i = 0; i < parametros.length; i++) {
-                await modeloModel.cadastrarValoresParametro(
-                    parametros[i].idModelo,
-                    parametros[i].nomeParametro,
-                    parametros[i].limiteMin,
-                    parametros[i].limiteMax
-                );
-            }
-            return res.status(200).send("Parâmetros cadastrados com sucesso!");
-        }
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).send("Erro ao cadastrar parâmetros.");
-    }
-}
-
-async function buscarModeloPorId(req, res) {
+function buscarModeloPorId(req, res) {
     var idModelo = req.query.id;
 
-    if (!idModelo) {
-        return res.status(400).send("ID do modelo não foi fornecido.");
-    }
+    if (idModelo == undefined) {
+        res.status(400).json("id do modelo está indefinido");
+    } else {
 
-    try {
-        const info = await modeloModel.buscarInfoModelo(idModelo);
-        const parametros = await modeloModel.buscarParametrosDoModelo(idModelo);
+        modeloModel.buscarModeloPorId(idModelo)
+            .then(function (resultado) {
 
-        if (info.length > 0) {
-            res.json({
-                info: info[0],
-                parametros: parametros 
+                if (resultado.length == 0) {
+                    res.status(404).json("Modelo não encontrado");
+                } else {
+                    var info = {
+                        nome: resultado[0].nome,
+                        descricao_arq: resultado[0].descricao_arq
+                    };
+
+                    var parametros = [];
+                    var i = 0;
+
+                    for (i = 0; i < resultado.length; i++) {
+                        var linha = resultado[i];
+
+                        if (linha.nomeComponente != null) {
+                            parametros.push({
+                                nome: linha.nomeComponente,
+                                limiteMin: linha.limiteMin,
+                                limiteMax: linha.limiteMax
+                            });
+                        }
+                    }
+
+                    res.json({
+                        info: info,
+                        parametros: parametros
+                    });
+                }
+
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao buscar o modelo por id: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
             });
-        } else {
-            res.status(404).send("Modelo não encontrado.");
-        }
-    } catch (erro) {
-        console.error("Erro ao buscar modelo por ID:", erro.sqlMessage || erro);
-        res.status(500).json(erro.sqlMessage || erro);
+
     }
 }
 
-async function atualizarModelo(req, res) {
+function atualizarModelo(req, res) {
     var idModelo = req.body.idModeloServer;
     var nomeModelo = req.body.nomeModeloServer;
     var descricao = req.body.descricaoServer;
-    var parametros = req.body.parametrosServer; 
+    var parametros = req.body.parametrosServer;
 
-    if (!idModelo || !nomeModelo || !descricao || !parametros) {
-        return res.status(400).send("Dados incompletos para atualização.");
-    }
+    if (idModelo == undefined || nomeModelo == undefined || descricao == undefined) {
+        res.status(400).json("Dados para atualizar modelo estão incompletos!");
+    } else {
 
-    try {
-        await modeloModel.atualizarInfoModelo(idModelo, nomeModelo, descricao);
-        await modeloModel.deletarParametrosDoModelo(idModelo);
+        modeloModel.atualizarModelo(idModelo, nomeModelo, descricao)
+            .then(function () {
 
-        for (var i = 0; i < parametros.length; i++) {
-            await modeloModel.cadastrarValoresParametro(
-                idModelo,
-                parametros[i].componente,
-                parametros[i].limiteMin,
-                parametros[i].limiteMax
-            );
-        }
+                return modeloModel.deletarParametros(idModelo);
 
-        res.status(200).send("Modelo atualizado com sucesso!");
-    } catch (erro) {
-        console.error("Erro ao atualizar modelo:", erro.sqlMessage || erro);
-        res.status(500).json(erro.sqlMessage || erro);
+            })
+            .then(function () {
+
+                var valores = "";
+                var i = 0;
+
+                if (parametros != null) {
+                    for (i = 0; i < parametros.length; i++) {
+                        var item = parametros[i];
+
+                        var componente = "";
+                        if (item.componente != null) {
+                            componente = String(item.componente).toLowerCase();
+                        }
+
+                        var fkComponente = 0;
+
+                        if (componente == "cpu") {
+                            fkComponente = 1;
+                        } else if (componente == "ram") {
+                            fkComponente = 2;
+                        } else if (componente == "disco") {
+                            fkComponente = 3;
+                        } else if (componente == "processos") {
+                            fkComponente = 4;
+                        }
+
+                        if (fkComponente > 0) {
+                            var limiteMin = item.limiteMin;
+                            var limiteMax = item.limiteMax;
+
+                            if (valores != "") {
+                                valores += ", ";
+                            }
+
+                            valores += `('${limiteMin}', '${limiteMax}', ${idModelo}, ${fkComponente})`;
+                        }
+                    }
+                }
+
+                if (valores == "") {
+                    res.status(200).json({ idModelo: idModelo });
+                    return;
+                }
+
+                modeloModel.inserirParametros(idModelo, valores)
+                    .then(function () {
+                        res.status(200).json({ idModelo: idModelo });
+                    })
+                    .catch(function (erro) {
+                        console.log(erro);
+                        console.log("Houve um erro ao inserir novos parâmetros do modelo: ", erro.sqlMessage);
+                        res.status(500).json(erro.sqlMessage);
+                    });
+
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao atualizar modelo: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            });
+
     }
 }
 
-
-module.exports = {
-    cadastrarModelo, buscarTipoParametro, buscarModelos, verificarAprovados,buscarModelosCadastrados, cadastrarParametro, 
-    buscarDefaults, buscarModeloPorId, atualizarModelo
+module.exports = { buscarDefaults, verificarAprovados, cadastrarModelo, buscarModeloPorId,atualizarModelo
 };

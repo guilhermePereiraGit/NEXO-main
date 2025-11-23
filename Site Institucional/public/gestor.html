@@ -19,14 +19,12 @@
     <div class="container">
         <header>
             <div class="header-container">
-                <!-- MENU -->
                 <div class="header-menu">
                     <div class="menu" id="menu" onclick="abrirMenu()">
                         <i class="bi bi-list" id="icone"></i>
                     </div>
                 </div>
 
-                <!-- NAVEGAÇÃO -->
                 <div class="header-navigation">
                     <div class="home">
                         <div class="fundo" style="display: block;"></div>
@@ -35,13 +33,12 @@
                     </div>
                     <div class="eficiencia">
                         <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'dashboard/gestor/gabriel/eficiencia.html'"
-                            id="second"></i>
+                        <i class="bi bi-clipboard-data"
+                            onclick="window.location.href = 'dashboard/gestor/gabriel/eficiencia.html'" id="second"></i>
                     </div>
                     <div class="modelos">
                         <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'gestor.html'"
-                            id="hi"></i>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'gestor.html'" id="hi"></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -49,7 +46,6 @@
                     </div>
                 </div>
 
-                <!-- HELP - MÉTRICAS -->
                 <div class="header-help">
                     <i class="bi bi-info-circle" onclick="abrirPassos()"></i>
                 </div>
@@ -143,15 +139,12 @@
                     </div>
                 </div>
 
-
                 <div class="parametros-scroll" id="parametros-container"
                     style="padding-right: 15px; margin-top: 10px; border-top: 1px solid #e9ecef; padding-top: 10px;">
                 </div>
 
             </div>
             <div class="infos-final">
-                <p class="error-message" id="error_message" style="display: none;"></p>
-
                 <div class="drop" style="width: 100%;">
                     <button class="cadastrar" id="popup_button" onclick="cadastrarModelo()">Cadastrar Modelo</button>
                 </div>
@@ -164,19 +157,66 @@
 <script>
     var valoresDefault = [];
     var aprovados = [];
+    var indiceParametro = 0;
 
-    function showMessage(message, isError) {
-        if (isError === undefined) {
-            isError = true;
-        }
-        var errorElement = document.getElementById('error_message');
-        errorElement.innerText = message;
-        errorElement.className = isError ? "error-message" : "success-message";
-        errorElement.style.display = 'block';
+    function abrirPopupModelo() {
+        document.getElementById('input_nome_modelo').value = "";
+        document.getElementById('input_descricao').value = "";
+        document.getElementById('btn_adicionar_parametro').disabled = true;
+        document.getElementById('parametros-container').innerHTML = "";
+        indiceParametro = 0;
+
+        document.getElementById('popup_titulo').innerText = "Cadastro de Modelo";
+        var btn = document.getElementById('popup_button');
+        btn.innerText = "Cadastrar Modelo";
+        btn.onclick = cadastrarModelo;
+
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        fetch("/modelo/buscarDefaults", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fkEmpresaServer: idEmpresa })
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (data) {
+                        valoresDefault = data;
+                        carregarSelectMetricas();
+                        var popup = $("#popupmodelo");
+                        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                    });
+                } else {
+                    valoresDefault = [
+                        { "componente": "cpu", "valor": 60 },
+                        { "componente": "ram", "valor": 70 },
+                        { "componente": "disco", "valor": 50 },
+                        { "componente": "processos", "valor": 500 }
+                    ];
+                    carregarSelectMetricas();
+                    var popup2 = $("#popupmodelo");
+                    popup2.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                }
+            })
+            .catch(function () {
+                valoresDefault = [
+                    { "componente": "cpu", "valor": 60 },
+                    { "componente": "ram", "valor": 70 },
+                    { "componente": "disco", "valor": 50 },
+                    { "componente": "processos", "valor": 500 }
+                ];
+                carregarSelectMetricas();
+                var popup3 = $("#popupmodelo");
+                popup3.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+            });
     }
-    function hideMessage() {
-        var errorElement = document.getElementById('error_message');
-        errorElement.style.display = 'none';
+
+    function fecharPopupModelo() {
+        var popup = $("#popupmodelo");
+        popup.css({ display: "flex", opacity: 1, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+        setTimeout(function () {
+            window.location.reload();
+        }, 1000);
     }
 
     function definirDefault(selectElement) {
@@ -184,195 +224,217 @@
         var limiteInput = document.getElementById('limite_master');
         var btnAdicionar = document.getElementById('btn_adicionar_parametro');
 
-        if (valorSelecionado === "") {
+        if (valorSelecionado == "") {
             btnAdicionar.disabled = true;
+            limiteInput.value = "";
             return;
         }
 
-        var todosOsSelects = document.querySelectorAll('.componente-item-salvo');
-        for (var i = 0; i < todosOsSelects.length; i++) {
-            var item = todosOsSelects[i];
-            if (item.value === valorSelecionado) {
-                showMessage("Esta métrica já foi adicionada à lista.");
-                selectElement.value = "";
-                limiteInput.value = "";
-                btnAdicionar.disabled = true;
-                return;
+        var j = 0;
+        var encontrou = false;
+        for (j = 0; j < valoresDefault.length; j++) {
+            if (valoresDefault[j].componente == valorSelecionado) {
+                limiteInput.value = valoresDefault[j].valor;
+                encontrou = true;
             }
         }
 
-        hideMessage();
-
-        var defaultEncontrado = null;
-        for (var i = 0; i < valoresDefault.length; i++) {
-            if (valoresDefault[i].componente == valorSelecionado) {
-                defaultEncontrado = valoresDefault[i];
-                break;
-            }
-        }
-
-        if (defaultEncontrado) {
-            limiteInput.value = defaultEncontrado.valor;
-            btnAdicionar.disabled = false;
-        } else {
+        if (encontrou == false) {
             limiteInput.value = "";
-            btnAdicionar.disabled = true;
         }
+
+        btnAdicionar.disabled = false;
     }
 
-    var numeroComponentes = 0;
+    function carregarSelectMetricas() {
+        var select = document.getElementById('componente_master');
+
+        var opcoes = '<option value="">Selecione para adicionar...</option>';
+
+        if (valoresDefault.length == 0) {
+            select.innerHTML = opcoes;
+            return;
+        }
+
+        var i = 0;
+        for (i = 0; i < valoresDefault.length; i++) {
+            var item = valoresDefault[i];
+            var componenteLower = item.componente.toLowerCase();
+            var componenteUpper = item.componente.toUpperCase();
+
+            opcoes += '<option value="' + componenteLower + '">' +
+                componenteUpper +
+                '</option>';
+        }
+
+        select.innerHTML = opcoes;
+    }
 
     function adicionarParametro(componentePreenchido, limitePreenchido) {
-        var componente = componentePreenchido || document.getElementById('componente_master').value;
-        if (componente === "") return;
+        var componente;
+
+        if (componentePreenchido != null) {
+            componente = componentePreenchido;
+        } else {
+            componente = document.getElementById('componente_master').value;
+        }
+
+        if (componente == "") {
+            alert("Selecione uma métrica antes de adicionar.");
+            return;
+        }
 
         componente = componente.toLowerCase();
 
-        var limite = limitePreenchido || document.getElementById('limite_master').value;
-
-        if (!componentePreenchido) {
-            var todosOsSelects = document.querySelectorAll('.componente-item-salvo');
-            for (var i = 0; i < todosOsSelects.length; i++) {
-                if (todosOsSelects[i].value === componente) {
-                    showMessage("Esta métrica já foi adicionada à lista.");
+        var i = 0;
+        for (i = 0; i <= indiceParametro; i++) {
+            var compInput = document.getElementById('componente_item_' + i);
+            if (compInput != null) {
+                var valorComp = compInput.value.toLowerCase();
+                if (valorComp == componente) {
+                    alert("Esta métrica já foi adicionada à lista.");
                     return;
                 }
             }
         }
 
-        numeroComponentes++;
-        var parametrosContainer = document.getElementById("parametros-container");
-        var novoParametro = document.createElement("div");
+        var limite;
+        if (limitePreenchido != null) {
+            limite = limitePreenchido;
+        } else {
+            limite = document.getElementById('limite_master').value;
+        }
 
-        novoParametro.classList.add("infos-third", "item-da-lista");
-        novoParametro.id = `parametro-item-${numeroComponentes}`;
+        if (limite == "" || isNaN(limite)) {
+            alert("Informe um limite válido para a métrica.");
+            return;
+        }
 
-        var limiteInputHTML = "";
-        if (componente === 'processos') {
-            limiteInputHTML = `
-                <div class="drop drop-limite"> 
-                    <h2>Contagem de Alerta</h2>
-                    <input type="number" class="limite-item-salvo" id="limite_salvo_${numeroComponentes}" value="${limite}" min="1">
+        var limiteNumero = Number(limite);
+        var indice = indiceParametro;
+
+        var bloco = "";
+
+        if (componente == "processos") {
+            bloco = `
+                <div class="infos-third item-da-lista" id="parametro_${indice}">
+                    <div class="drop drop-componente">
+                        <h2>Métrica</h2>
+                        <input type="text" id="componente_item_${indice}" value="${componente.toUpperCase()}" readonly>
+                    </div>
+                    <div class="drop drop-limite">
+                        <h2>Contagem de Alerta</h2>
+                        <input type="number" id="limite_item_${indice}" value="${limiteNumero}" min="1">
+                    </div>
+                    <div class="drop drop-lixeira">
+                        <i class="bi bi-trash3" onclick="removerParametro(${indice})"></i>
+                    </div>
                 </div>
             `;
         } else {
-            limiteInputHTML = `
-                <div class="drop drop-limite"> 
-                    <h2>Limite de Alerta (%)</h2>
-                    <input type="number" class="limite-item-salvo" id="limite_salvo_${numeroComponentes}" value="${limite}" min="1" max="100">
+            bloco = `
+                <div class="infos-third item-da-lista" id="parametro_${indice}">
+                    <div class="drop drop-componente">
+                        <h2>Métrica</h2>
+                        <input type="text" id="componente_item_${indice}" value="${componente.toUpperCase()}" readonly>
+                    </div>
+                    <div class="drop drop-limite">
+                        <h2>Limite de Alerta (%)</h2>
+                        <input type="number" id="limite_item_${indice}" value="${limiteNumero}" min="1" max="100">
+                    </div>
+                    <div class="drop drop-lixeira">
+                        <i class="bi bi-trash3" onclick="removerParametro(${indice})"></i>
+                    </div>
                 </div>
             `;
         }
 
-        novoParametro.innerHTML = `
-            <div class="drop drop-componente"> 
-                <h2>Métrica</h2>
-                <input type="text" value="${componente.toUpperCase()}" disabled>
-                <input type="hidden" class="componente-item-salvo" value="${componente}">
-            </div>
-            ${limiteInputHTML}
-            <div class="drop drop-lixeira">
-                <button class="botao-lixeira" onclick="removerParametro(this)" style="font-size: 28px;">🗑️</button>
-            </div>
-        `;
+        var container = document.getElementById("parametros-container");
+        container.innerHTML += bloco;
 
-        parametrosContainer.appendChild(novoParametro);
-        var scrollingContainer = parametrosContainer.parentNode;
-        scrollingContainer.scrollTop = scrollingContainer.scrollHeight;
+        indiceParametro = indiceParametro + 1;
 
-        if (!componentePreenchido) {
+        if (componentePreenchido == null) {
             document.getElementById('componente_master').value = "";
             document.getElementById('limite_master').value = "";
             document.getElementById('btn_adicionar_parametro').disabled = true;
-            hideMessage();
         }
     }
 
-    function removerParametro(botao) {
-        var itemParaRemover = botao.parentNode.parentNode;
-        var componenteInput = itemParaRemover.querySelector('.componente-item-salvo');
-
-        if (!componenteInput) {
-            itemParaRemover.remove();
+    function removerParametro(indice) {
+        var compInput = document.getElementById('componente_item_' + indice);
+        if (compInput == null) {
             return;
         }
 
-        var componente = componenteInput.value;
+        var componente = compInput.value.toLowerCase();
 
         if (componente == 'cpu' || componente == 'ram' || componente == 'disco') {
-            showMessage("CPU, RAM e Disco são métricas obrigatórias e não podem ser removidas.");
+            alert("CPU, RAM e Disco são métricas obrigatórias e não podem ser removidas.");
             return;
         }
 
-        itemParaRemover.remove();
-        hideMessage();
+        var div = document.getElementById('parametro_' + indice);
+        if (div != null) {
+            div.remove();
+        }
     }
 
     function obterParametrosDaTela() {
         var parametros = [];
-        var camposVazios = false;
-        var limiteInvalido = false;
-        var processosInvalido = false;
-
-        var componentesSalvos = document.querySelectorAll('.componente-item-salvo');
-        var limitesSalvos = document.querySelectorAll('.limite-item-salvo');
-
-        if (componentesSalvos.length === 0) {
-            showMessage("Adicione pelo menos uma métrica ao modelo.");
-            return null;
-        }
-
-        for (var i = 0; i < componentesSalvos.length; i++) {
-            var componente = componentesSalvos[i].value;
-            var limite = limitesSalvos[i].value;
-
-            if (limite == "") camposVazios = true;
-
-            var limiteMin = limite;
-            var limiteMax = 100;
-
-            if (componente != 'processos') {
-                if (isNaN(limite) || limite <= 0 || limite > 100) {
-                    limiteInvalido = true;
-                }
-            } else {
-                if (isNaN(limite) || limite <= 0) {
-                    processosInvalido = true;
-                }
-                limiteMax = limite;
-            }
-
-            parametros.push({
-                componente: componente,
-                limiteMin: limiteMin,
-                limiteMax: limiteMax
-            });
-        }
-
-        if (camposVazios) {
-            showMessage("Todos as métricas devem ter um valor de limite/contagem preenchido.");
-            return null;
-        }
-        if (limiteInvalido) {
-            showMessage("O limite para CPU, RAM e Disco deve ser um número válido entre 1 e 100.");
-            return null;
-        }
-        if (processosInvalido) {
-            showMessage("A contagem de processos (alerta) deve ser um número positivo.");
-            return null;
-        }
-
         var temCPU = false;
         var temRAM = false;
         var temDisco = false;
-        for (var i = 0; i < parametros.length; i++) {
-            if (parametros[i].componente == 'cpu') temCPU = true;
-            if (parametros[i].componente == 'ram') temRAM = true;
-            if (parametros[i].componente == 'disco') temDisco = true;
+        var encontrouAlgum = false;
+
+        var i = 0;
+        for (i = 0; i <= indiceParametro; i++) {
+            var compInput = document.getElementById('componente_item_' + i);
+            var limInput = document.getElementById('limite_item_' + i);
+
+            if (compInput != null && limInput != null) {
+                encontrouAlgum = true;
+
+                var componente = compInput.value.toLowerCase();
+                var limite = limInput.value;
+
+                if (limite == "" || isNaN(limite) || Number(limite) <= 0) {
+                    alert("Preencha valores válidos para todas as métricas.");
+                    return null;
+                }
+
+                var limiteMin = limite;
+                var limiteMax = 100;
+
+                if (componente == 'processos') {
+                    limiteMax = limite;
+                }
+
+                parametros.push({
+                    componente: componente,
+                    limiteMin: limiteMin,
+                    limiteMax: limiteMax
+                });
+
+                if (componente == 'cpu') {
+                    temCPU = true;
+                }
+                if (componente == 'ram') {
+                    temRAM = true;
+                }
+                if (componente == 'disco') {
+                    temDisco = true;
+                }
+            }
         }
 
-        if (!temCPU || !temRAM || !temDisco) {
-            showMessage("Para garantir o monitoramento, é obrigatório adicionar CPU, RAM e Disco ao modelo.");
+        if (encontrouAlgum == false) {
+            alert("Adicione pelo menos uma métrica ao modelo.");
+            return null;
+        }
+
+        if (temCPU == false || temRAM == false || temDisco == false) {
+            alert("É obrigatório adicionar CPU, RAM e Disco ao modelo.");
             return null;
         }
 
@@ -380,18 +442,19 @@
     }
 
     function cadastrarModelo() {
-        hideMessage();
-        var nomeModelo = input_nome_modelo.value;
-        var descricao = input_descricao.value;
+        var nomeModelo = document.getElementById('input_nome_modelo').value;
+        var descricao = document.getElementById('input_descricao').value;
         var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
 
         if (nomeModelo == "" || descricao == "") {
-            showMessage("Por favor, preencha os campos Nome e Descrição.");
+            alert("Por favor, preencha os campos Nome e Descrição.");
             return;
         }
 
         var parametros = obterParametrosDaTela();
-        if (parametros == null) return;
+        if (parametros == null) {
+            return;
+        }
 
         fetch("/modelo/cadastrarModelo", {
             method: "POST",
@@ -400,248 +463,37 @@
                 nomeModeloServer: nomeModelo,
                 descricaoServer: descricao,
                 parametrosServer: parametros,
-                fkEmpresaServer: idEmpresa,
-            }),
+                fkEmpresaServer: idEmpresa
+            })
         })
             .then(function (resposta) {
                 if (resposta.ok) {
-                    showMessage("Cadastro realizado com sucesso!", false);
+                    alert("Cadastro realizado com sucesso!");
                     setTimeout(function () {
                         window.location.reload();
                     }, 1500);
                 } else {
-                    console.error("Resposta não-OK:", resposta);
-                    showMessage("Erro 500: Falha ao cadastrar o modelo. Verifique o console do backend.");
+                    alert("Erro ao cadastrar modelo.");
                 }
             })
-            .catch(function (erro) {
-                console.error("#ERRO:", erro);
-                showMessage("Erro de conexão. Verifique sua rede e tente novamente.");
-            });
-    }
-
-    function popularDropdownComponentes() {
-        var select = document.getElementById('componente_master');
-        select.innerHTML = '<option value="">Selecione para adicionar...</option>';
-
-        if (valoresDefault.length === 0) {
-            console.error("Valores default não foram carregados, o dropdown ficará vazio.");
-            return;
-        }
-
-        for (var i = 0; i < valoresDefault.length; i++) {
-            var item = valoresDefault[i];
-            var option = document.createElement('option');
-            option.value = item.componente.toLowerCase();
-            option.text = item.componente.toUpperCase();
-            select.appendChild(option);
-        }
-    }
-
-
-    function fetchTipoParametro() {
-        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
-        return fetch("/modelo/buscarTipoParametro", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fkEmpresaServer: idEmpresa })
-        })
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
-            .then(function (data) {
-                console.log("Fetch 'buscarTipoParametro' OK:", data);
-            })
-            .catch(function (erro) {
-                console.log("Erro no fetch 'buscarTipoParametro':", erro);
-            });
-    }
-
-    function fetchDefaults() {
-        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
-        return fetch("/modelo/buscarDefaults", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fkEmpresaServer: idEmpresa })
-        })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    return resposta.json();
-                }
-                throw new Error("Endpoint 'buscarDefaults' falhou.");
-            })
-            .then(function (data) {
-                valoresDefault = data;
-                console.log("Valores Default carregados do banco:", valoresDefault);
-            })
-            .catch(function (erro) {
-                console.warn(erro.message + " Usando valores default fixos (hard-coded).");
-                valoresDefault = [
-                    { "componente": "cpu", "valor": 60 },
-                    { "componente": "ram", "valor": 70 },
-                    { "componente": "disco", "valor": 50 },
-                    { "componente": "processos", "valor": 500 }
-                ];
-            });
-    }
-
-    function abrirPopupModelo() {
-        document.getElementById('input_nome_modelo').value = "";
-        document.getElementById('input_descricao').value = "";
-        document.getElementById('btn_adicionar_parametro').disabled = true;
-        document.getElementById('parametros-container').innerHTML = "";
-        hideMessage();
-
-        document.getElementById('popup_titulo').innerText = "Cadastro de Modelo";
-        var btn = document.getElementById('popup_button');
-        btn.innerText = "Cadastrar Modelo";
-        btn.onclick = cadastrarModelo;
-
-        fetchDefaults()
-            .then(function () {
-                return fetchTipoParametro();
-            })
-            .then(function () {
-                popularDropdownComponentes();
-
-                popup = $("#popupmodelo");
-                popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-            });
-    }
-
-    function fecharPopupModelo() {
-        popup = $("#popupmodelo");
-        popup.css({ display: "flex", opacity: 1, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-
-        setTimeout(function () {
-            window.location.reload();
-        }, 1000)
-    }
-
-    function carregarDadosAprovados() {
-        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
-
-        fetch("/modelo/verificarAprovados", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idEmpresaServer: idEmpresa }),
-        }).then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (data) {
-                    aprovados = data;
-                    if (aprovados.length > 0) {
-                        gerarCardModelos();
-                    } else {
-                        nadaPorAquiModelos();
-                    }
-                })
-            } else {
-                console.log("Erro ao Buscar Dados!");
-            }
-        });
-    }
-
-    function nadaPorAquiModelos() {
-        div_aprovados.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
-    }
-
-    function gerarCardModelos() {
-        div_aprovados.innerHTML = "";
-        for (var i = 0; i < aprovados.length; i++) {
-            var modelo = aprovados[i];
-            var idDoModelo = modelo.idModelo;
-
-            if (idDoModelo == undefined) {
-                console.error("idModelo está undefined!", modelo);
-            }
-
-            div_aprovados.innerHTML += `
-            <div class="card-user" onclick="abrirPopupParaEditar(${idDoModelo})">
-                <div class="card-first">
-                    <div class="labels"><label id="first">Nome:</label><label class="label-item">${modelo.nome}</label></div>
-                    <div class="labels"><label id="first">Descrição:</label><label class="label-item">${modelo.descricao_arq}</label></div>
-                </div>
-                <div class="card-second">
-                    <div class="labels"><label id="first">Status:</label><label class="label-item">${modelo.status}</label></div>
-                </div>
-            </div>
-            `;
-        }
-    }
-
-
-    function abrirPopupParaEditar(idModelo) {
-        if (!idModelo) {
-            console.error("ID do modelo é inválido:", idModelo);
-            return;
-        }
-
-        document.getElementById('parametros-container').innerHTML = "";
-        hideMessage();
-
-        document.getElementById('popup_titulo').innerText = "Editar Modelo";
-        var btn = document.getElementById('popup_button');
-        btn.innerText = "Salvar Alterações";
-
-        btn.onclick = function () {
-            salvarAlteracoes(idModelo);
-        };
-
-        fetchDefaults()
-            .then(function () {
-                return fetchTipoParametro();
-            })
-            .then(function () {
-                return fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
-                    .then(function (res) {
-                        if (!res.ok) {
-                            throw new Error("Falha ao buscar dados do modelo");
-                        }
-                        return res.json();
-                    });
-            })
-            .then(function (dadosDoModelo) {
-
-                popularDropdownComponentes();
-
-                document.getElementById('input_nome_modelo').value = dadosDoModelo.info.nome;
-                document.getElementById('input_descricao').value = dadosDoModelo.info.descricao_arq;
-
-                for (var i = 0; i < dadosDoModelo.parametros.length; i++) {
-                    var param = dadosDoModelo.parametros[i];
-                    adicionarParametro(param.nome, param.limiteMin);
-                }
-
-                popup = $("#popupmodelo");
-                popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-
-            })
-            .catch(function (err) {
-                console.error("Erro ao buscar dados do modelo:", err);
-                showMessage("Não foi possível carregar os dados deste modelo.");
+            .catch(function () {
+                alert("Erro de conexão. Verifique sua rede e tente novamente.");
             });
     }
 
     function salvarAlteracoes(idModelo) {
-        hideMessage();
-        var nomeModelo = input_nome_modelo.value;
-        var descricao = input_descricao.value;
+        var nomeModelo = document.getElementById('input_nome_modelo').value;
+        var descricao = document.getElementById('input_descricao').value;
 
         if (nomeModelo == "" || descricao == "") {
-            showMessage("Por favor, preencha os campos Nome e Descrição.");
+            alert("Por favor, preencha os campos Nome e Descrição.");
             return;
         }
 
         var parametros = obterParametrosDaTela();
-        if (parametros == null) return;
+        if (parametros == null) {
+            return;
+        }
 
         fetch("/modelo/atualizarModelo", {
             method: "PUT",
@@ -651,24 +503,205 @@
                 nomeModeloServer: nomeModelo,
                 descricaoServer: descricao,
                 parametrosServer: parametros
-            }),
+            })
         })
             .then(function (resposta) {
                 if (resposta.ok) {
-                    showMessage("Modelo atualizado com sucesso!", false);
+                    alert("Modelo atualizado com sucesso!");
                     setTimeout(function () {
                         window.location.reload();
                     }, 1500);
                 } else {
-                    showMessage("Erro ao atualizar modelo. Tente novamente.");
+                    alert("Erro ao atualizar modelo. Tente novamente.");
                 }
             })
-            .catch(function (erro) {
-                console.error("#ERRO:", erro);
-                showMessage("Erro de conexão. Verifique sua rede e tente novamente.");
+            .catch(function () {
+                alert("Erro de conexão. Verifique sua rede e tente novamente.");
             });
     }
 
+    function carregarDadosAprovados() {
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        fetch("/modelo/verificarAprovados", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idEmpresaServer: idEmpresa })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (data) {
+                    aprovados = data;
+                    if (aprovados.length > 0) {
+                        gerarCardModelos();
+                    } else {
+                        nadaPorAquiModelos();
+                    }
+                });
+            } else {
+                nadaPorAquiModelos();
+            }
+        });
+    }
+
+    function nadaPorAquiModelos() {
+        var div = document.getElementById('div_aprovados');
+        div.innerHTML = `
+            <div class="card-nothing">
+                <h1>Sem Registros</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
+    }
+
+    function gerarCardModelos() {
+        var div = document.getElementById('div_aprovados');
+        div.innerHTML = "";
+        var i = 0;
+        for (i = 0; i < aprovados.length; i++) {
+            var modelo = aprovados[i];
+            var idDoModelo = modelo.idModelo;
+
+            div.innerHTML += `
+                <div class="card-user" onclick="abrirPopupParaEditar(${idDoModelo})">
+                    <div class="card-first">
+                        <div class="labels"><label id="first">Nome:</label><label class="label-item">${modelo.nome}</label></div>
+                        <div class="labels"><label id="first">Descrição:</label><label class="label-item">${modelo.descricao_arq}</label></div>
+                    </div>
+                    <div class="card-second">
+                        <div class="labels"><label id="first">Status:</label><label class="label-item">${modelo.status}</label></div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    function abrirPopupParaEditar(idModelo) {
+        if (idModelo == null) {
+            return;
+        }
+
+        document.getElementById('parametros-container').innerHTML = "";
+        indiceParametro = 0;
+
+        document.getElementById('popup_titulo').innerText = "Editar Modelo";
+        var btn = document.getElementById('popup_button');
+        btn.innerText = "Salvar Alterações";
+        btn.onclick = function () {
+            salvarAlteracoes(idModelo);
+        };
+
+        var idEmpresa = sessionStorage.getItem("ID_EMPRESA");
+
+        fetch("/modelo/buscarDefaults", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fkEmpresaServer: idEmpresa })
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (data) {
+                        valoresDefault = data;
+                        carregarSelectMetricas();
+
+                        fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
+                            .then(function (res) {
+                                if (!res.ok) {
+                                    alert("Não foi possível carregar os dados deste modelo.");
+                                } else {
+                                    res.json().then(function (dadosDoModelo) {
+
+                                        document.getElementById('input_nome_modelo').value = dadosDoModelo.info.nome;
+                                        document.getElementById('input_descricao').value = dadosDoModelo.info.descricao_arq;
+
+                                        indiceParametro = 0;
+                                        var i = 0;
+                                        for (i = 0; i < dadosDoModelo.parametros.length; i++) {
+                                            var param = dadosDoModelo.parametros[i];
+                                            adicionarParametro(param.nome, param.limiteMin);
+                                        }
+
+                                        var popup = $("#popupmodelo");
+                                        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                                    });
+                                }
+                            })
+                            .catch(function () {
+                                alert("Não foi possível carregar os dados deste modelo.");
+                            });
+                    });
+                } else {
+                    valoresDefault = [
+                        { "componente": "cpu", "valor": 60 },
+                        { "componente": "ram", "valor": 70 },
+                        { "componente": "disco", "valor": 50 },
+                        { "componente": "processos", "valor": 500 }
+                    ];
+                    carregarSelectMetricas();
+
+                    fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
+                        .then(function (res2) {
+                            if (!res2.ok) {
+                                alert("Não foi possível carregar os dados deste modelo.");
+                            } else {
+                                res2.json().then(function (dadosDoModelo2) {
+
+                                    document.getElementById('input_nome_modelo').value = dadosDoModelo2.info.nome;
+                                    document.getElementById('input_descricao').value = dadosDoModelo2.info.descricao_arq;
+
+                                    indiceParametro = 0;
+                                    var i2 = 0;
+                                    for (i2 = 0; i2 < dadosDoModelo2.parametros.length; i2++) {
+                                        var param2 = dadosDoModelo2.parametros[i2];
+                                        adicionarParametro(param2.nome, param2.limiteMin);
+                                    }
+
+                                    var popup2 = $("#popupmodelo");
+                                    popup2.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                                });
+                            }
+                        })
+                        .catch(function () {
+                            alert("Não foi possível carregar os dados deste modelo.");
+                        });
+                }
+            })
+            .catch(function () {
+                valoresDefault = [
+                    { "componente": "cpu", "valor": 60 },
+                    { "componente": "ram", "valor": 70 },
+                    { "componente": "disco", "valor": 50 },
+                    { "componente": "processos", "valor": 500 }
+                ];
+                carregarSelectMetricas();
+
+                fetch("/modelo/buscarModeloPorId?id=" + idModelo, { method: "GET" })
+                    .then(function (res3) {
+                        if (!res3.ok) {
+                            alert("Não foi possível carregar os dados deste modelo.");
+                        } else {
+                            res3.json().then(function (dadosDoModelo3) {
+
+                                document.getElementById('input_nome_modelo').value = dadosDoModelo3.info.nome;
+                                document.getElementById('input_descricao').value = dadosDoModelo3.info.descricao_arq;
+
+                                indiceParametro = 0;
+                                var i3 = 0;
+                                for (i3 = 0; i3 < dadosDoModelo3.parametros.length; i3++) {
+                                    var param3 = dadosDoModelo3.parametros[i3];
+                                    adicionarParametro(param3.nome, param3.limiteMin);
+                                }
+
+                                var popup3 = $("#popupmodelo");
+                                popup3.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+                            });
+                        }
+                    })
+                    .catch(function () {
+                        alert("Não foi possível carregar os dados deste modelo.");
+                    });
+            });
+    }
 </script>
 
 </html>
