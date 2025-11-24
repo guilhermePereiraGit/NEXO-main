@@ -397,36 +397,6 @@
 
     /*Usando*/
     let numeroTotens = 0;
-    var modelos = []
-    function carregarDadosModelo() {
-        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
-
-        fetch("/modelo/buscarModelos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresaServer: idEmpresa
-            }),
-        })
-            .then(resposta => {
-                if (resposta.ok) {
-                    return resposta.json();
-                } else {
-                    throw new Error("Erro na resposta do servidor");
-                }
-            })
-            .then(dados => {
-                for (let i = 0; i < dados.length; i++) {
-                    modelos.push(dados[i]);
-                }
-            })
-            .catch(erro => {
-                console.log(`#ERRO: ${erro}`);
-            });
-    }
-
     function abrirPopupTotem() {
         var options = ''
         for (var i = 0; i < modelos.length; i++) {
