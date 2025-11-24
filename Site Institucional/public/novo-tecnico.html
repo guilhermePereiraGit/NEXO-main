@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body onload="carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -516,37 +516,6 @@
         document.getElementById("input_qtd_de_totens").value = numeroTotens;
     }
 
-    var estados = []
-    function carregarEstados() {
-        fetch("/endereco/buscarEstados", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(function (resposta) {
-
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        estados = data;
-                        plotarEstadosSelect(estados)
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-    }
-
-    function plotarEstadosSelect(estados) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < estados.length; i++) {
-            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
-        }
-
-        estado_atuacao.innerHTML = option;
-    }
-
     /*Usando*/
     var regioes = [];
     function atualizarCampos() {
@@ -585,52 +554,6 @@
         }
 
         regiao_atuacao.innerHTML = option;
-    }
-
-    var zonas = []
-    function procurarZonas() {
-
-        var selectRegiao = document.getElementById("regiao_atuacao");
-        var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
-        const regiao = regiao_atuacao.value;
-
-        fetch("/endereco/buscarZonas", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                idRegiaoServer: regiao
-            }),
-        })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        zonas = data;
-                        if (zonas.length > 0) {
-                            plotarZonasSelect(zonas);
-                        } else {
-                            zona_atuacao.innerHTML = "";
-                        }
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-            });
-
-    }
-
-    function plotarZonasSelect(zonas) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < zonas.length; i++) {
-            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
-        }
-
-        zona_atuacao.innerHTML = option;
     }
 
     async function cadastrarEndereco() {
@@ -769,6 +692,32 @@
                     resposta.json().then(data => {
                         estados = data;
                         plotarEstadosSelect(estados)
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            });
+    }
+
+    var totens = []
+    function carregarTotens() {
+        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
+
+        fetch("/totem/buscarTotens", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa,
+                fkRegiaoServer: idRegiao
+            }),
+        })
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        
                     })
                 } else {
                     console.log("Erro ao Buscar Dados!");
@@ -945,7 +894,6 @@
             document.getElementById('waiting').style.display = 'none';
             document.getElementById('conteudo').style.display = 'block';
             document.getElementById('escolhaNew').style.display = 'block';
-            carregarModelos();
             carregarTotens();
             gerarGraficoLinha();
             buscarComponentes();

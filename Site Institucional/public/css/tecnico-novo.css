@@ -29,7 +29,7 @@ body {
 /* HEADER */
 header .header-container {
     background-color: var(--principal);
-    width: 150px;
+    width: 9.8vw;
     height: 100vh;
     padding: 40px;
     display: flex;
@@ -795,6 +795,7 @@ select {
 
 .dashboard .kpis {
     display: flex;
+    width: 87.5vw;
     justify-content: space-between;
 }
 
@@ -943,7 +944,7 @@ select {
 .grafico {
     background-color: white;
     margin-top: 10px;
-    width: 60%;
+    width: 48vw;
     border-radius: 10px;
 }
 
