@@ -206,6 +206,7 @@ function escolherRegiao(regiao, sigla) {
     carregarModelos();
     carregarTotens();
     fecharEscolha();
+    window.location.reload();
     carregarDados();
     gerarGraficoLinha();
 }
