@@ -212,11 +212,7 @@
                             </div>
                             <p>% de Totens em Alerta</p>
                         </div>
-                        <div class="list-totens">
-                            <div class="Totem">
-                                <p onclick="window.location.href='../barros/totem.html'"></p>
-                                <div class="color"></div>
-                            </div>
+                        <div class="list-totens" id="list-totens">
                         </div>
                     </div>
                     <div class="grafico">
@@ -246,6 +242,11 @@
             document.getElementById("second").style.color = "white";
             document.getElementById("fourth").style.color = "white";
             document.getElementById("box").style.display = "none";
+            sessionStorage.setItem('REGIAO_ESCOLHIDA', "")
+            sessionStorage.setItem('SIGLA_REGIAO', "")
+            div_totens = document.getElementById('list-totens');
+            div_totens.innerHTML = ``;
+
         } else if (escolha === 'fundo4') {
             document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
@@ -936,11 +937,11 @@
     }
 
     function plotarTotens(totens) {
-        div_totens = document.getElementById('totens');
+        div_totens = document.getElementById('list-totens');
         for (var i = 0; i < totens.length; i++) {
             div_totens.innerHTML += `
     <div class="Totem">
-    <h2>Totem ${totens[i].NomeTotem}</h2>
+    <h2>Totem ${totens[i].numMAC}</h2>
     <div class="color"></div>
     </div>
     `;

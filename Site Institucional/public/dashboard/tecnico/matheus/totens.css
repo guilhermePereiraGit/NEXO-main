@@ -1039,9 +1039,9 @@ select {
 }
 
 .dados .totens .list-totens .Totem {
-    gap: 10%;
     transition: 0.3s;
     cursor: pointer;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
