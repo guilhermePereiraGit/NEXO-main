@@ -391,7 +391,7 @@ header .header-navigation {
 .information {
     display: flex;
     flex-direction: row;
-    height: 17vh;
+    height: 21vh;
     width: 100vw;
     background-color: #c8c1ff;
     justify-content: space-between;
@@ -966,6 +966,7 @@ select {
     background-color: white;
     padding: 15px;
     width: 32.5%;
+    height: 25vh;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -1169,7 +1170,7 @@ select {
 /* CONTENT */
 .content .information h1 {
     font-weight: 500;
-    color: black;
+    color: #451c8b;
 }
 
 .content .information .title {

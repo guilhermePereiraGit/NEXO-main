@@ -940,12 +940,17 @@
         div_totens = document.getElementById('list-totens');
         for (var i = 0; i < totens.length; i++) {
             div_totens.innerHTML += `
-    <div class="Totem">
+    <div class="Totem" onclick="escolherTotem('${totens[i].numMAC}')">
     <h2>Totem ${totens[i].numMAC}</h2>
     <div class="color"></div>
     </div>
     `;
         }
+    }
+
+    function escolherTotem(numMAC) {
+        sessionStorage.setItem("MAC_TOTEM", numMAC)
+        window.location.href = '../barros/totem.html'
     }
 
     /*Usando*/
