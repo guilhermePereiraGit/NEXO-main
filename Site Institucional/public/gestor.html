@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Aprovação NEXO</title>
+    <title>Página de Cadastros de Totens</title>
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="dashboard/gestor/silva/modelos.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -17,83 +16,36 @@
 <body onload="carregarDadosAprovados()">
 
     <div class="container">
-        <header>
-            <div class="header-container">
-                <div class="header-menu">
-                    <div class="menu" id="menu" onclick="abrirMenu()">
-                        <i class="bi bi-list" id="icone"></i>
-                    </div>
-                </div>
+        <div class="nav-bar">
+            <div class="sair" style="margin-top: 40px;">
+                <div class="fundo" style="display: none;"></div>
 
-                <div class="header-navigation">
-                    <div class="home">
-                        <div class="fundo" style="display: block;"></div>
-                        <i class="bi bi-house" onclick="window.location.href = 'dashboard/gestor/silva/modelos.html'"
-                            style="color: #451c8b;"></i>
-                    </div>
-                    <div class="eficiencia">
-                        <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data"
-                            onclick="window.location.href = 'dashboard/gestor/gabriel/eficiencia.html'" id="second"></i>
-                    </div>
-                    <div class="modelos">
-                        <div class="fundo" id="fundo2" style="display: none;"></div>
-                        <i class="bi bi-clipboard-data" onclick="window.location.href = 'gestor.html'" id="hi"></i>
-                    </div>
-                    <div class="sair">
-                        <div class="fundo" style="display: none;"></div>
-                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
-                    </div>
-                </div>
-
-                <div class="header-help">
-                    <i class="bi bi-info-circle" onclick="abrirPassos()"></i>
-                </div>
+                <i class="bi bi-box-arrow-left" onclick="ativarPopup()" style="color: white; cursor: pointer;"></i>
             </div>
-            <div class="menu-extend" style="display: none;" id="extend">
-                <div class="infos-user">
-                    <h1 id="nome_user"></h1>
-                    <h2>Gestor de Operações</h2>
-                </div>
-                <div class="widgets">
-                    <p>Caso se depare com algum problema, entre em contato via:</p>
-                    <div class="email" style="margin-top: 20px;">
-                        <i class="bi bi-envelope"></i>
-                        <p>Email: nexoadm9328@outlook.com</p>
-                    </div>
-                    <div class="telefone" style="margin-top: 20px;">
-                        <i class="bi bi-telephone"></i>
-                        <p>Telefone: +55(11)98802-2449</p>
-                    </div>
-                </div>
-                <div class="jira-slack">
-                    <div class="card"
-                        onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-                        <img src="../../../assets/imgs/icon-jira.png">
-                        <h1>Jira</h1>
-                    </div>
-                    <div class="card"
-                        onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-                        <img src="../../../assets/imgs/icon-slack.png">
-                        <h1>Slack</h1>
-                    </div>
-                </div>
-            </div> 
-        </header>
+        </div>
+
         <div class="main">
             <div class="topo">
                 <h2 style="margin-left: 70px;">Modelos Cadastrados</h2>
                 <button onclick="abrirPopupModelo()" style="margin-right: 70px;">Adicionar Modelo</button>
             </div>
+
             <div class="baixo">
                 <div class="conteudo">
-                    <div class="div_aprovados" id="div_aprovados">
-                    </div>
+                    <div class="div_aprovados" id="div_aprovados"></div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="popup-logout" style="display: none;" id="popup-logout">
+        <div class="popup-content">
+            <i class="bi bi-x-lg" onclick="fecharPopup()" style="color: #451c8b;"></i>
+            <h1>Deseja Sair?</h1>
+            <div class="box-button">
+                <button onclick="window.location.href = 'login.html'">Fazer Logout</button>
+            </div>
+        </div>
+    </div>
     <div class="popup-cadastro" id="popupmodelo" style="display: none;">
         <div class="cadastro-content" style="height: auto; max-height: 85vh;">
 
@@ -114,7 +66,6 @@
                 </div>
 
                 <h1 style="margin-top: 20px;">Métricas de Monitoramento:</h1>
-
                 <p class="info-default">
                     Ao selecionar uma métrica e clicar em <strong><u>Adicionar Parâmetro</u></strong>, um valor padrão
                     será sugerido.
@@ -144,6 +95,7 @@
                 </div>
 
             </div>
+
             <div class="infos-final">
                 <div class="drop" style="width: 100%;">
                     <button class="cadastrar" id="popup_button" onclick="cadastrarModelo()">Cadastrar Modelo</button>
@@ -152,7 +104,10 @@
 
         </div>
     </div>
+
 </body>
+
+
 
 <script>
     var valoresDefault = [];
@@ -211,7 +166,6 @@
         var popup = $("#popupmodelo");
         popup.css({ display: "flex", opacity: 1, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
         setTimeout(function () {
-            window.location.reload();
         }, 1000);
     }
 
@@ -634,6 +588,19 @@
                 buscarModeloPorId();
             });
     }
+
+    function ativarPopup() {
+    var popup = $("#popup-logout");
+    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" })
+         .animate({ opacity: 1 }, 300);
+}
+
+function fecharPopup() {
+    var popup = $("#popup-logout");
+    popup.css({ display: "flex", opacity: 1, "pointer-events": "none" })
+         .animate({ opacity: 0 }, 300);
+}
+
 </script>
 
 </html>

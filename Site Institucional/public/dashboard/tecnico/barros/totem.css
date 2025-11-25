@@ -240,14 +240,14 @@ header .header-navigation .alert {
 /* KPIS */
 .conteudo {
     width: 90%;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
 }
 
 .conteudo .kpis {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1.2fr 1.6fr 1.2fr;
     gap: 20px;
 }
 
@@ -255,16 +255,6 @@ header .header-navigation .alert {
     background: #fff;
     border-radius: 10px;
     padding: 20px;
-}
-
-.conteudo .kpis .kpi h1 {
-    color: var(--principal);
-}
-
-.conteudo .kpis .kpi .titulo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .conteudo .kpis .kpi .dado {
@@ -284,36 +274,221 @@ header .header-navigation .alert {
 }
 
 .conteudo .kpis .kpi .titulo h2 {
-    font-size: 20px;
+    font-size: 18px;
 }
 
-/* LEGENDA DE DADOS */
-.dados {
+.alerta {
+    border-left: 8px solid #ff3131; 
+}
+
+.alerta .titulo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.alerta .titulo .idTotem {
+    color: black;
+}
+
+.alerta .titulo h1 {
+    color: var(--principal);
+}
+
+.alerta .dado .grid-alerta {
     display: grid;
-    grid-template-columns: 1.2fr 2fr;
-    gap: 20px;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
 }
 
-.dados .tabela-processos {
-    background-color: white;
-    height: 45vh;
+.alerta .dado .grid-alerta img {
+    width: 100%;
+}
+
+.alerta .dado .grid-alerta .tituloAlerta .grauAlerta {
+    color: black;
+    font-size: 25px;
+}
+
+.alerta .dado .grid-alerta .tituloAlerta {
+    margin-left: 10px;
+}
+
+.alerta .dado .grid-alerta .tituloAlerta h1 {
+    font-size: 25px;
+    color: var(--principal);
+}
+
+.alerta .dado h2 {
+    color: var(--principal);
+    font-size: 18px;
+    text-align: center;
     margin-top: 10px;
-    padding: 20px;
-    border-radius: 10px;
+}
+
+.infos-totem .titulo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.infos-totem .titulo h1 {
+    color: var(--principal);
+}
+
+.infos-totem .dado {
+    width: 100%;
+}
+
+.infos-totem .dado ul {
+    list-style: none;
+    font-weight: 600;
+    padding: 0;
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 30px;
+}
+
+.infos-totem ul li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 15px;
+    color: black;
+}
+
+.infos-totem ul li p {
+    margin-left: 6px;
+    color: var(--principal);
+}
+
+.uptime {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-.tabela-processos table {
+.uptime .titulo {
+    text-align: center;
+}
+
+.uptime .titulo h1 {
+    color: var(--principal);
+    font-size: 22px;
+}
+
+.uptime .titulo h2 {
+    font-size: 16px;
+    color: black;
+    opacity: 0.8;
+}
+
+.uptime .dado h1 {
+    margin-top: 5px;
+    font-size: 38px;
+    color: var(--principal);
+    font-weight: 600;
+}
+
+.uptime .dado h2 {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 18px;
+    color: var(--principal);
+}
+
+.dados {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    height: 45vh;
+}
+
+.processos {
+    margin-top: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.processos .titulo {
+    text-align: center;
+}
+
+.processos .titulo h1 {
+    color: var(--principal);
+    font-size: 22px;
+}
+
+.processos .titulo h2 {
+    font-size: 18px;
+    color: black;
+}
+
+.tabela {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;  
+}
+
+.tabela-processos {
+    margin-top: 10px;
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    table-layout: fixed;
+    text-align: center;
     font-size: 18px;
 }
 
 .tabela-processos thead {
-    background: var(--contraste);
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tabela-processos thead th {
+    text-align: center;
+    font-size: 18px;
+    color: var(--principal);
+    background-color: var(--contraste);
+}
+
+.tabela-processos thead .direita {
+    border-top-left-radius: 10px;
+}
+
+.tabela-processos thead .esquerda {
+    border-top-right-radius: 10px;
+}
+
+.tabela-processos tbody {
+    display: block;
+    width: 100%;
+    height: 20vh;
+    overflow: auto;
+    border: solid var(--contraste) 5px;
+}
+
+.tabela-processos tbody tr {
+    display: table;
+    font-size: 16px;
+    width: 100%;
+    table-layout: fixed;
+    background: #f3f3ff;
 }
 
 .tabela-processos th, 
@@ -321,8 +496,8 @@ header .header-navigation .alert {
     padding: 10px;
 }
 
-.tabela-processos tbody tr:nth-child(even) {
-    background: #f4f4f4;
+.tabela-processos td {
+    border-bottom: solid var(--contraste) 2px;
 }
 
 /* GRÁFICO DE LINHA */

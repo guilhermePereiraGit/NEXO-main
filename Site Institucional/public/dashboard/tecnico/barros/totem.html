@@ -95,55 +95,126 @@
             </div>
             <div class="conteudo" id="conteudo">
                 <div class="kpis">
-                    <div class="kpi">
+                    <div class="alerta kpi">
                         <div class="titulo">
-                            <h1>Total de Totens</h1>
-                            <h2>da Regiao</h2>
+                            <h1>Totem: <h1 class="idTotem">ABC12123</h1>
+                            </h1>
                         </div>
                         <div class="dado">
-                            <h1>200</h1>
-                            <h2>10% do Total</h2>
+                            <div class="grid-alerta">
+                                <img src="../../../assets/imgs/icon-alerta.png" alt="">
+                                <div class="tituloAlerta">
+                                    <h1>Grau do alerta: <h1 class="grauAlerta">Muito Perigoso</h1>
+                                    </h1>
+                                </div>
+                            </div>
+                            <h2>Causa: Consumo excessivo constante de CPU</h2>
                         </div>
                     </div>
-                    <div class="kpi">
+                    <div class="infos-totem kpi">
                         <div class="titulo">
-                            <h1>Total de Totens</h1>
-                            <h2>da Regiao</h2>
+                            <h1>Informações gerais</h1>
                         </div>
                         <div class="dado">
-                            <h1>200</h1>
-                            <h2>10% do Total</h2>
+                            <ul>
+                                <li>MAC: <p>1547240279279939</p>
+                                </li>
+                                <li>Modelo: <p>AA0123</p>
+                                </li>
+                                <li>Status: <p>Ligado</p>
+                                </li>
+                                <li>CEP: <p>00222-333</p>
+                                </li>
+                                <li>Telefone: <p>(11)99993-4454</p>
+                                </li>
+                                <li>Cidade: <p>São Paulo</p>
+                                </li>
+                                <li>Bairro: <p>Jardins</p>
+                                </li>
+                                <li>Rua: <p>Rua Tavares</p>
+                                </li>
+                                <li>Número: <p>34</p>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="kpi">
+                    <div class="uptime kpi">
                         <div class="titulo">
-                            <h1>Total de Totens</h1>
-                            <h2>da Regiao</h2>
+                            <h1>Tempo em Uptime</h1>
+                            <h2>Último reinício feito há: </h2>
                         </div>
+
                         <div class="dado">
-                            <h1>200</h1>
-                            <h2>10% do Total</h2>
+                            <h1 id="valor-uptime">3d 14h</h1>
+                            <h2>Reinício recomendado em 20 dias ou mais em operação</h2>
                         </div>
                     </div>
                 </div>
                 <div class="dados">
-                    <div class="tabela-processos">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>CPU</th>
-                                    <th>RAM</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>chrome.exe</td>
-                                    <td>25%</td>
-                                    <td>512MB</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="processos kpi">
+                        <div class="titulo">
+                            <h1>Top 5 Processos</h1>
+                            <h2>Consumindo RAM e CPU</h2>
+                        </div>
+                        <div class="tabela">
+                            <table class="tabela-processos">
+                                <thead>
+                                    <tr>
+                                        <th class="direita">Nome</th>
+                                        <th>CPU</th>
+                                        <th class="esquerda">RAM</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>chrome.exe</td>
+                                        <td>25%</td>
+                                        <td>512 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>node.exe</td>
+                                        <td>11%</td>
+                                        <td>210 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>system.exe</td>
+                                        <td>3%</td>
+                                        <td>95 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>discord.exe</td>
+                                        <td>8%</td>
+                                        <td>330 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>system.exe</td>
+                                        <td>3%</td>
+                                        <td>95 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>discord.exe</td>
+                                        <td>8%</td>
+                                        <td>330 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>system.exe</td>
+                                        <td>3%</td>
+                                        <td>95 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>discord.exe</td>
+                                        <td>8%</td>
+                                        <td>330 MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>system.exe</td>
+                                        <td>3%</td>
+                                        <td>95 MB</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="graficos">
                         <div class="componente"></div>
