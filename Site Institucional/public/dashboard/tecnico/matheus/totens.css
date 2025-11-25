@@ -1,0 +1,1682 @@
+:root {
+    --principal: #451c8b;
+    --contraste: #c8c1ff;
+    --fundo: #eeecff;
+}
+
+/* TUDO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--fundo);
+}
+
+.tudo {
+    display: flex;
+}
+
+/* HEADER */
+header .header-container {
+    background-color: var(--principal);
+    width: 9.8vw;
+    height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+header .header-container i {
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    z-index: 900;
+    transition: 0.3s;
+}
+
+#menu {
+    transition: 0.3s;
+}
+
+#menu:hover {
+    transform: scale(1.1);
+}
+
+/* NAVEGAÇÃO DO HEADER */
+
+header .header-navigation .cadastrar-totens,
+header .header-navigation .dashboard,
+header .header-navigation .dashboard-agenda,
+header .header-navigation .sair {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 13vh;
+}
+
+header .icones {
+    display: flex;
+    flex-direction: column;
+    padding-top: 5vh;
+    padding-bottom: 10vh;
+}
+
+/* ANIMAÇÃO DE NAVEGAÇÃO */
+.fundo {
+    position: absolute;
+    height: 13vh;
+    width: 150px;
+    left: 0;
+    background-color: var(--contraste);
+    z-index: 1;
+    transform-origin: right;
+    animation: expandirEsquerda 0.5s ease forwards;
+}
+
+/* POPUP PARA ESCOLHA DE REGIÃO */
+.popup-escolha {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-escolha .escolha-content {
+    width: 50%;
+    height: 80vh;
+    background-color: white;
+    padding: 30px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-escolha .escolha-content i {
+    font-size: 30px;
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content h1 {
+    color: var(--principal);
+    font-weight: 500;
+}
+
+.popup-escolha .escolha-content .initial-escolha {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box-regiao {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box-regiao select {
+    border: 1px solid var(--principal);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.popup-escolha .escolha-content .priorizar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    height: 45vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .aguardando p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA PRODUÇÃO */
+.popup-escolha .escolha-content .producao {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    height: 45vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .producao h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .producao p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA AS REGIÕES */
+.popup-escolha .escolha-content .regioes {
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    overflow: auto;
+    margin-top: 30px;
+}
+
+.popup-escolha .escolha-content .regioes .regiao {
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.popup-escolha .escolha-content .regioes .regiao:hover {
+    background-color: var(--fundo);
+}
+
+.popup-escolha .escolha-content .regioes .regiao h1 {
+    font-size: 25px;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar h3 {
+    font-size: 25px;
+    color: var(--principal);
+}
+
+/* POPUP DE PASSO À PASSO */
+.popup-passos {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-passos .passos-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+@keyframes expandirEsquerda {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherDireita {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ANIMAÇÃO DE MENU */
+.menu-extend {
+    width: 30%;
+    top: 0;
+    left: 150px;
+    background-color: var(--principal);
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    animation: expandirDireita 0.5s ease forwards;
+    transform-origin: left;
+    border-left: 1px solid var(--contraste);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+@keyframes expandirDireita {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherEsquerda {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* MENU EXTEND */
+.menu-extend .jira-slack {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-extend .jira-slack .card-jira-slack {
+    display: flex;
+    gap: 10px;
+    width: 50%;
+    padding: 20px;
+    background-color: var(--contraste);
+    border-radius: 10px;
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu-extend .jira-slack .card-jira-slack:hover {
+    background-color: white;
+}
+
+.menu-extend .jira-slack .card-jira-slack img {
+    width: 33%;
+}
+
+.menu-extend .widgets {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 5px;
+}
+
+.menu-extend .widgets .email,
+.menu-extend .widgets .telefone {
+    font-size: 20px;
+}
+
+.menu-extend .widgets .email i,
+.menu-extend .widgets .telefone i {
+    color: white;
+}
+
+.menu-extend .widgets p {
+    color: var(--contraste);
+    font-size: 18px;
+    text-align: justify;
+}
+
+.menu-extend .infos-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.menu-extend .infos-user h1 {
+    font-weight: 500;
+    color: white;
+}
+
+.menu-extend .infos-user h2 {
+    font-weight: 500;
+    color: var(--contraste);
+}
+
+header .header-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* CONTENT */
+.content {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vw;
+}
+
+.information {
+    display: flex;
+    flex-direction: row;
+    height: 17vh;
+    width: 100vw;
+    background-color: #c8c1ff;
+    justify-content: space-between;
+    align-items: center;
+    color: #451c8b;
+}
+
+/*BOX'S*/
+.box {
+    height: 78.5vh;
+    width: 88vw;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 28px;
+    padding: 5px;
+}
+
+.box .text {
+    width: 70%;
+    text-align: center;
+}
+
+.box .text h1 {
+    color: var(--principal);
+}
+
+.box .text p {
+    font-size: 20px;
+}
+
+.box .text img {
+    width: 20%;
+    margin-top: 50px;
+}
+
+.box .waiting {
+    display: none;
+}
+
+.waiting {
+    padding: 30px;
+}
+
+.waiting .box {
+    height: 77vh;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.waiting .box .text {
+    width: 70%;
+    text-align: center;
+}
+
+.waiting .box .text h1 {
+    color: var(--principal);
+}
+
+.waiting .box .text p {
+    font-size: 20px;
+}
+
+.waiting .box .text img {
+    width: 20%;
+    margin-top: 50px;
+}
+/*CADASTRAR TOTENS*/
+.popuptotem,
+.popupmodelo,
+.popupusuario {
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.375);
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    display: none;
+    padding-top: 10%;
+}
+
+.cima {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cima h1 {
+    color: var(--primaria);
+    font-size: 40px;
+    margin: 0;
+}
+
+.cima button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cima button:hover {
+    transform: scale(1.05);
+}
+
+.card {
+    background-color: white;
+    height: 75vh;
+    width: 90%;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px var(--primaria);
+}
+
+.cima {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cima h1 {
+    color: var(--primaria);
+    font-size: 40px;
+    margin: 0;
+}
+
+#botao-popup{
+    width: 300px;
+    height: 5vh;
+    border-radius: 20px;
+    padding: 15px;
+    border: 2px solid var(--principal);
+    color: rgb(255, 255, 255);
+    background-color: var(--principal);
+    font-size: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.baixo {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.parametros-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 10px;
+}
+
+.parametros-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.parametros-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.parametros-scroll::-webkit-scrollbar-thumb {
+    background: var(--primaria);
+    border-radius: 10px;
+}
+
+.parametros-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primaria-dark);
+}
+
+.totens-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.totens-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar-thumb {
+    background: var(--primaria);
+    border-radius: 10px;
+}
+
+.totens-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primaria-dark);
+}
+
+.totens-scroll input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.baixo .item-card {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.baixo .item-card label {
+    color: var(--primaria);
+    font-size: 25px;
+    font-weight: bold;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+.baixo .item-card label:not(:first-child) {
+    border: 2px solid var(--primaria);
+    padding: 12px 15px;
+    border-radius: 10px;
+    flex: 1;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.baixo .item-card input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    min-width: 0;
+}
+
+#cargos,
+#regiao_atuacao,
+#estado_atuacao,
+#zona_atuacao,
+.componentes,
+#input_vies,
+#input_modelos {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.part-dois {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+}
+
+.part-dois .item-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+}
+
+.part-dois .item-card input[type="number"] {
+    max-width: 80px;
+}
+
+.part-dois .item-card label {
+    min-width: fit-content;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.part-dois .item-card label:not(:first-child) {
+    border: 2px solid var(--primaria);
+    padding: 12px 15px;
+    border-radius: 10px;
+    flex: 1;
+    font-weight: normal;
+    font-size: 20px;
+    min-width: 0;
+    white-space: normal;
+}
+
+.part-dois .cadastrar {
+    flex: 1;
+    background-color: var(--primaria);
+    border-radius: 10px;
+    border: 2px solid var(--primaria);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 10px;
+    height: 30px;
+}
+
+.part-dois .cadastrar:hover,
+.part-dois-special .gerar-senha:hover {
+    background-color: white;
+    color: var(--primaria);
+}
+
+.part-dois-special {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+}
+
+.part-dois-special>.item-card:first-child {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.part-dois-special>.item-card:first-child label {
+    color: var(--primaria);
+    font-size: 25px;
+    font-weight: bold;
+    min-width: 100px;
+}
+
+.part-dois-special>.item-card:first-child input {
+    border: 2px solid var(--primaria);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+    flex: 1;
+}
+
+.part-dois-special .gerar-senha {
+    background-color: var(--primaria);
+    border-radius: 0 10px 10px 0;
+    border: 2px solid var(--primaria);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 12px 20px;
+    white-space: nowrap;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.part-dois-special>.item-card:last-child {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.part-dois-special>.item-card:last-child label {
+    color: var(--primaria);
+    font-size: 25px;
+    font-weight: bold;
+    min-width: 150px;
+}
+
+#cargos,
+#regiao_atuacao,
+#estado_atuacao,
+#zona_atuacao,
+.componentes,
+#input_vies,
+#input_modelos {
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #8b5cf6;
+    border-radius: 10px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg fill='%238b5cf6' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+    background-color: #fff;
+    background-size: 20px;
+}
+
+.part1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.baixo>label {
+    color: var(--primaria);
+    font-size: 16px;
+    margin-top: -10px;
+}
+
+select {
+    cursor: pointer;
+}
+
+.linha-totem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.botao-lixeira {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #a57df3;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-lixeira:hover {
+    color: #f03f3f;
+}
+/*MORE*/
+.more {
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.more button {
+    width: 300px;
+    height: 10vh;
+    border-radius: 20px;
+    border: 2px solid var(--primaria);
+    color: white;
+    background-color: var(--primaria);
+    font-size: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+@media (min-width: 1025px) {
+    .card {
+        width: 60%;
+        height: 75vh;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 1024px) {
+    .card {
+        width: 75%;
+        height: 80vh;
+        overflow-y: auto;
+    }
+
+    .more button {
+        width: 300px;
+        height: 8vh;
+        font-size: 20px;
+    }
+
+    .totens-scroll {
+        max-height: 220px;
+    }
+}
+
+/*DIV APROVADOS*/
+
+#div_aprovados {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow: auto;
+}
+
+#div_aprovados .nada {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    height: 80vh;
+}
+
+#div_aprovados h1 {
+    color: var(--principal);
+    font-size: 40px;
+}
+
+/*Card nothing*/
+.card-nothing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primaria);
+    height: 55vh;
+    border-radius: 20px;
+}
+
+.card-nothing p{
+    font-size: 20px;
+}
+
+.cadastrar-totens {
+    display: flex;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#segundo {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    flex-direction: column;
+}
+
+.cadastrar-totens button {
+    width: 250px;
+    height:7vh;
+    border-radius: 20px;
+    border: 2px solid var(--principal);
+    color: white;
+    background-color: var(--principal);
+    font-size: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.more button:hover {
+    transform: scale(1.01);
+    background-color: transparent;
+    color: var(--principal);
+}
+
+/*DASHBOARD*/
+.dashboard {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.dashboard .kpis {
+    display: flex;
+    width: 87.5vw;
+    justify-content: space-between;
+}
+
+.dashboard .kpis .kpi {
+    background-color: white;
+    padding: 15px;
+    width: 32.5%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard .kpis .kpi h1 {
+    color: var(--principal);
+}
+
+.dashboard .kpis .kpi .titulo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard .kpis .kpi .dado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard .kpis .kpi .dado h1 {
+    font-size: 40px;
+    color: var(--principal);
+}
+
+.dashboard .kpis .kpi .titulo h1 {
+    font-size: 25px;
+}
+
+.dashboard .kpis .kpi .titulo h2 {
+    font-size: 20px;
+}
+
+/* LEGENDA DE DADOS */
+.dados {
+    display: flex;
+    gap: 10px;
+}
+
+.dados .totens {
+    background-color: white;
+    width: 40%;
+    height: 51.3vh;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dados .totens .legenda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dados .totens .legenda p {
+    color: var(--principal);
+}
+
+.dados .totens .list-totens {
+    margin-top: 30px;
+    height: 38vh;
+    overflow: auto;
+    width: 85%;
+}
+
+.dados .totens .list-totens .Totem {
+    gap: 10%;
+    transition: 0.3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dados .totens .list-totens .Totem:hover {
+    background-color: var(--fundo);
+}
+
+.dados .totens .list-totens .Totem p {
+    font-size: 20px;
+}
+
+.dados .totens .list-totens .Totem .color {
+    height: 1.7vh;
+    width: 25%;
+    border-radius: 20px;
+    background-color: #ff3131;
+}
+
+.barra-legenda {
+    display: flex;
+    border-radius: 50px;
+    width: fit-content;
+    height: 7vh;
+    align-items: center;
+    font-weight: bold;
+}
+
+.item {
+    padding: 8px 18px;
+    color: var(--principal);
+    text-align: center;
+}
+
+.item:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+.item:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.ione {
+    background-color: #65fa8f;
+}
+
+.itwo {
+    background-color: #fada64;
+}
+
+.ithree {
+    background-color: #f98a25;
+}
+
+.ifour {
+    background-color: #ff3131;
+}
+
+/* GRÁFICO DE LINHA */
+.grafico {
+    background-color: white;
+    margin-top: 10px;
+    width: 48vw;
+    border-radius: 10px;
+}
+
+/* POPUP PARA LOGOUT */
+.popup-logout {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-logout .popup-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-logout .popup-content i {
+    font-size: 30px;
+    color: var(--principal);
+    cursor: pointer;
+}
+
+.popup-logout .popup-content h1 {
+    color: var(--principal);
+    text-align: center;
+}
+
+.popup-logout .popup-content button {
+    padding: 30px;
+    font-size: 20px;
+    width: 90%;
+    background-color: var(--principal);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.popup-logout .popup-content .box-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+.box-button a{
+    color: white;
+    text-decoration: none;
+}
+
+/* CONTENT */
+.content .information h1 {
+    font-weight: 500;
+    color: black;
+}
+
+.content .information .title {
+    display: block;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 45px;
+}
+
+.content .information .title p {
+    font-size: 25px;
+    color: var(--principal);
+    font-weight: bold;
+}
+
+.content .information .alterar-regiao i {
+    cursor: pointer;
+}
+
+.content .information .alterar-regiao {
+    margin-top: 10px;
+    font-size: 35px;
+    color: var(--principal);
+}
+.card-user {
+    flex: 1 1 calc(50% - 40px); 
+    max-width: 50%;
+    box-sizing: border-box;
+    font-size: 20px;
+    padding: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between; 
+    transition: 0.3s;
+    width: auto; 
+    border: none; 
+    flex-direction: column;
+}
+
+
+.card-user:hover {
+    background-color: var(--fundo); 
+}
+
+.card-user .card-first,
+.card-user .card-second {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    align-items: flex-start;
+}
+
+.card-second button {
+    width: 30vh;
+    border-radius: 20px;
+    font-size: 20px;
+    border: solid 2px var(--primaria);
+    align-self: flex-end;
+    cursor: pointer;
+    justify-content: center;
+}
+/*teste*/
+
+@media (max-width: 768px) {
+
+    .popuptotem,
+    .popupmodelo,
+    .popupusuario {
+        padding: 15px;
+        align-items: center;
+    }
+
+    .card {
+        width: 95%;
+        max-width: 600px;
+        height: auto;
+        max-height: 90vh;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .cima h1 {
+        font-size: 24px;
+    }
+
+    .cima button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .more {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .more h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .more button {
+        width: 100%;
+        height: 55px;
+        font-size: 17px;
+    }
+
+    .baixo {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .baixo .part-dois {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: none;
+        padding: 0;
+        border: none;
+    }
+
+    .baixo .part-dois .item-card {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 15px;
+        min-width: auto;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        padding: 10px 12px;
+        font-size: 15px;
+        border: 2px solid var(--primaria);
+        border-radius: 10px;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        background: rgba(139, 92, 246, 0.03);
+    }
+
+    .baixo .part-dois .item-card input {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .baixo .part-dois .item-card select {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    #cargos,
+    #regiao_atuacao,
+    .componentes,
+    #estado_atuacao,
+    #zona_atuacao,
+    #input_vies,
+    #input_modelos {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .baixo>.part-dois:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .baixo>.part-dois:last-child .cadastrar {
+        width: 100%;
+        font-size: 17px;
+        padding: 13px;
+        height: auto;
+    }
+
+    .part-dois-special {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: none;
+        padding: 0;
+    }
+
+    .part-dois-special>.item-card {
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .part-dois-special>.item-card label {
+        font-size: 16px;
+    }
+
+    .part-dois-special>.item-card input {
+        font-size: 15px;
+        padding: 10px;
+        border: 2px solid var(--primaria);
+        border-radius: 10px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 14px;
+        padding: 10px 15px;
+        height: auto;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    .parametros-scroll {
+        max-height: 280px;
+    }
+
+    .totens-scroll {
+        max-height: 250px;
+        overflow-y: auto;
+        padding-right: 5px;
+        gap: 10px;
+    }
+
+    .totens-scroll input {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .linha-totem {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+
+    .linha-totem input {
+        flex: 1;
+    }
+
+    .botao-lixeira {
+        font-size: 20px;
+        margin: 0;
+        flex-shrink: 0;
+        padding: 5px;
+        background: rgba(239, 68, 68, 0.1);
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .botao-lixeira:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    .card-user {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .card-first,
+    .card-second {
+        width: 100%;
+    }
+
+    .labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .labels label {
+        font-size: 15px;
+    }
+
+    .labels .label-item {
+        font-size: 15px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .buttons button {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 96%;
+        padding: 18px;
+    }
+
+    .cima h1 {
+        font-size: 21px;
+    }
+
+    .more h1 {
+        font-size: 20px;
+    }
+
+    .more button {
+        height: 52px;
+        font-size: 16px;
+    }
+
+    .baixo .part-dois .item-card {
+        grid-template-columns: 95px 1fr;
+        gap: 8px;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 14px;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        font-size: 14px;
+        padding: 9px 10px;
+        min-height: 38px;
+    }
+
+    .baixo .part-dois .item-card input,
+    .baixo .part-dois .item-card select {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    #cargos,
+    #regiao_atuacao,
+    #estado_atuacao,
+    #zona_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .baixo>.part-dois:last-child .cadastrar {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .part-dois-special>.item-card {
+        grid-template-columns: 85px 1fr auto;
+    }
+
+    .part-dois-special>.item-card label {
+        font-size: 15px;
+    }
+
+    .part-dois-special>.item-card input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .part-dois-special .gerar-senha {
+        font-size: 13px;
+        padding: 9px 12px;
+    }
+
+    .parametros-scroll {
+        max-height: 230px;
+    }
+
+    .totens-scroll {
+        max-height: 200px;
+    }
+
+    .totens-scroll input {
+        font-size: 14px;
+        padding: 9px;
+    }
+
+    .linha-totem {
+        gap: 8px;
+    }
+
+    .botao-lixeira {
+        font-size: 18px;
+    }
+
+    .baixo>label {
+        font-size: 13px;
+    }
+
+    .card-user {
+        padding: 12px;
+    }
+
+    .labels {
+        gap: 6px;
+    }
+
+    .labels label,
+    .labels .label-item {
+        font-size: 13px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .buttons button {
+        width: 100%;
+        font-size: 13px;
+        padding: 9px;
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .cima h1 {
+        font-size: 19px;
+    }
+
+    .more h1 {
+        font-size: 18px;
+    }
+
+    .more button {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .baixo .part-dois .item-card {
+        grid-template-columns: 80px 1fr;
+    }
+
+    .baixo .part-dois .item-card label {
+        font-size: 13px;
+    }
+
+    .baixo .part-dois .item-card label:not(:first-child) {
+        font-size: 13px;
+        padding: 8px;
+        min-height: 36px;
+    }
+
+    .baixo .part-dois .item-card input,
+    .baixo .part-dois .item-card select {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    #cargos,
+    #regiao_atuacao,
+    #estado_atuacao,
+    #zona_atuacao,
+    .componentes,
+    #input_vies,
+    #input_modelos {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .baixo>.part-dois:last-child .cadastrar {
+        font-size: 15px;
+        padding: 11px;
+    }
+
+    .part-dois-special>.item-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .part-dois-special .gerar-senha {
+        width: 100%;
+    }
+
+    .totens-scroll {
+        max-height: 170px;
+    }
+
+    .totens-scroll input {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .parametros-scroll {
+        max-height: 200px;
+    }
+
+    .botao-lixeira {
+        font-size: 16px;
+    }
+
+    .labels label,
+    .labels .label-item {
+        font-size: 12px;
+    }
+
+    .buttons button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
