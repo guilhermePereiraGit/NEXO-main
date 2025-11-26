@@ -13,47 +13,111 @@
     <link rel="stylesheet" href="./css/gestor_unificado.css">
 </head>
 
-<body onload="carregarDadosAprovados()">
+<body onload="carregarDadosUser(); carregarDadosAprovados()">
 
-    <div class="container">
-        <div class="nav-bar">
-            <div class="sair" style="margin-top: 40px;">
-                <div class="fundo" style="display: none;"></div>
+    <div class="tudo">
+        <header>
+            <div class="header-container">
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenu()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
 
-                <i class="bi bi-box-arrow-left" onclick="ativarPopup()" style="color: white; cursor: pointer;"></i>
+                <div class="header-navigation">
+                    <div class="home">
+                        <div class="fundo" style="display: block;"></div>
+                        <i class="bi bi-house" onclick="window.location.reload()" style="color: #451c8b;"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-eye" onclick="window.location.href = '#'"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-clipboard-data" onclick="window.location.href = '../gabriel/eficiencia.html'"></i>
+                    </div>
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+                    </div>
+                </div>
+
+                <div class="header-help">
+                    <i class="bi bi-info-circle" onclick="abrirPassos()"></i>
+                </div>
             </div>
-        </div>
 
-        <div class="main">
-            <div class="topo">
-                <h2 style="margin-left: 70px;">Modelos Cadastrados</h2>
-                <button onclick="abrirPopupModelo()" style="margin-right: 70px;">Adicionar Modelo</button>
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1 id="nome_user"></h1>
+                    <h2>Gestor de Operações</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card" onclick="window.location.href='https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card" onclick="window.location.href='https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
             </div>
+        </header>
 
-            <div class="baixo">
-                <div class="conteudo">
-                    <div class="div_aprovados" id="div_aprovados"></div>
+        <div class="popup-logout" style="display: none;" id="popup-logout">
+            <div class="popup-content">
+                <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
+                <h1>Deseja Sair?</h1>
+                <div class="box-button">
+                    <button onclick="window.location.href='login.html'">Fazer Logout</button>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="popup-logout" style="display: none;" id="popup-logout">
-        <div class="popup-content">
-            <i class="bi bi-x-lg" onclick="fecharPopup()" style="color: #451c8b;"></i>
-            <h1>Deseja Sair?</h1>
-            <div class="box-button">
-                <button onclick="window.location.href = 'login.html'">Fazer Logout</button>
+
+        <div class="popup-passos" style="display: none;" id="popup-passos">
+            <div class="passos-content">
+                <i class="bi bi-x-lg" onclick="fecharPassos()" style="float: right; font-size: 30px; color: #451c8b; cursor: pointer;"></i>
+                <h1 style="text-align: center; color: #451c8b; margin-top: 40px;">Ajuda</h1>
+                <p style="margin-top: 20px; text-align: center;">Área de gerenciamento de modelos de totens.</p>
             </div>
         </div>
-    </div>
+
+        <div class="content">
+            <div class="information">
+                <div class="title">
+                    <p>Modelos Cadastrados</p>
+                </div>
+                <div class="alterar-regiao">
+                    <button onclick="abrirPopupModelo()">Adicionar Modelo</button>
+                </div>
+            </div>
+
+            <div class="conteudo" id="conteudo">
+                <div class="div_aprovados" id="div_aprovados"></div>
+            </div>
+        </div>
+
+    </div> 
     <div class="popup-cadastro" id="popupmodelo" style="display: none;">
-        <div class="cadastro-content" style="height: auto; max-height: 85vh;">
+        <div class="cadastro-content">
 
             <i class="bi bi-x-lg" onclick="fecharPopupModelo()"></i>
             <h1 id="popup_titulo" style="text-align: center; margin-bottom: 20px;">Cadastro de Modelo</h1>
 
-            <div class="infos" style="flex-grow: 1; overflow-y: auto;">
-
+            <div class="infos">
                 <div class="infos-first">
                     <div class="drop">
                         <h2>Nome</h2>
@@ -65,22 +129,19 @@
                     </div>
                 </div>
 
-                <h1 style="margin-top: 20px;">Métricas de Monitoramento:</h1>
+                <h1 style="margin-top: 20px; font-size: 18px; color: var(--principal); font-weight: 500;">Métricas de Monitoramento:</h1>
                 <p class="info-default">
                     Ao selecionar uma métrica e clicar em <strong><u>Adicionar Parâmetro</u></strong>, um valor padrão
                     será sugerido.
                     Para CPU, RAM e Disco, este é o <strong><u>percentual máximo de uso</u></strong>.
                     Para Processos, é a <strong><u>contagem total</u></strong>.
-                    Sinta-se à vontade para ajustar estes valores.
                 </p>
 
                 <div class="infos-third" id="linha-input-estatica">
                     <div class="drop" style="width: 60%;">
-
                         <select id="componente_master" class="componentes" onchange="definirDefault(this)">
                             <option value="">Selecione para adicionar...</option>
                         </select>
-
                         <input type="hidden" id="limite_master">
                     </div>
                     <div class="drop" style="width: 40%;">
@@ -90,26 +151,67 @@
                     </div>
                 </div>
 
-                <div class="parametros-scroll" id="parametros-container"
-                    style="padding-right: 15px; margin-top: 10px; border-top: 1px solid #e9ecef; padding-top: 10px;">
-                </div>
-
+                <div class="parametros-scroll" id="parametros-container">
+                    </div>
             </div>
 
-            <div class="infos-final">
+            <div class="infos-final" style="margin-top: 20px;">
                 <div class="drop" style="width: 100%;">
                     <button class="cadastrar" id="popup_button" onclick="cadastrarModelo()">Cadastrar Modelo</button>
                 </div>
             </div>
-
         </div>
     </div>
 
 </body>
 
-
-
 <script>
+
+    function abrirMenu() {
+        var menu_icon = document.getElementById('icone');
+        var menu = document.querySelector('.menu-extend');
+
+        if (menu_icon.classList.contains("bi-list")) {
+            document.getElementById('extend').style.display = "flex";
+            menu.style.animation = "expandirDireita 0.5s ease forwards";
+            menu_icon.classList.remove("bi-list");
+            menu_icon.classList.add("bi-x-lg");
+        } else {
+            menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+            menu_icon.classList.remove("bi-x-lg");
+            menu_icon.classList.add("bi-list");
+        }
+    }
+
+    function carregarDadosUser() {
+        var nome = sessionStorage.getItem('NOME_USUARIO');
+        if (nome != null) {
+            document.getElementById('nome_user').innerHTML = nome;
+        } else {
+            document.getElementById('nome_user').innerHTML = "Usuário";
+        }
+    }
+
+    function ativarPopup() {
+        var popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+
+    function fecharPopup() {
+        var popup = $("#popup-logout");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+
+    function abrirPassos() {
+        var popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+    }
+
+    function fecharPassos() {
+        var popup = $("#popup-passos");
+        popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+    }
+
     var valoresDefault = [];
     var aprovados = [];
     var indiceParametro = 0;
@@ -165,8 +267,6 @@
     function fecharPopupModelo() {
         var popup = $("#popupmodelo");
         popup.css({ display: "flex", opacity: 1, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-        setTimeout(function () {
-        }, 1000);
     }
 
     function definirDefault(selectElement) {
@@ -198,7 +298,6 @@
 
     function carregarSelectMetricas() {
         var select = document.getElementById('componente_master');
-
         var opcoes = '<option value="">Selecione para adicionar...</option>';
 
         if (valoresDefault.length == 0) {
@@ -264,40 +363,32 @@
         var indice = indiceParametro;
 
         var bloco = "";
+        var labelLimite = "";
+        var maxAttr = "";
 
         if (componente == "processos") {
-            bloco = '\
-                <div class="infos-third item-da-lista" id="parametro_' + indice + '">\
-                    <div class="drop drop-componente">\
-                        <h2>Métrica</h2>\
-                        <input type="text" id="componente_item_' + indice + '" value="' + componente.toUpperCase() + '" readonly>\
-                    </div>\
-                    <div class="drop drop-limite">\
-                        <h2>Contagem de Alerta</h2>\
-                        <input type="number" id="limite_item_' + indice + '" value="' + limiteNumero + '" min="1">\
-                    </div>\
-                    <div class="drop drop-lixeira">\
-                        <i class="bi bi-trash3" onclick="removerParametro(' + indice + ')"></i>\
-                    </div>\
-                </div>\
-            ';
+            labelLimite = "Contagem de Alerta";
+            maxAttr = "";
         } else {
-            bloco = '\
-                <div class="infos-third item-da-lista" id="parametro_' + indice + '">\
-                    <div class="drop drop-componente">\
-                        <h2>Métrica</h2>\
-                        <input type="text" id="componente_item_' + indice + '" value="' + componente.toUpperCase() + '" readonly>\
-                    </div>\
-                    <div class="drop drop-limite">\
-                        <h2>Limite de Alerta (%)</h2>\
-                        <input type="number" id="limite_item_' + indice + '" value="' + limiteNumero + '" min="1" max="100">\
-                    </div>\
-                    <div class="drop drop-lixeira">\
-                        <i class="bi bi-trash3" onclick="removerParametro(' + indice + ')"></i>\
-                    </div>\
-                </div>\
-            ';
+            labelLimite = "Limite de Alerta (%)";
+            maxAttr = 'max="100"';
         }
+
+        bloco = '\
+            <div class="infos-third item-da-lista" id="parametro_' + indice + '">\
+                <div class="drop drop-componente" style="width: 45%;">\
+                    <h2>Métrica</h2>\
+                    <input type="text" id="componente_item_' + indice + '" value="' + componente.toUpperCase() + '" readonly style="background-color: #eee;">\
+                </div>\
+                <div class="drop drop-limite" style="width: 45%;">\
+                    <h2>' + labelLimite + '</h2>\
+                    <input type="number" id="limite_item_' + indice + '" value="' + limiteNumero + '" min="1" ' + maxAttr + '>\
+                </div>\
+                <div class="drop drop-lixeira" style="width: 10%; display: flex; align-items: flex-end; justify-content: center;">\
+                    <i class="bi bi-trash3" onclick="removerParametro(' + indice + ')"></i>\
+                </div>\
+            </div>\
+        ';
 
         var container = document.getElementById("parametros-container");
         container.innerHTML += bloco;
@@ -588,18 +679,6 @@
                 buscarModeloPorId();
             });
     }
-
-    function ativarPopup() {
-    var popup = $("#popup-logout");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" })
-         .animate({ opacity: 1 }, 300);
-}
-
-function fecharPopup() {
-    var popup = $("#popup-logout");
-    popup.css({ display: "flex", opacity: 1, "pointer-events": "none" })
-         .animate({ opacity: 0 }, 300);
-}
 
 </script>
 
