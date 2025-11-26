@@ -1516,3 +1516,27 @@ select {
         padding: 8px;
     }
 }
+
+/*DASH-AGENDA*/
+.dashboard #dashboard-agenda{
+    align-self: center;
+}
+.graficos{
+    display: flex;
+    flex-direction: row;
+    height: 50vh;
+    margin-top: 20px;
+    gap: 15px;
+}
+#agenda-grafico-barras{
+    background-color: white;
+    height: 100%;
+    width: 40%;
+    border-radius: 10px;
+}
+.agenda {
+    background-color: white;
+    height: 100%;
+    width: 45%;
+    border-radius: 10px;
+}

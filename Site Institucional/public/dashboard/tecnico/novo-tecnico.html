@@ -284,9 +284,63 @@
                     </div>
                 </div>
             </div>
+            <div class="dashboard" id="dashboard-agenda">
+                <div class="kpis" id="kpi-agenda">
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                        </div>
+                        <div class="dado">
+                            <h1>20</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                            <h2> concluídas</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>10</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Manutenções de alerta crítico</h1>
+                            <h2>pendentes</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>4</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                            <h2>pendentes</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>5</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="graficos">
+                    <table id="agenda" class="agenda">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ID Totem</th>
+                                <th>Local</th>
+                                <th>Status</th>
+                                <th>Qtd. Alertas</th>
+                                <th>Componente crítico</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                    <canvas id="agenda-grafico-barras">
+                    </canvas>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 </body>
 <script>
@@ -296,6 +350,7 @@
         if (escolha === 'fundo2') {
             document.getElementById("box").style.display = "block";
             document.getElementById("dashboard").style.display = "none";
+            document.getElementById("dashboard-agenda").style.display = "none";
             document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById("second").style.color = "#451c8b";
@@ -315,6 +370,8 @@
             document.getElementById("second").style.color = "white";
             document.getElementById("third").style.color = "white";
             document.getElementById("box").style.display = "none";
+            graficoBarras();
+            visualizarChamadosJira();
         }
     }
 
@@ -342,88 +399,140 @@
         }
     }
 
+    async function visualizarChamadosJira() {
+        /*Credenciais NEXO*/
+        const apiToken = "ATATT3xFfGF0_fVkaM5Ki2nmRvhG9-y55D_-ETUeF5czctbbxRWrzQA__d2yNb6oOvFExIIDY5LB4ApkNbtUpnvUulpgWkYdFAG5B-ta9pIXHwKkfpI3ByQ6tYh4wxdQn0YBX-FZwAnCLjcogHglpwg77aUvzpsEOHVxXUdFaryWjAf_q3Txtrw=6383D10F";
+        const email = "nexoadm9328@outlook.com";
 
-    
-function buscarComponentes() {
-    fetch("/gestor/buscarComponentes", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
+        /*Credenciais tecnico*/
+        const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
+        const fkEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    componentes = data;
-                    console.log(componentes);
-                    plotarModelosCriticos(componentes);
-                });
-            } else {
-                console.log("Erro ao Pegar Modelos");
+        const url = `https://nexoadm.atlassian.net/rest/api/3/search`;
 
+        const data = new Date().toISOString().split("T")[0];
+
+        // JQL para trazer apenas chamados criados HOJE
+        const jql = `assignee = "${emailTecnico}" AND created >= "${data} 00:00" AND created <= "${data} 23:59"`;
+
+        const auth = btoa(`${email}:${apiToken}`);
+
+        fetch(url + `?jql=${encodeURIComponent(jql)}&fields=summary,status,created`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Basic ${auth}`,
+                'Accept: application/json'
             }
         })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
+        .then(res => res.json())
+            .then(data => console.log("Tickets filtrados:", data))
+            .catch(err => console.error(err));
+    }
+
+
+
+    function buscarComponentes() {
+        fetch("/gestor/buscarComponentes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        componentes = data;
+                        console.log(componentes);
+                        plotarModelosCriticos(componentes);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+    function graficoBarras() {
+        const ctx = document.getElementById('agenda-grafico-barras');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Atenção', 'Alerta', 'Perigoso', 'Muito Perigoso'],
+                datasets: [{
+                    label: 'Número de alertas por criticidade',
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
-}
+    }
     function carregarTotens() {
-    nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-    fetch("/gestor/buscarTotens", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            nomeRegiao: nomeRegiao
-        }),
-    })
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    totens = data;
-                    console.log(totens);
-                    plotarTotens(totens);
-                    gerarGraficoPizza(totens.length)
-                });
-            } else {
-                console.log("Erro ao Pegar Modelos");
-
-            }
+        nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+        fetch("/gestor/buscarTotens", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeRegiao: nomeRegiao
+            }),
         })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        totens = data;
+                        console.log(totens);
+                        plotarTotens(totens);
+                        gerarGraficoPizza(totens.length)
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
 
     function carregarModelos() {
-    fetch("/gestor/buscarModelos", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
-
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    modelos = data;
-                    console.log(modelos);
-                    plotarModelos(modelos);
-                });
-            } else {
-                console.log("Erro ao Pegar Modelos");
-
+        fetch("/gestor/buscarModelos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
             }
         })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        modelos = data;
+                        console.log(modelos);
+                        plotarModelos(modelos);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
     //Usando
     aprovados = [];
     function carregarDadosAprovados() {
