@@ -76,6 +76,26 @@ async function modificarStatusTotem(req, res){
     }
 }
 
+async function buscarInfoTotem(req, res){
+    var numMAC = req.body.numMACServer;
+
+    totemModel.infoTotem(numMAC)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a busca das informações! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
-    cadastrarTotem, verificarAprovados, modificarStatusTotem
+    cadastrarTotem, verificarAprovados, modificarStatusTotem, buscarInfoTotem
 };

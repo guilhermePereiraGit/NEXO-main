@@ -1,5 +1,52 @@
-const ctx = document.getElementById("graficoComponente");
-const componenteInicial = document.getElementById("componentSelect").value;
+// Função para buscar informações do totem
+async function buscarInfoTotem(numMAC) {
+    try {
+        const response = await fetch('/totem/infoTotem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ numMACServer: numMAC })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar informações: ${response.status}`);
+        }
+
+        const dados = await response.json();
+        
+        if (dados && dados.length > 0) {
+            const totem = dados[0];
+            
+            // Preenchendo os dados no HTML usando os IDs
+            document.querySelector('#Mac p').textContent = totem.numMAC || '-';
+            document.querySelector('#modelo p').textContent = totem.modelo || '-';
+            document.querySelector('#status p').textContent = totem.status || '-';
+            document.querySelector('#cep p').textContent = totem.cep || '-';
+            document.querySelector('#cidade p').textContent = totem.cidade || '-';
+            document.querySelector('#bairro p').textContent = totem.bairro || '-';
+            document.querySelector('#rua p').textContent = totem.rua || '-';
+            document.querySelector('#numero p').textContent = totem.numero || '-';
+            
+            console.log('Informações do totem carregadas com sucesso:', totem);
+        } else {
+            console.warn('Nenhum totem encontrado com este MAC');
+        }
+    } catch (erro) {
+        console.error('Erro ao buscar informações do totem:', erro);
+    }
+}
+
+// Chamar a função ao carregar a página com um MAC de exemplo
+// Substitua '1547240279279939' pelo MAC real do totem
+window.addEventListener('load', function() {
+    const macDoTotem = sessionStorage.MAC_TOTEM
+    console.log('MAC encontrado:', macDoTotem)
+    buscarInfoTotem(macDoTotem)
+});
+
+const ctx = document.getElementById("graficoComponente")
+const componenteInicial = document.getElementById("componentSelect").value
 
 let dadosComponentes = {
     cpu: [12, 25, 18, 40, 32, 60],
