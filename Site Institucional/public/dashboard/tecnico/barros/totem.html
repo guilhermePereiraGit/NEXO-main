@@ -216,11 +216,38 @@
                             </table>
                         </div>
                     </div>
-                    <div class="graficos">
-                        <div class="componente"></div>
-                        <div class="componente"></div>
-                        <div class="componente"></div>
-                        <div class="componente"></div>
+                    <div class="monitoramento kpi">
+                        <div class="titulo">
+                            <h1>Monitoramento dos componentes</h1>
+                        </div>
+
+                        <div class="dado">
+                            <!-- ÁREA DO GRÁFICO -->
+                            <div class="grafico-container">
+                                <canvas id="graficoComponente"></canvas>
+                            </div>
+
+                            <!-- PAINEL LATERAL -->
+                            <div>
+                                <div class="seletor-componente">
+                                        <label for="componentSelect">Selecione um componente:</label>
+                                        <select id="componentSelect">
+                                            <option value="cpu">CPU</option>
+                                            <option value="ram">RAM</option>
+                                            <option value="disco">Disco</option>
+                                        </select>
+                                    </div>
+                                <div class="painel-info">
+                                    <h1>Processos Ativos</h1>
+                                    <h2 class="subtitulo">na última coleta(15min):</h2>
+                                    <p id="valorAtivos">340
+                                    </p>
+
+                                    <h2>Máximo de processos permitidos: 360
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

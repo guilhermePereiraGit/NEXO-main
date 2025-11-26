@@ -1,44 +1,34 @@
-function gerarGraficoLinha() {
-    const linha = document.getElementById('grafico-linha');
-    new Chart(linha, {
-        type: 'line',
-        data: {
-            labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-            datasets: [
-                {
-                    label: 'Atenção',
-                    data: [10, 15, 5, 10, 13, 20, 15],
-                    borderColor: '#fada64',
-                    tension: 0.4
-                },
-                {
-                    label: 'Perigoso',
-                    data: [5, 2, 7, 12, 3, 6, 9],
-                    borderColor: '#f98a25',
-                    tension: 0.4
-                },
-                {
-                    label: 'Crítico',
-                    data: [1, 2, 1, 4, 2, 3, 1],
-                    borderColor: '#ff3131',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
-                }
-            }
-        },
-    });
-}
+const ctx = document.getElementById("graficoComponente");
+const componenteInicial = document.getElementById("componentSelect").value;
+
+let dadosComponentes = {
+    cpu: [12, 25, 18, 40, 32, 60],
+    ram: [50, 48, 52, 60, 63, 70],
+    disco: [30, 35, 45, 28, 22, 18]
+};
+
+let chart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: ["0h", "4h", "8h", "12h", "16h", "20h"],
+        datasets: [{
+        label: componenteInicial,
+            borderWidth: 3,
+            borderColor: "#6c4cff",
+            backgroundColor: "#6c4cff55",
+            data: dadosComponentes.cpu
+        }]
+    },
+    options: { responsive: true }
+});
+
+document.getElementById("componentSelect").addEventListener("change", e => {
+    const comp = e.target.value;
+
+    chart.data.datasets[0].data = dadosComponentes[comp];
+    chart.data.datasets[0].label = comp.toUpperCase();
+    chart.update();
+});
 
 function abrirMenu() {
     menu_icon = document.getElementById('icone');
