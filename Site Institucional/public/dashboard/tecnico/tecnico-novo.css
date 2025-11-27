@@ -1539,4 +1539,12 @@ select {
     height: 100%;
     width: 45%;
     border-radius: 10px;
+    display: flex;
+}
+.titulo-agenda{
+    display: flex;
+    gap: 10px;
+}
+.titulo-agenda h1{
+    font-size: 20px;
 }

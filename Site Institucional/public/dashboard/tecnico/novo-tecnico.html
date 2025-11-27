@@ -29,7 +29,8 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box')" id="second"></i>
+                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box');visualizarChamadosJira();"
+                                id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
@@ -37,7 +38,8 @@
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
-                            <i class="bi bi-calendar3" onclick="ativar('fundo4');irPara('dashboard-agenda')"
+                            <i class="bi bi-calendar3"
+                                onclick="ativar('fundo4');irPara('dashboard-agenda');visualizarChamadosJira();"
                                 id="fourth"></i>
                         </div>
                     </div>
@@ -323,19 +325,16 @@
                     </div>
                 </div>
                 <div class="graficos">
-                    <table id="agenda" class="agenda">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>ID Totem</th>
-                                <th>Local</th>
-                                <th>Status</th>
-                                <th>Qtd. Alertas</th>
-                                <th>Componente crítico</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody"></tbody>
-                    </table>
+                    <div id="agenda" class="agenda">
+                        <div class="titulo-agenda">
+                            <h1 class="item-titulo-agenda">#</h1>
+                            <h1 class="item-titulo-agenda">ID Totem</h1>
+                            <h1 class="item-titulo-agenda">Local</h1>
+                            <h1 class="item-titulo-agenda">Status</h1>
+                            <h1 class="item-titulo-agenda">Qtd. Alertas</h1>
+                            <h1 class="item-titulo-agenda">Componente crítico</h1>
+                        </div>
+                    </div>
                     <canvas id="agenda-grafico-barras">
                     </canvas>
                 </div>
@@ -371,8 +370,19 @@
             document.getElementById("third").style.color = "white";
             document.getElementById("box").style.display = "none";
             graficoBarras();
-            visualizarChamadosJira();
         }
+    }
+
+    function visualizarChamadosJira() {
+        const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
+
+        fetch(`/Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
+        })
+            .then(res => res.json())
+            .then(dados => {
+                console.log("Chamados:", dados);
+            })
+            .catch(erro => console.error("Erro", erro));
     }
 
     function carregarDados() {
@@ -399,35 +409,7 @@
         }
     }
 
-    async function visualizarChamadosJira() {
-        /*Credenciais NEXO*/
-        const apiToken = "ATATT3xFfGF0_fVkaM5Ki2nmRvhG9-y55D_-ETUeF5czctbbxRWrzQA__d2yNb6oOvFExIIDY5LB4ApkNbtUpnvUulpgWkYdFAG5B-ta9pIXHwKkfpI3ByQ6tYh4wxdQn0YBX-FZwAnCLjcogHglpwg77aUvzpsEOHVxXUdFaryWjAf_q3Txtrw=6383D10F";
-        const email = "nexoadm9328@outlook.com";
 
-        /*Credenciais tecnico*/
-        const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
-        const fkEmpresa = sessionStorage.getItem("FK_EMPRESA");
-
-        const url = `https://nexoadm.atlassian.net/rest/api/3/search`;
-
-        const data = new Date().toISOString().split("T")[0];
-
-        // JQL para trazer apenas chamados criados HOJE
-        const jql = `assignee = "${emailTecnico}" AND created >= "${data} 00:00" AND created <= "${data} 23:59"`;
-
-        const auth = btoa(`${email}:${apiToken}`);
-
-        fetch(url + `?jql=${encodeURIComponent(jql)}&fields=summary,status,created`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Basic ${auth}`,
-                'Accept: application/json'
-            }
-        })
-        .then(res => res.json())
-            .then(data => console.log("Tickets filtrados:", data))
-            .catch(err => console.error(err));
-    }
 
 
 
