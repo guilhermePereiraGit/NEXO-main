@@ -22,14 +22,15 @@ function executar(instrucao) {
         conexao.query(instrucao, function (erro, resultados, campos) {
             conexao.end();
             if (erro) {
+                console.error("ERRO NA QUERY:", erro);
                 reject(erro);
             } else {
+                console.log("Resultado da query:", resultados);
                 resolve(resultados);
             }
-            console.log(resultados);
-            resolve(resultados);
         });
         conexao.on('error', function (erro) {
+            console.error("ERRO NO MySQL SERVER: ", erro.sqlMessage);
             return ("ERRO NO MySQL SERVER: ", erro.sqlMessage);
         });
     });

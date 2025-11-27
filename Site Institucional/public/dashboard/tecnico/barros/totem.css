@@ -250,8 +250,8 @@ header .header-navigation .alert {
 
 .conteudo .kpis {
     display: grid;
-    grid-template-columns: 1.2fr 1.6fr 1.2fr;
-    gap: 20px;
+    grid-template-columns: 1.1fr 1.8fr 1.1fr;
+    gap: 10px;
 }
 
 .conteudo .kpis .kpi {
@@ -329,7 +329,7 @@ header .header-navigation .alert {
 
 .alerta .dado h2 {
     color: var(--principal);
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     margin-top: 10px;
 }
@@ -354,10 +354,10 @@ header .header-navigation .alert {
     list-style: none;
     font-weight: 600;
     padding: 0;
-    margin-top: 5px;
+    margin-top: 10px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px 30px;
+    gap: 10px;
 }
 
 .infos-totem ul li {
@@ -365,12 +365,12 @@ header .header-navigation .alert {
     justify-content: flex-start;
     align-items: center;
     font-size: 15px;
-    color: black;
+    color: var(--principal);
 }
 
 .infos-totem ul li p {
     margin-left: 6px;
-    color: var(--principal);
+    color: black;
 }
 
 .uptime {
@@ -412,7 +412,7 @@ header .header-navigation .alert {
 .dados {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 20px;
+    gap: 10px;
     height: 45vh;
 }
 

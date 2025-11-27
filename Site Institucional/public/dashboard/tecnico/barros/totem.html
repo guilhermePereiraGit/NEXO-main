@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="gerarGraficoLinha()">
+<body>
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -63,7 +63,7 @@
                         onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
                         <img src="../../../assets/imgs/icon-slack.png">
                         <h1>Slack</h1>
-                    </div>                    {"numMACServer":"1547240279279939"}                    {"numMACServer":"1547240279279939"}
+                    </div>
                 </div>
             </div>
         </header>
@@ -78,14 +78,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- POPUP DE PASSO À PASSO -->
-        <div class="popup-passos" style="display: none;" id="popup-passos">
-            <div class="passos-content">
-
-            </div>
-        </div>
-
         <div class="content">
             <div class="information">
                 <div class="title">
@@ -97,18 +89,18 @@
                 <div class="kpis">
                     <div class="alerta kpi">
                         <div class="titulo">
-                            <h1>Totem: <h1 class="idTotem">ABC12123</h1>
+                            <h1>Id do Totem: <h1 id="idTotem"></h1>
                             </h1>
                         </div>
                         <div class="dado">
                             <div class="grid-alerta">
                                 <img src="../../../assets/imgs/icon-alerta.png" alt="">
                                 <div class="tituloAlerta">
-                                    <h1>Grau do alerta: <h1 class="grauAlerta">Muito Perigoso</h1>
+                                    <h1>Grau do alerta: <h1 class="grauAlerta" id="grauAlerta"></h1>
                                     </h1>
                                 </div>
                             </div>
-                            <h2>Causa: Consumo excessivo constante de CPU</h2>
+                            <h2 id="parametros"></h2>
                         </div>
                     </div>
                     <div class="infos-totem kpi">
@@ -216,7 +208,7 @@
                     </div>
                     <div class="monitoramento kpi">
                         <div class="titulo">
-                            <h1>Monitoramento dos componentes</h1>
+                            <h1>Monitoramento dos componentes (uso médio em %)</h1>
                         </div>
 
                         <div class="dado">
@@ -239,7 +231,7 @@
                                     <p id="valorAtivos">340
                                     </p>
 
-                                    <h2>Máximo de processos permitidos: 360
+                                    <h2>Máximo de processos permitidos: <p></p>
                                     </h2>
                                 </div>
                             </div>

@@ -21,6 +21,7 @@ var totemRouter = require("./src/routes/totem");
 var regiaoRouter = require("./src/routes/regiao");
 var adicionarRouter = require("./src/routes/adicionarRegiao");
 var gestorRouter = require("./src/routes/gestor");
+var jiraRouter = require("./src/routes/jira");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +38,7 @@ app.use("/totem", totemRouter);
 app.use("/regiao", regiaoRouter);
 app.use("/adicionarRegiao", adicionarRouter);
 app.use("/gestor", gestorRouter);
+app.use("/jira", jiraRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
