@@ -1,6 +1,6 @@
 var database = require("../database/config")
 
-function cadastrarTotem(modelo, enderecoMac, fkEndereco){
+function cadastrarTotem(modelo, enderecoMac, fkEndereco) {
     var instrucaoSql = `
         insert into totem (numMAC, status, fkModelo, fkEndereco) 
         values ('${enderecoMac}', 'ATIVO', ${modelo}, ${fkEndereco});
@@ -14,7 +14,12 @@ function buscarTotens(idEmpresa) {
             inner join modelo on modelo.idModelo = totem.fkTotem 
             where modelo.fkEmpresa = ${idEmpresa};
         `
-        return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+function buscarTotemMac() {
+    var instrucaoSql = `totem.fkEndereco from totem inner join endereco on totem.fkEndereco = endereco.idEndereco
+    where totem.numMac = ${numMac}`;
+    return database.executar(instrucaoSql);
 }
 
 function verificarAprovados(idEmpresa) {
@@ -28,14 +33,14 @@ function verificarAprovados(idEmpresa) {
     return database.executar(instrucaoSql);
 }
 
-function ativarTotem(idTotem){
+function ativarTotem(idTotem) {
     var instrucaoSql = `
         UPDATE totem SET status = 'ATIVO' where idTotem = ${idTotem};
     `
     return database.executar(instrucaoSql)
 }
 
-function desativarTotem(idTotem){
+function desativarTotem(idTotem) {
     var instrucaoSql = `
         UPDATE totem SET status = 'INATIVO' where idTotem = ${idTotem};
     `
