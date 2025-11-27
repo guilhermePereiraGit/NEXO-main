@@ -227,15 +227,17 @@ header .header-navigation {
 
 .information {
     display: flex;
-    flex-direction: row;
     height: 17vh;
     width: 100vw;
     background-color: #c8c1ff;
-    justify-content: space-between;
-    align-items: center;
     color: #451c8b;
 }
-
+.information #titulo{
+    display: flex;
+    margin-left: 10px;
+    flex-direction: column;
+    justify-content: center;
+}
 /*BOX'S*/
 .box {
     height: 78.5vh;
@@ -1006,13 +1008,6 @@ select {
 .content .information h1 {
     font-weight: 500;
     color: black;
-}
-
-.content .information .title {
-    display: block;
-    flex-direction: column;
-    margin-top: 10px;
-    margin-left: 45px;
 }
 
 .content .information .title p {

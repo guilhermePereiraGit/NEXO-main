@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body onload="carregarDadosModelo(), carregarDadosAprovados(), carregarDados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -29,8 +29,7 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box');"
-                                id="second"></i>
+                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box');" id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
@@ -92,8 +91,13 @@
 
         <div class="content">
             <div class="information">
-                <h1 id="regiao-escolhida"></h1>
-                <p id="sigla-regiao"></p>
+                <div id="titulo">
+                    <h1 id="regiao-escolhida"></h1>
+                    <p id="sigla-regiao"></p>
+                    <div class="alterar-regiao">
+                        <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
+                    </div>
+                </div>
             </div>
             <!-- CADASTRO TOTENS -->
             <div class="box" id="box" display="block">
@@ -184,108 +188,6 @@
                 </div>
             </div>
             <!-- DASHBOARD -->
-            <div class="dashboard" id="dashboard" display="none">
-                <div class="kpis">
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="dados">
-                    <div class="modelos">
-                        <div class="legenda">
-                            <div class="barra-legenda">
-                                <div class="item ione">20%</div>
-                                <div class="item itwo">40%</div>
-                                <div class="item ithree">60%</div>
-                                <div class="item ifour">100%</div>
-                            </div>
-                            <p>% de Totens em Alerta</p>
-                        </div>
-                        <div class="list-modelos">
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grafico">
-                        <canvas id="grafico-linha" class="chart-container"></canvas>
-                    </div>
-                </div>
-            </div>
             <div class="dashboard" id="dashboard-agenda">
                 <div class="kpis" id="kpi-agenda">
                     <div class="kpi">
@@ -376,10 +278,10 @@
     function visualizarChamadosJira() {
         const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
 
-        fetch(`/Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
+        fetch(`Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
         })
             .then(res => res.json())
-            console.log("FUNCIONOU")
+        console.log("FUNCIONOU")
             .then(dados => {
                 console.log("Chamados:", dados);
             })
@@ -398,7 +300,6 @@
             document.getElementById('escolhaNew').style.display = 'block';
             carregarModelos();
             carregarTotens();
-            gerarGraficoLinha();
             buscarComponentes();
         } else {
             regiao_escolhida.innerHTML = "Região não Selecionada";
@@ -1061,48 +962,6 @@
                 console.log(`#ERRO: ${resposta}`);
             });
 
-    }
-    /*Usando*/
-    function gerarGraficoLinha() {
-        const linha = document.getElementById('grafico-linha');
-        new Chart(linha, {
-            type: 'line',
-            data: {
-                labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-                datasets: [
-                    {
-                        label: 'Atenção',
-                        data: [10, 15, 5, 10, 13, 20, 15],
-                        borderColor: '#fada64',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Perigoso',
-                        data: [5, 2, 7, 12, 3, 6, 9],
-                        borderColor: '#f98a25',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Crítico',
-                        data: [1, 2, 1, 4, 2, 3, 1],
-                        borderColor: '#ff3131',
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Chart.js Line Chart'
-                    }
-                }
-            },
-        });
     }
 
     function plotarZonasSelect(zonas) {
