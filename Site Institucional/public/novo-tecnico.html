@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body onload="carregarModelos(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -29,11 +29,13 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="location.href = '../../../novo-tecnico.html';" id="second"></i>
+                            <i class="bi bi-display" onclick="location.href = '../../../novo-tecnico.html';"
+                                id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="location.href = '/dashboard/tecnico/matheus/totens.html'" id="third"></i>
+                            <i class="bi bi-graph-up" onclick="location.href = '/dashboard/tecnico/matheus/totens.html'"
+                                id="third"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
@@ -397,6 +399,33 @@
 
     /*Usando*/
     let numeroTotens = 0;
+    modelos = []
+
+    function carregarModelos() {
+        fetch("/gestor/buscarModelos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        modelos = data;
+                        console.log(modelos);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+    
     function abrirPopupTotem() {
         var options = ''
         for (var i = 0; i < modelos.length; i++) {
@@ -687,7 +716,7 @@
 
                 if (resposta.ok) {
                     resposta.json().then(data => {
-                        
+
                     })
                 } else {
                     console.log("Erro ao Buscar Dados!");
@@ -864,6 +893,7 @@
             document.getElementById('waiting').style.display = 'none';
             document.getElementById('conteudo').style.display = 'block';
             document.getElementById('escolhaNew').style.display = 'block';
+            carregarModelos();
             carregarTotens();
             gerarGraficoLinha();
             buscarComponentes();
