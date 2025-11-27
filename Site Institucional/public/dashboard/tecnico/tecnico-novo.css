@@ -1537,7 +1537,7 @@ select {
 .agenda {
     background-color: white;
     height: 100%;
-    width: 45%;
+    width: 45vw;
     border-radius: 10px;
     display: flex;
 }

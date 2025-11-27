@@ -379,6 +379,7 @@
         fetch(`/Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
         })
             .then(res => res.json())
+            console.log("FUNCIONOU")
             .then(dados => {
                 console.log("Chamados:", dados);
             })
