@@ -42,6 +42,18 @@ function desativarTotem(idTotem){
     return database.executar(instrucaoSql)
 }
 
+function infoTotem(numMAC){
+    var instrucaoSql = `
+        SELECT t.numMAC, t.status, m.modelo, e.cep, e.numero, e.cidade, e.bairro, e.rua
+        FROM totem t
+        INNER JOIN modelo m m.id = t.fkModelo
+        INNER JOIN endereco e e.id = t.fkEndereco
+        WHERE t.numMAC = ${numMAC};
+    `
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem
+    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem, infoTotem
 };

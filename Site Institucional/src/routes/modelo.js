@@ -19,8 +19,12 @@ router.get("/buscarModeloPorId", function (req, res) {
     modeloController.buscarModeloPorId(req, res);
 });
 
-router.put("/atualizarModelo", function (req, res) {
+router.post("/atualizarModelo", function (req, res) {
     modeloController.atualizarModelo(req, res);
+});
+
+router.delete("/deletarModelo", function (req, res) {
+    modeloController.deletarModelo(req, res);
 });
 
 module.exports = router;

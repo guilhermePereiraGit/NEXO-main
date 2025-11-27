@@ -395,10 +395,10 @@ header .header-navigation .alert {
     opacity: 0.8;
 }
 
-.uptime .dado h1 {
+.uptime .dado #valor-uptime {
     margin-top: 5px;
     font-size: 38px;
-    color: var(--principal);
+    color: black;
     font-weight: 600;
 }
 
@@ -419,7 +419,7 @@ header .header-navigation .alert {
 .processos {
     margin-top: 10px;
     background: white;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -442,8 +442,8 @@ header .header-navigation .alert {
 }
 
 .tabela {
-    width: 100%;
-    height: 100%;
+    width: 101%;
+    height: 101%;
     border-radius: 10px;
     overflow: hidden;  
 }
@@ -481,9 +481,9 @@ header .header-navigation .alert {
 .tabela-processos tbody {
     display: block;
     width: 100%;
-    height: 20vh;
+    height: 22vh;
     overflow: auto;
-    border: solid var(--contraste) 5px;
+    border: solid var(--contraste) 3px;
 }
 
 .tabela-processos tbody tr {
@@ -503,53 +503,79 @@ header .header-navigation .alert {
     border-bottom: solid var(--contraste) 2px;
 }
 
-/* GRÁFICO DE LINHA */
-.graficos {
+.monitoramento {
     margin-top: 10px;
-    background-color: white;
+    background: white;
+    padding: 10px;
     border-radius: 10px;
+}
+
+.monitoramento .titulo {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.monitoramento .titulo h1 {
+    color: var(--principal);
+    font-size: 22px;
+}
+
+.monitoramento .dado {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 x 2 */
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 10px;
 }
 
-.componente {
-    background: #d9d9d9;
+.seletor-componente {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.seletor-componente select {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 2px solid var(--contraste);
+    font-size: 15px;
+}
+
+.grafico-container {
+    background: #e8e6ff;
     border-radius: 10px;
-    
+    padding: 10px;
 }
 
-/* AGUARDANDO SELECIONAR REGIÃO */
-.waiting {
-    padding: 30px;
-}
-
-.waiting .box {
-    height: 77vh;
-    width: 100%;
-    background-color: white;
+.painel-info {
+    margin-top: 5px;
+    background: #e8e6ff;
     border-radius: 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.waiting .box .text {
-    width: 70%;
     text-align: center;
 }
 
-.waiting .box .text h1 {
+.painel-info #valorAtivos {
+    margin-top: 5px;
+    font-size: 27px;
+    color: black;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.painel-info h1 {
+    color: var(--principal);
+    font-size: 22px;
+}
+
+.painel-info h2 {
+    font-size: 16px;
     color: var(--principal);
 }
 
-.waiting .box .text p {
-    font-size: 20px;
-}
-
-.waiting .box .text img {
-    width: 20%;
-    margin-top: 50px;
+.painel-info .subtitulo {
+    font-size: 16px;
+    color: black;
+    opacity: 0.8;
 }

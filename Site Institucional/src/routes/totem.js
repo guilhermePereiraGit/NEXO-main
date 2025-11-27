@@ -19,4 +19,8 @@ router.get("/buscarTotens/:idEmpresa/:idRegiao", function (req, res) {
     totemController.buscarTotens(req, res);
 })
 
+router.get("/infoTotem", function (req, res) {
+    totemController.buscarInfoTotem(req, res);
+})
+
 module.exports = router;

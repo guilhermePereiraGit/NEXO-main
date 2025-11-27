@@ -56,14 +56,14 @@
                 <div class="jira-slack">
                     <div class="card"
                         onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-                        <img src="../../assets/imgs/icon-jira.png">
+                        <img src="../../../assets/imgs/icon-jira.png">
                         <h1>Jira</h1>
                     </div>
                     <div class="card"
                         onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-                        <img src="../../assets/imgs/icon-slack.png">
+                        <img src="../../../assets/imgs/icon-slack.png">
                         <h1>Slack</h1>
-                    </div>
+                    </div>                    {"numMACServer":"1547240279279939"}                    {"numMACServer":"1547240279279939"}
                 </div>
             </div>
         </header>
@@ -117,23 +117,21 @@
                         </div>
                         <div class="dado">
                             <ul>
-                                <li>MAC: <p>1547240279279939</p>
+                                <li id="Mac">MAC: <p></p>
                                 </li>
-                                <li>Modelo: <p>AA0123</p>
+                                <li id="modelo">Modelo: <p></p>
                                 </li>
-                                <li>Status: <p>Ligado</p>
+                                <li id="status">Status: <p></p>
                                 </li>
-                                <li>CEP: <p>00222-333</p>
+                                <li id="cep">CEP: <p></p>
                                 </li>
-                                <li>Telefone: <p>(11)99993-4454</p>
+                                <li id="cidade">Cidade: <p></p>
                                 </li>
-                                <li>Cidade: <p>São Paulo</p>
+                                <li id="bairro">Bairro: <p></p>
                                 </li>
-                                <li>Bairro: <p>Jardins</p>
+                                <li id="rua">Rua: <p></p>
                                 </li>
-                                <li>Rua: <p>Rua Tavares</p>
-                                </li>
-                                <li>Número: <p>34</p>
+                                <li id="numero">Número: <p></p>
                                 </li>
                             </ul>
                         </div>
@@ -216,11 +214,36 @@
                             </table>
                         </div>
                     </div>
-                    <div class="graficos">
-                        <div class="componente"></div>
-                        <div class="componente"></div>
-                        <div class="componente"></div>
-                        <div class="componente"></div>
+                    <div class="monitoramento kpi">
+                        <div class="titulo">
+                            <h1>Monitoramento dos componentes</h1>
+                        </div>
+
+                        <div class="dado">
+                            <div class="grafico-container">
+                                <canvas id="graficoComponente"></canvas>
+                            </div>
+
+                            <div>
+                                <div class="seletor-componente">
+                                        <label for="componentSelect">Selecione um componente:</label>
+                                        <select id="componentSelect">
+                                            <option value="cpu">CPU</option>
+                                            <option value="ram">RAM</option>
+                                            <option value="disco">Disco</option>
+                                        </select>
+                                    </div>
+                                <div class="painel-info">
+                                    <h1>Processos Ativos</h1>
+                                    <h2 class="subtitulo">na última coleta(15min):</h2>
+                                    <p id="valorAtivos">340
+                                    </p>
+
+                                    <h2>Máximo de processos permitidos: 360
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
