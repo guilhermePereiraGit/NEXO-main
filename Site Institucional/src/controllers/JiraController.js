@@ -27,7 +27,8 @@ async function visualizarChamadosJira(req, res) {
             res.json(dados);
         })
         .catch(erro => console.error("Erro ao procurar chamados (JIRA CONTROLLER):", erro));
-        buscarInfosTotem();
+        await buscarInfosTotem();
+
 }
 function buscarInfosTotem() {
 
