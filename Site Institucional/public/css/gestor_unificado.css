@@ -15,8 +15,7 @@
     font-family: 'Poppins';
 }
 
-html,
-body {
+html, body {
     height: 100%;
     overflow: hidden;
 }
@@ -84,23 +83,13 @@ header .header-navigation .sair {
 }
 
 @keyframes expandirEsquerda {
-    from {
-        transform: scaleX(0);
-    }
-
-    to {
-        transform: scaleX(1);
-    }
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
 }
 
 @keyframes recolherDireita {
-    from {
-        transform: scaleX(1);
-    }
-
-    to {
-        transform: scaleX(0);
-    }
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
 }
 
 .menu-extend {
@@ -122,23 +111,13 @@ header .header-navigation .sair {
 }
 
 @keyframes expandirDireita {
-    from {
-        transform: scaleX(0);
-    }
-
-    to {
-        transform: scaleX(1);
-    }
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
 }
 
 @keyframes recolherEsquerda {
-    from {
-        transform: scaleX(1);
-    }
-
-    to {
-        transform: scaleX(0);
-    }
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
 }
 
 .menu-extend .jira-slack {
@@ -373,6 +352,8 @@ header .header-navigation .sair {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    /* ADICIONADO: CENTRALIZA VERTICALMENTE O CONTEÚDO */
+    align-items: center;
     transition: 0.3s;
     width: auto;
     border: 1px solid #ddd;
@@ -401,6 +382,7 @@ header .header-navigation .sair {
     font-weight: normal;
 }
 
+/* === POPUP DE CADASTRO === */
 .popup-cadastro {
     width: 100%;
     height: 100vh;
@@ -416,13 +398,15 @@ header .header-navigation .sair {
     display: flex;
 }
 
-.popup-cadastro i {
+/* X DE FECHAR POPUP */
+.popup-cadastro .fechar-popup {
     color: var(--principal);
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     cursor: pointer;
+    z-index: 2001; 
 }
 
 .popup-cadastro .cadastro-content {
@@ -524,16 +508,24 @@ input[type="text"], input[type="number"], select {
     overflow-y: auto;
 }
 
-.item-da-lista {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 10px;
-    margin-bottom: 10px;
-}
+/* === LIXEIRAS EM ROXO E ALINHADAS === */
 
-.bi-trash3 {
-    color: var(--mperigo);
+/* Lixeira do Popup */
+.item-da-lista .bi-trash3 {
+    position: static;
+    color: var(--principal); /* ROXO */
     font-size: 25px;
     cursor: pointer;
+    margin-bottom: 15px;
+}
+
+/* Lixeira do Card */
+.icon-deletar {
+    color: var(--principal); /* ROXO */
+    font-size: 25px; 
+    cursor: pointer; 
+    transition: 0.2s;
+}
+.icon-deletar:hover {
+    transform: scale(1.1);
 }
