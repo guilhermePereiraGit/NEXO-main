@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprovação NEXO</title>
-    <link rel="stylesheet" href="./css/tecnico-novo.css">
+    <link rel="stylesheet" href="tecnico-novo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -13,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarModelos(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body onload="carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -29,17 +31,17 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="location.href = '../../../novo-tecnico.html';"
+                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box');"
                                 id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="location.href = '/dashboard/tecnico/matheus/totens.html'"
-                                id="third"></i>
+                            <i class="bi bi-graph-up" onclick="ativar('fundo3');irPara('dashboard')" id="third"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
-                            <i class="bi bi-calendar3" onclick="ativar('fundo4');irPara('dashboard-agenda')"
+                            <i class="bi bi-calendar3"
+                                onclick="ativar('fundo4');irPara('dashboard-agenda');visualizarChamadosJira();"
                                 id="fourth"></i>
                         </div>
                     </div>
@@ -68,12 +70,12 @@
                 <div class="jira-slack">
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-                        <img src="assets/imgs/icon-jira.png">
+                        <img src="../../assets/imgs/icon-jira.png">
                         <h1>Jira</h1>
                     </div>
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-                        <img src="assets/imgs/icon-slack.png">
+                        <img src="../../assets/imgs/icon-slack.png">
                         <h1>Slack</h1>
                     </div>
                 </div>
@@ -85,34 +87,32 @@
                 <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
                 <h1>Deseja Sair?</h1>
                 <div class="box-button">
-                    <button> <a href="index.html">Fazer Logout</a></button>
+                    <button> <a href="../../index.html">Fazer Logout</a></button>
                 </div>
             </div>
         </div>
 
         <div class="content">
             <div class="information">
-                <div class="title">
-                    <h1 id="regiao-escolhida"></h1>
-                    <p id="sigla-regiao"></p>
-                </div>
-
+                <h1 id="regiao-escolhida"></h1>
+                <p id="sigla-regiao"></p>
             </div>
             <!-- CADASTRO TOTENS -->
             <div class="box" id="box" display="block">
                 <div class="cadastrar-totens" id="cadastrar-totens">
                     <div id="segundo">
                         <div class="more" id="more">
-                            <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
-                            <button onclick="abrirPopupTotem()">Adicionar Totem</button>
+                            <h1>Totens Cadastrados</h1>
+                            <button onclick="abrirPopupTotem()" id="botao-cadastrar">Adicionar Totem</button>
                         </div>
                         <div class="aprovados" id="div_aprovados"></div>
+                        <div class="totens-scroll" id="totens-totais"></div>
                     </div>
                     <div class="popuptotem" id="popuptotem">
                         <div class="card">
                             <div class="cima">
                                 <h1>Cadastro de Totem</h1>
-                                <button onclick="fecharPopupTotem()"><img src="assets/imgs/close.png"></button>
+                                <button onclick="fecharPopupTotem()"><img src="../../assets/imgs/close.png"></button>
                             </div>
                             <div class="baixo" id="baixo"></div>
                             <div class="item-card">
@@ -241,7 +241,7 @@
                             <p>% de Totens em Alerta</p>
                         </div>
                         <div class="list-modelos">
-                            <div class="Totem" onclick="window.location.href='./dashboard/tecnico/barros/totem.html'">
+                            <div class="Totem">
                                 <p>Totem AA0385</p>
                                 <div class="color"></div>
                             </div>
@@ -288,9 +288,60 @@
                     </div>
                 </div>
             </div>
+            <div class="dashboard" id="dashboard-agenda">
+                <div class="kpis" id="kpi-agenda">
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                        </div>
+                        <div class="dado">
+                            <h1>20</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                            <h2> concluídas</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>10</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Manutenções de alerta crítico</h1>
+                            <h2>pendentes</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>4</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Total de Manutenções</h1>
+                            <h2>pendentes</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>5</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="graficos">
+                    <div id="agenda" class="agenda">
+                        <div class="titulo-agenda">
+                            <h1 class="item-titulo-agenda">#</h1>
+                            <h1 class="item-titulo-agenda">ID Totem</h1>
+                            <h1 class="item-titulo-agenda">Local</h1>
+                            <h1 class="item-titulo-agenda">Status</h1>
+                            <h1 class="item-titulo-agenda">Qtd. Alertas</h1>
+                            <h1 class="item-titulo-agenda">Componente crítico</h1>
+                        </div>
+                    </div>
+                    <canvas id="agenda-grafico-barras">
+                    </canvas>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 </body>
 <script>
@@ -300,6 +351,7 @@
         if (escolha === 'fundo2') {
             document.getElementById("box").style.display = "block";
             document.getElementById("dashboard").style.display = "none";
+            document.getElementById("dashboard-agenda").style.display = "none";
             document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById('fundo4').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById("second").style.color = "#451c8b";
@@ -319,8 +371,154 @@
             document.getElementById("second").style.color = "white";
             document.getElementById("third").style.color = "white";
             document.getElementById("box").style.display = "none";
+            graficoBarras();
         }
     }
+
+    function visualizarChamadosJira() {
+        const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
+
+        fetch(`/Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
+        })
+            .then(res => res.json())
+            console.log("FUNCIONOU")
+            .then(dados => {
+                console.log("Chamados:", dados);
+            })
+            .catch(erro => console.error("Erro", erro));
+    }
+
+    function carregarDados() {
+        regiao_escolhida = document.getElementById('regiao-escolhida');
+        sigla_escolhida = document.getElementById('sigla-regiao');
+
+        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
+            document.getElementById('waiting').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'block';
+            document.getElementById('escolhaNew').style.display = 'block';
+            carregarModelos();
+            carregarTotens();
+            gerarGraficoLinha();
+            buscarComponentes();
+        } else {
+            regiao_escolhida.innerHTML = "Região não Selecionada";
+            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+            document.getElementById('escolhaNew').style.display = 'none';
+            document.getElementById('conteudo').style.display = 'none';
+            document.getElementById('eficiencia').style.display = 'none';
+            document.getElementById('alertas').style.display = 'none';
+        }
+    }
+
+
+
+
+
+    function buscarComponentes() {
+        fetch("/gestor/buscarComponentes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        componentes = data;
+                        console.log(componentes);
+                        plotarModelosCriticos(componentes);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+    function graficoBarras() {
+        const ctx = document.getElementById('agenda-grafico-barras');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Atenção', 'Alerta', 'Perigoso', 'Muito Perigoso'],
+                datasets: [{
+                    label: 'Número de alertas por criticidade',
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    function carregarTotens() {
+        nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+        fetch("/gestor/buscarTotens", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeRegiao: nomeRegiao
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        totens = data;
+                        console.log(totens);
+                        plotarTotens(totens);
+                        gerarGraficoPizza(totens.length)
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+    function carregarModelos() {
+        fetch("/gestor/buscarModelos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        modelos = data;
+                        console.log(modelos);
+                        plotarModelos(modelos);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+    //Usando
     aprovados = [];
     function carregarDadosAprovados() {
         var idEmpresa = sessionStorage.getItem("FK_EMPRESA");
@@ -399,33 +597,36 @@
 
     /*Usando*/
     let numeroTotens = 0;
-    modelos = []
+    var modelos = []
+    function carregarDadosModelo() {
+        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
-    function carregarModelos() {
-        fetch("/gestor/buscarModelos", {
+        fetch("/modelo/buscarModelos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa
+            }),
         })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
+            .then(resposta => {
                 if (resposta.ok) {
-                    resposta.json().then(data => {
-                        modelos = data;
-                        console.log(modelos);
-                    });
+                    return resposta.json();
                 } else {
-                    console.log("Erro ao Pegar Modelos");
-
+                    throw new Error("Erro na resposta do servidor");
                 }
             })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
+            .then(dados => {
+                for (let i = 0; i < dados.length; i++) {
+                    modelos.push(dados[i]);
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
             });
     }
-    
+
     function abrirPopupTotem() {
         var options = ''
         for (var i = 0; i < modelos.length; i++) {
@@ -515,6 +716,37 @@
         document.getElementById("input_qtd_de_totens").value = numeroTotens;
     }
 
+    var estados = []
+    function carregarEstados() {
+        fetch("/endereco/buscarEstados", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        estados = data;
+                        plotarEstadosSelect(estados)
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            });
+    }
+
+    function plotarEstadosSelect(estados) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < estados.length; i++) {
+            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+        }
+
+        estado_atuacao.innerHTML = option;
+    }
+
     /*Usando*/
     var regioes = [];
     function atualizarCampos() {
@@ -553,6 +785,52 @@
         }
 
         regiao_atuacao.innerHTML = option;
+    }
+
+    var zonas = []
+    function procurarZonas() {
+
+        var selectRegiao = document.getElementById("regiao_atuacao");
+        var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+        const regiao = regiao_atuacao.value;
+
+        fetch("/endereco/buscarZonas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idRegiaoServer: regiao
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        zonas = data;
+                        if (zonas.length > 0) {
+                            plotarZonasSelect(zonas);
+                        } else {
+                            zona_atuacao.innerHTML = "";
+                        }
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+    }
+
+    function plotarZonasSelect(zonas) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < zonas.length; i++) {
+            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
+        }
+
+        zona_atuacao.innerHTML = option;
     }
 
     async function cadastrarEndereco() {
@@ -691,32 +969,6 @@
                     resposta.json().then(data => {
                         estados = data;
                         plotarEstadosSelect(estados)
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-    }
-
-    var totens = []
-    function carregarTotens() {
-        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
-
-        fetch("/totem/buscarTotens", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresaServer: idEmpresa,
-                fkRegiaoServer: idRegiao
-            }),
-        })
-            .then(function (resposta) {
-
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-
                     })
                 } else {
                     console.log("Erro ao Buscar Dados!");
@@ -882,32 +1134,6 @@
         }
     }
 
-
-    function carregarDados() {
-        regiao_escolhida = document.getElementById('regiao-escolhida');
-        sigla_escolhida = document.getElementById('sigla-regiao');
-
-        if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
-            regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-            sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-            document.getElementById('waiting').style.display = 'none';
-            document.getElementById('conteudo').style.display = 'block';
-            document.getElementById('escolhaNew').style.display = 'block';
-            carregarModelos();
-            carregarTotens();
-            gerarGraficoLinha();
-            buscarComponentes();
-        } else {
-            regiao_escolhida.innerHTML = "Região não Selecionada";
-            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
-            document.getElementById('escolhaNew').style.display = 'none';
-            document.getElementById('conteudo').style.display = 'none';
-            document.getElementById('eficiencia').style.display = 'none';
-            document.getElementById('alertas').style.display = 'none';
-        }
-    }
-
-
     /*Usando*/
     function abrirMenu() {
         menu_icon = document.getElementById('icone');
@@ -948,3 +1174,4 @@
 </script>
 
 </html>
+>>>>>>> dash-giovanna

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprovação NEXO</title>
-    <link rel="stylesheet" href="./css/tecnico-novo.css">
+    <link rel="stylesheet" href="./totens.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -13,7 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarModelos(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body
+    onload="ativar('fundo3'), irPara('dashboard'), carregarDadosModelo(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -28,14 +29,14 @@
                 <div class="header-navigation">
                     <div class="icones">
                         <div class="cadastrar-totens">
-                            <div class="fundo" id="fundo2" style="display: block;"></div>
+                            <div class="fundo" id="fundo2" style="display: none;"
+                                onclick="location.href = '../../../novo-tecnico.html';"></div>
                             <i class="bi bi-display" onclick="location.href = '../../../novo-tecnico.html';"
                                 id="second"></i>
                         </div>
                         <div class="dashboard">
-                            <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="location.href = '/dashboard/tecnico/matheus/totens.html'"
-                                id="third"></i>
+                            <div class="fundo" id="fundo3" style="display: block;"></div>
+                            <i class="bi bi-graph-up" onclick="ativar('fundo3');irPara('dashboard')" id="third"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
@@ -85,11 +86,80 @@
                 <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
                 <h1>Deseja Sair?</h1>
                 <div class="box-button">
-                    <button> <a href="index.html">Fazer Logout</a></button>
+                    <button onclick="window.location.href='../../../login.html'">Fazer Logout</button>
                 </div>
             </div>
         </div>
 
+        <!-- POPUP DE PASSO À PASSO -->
+        <div class="popup-passos" style="display: none;" id="popup-passos">
+            <div class="passos-content">
+
+            </div>
+        </div>
+
+        <!-- POPUP DE ESCOLHA DE REGIÃO -->
+        <div class="popup-escolha" style="display: none;" id="popup-escolha">
+            <div class="escolha-content">
+                <i class="bi bi-x-lg" onclick="fecharEscolha(),carregarDados()" style="cursor: pointer;"></i>
+                <div class="initial-escolha">
+                    <div class="box-regiao">
+                        <h1>Escolha o Estado</h1>
+                        <select name="estado-escolha" id="estado-escolha" onchange="carregarRegioes()">
+                            <option value="x" selected>Escolha uma Opção</option>
+                            <option value="AC">AC - Acre</option>
+                            <option value="AL">AL - Alagoas</option>
+                            <option value="AP">AP - Amapá</option>
+                            <option value="AM">AM - Amazonas</option>
+                            <option value="BA">BA - Bahia</option>
+                            <option value="CE">CE - Ceará</option>
+                            <option value="DF">DF - Distrito Federal</option>
+                            <option value="ES">ES - Espírito Santo</option>
+                            <option value="GO">GO - Goiás</option>
+                            <option value="MA">MA - Maranhão</option>
+                            <option value="MT">MT - Mato Grosso</option>
+                            <option value="MS">MS - Mato Grosso do Sul</option>
+                            <option value="MG">MG - Minas Gerais</option>
+                            <option value="PA">PA - Pará</option>
+                            <option value="PB">PB - Paraíba</option>
+                            <option value="PR">PR - Paraná</option>
+                            <option value="PE">PE - Pernambuco</option>
+                            <option value="PI">PI - Piauí</option>
+                            <option value="RJ">RJ - Rio de Janeiro</option>
+                            <option value="RN">RN - Rio Grande do Norte</option>
+                            <option value="RS">RS - Rio Grande do Sul</option>
+                            <option value="RO">RO - Rondônia</option>
+                            <option value="RR">RR - Roraima</option>
+                            <option value="SC">SC - Santa Catarina</option>
+                            <option value="SP">SP - São Paulo</option>
+                            <option value="SE">SE - Sergipe</option>
+                            <option value="TO">TO - Tocantins</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="priorizar" id="priorizar" style="display: none;">
+                    <i class="bi bi-exclamation-diamond"></i>
+                    <p>A região mais crítica é Região Metropolitana de São Paulo</p>
+                </div>
+
+                <!-- ANTES DE ESCOLHER UM ESTADO -->
+                <div class="aguardando" id="aguardando">
+                    <h2>Selecione o Estado para Prosseguir</h2>
+                    <p>Escolha um estado para que suas regiões metropolitanas sejam devidamente carregadas para
+                        selecionar.</p>
+                </div>
+
+                <!-- APÓS ESCOLHER UM ESTADO -->
+                <div class="regioes" id="regioes" style="display: none;">
+                </div>
+
+                <!-- EM PRODUÇÃO -->
+                <div class="producao" id="producao" style="display: none;">
+                    <h2>Em Produção</h2>
+                    <p>Este Estado ainda não possui serviços disponíveis para análise ou monitoramento dos dados</p>
+                </div>
+            </div>
+        </div>
         <div class="content">
             <div class="information">
                 <div class="title">
@@ -99,138 +169,40 @@
 
             </div>
             <!-- CADASTRO TOTENS -->
-            <div class="box" id="box" display="block">
-                <div class="cadastrar-totens" id="cadastrar-totens">
-                    <div id="segundo">
-                        <div class="more" id="more">
-                            <h1 style="margin-bottom: 0px;">Totens Cadastrados</h1>
-                            <button onclick="abrirPopupTotem()">Adicionar Totem</button>
-                        </div>
-                        <div class="aprovados" id="div_aprovados"></div>
-                    </div>
-                    <div class="popuptotem" id="popuptotem">
-                        <div class="card">
-                            <div class="cima">
-                                <h1>Cadastro de Totem</h1>
-                                <button onclick="fecharPopupTotem()"><img src="assets/imgs/close.png"></button>
-                            </div>
-                            <div class="baixo" id="baixo"></div>
-                            <div class="item-card">
-                                <div class="item-card">
-                                    <label for="input_cep">Cep:</label>
-                                    <input type="text" id="input_cep" placeholder="CEP" value="00222-333">
-                                </div>
-                                <div class="item-card" id="estado">
-                                    <label>Estado:</label>
-                                    <select name="estado_atuacao" id="estado_atuacao"
-                                        onchange="atualizarCampos()"></select>
-                                </div>
-                            </div>
-                            <div class="item-card">
-                                <div class="item-card" id="regioes">
-                                    <label>Região:</label>
-                                    <select name="regiao_atuacao" id="regiao_atuacao"
-                                        onchange="procurarZonas()"></select>
-                                </div>
-                                <div class="item-card" id="zonas">
-                                    <label>Zona:</label>
-                                    <select name="zona_atuacao" id="zona_atuacao"></select>
-                                </div>
-                            </div>
-                            <div class="item-card">
-                                <div class="item-card">
-                                    <label for="input_cidade">Cidade:</label>
-                                    <input type="text" id="input_cidade" placeholder="Cidade" value="São Paulo">
-                                </div>
-                                <div class="item-card">
-                                    <label for="input_rua">Rua:</label>
-                                    <input type="text" id="input_rua" placeholder="Rua" value="Rua Tavares">
-                                </div>
-                                <div class="item-card">
-                                    <label for="input_bairro">Bairro:</label>
-                                    <input type="text" id="input_bairro" placeholder="Bairro" value="Jardins">
-                                </div>
-                            </div>
-                            <div class="item-card">
-                                <div class="item-card">
-                                    <label for="input_complemento">Complemento:</label>
-                                    <input type="text" id="input_complemento" placeholder="Complemento" value="Loja1">
-                                </div>
-                                <div class="item-card">
-                                    <label for="input_numero">Número:</label>
-                                    <input type="number" id="input_numero" placeholder="N°" value="34">
-                                </div>
-                            </div>
-                            <div class="part-dois">
-                                <div class="item-card">
-                                    <label for="input_modelos">Qual o modelo?</label>
-                                    <select name="modelos" id="input_modelos">
-                                        <option value="">Selecione uma opção</option>
-                                    </select>
-                                </div>
-                                <div class="item-card">
-                                    <label for="input_qtd_de_totens">Quantos totens nesse local?</label>
-                                    <input type="number" id="input_qtd_de_totens" oninput="atualizarTotens()"
-                                        placeholder="N°">
-                                </div>
-                            </div>
-                            <div class="totens-scroll" id="totens"></div>
-                            <div class="part-dois">
-                                <button class="cadastrar" onclick="adicionarMaisUmTotem()" id="botao-popup">Adicionar
-                                    Totem</button>
-                                <button class="cadastrar" onclick="cadastrarEndereco()"
-                                    id="botao-popup">Cadastrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="box" id="box" display="block"></div>
             <!-- DASHBOARD -->
             <div class="dashboard" id="dashboard" display="none">
                 <div class="kpis">
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
+                            <h1>Totem</h1>
+                            <h2>com mais alertas</h2>
                         </div>
                         <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
+                            <h2>Totem AA0385</h2>
                         </div>
                     </div>
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
+                            <h1>Componente</h1>
+                            <h2>com mais alertas</h2>
                         </div>
                         <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
+                            <h2>CPU</h2>
                         </div>
                     </div>
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
+                            <h1>Totem com alerta</h1>
+                            <h2>mais próximo</h2>
                         </div>
                         <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Estabilidade</h1>
-                            <h2>da Região</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>85%</h1>
-                            <h2>Variância: 5 pontos</h2>
+                            <h2>Totem AA0385</h2>
                         </div>
                     </div>
                 </div>
                 <div class="dados">
-                    <div class="modelos">
+                    <div class="totens">
                         <div class="legenda">
                             <div class="barra-legenda">
                                 <div class="item ione">20%</div>
@@ -240,47 +212,7 @@
                             </div>
                             <p>% de Totens em Alerta</p>
                         </div>
-                        <div class="list-modelos">
-                            <div class="Totem" onclick="window.location.href='./dashboard/tecnico/barros/totem.html'">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
-                            <div class="Totem">
-                                <p>Totem AA0385</p>
-                                <div class="color"></div>
-                            </div>
+                        <div class="list-totens" id="list-totens">
                         </div>
                     </div>
                     <div class="grafico">
@@ -289,8 +221,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 </body>
 <script>
@@ -312,6 +242,11 @@
             document.getElementById("second").style.color = "white";
             document.getElementById("fourth").style.color = "white";
             document.getElementById("box").style.display = "none";
+            sessionStorage.setItem('REGIAO_ESCOLHIDA', "")
+            sessionStorage.setItem('SIGLA_REGIAO', "")
+            div_totens = document.getElementById('list-totens');
+            div_totens.innerHTML = ``;
+
         } else if (escolha === 'fundo4') {
             document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
             document.getElementById('fundo3').style.animation = 'recolherDireita 0.5s ease forwards';
@@ -399,33 +334,36 @@
 
     /*Usando*/
     let numeroTotens = 0;
-    modelos = []
+    var modelos = []
+    function carregarDadosModelo() {
+        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 
-    function carregarModelos() {
-        fetch("/gestor/buscarModelos", {
+        fetch("/modelo/buscarModelos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+                fkEmpresaServer: idEmpresa
+            }),
         })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
-
+            .then(resposta => {
                 if (resposta.ok) {
-                    resposta.json().then(data => {
-                        modelos = data;
-                        console.log(modelos);
-                    });
+                    return resposta.json();
                 } else {
-                    console.log("Erro ao Pegar Modelos");
-
+                    throw new Error("Erro na resposta do servidor");
                 }
             })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
+            .then(dados => {
+                for (let i = 0; i < dados.length; i++) {
+                    modelos.push(dados[i]);
+                }
+            })
+            .catch(erro => {
+                console.log(`#ERRO: ${erro}`);
             });
     }
-    
+
     function abrirPopupTotem() {
         var options = ''
         for (var i = 0; i < modelos.length; i++) {
@@ -515,36 +453,38 @@
         document.getElementById("input_qtd_de_totens").value = numeroTotens;
     }
 
-    /*Usando*/
-    var regioes = [];
-    function atualizarCampos() {
-        const estado = estado_atuacao.value;
-
-        fetch("/endereco/buscarRegioes", {
-            method: "POST",
+    var estados = []
+    function carregarEstados() {
+        fetch("/endereco/buscarEstados", {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                idEstadoServer: estado
-            }),
         })
             .then(function (resposta) {
+
                 if (resposta.ok) {
                     resposta.json().then(data => {
-                        console.log(data);
-                        regioes = data;
-                        plotarRegioesSelect(regioes);
+                        estados = data;
+                        plotarEstadosSelect(estados)
                     })
                 } else {
                     console.log("Erro ao Buscar Dados!");
                 }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
             });
     }
 
+    function plotarEstadosSelect(estados) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < estados.length; i++) {
+            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
+        }
+
+        estado_atuacao.innerHTML = option;
+    }
+
+    /*Usando*/
     function plotarRegioesSelect(regioes) {
         var option = `<option value="">Selecione uma opção</option>`;
 
@@ -553,6 +493,52 @@
         }
 
         regiao_atuacao.innerHTML = option;
+    }
+
+    var zonas = []
+    function procurarZonas() {
+
+        var selectRegiao = document.getElementById("regiao_atuacao");
+        var labelSelecionada = selectRegiao.options[selectRegiao.selectedIndex].text;
+        const regiao = regiao_atuacao.value;
+
+        fetch("/endereco/buscarZonas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idRegiaoServer: regiao
+            }),
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        zonas = data;
+                        if (zonas.length > 0) {
+                            plotarZonasSelect(zonas);
+                        } else {
+                            zona_atuacao.innerHTML = "";
+                        }
+                    })
+                } else {
+                    console.log("Erro ao Buscar Dados!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+    }
+
+    function plotarZonasSelect(zonas) {
+        var option = `<option value="">Selecione uma opção</option>`;
+
+        for (var i = 0; i < zonas.length; i++) {
+            option += `<option value="${zonas[i].IdZona}">${zonas[i].Nome}</option>`;
+        }
+
+        zona_atuacao.innerHTML = option;
     }
 
     async function cadastrarEndereco() {
@@ -677,63 +663,6 @@
             });
     }
 
-    var estados = []
-    function carregarEstados() {
-        fetch("/endereco/buscarEstados", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then(function (resposta) {
-
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-                        estados = data;
-                        plotarEstadosSelect(estados)
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-    }
-
-    var totens = []
-    function carregarTotens() {
-        idEmpresa = sessionStorage.getItem("FK_EMPRESA");
-
-        fetch("/totem/buscarTotens", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresaServer: idEmpresa,
-                fkRegiaoServer: idRegiao
-            }),
-        })
-            .then(function (resposta) {
-
-                if (resposta.ok) {
-                    resposta.json().then(data => {
-
-                    })
-                } else {
-                    console.log("Erro ao Buscar Dados!");
-                }
-            });
-    }
-
-    function plotarEstadosSelect(estados) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < estados.length; i++) {
-            option += `<option value="${estados[i].IdEstado}">${estados[i].Nome}</option>`;
-        }
-
-        estado_atuacao.innerHTML = option;
-    }
-
     var regioes = [];
     function atualizarCampos() {
         var selectEstado = document.getElementById("estado_atuacao");
@@ -765,16 +694,6 @@
             .catch(function (resposta) {
                 console.log(`#ERRO: ${resposta}`);
             });
-    }
-
-    function plotarRegioesSelect(regioes) {
-        var option = `<option value="">Selecione uma opção</option>`;
-
-        for (var i = 0; i < regioes.length; i++) {
-            option += `<option value="${regioes[i].IdRegiao}">${regioes[i].Nome}</option>`;
-        }
-
-        regiao_atuacao.innerHTML = option;
     }
 
     var zonas = []
@@ -882,7 +801,6 @@
         }
     }
 
-
     function carregarDados() {
         regiao_escolhida = document.getElementById('regiao-escolhida');
         sigla_escolhida = document.getElementById('sigla-regiao');
@@ -893,7 +811,6 @@
             document.getElementById('waiting').style.display = 'none';
             document.getElementById('conteudo').style.display = 'block';
             document.getElementById('escolhaNew').style.display = 'block';
-            carregarModelos();
             carregarTotens();
             gerarGraficoLinha();
             buscarComponentes();
@@ -907,6 +824,134 @@
         }
     }
 
+    function escolherRegiao(regiao, sigla) {
+        sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
+        sessionStorage.setItem('SIGLA_REGIAO', sigla);
+        carregarTotens();
+        fecharEscolha();
+        carregarDados();
+        gerarGraficoLinha();
+    }
+
+    function carregarTotens() {
+        nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+        fetch("/gestor/buscarTotens", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeRegiao: nomeRegiao
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        totens = data;
+                        console.log(totens);
+                        plotarTotens(totens);
+                    });
+                } else {
+                    console.log("Erro ao Pegar Modelos");
+
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+    function carregarRegioes() {
+        escolha = document.getElementById('estado-escolha').value;
+        regioes = document.getElementById('regioes');
+        producao = document.getElementById('producao');
+        aguardando = document.getElementById('aguardando');
+        priorizar = document.getElementById('priorizar');
+        if (escolha == "x") {
+            aguardando.style.display = 'flex';
+            regioes.style.display = 'none';
+            producao.style.display = 'none';
+            priorizar.style.display = 'none';
+        } else if (escolha == "SP") {
+            aguardando.style.display = 'none';
+            regioes.style.display = 'flex';
+            producao.style.display = 'none';
+            priorizar.style.display = 'flex';
+        } else {
+            aguardando.style.display = 'none';
+            regioes.style.display = 'none';
+            producao.style.display = 'flex';
+            priorizar.style.display = 'none';
+        }
+    }
+
+    function carregarRegioesCadastradas() {
+        emailUsuario = sessionStorage.getItem('EMAIL_USUARIO');
+
+        fetch("/gestor/buscarRegioes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                emailUsuario: emailUsuario
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    resposta.json().then(data => {
+                        regioes = data;
+                        console.log(regioes);
+                        plotarRegioes(regioes)
+                    });
+                } else {
+                    console.log("Erro ao Pegar Regiões");
+                    // Adicione tratamento de erro mais específico
+                    resposta.text().then(text => {
+                        console.log("Resposta do servidor:", text);
+                    });
+                }
+            })
+            .catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+    }
+
+    function plotarRegioes(regioes) {
+        div_regioes = document.getElementById('regioes');
+        div_regioes.innerHTML = ``;
+        for (var i = 0; i < regioes.length; i++) {
+            div_regioes.innerHTML += `
+    <div class="regiao" onclick="escolherRegiao('${regioes[i].NomeRegiao}','${regioes[i].SiglaRegiao}')">
+    <h1>${regioes[i].NomeRegiao} - ${regioes[i].SiglaRegiao}</h1>
+    <div class="priorizar">
+    <h2>Disponibilidade</h2>
+    <h3>60%</h3>
+    </div>
+    </div>
+    `;
+        }
+    }
+
+    function plotarTotens(totens) {
+        div_totens = document.getElementById('list-totens');
+        for (var i = 0; i < totens.length; i++) {
+            div_totens.innerHTML += `
+    <div class="Totem" onclick="escolherTotem('${totens[i].numMAC}')">
+    <h2>Totem ${totens[i].numMAC}</h2>
+    <div class="color"></div>
+    </div>
+    `;
+        }
+    }
+
+    function escolherTotem(numMAC) {
+        sessionStorage.setItem("MAC_TOTEM", numMAC)
+        window.location.href = '../barros/totem.html'
+    }
 
     /*Usando*/
     function abrirMenu() {
@@ -939,6 +984,7 @@
     function abrirEscolha() {
         popup = $("#popup-escolha");
         popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+        carregarRegioesCadastradas();
     }
     function fecharEscolha() {
         popup = $("#popup-escolha");

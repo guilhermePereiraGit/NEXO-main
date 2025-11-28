@@ -87,6 +87,170 @@ header .icones {
     animation: expandirEsquerda 0.5s ease forwards;
 }
 
+/* POPUP PARA ESCOLHA DE REGIÃO */
+.popup-escolha {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-escolha .escolha-content {
+    width: 50%;
+    height: 80vh;
+    background-color: white;
+    padding: 30px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-escolha .escolha-content i {
+    font-size: 30px;
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content h1 {
+    color: var(--principal);
+    font-weight: 500;
+}
+
+.popup-escolha .escolha-content .initial-escolha {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box-regiao {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .initial-escolha .box-regiao select {
+    border: 1px solid var(--principal);
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 15px;
+}
+
+.popup-escolha .escolha-content .priorizar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    height: 45vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .aguardando h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .aguardando p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA PRODUÇÃO */
+.popup-escolha .escolha-content .producao {
+    border: 1px solid var(--principal);
+    margin-top: 60px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    height: 45vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-escolha .escolha-content .producao h2 {
+    color: var(--principal);
+}
+
+.popup-escolha .escolha-content .producao p {
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+/* PARA AS REGIÕES */
+.popup-escolha .escolha-content .regioes {
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    overflow: auto;
+    margin-top: 30px;
+}
+
+.popup-escolha .escolha-content .regioes .regiao {
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.popup-escolha .escolha-content .regioes .regiao:hover {
+    background-color: var(--fundo);
+}
+
+.popup-escolha .escolha-content .regioes .regiao h1 {
+    font-size: 25px;
+    width: 100%;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar {
+    display: flex;
+}
+
+.popup-escolha .escolha-content .regioes .regiao .priorizar h3 {
+    font-size: 25px;
+    color: var(--principal);
+}
+
+/* POPUP DE PASSO À PASSO */
+.popup-passos {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-passos .passos-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
 @keyframes expandirEsquerda {
     from {
         transform: scaleX(0);
@@ -227,7 +391,7 @@ header .header-navigation {
 .information {
     display: flex;
     flex-direction: row;
-    height: 17vh;
+    height: 21vh;
     width: 100vw;
     background-color: #c8c1ff;
     justify-content: space-between;
@@ -801,7 +965,8 @@ select {
 .dashboard .kpis .kpi {
     background-color: white;
     padding: 15px;
-    width: 24.5%;
+    width: 32.5%;
+    height: 25vh;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -845,7 +1010,7 @@ select {
     gap: 10px;
 }
 
-.dados .modelos {
+.dados .totens {
     background-color: white;
     width: 40%;
     height: 51.3vh;
@@ -857,41 +1022,41 @@ select {
     align-items: center;
 }
 
-.dados .modelos .legenda {
+.dados .totens .legenda {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.dados .modelos .legenda p {
+.dados .totens .legenda p {
     color: var(--principal);
 }
 
-.dados .modelos .list-modelos {
+.dados .totens .list-totens {
     margin-top: 30px;
     height: 38vh;
     overflow: auto;
     width: 85%;
 }
 
-.dados .modelos .list-modelos .Totem {
-    padding: 15px;
+.dados .totens .list-totens .Totem {
     transition: 0.3s;
     cursor: pointer;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.dados .modelos .list-modelos .modelo:hover {
+.dados .totens .list-totens .Totem:hover {
     background-color: var(--fundo);
 }
 
-.dados .modelos .list-modelos .Totem p {
+.dados .totens .list-totens .Totem p {
     font-size: 20px;
 }
 
-.dados .modelos .list-modelos .Totem .color {
+.dados .totens .list-totens .Totem .color {
     height: 1.7vh;
     width: 25%;
     border-radius: 20px;
@@ -1005,7 +1170,7 @@ select {
 /* CONTENT */
 .content .information h1 {
     font-weight: 500;
-    color: black;
+    color: #451c8b;
 }
 
 .content .information .title {
@@ -1515,36 +1680,4 @@ select {
         font-size: 12px;
         padding: 8px;
     }
-}
-
-/*DASH-AGENDA*/
-.dashboard #dashboard-agenda{
-    align-self: center;
-}
-.graficos{
-    display: flex;
-    flex-direction: row;
-    height: 50vh;
-    margin-top: 20px;
-    gap: 15px;
-}
-#agenda-grafico-barras{
-    background-color: white;
-    height: 100%;
-    width: 40%;
-    border-radius: 10px;
-}
-.agenda {
-    background-color: white;
-    height: 100%;
-    width: 45vw;
-    border-radius: 10px;
-    display: flex;
-}
-.titulo-agenda{
-    display: flex;
-    gap: 10px;
-}
-.titulo-agenda h1{
-    font-size: 20px;
 }

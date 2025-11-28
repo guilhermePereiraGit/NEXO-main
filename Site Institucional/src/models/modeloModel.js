@@ -26,13 +26,11 @@ function verificarAprovados(idEmpresa) {
 }
 
 function cadastrarModelo(nomeModelo, descricao, fkEmpresa, parametros) {
-
     var instrucaoModelo = `
         insert into modelo (nome, descricao_arq, status, fkEmpresa)
         values ('${nomeModelo}', '${descricao}', 'ATIVO', ${fkEmpresa});
     `;
-    console.log("cadastrarModelo - INSERT modelo: \n" + instrucaoModelo);
-
+    console.log("cadastrarModelo: \n" + instrucaoModelo);
     return database.executar(instrucaoModelo);
 }
 
@@ -51,6 +49,15 @@ function deletarParametros(idModelo) {
         where fkModelo = ${idModelo};
     `;
     console.log("deletarParametros(): \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function deletarModelo(idModelo) {
+    var instrucaoSql = `
+        delete from modelo
+        where idModelo = ${idModelo};
+    `;
+    console.log("deletarModelo(): \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
@@ -87,5 +94,6 @@ function atualizarModelo(idModelo, nomeModelo, descricao) {
     return database.executar(instrucaoSql);
 }
 
-module.exports = { buscarDefaults, verificarAprovados, cadastrarModelo, inserirParametros, deletarParametros, buscarModeloPorId, atualizarModelo
+module.exports = {
+    buscarDefaults, verificarAprovados, cadastrarModelo, inserirParametros, deletarParametros, buscarModeloPorId, atualizarModelo, deletarModelo
 };
