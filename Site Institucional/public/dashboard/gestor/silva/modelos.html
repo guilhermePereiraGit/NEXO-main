@@ -284,5 +284,14 @@
     </div>
 </body>
 <script src="script.js"></script>
-
+<script>
+    async function carregarJson(diretorio, arquivo) {
+        var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
+        var dados = await resposta.json();
+        console.log(dados);
+        return dados;
+    }
+    carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
+    carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+</script>
 </html>
