@@ -188,7 +188,7 @@
                         <div class="dados">
                             <div class="texto2">
                                 <p id="total_totens"></p>
-                                <p style="color: #451c8b;" id="total_alertas">400 Alertas</p>
+                                <p style="color: #451c8b;" id="total_alertas"></p>
                             </div>
                             <div class="grafico">
                                 <canvas id="grafico-pizza" class="chart-container"></canvas>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Modelos Recorrentes</h1>
+                            <h1>Piores Modelos</h1>
                             <h2>por Métrica</h2>
                         </div>
                         <div class="modelos-kpi" id="modelos_criticos">
@@ -226,14 +226,14 @@
                         </div>
                         <div class="dados">
                             <div class="texto">
-                                <p>Modelo AA0385</p>
-                                <p style="color: #451c8b;font-weight: bold;">45h35min</p>
+                                <p id="p_modelo_downtime_pior"></p>
+                                <p style="color: #451c8b;font-weight: bold;" id="p_pior_downtime"></p>
                             </div>
                         </div>
                         <div class="dados">
                             <div class="texto">
-                                <p>Região RMSP</p>
-                                <p style="color: #451c8b;font-weight: bold;"> 245h35min</p>
+                                <p id="regiao_agora"></p>
+                                <p style="color: #451c8b;font-weight: bold;" id="downtime_regiao"></p>
                             </div>
                         </div>
                     </div>
@@ -284,5 +284,4 @@
     </div>
 </body>
 <script src="script.js"></script>
-
 </html>

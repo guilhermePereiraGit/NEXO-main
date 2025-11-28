@@ -1,8 +1,13 @@
 //Chamar Funções de Carregamento de Dados
-window.onload = function () {
+window.onload = async function () {
+    //Muito mais simples e reduz tempo de demora do await
+    var empresa = `empresa-${sessionStorage.getItem('ID_EMPRESA')}`;
+    cacheAlertas = await carregarJson(empresa, "alertas.json");
+    cacheDowntime = await carregarJson(empresa, "downtime.json");
     carregarDados();
     carregarDadosUser();
     carregarUltimos7Dias();
+    carregarDowntime();
 };
 
 // CARREGAR ÚLTIMOS 7 DIAS
@@ -16,6 +21,59 @@ function carregarUltimos7Dias() {
 
     p_data = document.getElementById('p_data');
     p_data.innerHTML = `${seteDiasFormatada} à ${dataAtualFormatada}`;
+}
+
+//CARREGAR ARQUIVOS JSON
+async function carregarJson(diretorio, arquivo) {
+    var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
+    var dados = await resposta.json();
+    console.log(dados);
+    return dados;
+}
+// carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
+// carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+
+async function carregarDowntime() {
+    //Carregar Downtime total da Região
+    downtime_regiao = document.getElementById('downtime_regiao');
+    var downtime = cacheDowntime;
+    console.log(downtime);
+
+    totalDowntimeRegiao = 0;
+    for (var i = 0; i < downtime.length; i++) {
+        totalDowntimeRegiao += (downtime[i].downtime7Dia * -1);
+        console.log(downtime[i].downtime7Dia);
+
+    }
+    downtime_regiao.innerHTML = converterHoras(totalDowntimeRegiao);
+
+    //Carregar Modelo com maior Downtime
+    modelo_pior = document.getElementById('p_modelo_downtime_pior');
+    downtime_pior = document.getElementById('p_pior_downtime');
+
+    vmodelo_pior = downtime[0].modelo;
+    vdowntime_pior = downtime[0].downtime7Dia * -1;
+
+    for (var i = 1; i < downtime.length; i++) {
+        if ((downtime[i].downtime7Dia * -1) > vdowntime_pior) {
+            vmodelo_pior = downtime[i].modelo;
+            vdowntime_pior = downtime[i].downtime7Dia * -1;
+        }
+    }
+
+    modelo_pior.innerHTML = "Modelo " + vmodelo_pior;
+    downtime_pior.innerHTML = converterHoras(vdowntime_pior);
+
+    regiao_agora = document.getElementById('regiao_agora');
+    regiao_agora.innerHTML = "Região " + sessionStorage.getItem('SIGLA_REGIAO');
+
+    return vmodelo_pior;
+}
+
+function converterHoras(horasDecimais) {
+    var horas = Math.floor(horasDecimais);
+    var minutos = Math.round((horasDecimais - horas) * 60);
+    return `${horas}h${minutos}min`;
 }
 
 function carregarDados() {
@@ -55,8 +113,7 @@ function buscarComponentes() {
             if (resposta.ok) {
                 resposta.json().then(data => {
                     componentes = data;
-                    console.log(componentes);
-                    plotarModelosCriticos(componentes);
+                    plotarModelosCriticos(componentes)
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");
@@ -68,92 +125,84 @@ function buscarComponentes() {
         });
 }
 
-function plotarModelosCriticos(componentes) {
-    regiao_selecionar = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-    //Separar Modelos Críticos por cada Componente
-    fetch("/gestor/buscarAlertas", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            regiaoAtual: regiao_selecionar
-        }),
-    })
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
+async function plotarModelosCriticos(componentes) {
+    var alertas = cacheAlertas;
+    console.log(componentes);
 
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    alertas = data;
-                    console.log(alertas);
-                    document.getElementById('total_alertas').innerHTML = `${alertas.length} Alertas`;
+    //é tipo um enum que vimos na Célia, porém vi que dá para fazer para o JS também
+    //é literalmente só um objeto, mas ele é utilizado como um enum
+    var pesos = { "Muito Perigoso": 3, "Perigoso": 2, "Atenção": 1 };
+    let final = {};
 
-                    listaMaiores = [];
-                    //Para separar por componente
-                    for (var i = 0; i < componentes.length; i++) {
-                        var listaAuxiliar = [];
-                        for (var j = 0; j < alertas.length; j++) {
-                            if (alertas[j].NomeComponente == componentes[i].nome) {
-                                listaAuxiliar.push(alertas[j]);
-                            }
-                        }
+    //For para os componentes
+    for (var i = 0; i < componentes.length; i++) {
+        var componenteAtual = componentes[i].nome;
+        var pontuacao = {};
 
-                        console.log(listaAuxiliar);
+        //For para os alertas
+        for (var j = 0; j < alertas.length; j++) {
+            var alertaAtual = alertas[j];
+            if (alertaAtual.componente == componenteAtual) {
+                var mAlert = alertaAtual.modelo;
+                var ponto = pesos[alertaAtual.grau];
 
-                        totalMaior = 0;
-                        indiceMaior = null;
-                        for (var g = 0; g < listaAuxiliar.length; g++) {
-                            if (listaAuxiliar[g].totalAlertas > totalMaior) {
-                                totalMaior = listaAuxiliar[g].totalAlertas
-                                indiceMaior = g;
-                            }
-                        }
-
-                        listaMaiores.push(listaAuxiliar[indiceMaior]);
-                    }
-                    console.log(listaMaiores);
-
-
-                    //Plotando informações
-                    modelos_criticos = document.getElementById('modelos_criticos');
-
-                    for (var i = 0; i < componentes.length; i++) {
-                        modelos_criticos.innerHTML += `
-                        <div class="modelo">
-                        <h2>${componentes[i].nome}</h2>
-                        <p>${listaMaiores[i].NomeModelo}</p>
-                        </div>
-                        `;
-                    }
-                    modelos_criticos.innerHTML += `
-                        <div class="modelo">
-                        <h2>DOWNTIME</h2>
-                        <p>AA0385</p>
-                        </div>
-                        `;
-                });
-            } else {
-                console.log("Erro ao Pegar Modelos");
-
+                if (!pontuacao[mAlert]) {pontuacao[mAlert] = 0;}
+                pontuacao[mAlert] += ponto;
             }
-        })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
+        }
+        var mCritico = "";
+        var mPontuacao = 0;
 
-function gerarGraficoPizza(totens,alertas) {
-    console.log('totens',totens);
-    console.log('alertas',alertas);
+        for (var modeloPoint in pontuacao) {
+            if (pontuacao[modeloPoint] > mPontuacao) {
+                mPontuacao = pontuacao[modeloPoint];
+                mCritico = modeloPoint
+            }
+        }
+        final[componenteAtual] = {
+            modelo: mCritico,
+            peso: mPontuacao,
+            componente:componenteAtual
+        }
+    }
+    console.log(final);
+
+    //Plotando no html
+    corpo_modelos = document.getElementById('modelos_criticos');
+    for(var componente in final){
+        corpo_modelos.innerHTML += `
+        <div class="modelo">
+        <h2>${componente}</h2>
+        <p>${final[componente].modelo}</p>
+        </div>
+        `;
+    }
+    pior_downtime = carregarDowntime();
     
+    corpo_modelos.innerHTML += `
+        <div class="modelo">
+        <h2>DOWNTIME</h2>
+        <p>${vmodelo_pior}</p>
+        </div>
+        `;
+}
+
+async function gerarGraficoPizza(totens) {
+    var alertas = cacheAlertas;
+    total_alertas_p = document.getElementById('total_alertas');
+    total_alertas_p.innerHTML = alertas.length + " Alertas";
+    console.log('alertas', alertas);
+    console.log('totens', totens);
+
+
+
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
         type: 'doughnut',
         data: {
             labels: ['Alertas', 'Totens'],
             datasets: [{
-                data: [20, totens],
+                data: [alertas.length, totens],
                 backgroundColor: ["#451c8b", "#c8c1ff"]
             }]
         },
@@ -237,15 +286,20 @@ function carregarModelos() {
         });
 }
 
-function plotarModelos(modelos) {
+async function plotarModelos(modelos) {
     div_modelos = document.getElementById('modelos');
+    var alertas = cacheAlertas;
     for (var i = 0; i < modelos.length; i++) {
-        div_modelos.innerHTML += `
-    <div class="modelo">
-    <h2>Modelo ${modelos[i].NomeModelo}</h2>
-    <div class="color"></div>
-    </div>
-    `;
+    
+    //Aqui vou precisar buscar todos os totens associados à um modelo para depois ver a quantidade
+    //de alertas associados á esse modelo, e depois disso dá para mudar a cor
+    
+    // div_modelos.innerHTML += `
+    // <div class="modelo">
+    // <h2>${modelos[i].NomeModelo}</h2>
+    // <div class="color"></div>
+    // </div>
+    // `;
     }
 }
 

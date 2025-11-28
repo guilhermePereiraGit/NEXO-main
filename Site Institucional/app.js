@@ -22,6 +22,7 @@ var regiaoRouter = require("./src/routes/regiao");
 var adicionarRouter = require("./src/routes/adicionarRegiao");
 var gestorRouter = require("./src/routes/gestor");
 var jiraRouter = require("./src/routes/jira");
+var s3Router = require('./src/routes/s3Route');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,6 +40,7 @@ app.use("/regiao", regiaoRouter);
 app.use("/adicionarRegiao", adicionarRouter);
 app.use("/gestor", gestorRouter);
 app.use("/jira", jiraRouter);
+app.use('/s3Route', s3Router);
 
 app.listen(PORTA_APP, function () {
     console.log(`
