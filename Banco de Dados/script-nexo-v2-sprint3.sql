@@ -122,6 +122,13 @@ CREATE TABLE IF NOT EXISTS totem (
     constraint status_totem_check check(status in ("ATIVO", "INATIVO"))
 );
 
+CREATE TABLE IF NOT EXISTS alerta(
+	idAlerta INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    diaHorario DATETIME NOT NULL,
+	fkTotem INT NOT NULL,
+    foreign key fk_id_totem (fkTotem) references totem(idTotem)
+);
+
 -- Usuário NEXO
 CREATE TABLE IF NOT EXISTS usuario_nexo (
 	idUsuarioNexo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,

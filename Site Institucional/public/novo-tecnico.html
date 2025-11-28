@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="carregarModelos(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados()">
+<body onload="carregarModelos(), carregarDadosAprovados(), gerarGraficoLinha(), carregarDados(), carregarEstados()">
     <div class="tudo">
         <header>
             <div class="header-container">
@@ -415,6 +415,7 @@
                     resposta.json().then(data => {
                         modelos = data;
                         console.log(modelos);
+                        plotarModelos(modelos);
                     });
                 } else {
                     console.log("Erro ao Pegar Modelos");
@@ -425,11 +426,11 @@
                 console.log(`#ERRO: ${resposta}`);
             });
     }
-    
-    function abrirPopupTotem() {
+
+    function plotarModelos(modelos){
         var options = ''
         for (var i = 0; i < modelos.length; i++) {
-            options += `<option value='${modelos[i].IdModelo}'>${modelos[i].Nome}</option>`
+            options += `<option value='${modelos[i].idModelo}'>${modelos[i].NomeModelo}</option>`
         }
 
         input_modelos.innerHTML += options
@@ -437,7 +438,7 @@
         document.getElementById("popuptotem").style.display = "flex";
         document.getElementById("more").style.display = "none";
 
-        carregarEstados();
+        carregarEstados()
     }
 
     function fecharPopupTotem() {

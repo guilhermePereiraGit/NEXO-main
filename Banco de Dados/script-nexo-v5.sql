@@ -529,3 +529,5 @@ FROM parametro AS p
 JOIN modelo AS m ON p.fkModelo = m.idModelo
 JOIN componente AS c ON p.fkComponente = c.idComponente
 WHERE m.nome = "TESTE02";
+
+select * from modelo where fkEmpresa = 2;
