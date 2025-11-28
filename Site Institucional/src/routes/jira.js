@@ -2,6 +2,12 @@ var express = require("express");
 var router = express.Router();
 var https = require('https');
 
+const visualizarChamadosJira = require("../controllers/JiraController");
+
+router.get("/visualizarChamadosJira", function (req, res) {
+    visualizarChamadosJira(req, res);
+})
+
 const EMAIL = "nexoadm9328@outlook.com";
 const API_TOKEN = "ATATT3xFfGF0KAd4E36gpyLtB_q92dfFk2Ri6rKT5esDuFu5qIDnaMxPJcqwYdWd_yOgVqbKwcgiWxVEn7TldcHg3XWk6tKmnrMHXl6ZTTUoE5dZjRQ0R78earc8CMcw9lVZw2dmoQMvJoCqQIsAipKdwkDDb78_gk0jgriSi7mfie8LKW7580Q=0BCF64DE";
 const BASE_URL = "https://nexoadm.atlassian.net/rest/api/3/search/jql";
