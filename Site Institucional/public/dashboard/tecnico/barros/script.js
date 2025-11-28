@@ -1,140 +1,187 @@
-// Função para buscar informações do totem
-async function buscarInfoTotem(numMAC) {
+window.addEventListener('load', function () {
+    carregarDadosDoTotem();
+    
+});
+
+async function buscarParametrosTotem(nomeModelo, idEmpresa) {
     try {
-        const response = await fetch(`/totem/infoTotem?numMAC=${numMAC}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar informações: ${response.status}`);
-        }
-
-        const dados = await response.json();
-
-        if (dados && dados.length > 0) {
-            const totem = dados[0];
-
-            // Preenchendo os dados no HTML usando os IDs
-            document.querySelector('#idTotem').textContent = totem.idTotem || '-';
-            document.querySelector('#Mac p').textContent = totem.numMAC || '-';
-            document.querySelector('#modelo p').textContent = totem.modelo || '-';
-            document.querySelector('#status p').textContent = totem.status || '-';
-            document.querySelector('#cep p').textContent = totem.cep || '-';
-            document.querySelector('#cidade p').textContent = totem.cidade || '-';
-            document.querySelector('#bairro p').textContent = totem.bairro || '-';
-            document.querySelector('#rua p').textContent = totem.rua || '-';
-            document.querySelector('#numero p').textContent = totem.numero || '-';
-
-            console.log('Informações do totem carregadas com sucesso:', totem);
-        } else {
-            console.warn('Nenhum totem encontrado com este MAC');
-        }
+        const response = await fetch(`/totem/parametrosTotem?nomeModelo=${nomeModelo}&idEmpresa=${idEmpresa}`);
+        if (!response.ok) throw new Error(`Erro ao buscar parâmetros: ${response.status}`);
+        return await response.json();
     } catch (erro) {
-        console.error('Erro ao buscar informações do totem:', erro);
+        console.error('Erro ao buscar parâmetros do totem:', erro);
+        return null;
     }
 }
 
-window.addEventListener('load', function () {
-    const macDoTotem = 149397958151314
-    console.log('MAC encontrado:', macDoTotem)
-    buscarInfoTotem(macDoTotem)
-    buscarTicketPorMAC(macDoTotem)
-    console.log('MAC enviado para buscar ticket:', macDoTotem)
-});
+async function buscarInfoTotem(mac) {
+    try {
+        const response = await fetch(`/totem/infoTotem?numMAC=${mac}`);
+        if (!response.ok) throw new Error(`Erro ao buscar informações: ${response.status}`);
+        return await response.json();
+    } catch (erro) {
+        console.error('Erro ao buscar informações do totem:', erro);
+        return null;
+    }
+}
 
 async function buscarTicketPorMAC(mac) {
     try {
-        const response = await fetch(`/jira/buscarTicketPorMAC?mac=${mac}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar ticket: ${response.status}`);
-        }
-
-        const ticket = await response.json();
-        console.log('Ticket encontrado:', ticket);
-
-        const descricao = ticket.fields.description.content[0].content[0].text;
-
-        console.log('Descrição do ticket:', descricao);
-
-        const index = descricao.indexOf('Parâmetros ultrapassados: ');
-        if (index !== -1) {
-            console.log('Parâmetros extraídos:', descricao.substring(index + 1).trim());
-            document.getElementById('parametros').textContent = "Causas: " + descricao.substring(index + 25).trim();
-        }
-
-        const index2 = descricao.indexOf('Nível do alerta: ');
-        const criticidade = "";
-        if (index2 !== -1) {
-            criticidade = descricao.substring(index2 + 16);
-            console.log('Criticidade:', criticidade);
-            document.getElementById('grauAlerta').textContent = criticidade;
-        }
-
-        return ticket;
+        const response = await fetch(`/jira/buscarTicketPorMAC?mac=${mac}`);
+        if (!response.ok) throw new Error(`Erro ao buscar ticket: ${response.status}`);
+        return await response.json();
     } catch (erro) {
         console.error('Erro ao buscar ticket do Jira:', erro);
         return null;
     }
 }
 
-const ctx = document.getElementById("graficoComponente")
-const componenteInicial = document.getElementById("componentSelect").value
+function preencherInfoTotem(totem) {
+    if (!totem) return;
 
-let dadosComponentes = {
-    cpu: [12, 25, 18, 40, 32, 60],
-    ram: [50, 48, 52, 60, 63, 70],
-    disco: [30, 35, 45, 28, 22, 18]
-};
+    const t = totem[0];
 
-// Limites de alerta para cada componente
-const limitesAlerta = {
-    cpu: 40,
-    ram: 60,
-    disco: 30
-};
+    console.log("Preenchendo informações do totem:", t);
 
-let chart = new Chart(ctx, {
-    type: "line",
-    data: {
-        labels: ["0h", "4h", "8h", "12h", "16h", "20h"],
-        datasets: [{
-            label: componenteInicial,
-            borderWidth: 3,
-            borderColor: "#6c4cff",
-            backgroundColor: "#6c4cff55",
-            data: dadosComponentes.cpu
-        },
-        {
-            // Linha de alerta
-            label: "Limite de Alerta",
-            data: Array(6).fill(limitesAlerta.cpu),
-            borderColor: "#ff0000",
-            borderWidth: 2,
-            borderDash: [5, 5],
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            tension: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true
-            }
+    document.querySelector('#idTotem').textContent   = t.idTotem;
+    document.querySelector('#Mac p').textContent     = t.numMAC;
+    document.querySelector('#modelo p').textContent  = t.modelo;
+    document.querySelector('#status p').textContent  = t.status;
+    document.querySelector('#cep p').textContent     = t.cep;
+    document.querySelector('#cidade p').textContent  = t.cidade;
+    document.querySelector('#bairro p').textContent  = t.bairro;
+    document.querySelector('#rua p').textContent     = t.rua;
+    document.querySelector('#numero p').textContent  = t.numero;
+
+    sessionStorage.MODELOTOTEM = t.modelo;
+    sessionStorage.IDEMPRESA = t.fkEmpresa;
+
+    console.log("Id da empresa no objeto totem:", t.fkEmpresa);
+    console.log("Id da empresa armazenado na sessionStorage:", sessionStorage.IDEMPRESA);
+}
+
+function preencherTicket(ticket) {
+    if (!ticket) {
+        console.log("Nenhum ticket encontrado para o MAC fornecido.");
+        
+    };
+
+    const descricao = ticket.fields.description.content[0].content[0].text;
+
+    const indexParametros = descricao.indexOf('Parâmetros ultrapassados: ');
+    if (indexParametros !== -1) {
+        document.getElementById('parametros').textContent = "Causas: " + descricao.substring(indexParametros + 25).trim();
+    }
+
+    const indexNivel = descricao.indexOf('Nível do alerta: ');
+    if (indexNivel !== -1) {
+        const criticidade = descricao.substring(indexNivel + 16).trim();
+        document.getElementById('grauAlerta').textContent = criticidade;
+
+        if (criticidade === 'Muito Perigoso') {
+            document.getElementById('grauAlerta').style.color = 'var(--mperigo)';
+        } else if (criticidade === 'Atenção') {
+            document.getElementById('grauAlerta').style.color = 'var(--atencao)';
+        } else if (criticidade === 'Perigoso') {
+            document.getElementById('grauAlerta').style.color = 'var(--perigo)';
         }
     }
-});
+}
+
+async function carregarDadosDoTotem() {
+    const mac = 149397958151314;
+    console.log("Carregando dados do totem:", mac);
+
+    const infoTotem = await buscarInfoTotem(mac);
+    const ticket = await buscarTicketPorMAC(mac);
+
+    preencherInfoTotem(infoTotem);
+    preencherTicket(ticket);
+    carregarDashboard(mac, sessionStorage.MODELOTOTEM, sessionStorage.IDEMPRESA);
+
+    console.log("Dados carregados com sucesso!");
+}
+
+async function carregarDashboard(mac, modelo, idEmpresa) {
+    const ctx = document.getElementById("graficoComponente");
+
+    const parametros = await buscarParametrosTotem(modelo, idEmpresa);
+
+    document.querySelector('#limiteProcessos').textContent  = parametros[3].limiteMax;
+
+    console.log("Parâmetros recebidos do backend:", parametros);
+
+    if (!parametros) {
+        console.error("Não foi possível carregar os limites do backend.");
+    }
+
+    const limitesAlerta = {
+        cpu: parametros[0].limiteMax,
+        ram: parametros[1].limiteMax,
+        disco: parametros[2].limiteMax
+    };
+
+    console.log("Limites recebidos:", limitesAlerta);
+
+    // --- 2. Definir dados mockados do gráfico (ou vindo do backend futuramente) ---
+    let dadosComponentes = {
+        cpu: [12, 25, 18, 40, 32, 60],
+        ram: [50, 48, 52, 60, 63, 70],
+        disco: [30, 35, 45, 28, 22, 18]
+    };
+
+    // --- 3. Criar gráfico inicial ---
+    const componenteInicial = document.getElementById("componentSelect").value;
+    let chart = gerarGraficoComponente(ctx, componenteInicial, dadosComponentes, limitesAlerta);
+
+    // --- 4. Atualizar gráfico quando o select mudar ---
+    document.getElementById("componentSelect").addEventListener("change", e => {
+        const comp = e.target.value;
+
+        chart.destroy();
+        chart = gerarGraficoComponente(ctx, comp, dadosComponentes, limitesAlerta);
+    });
+}
+
+
+function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta) {
+
+    return new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["0h", "4h", "8h", "12h", "16h", "20h"],
+            datasets: [
+                {
+                    label: componente.toUpperCase(),
+                    borderWidth: 3,
+                    borderColor: "#6c4cff",
+                    backgroundColor: "#6c4cff55",
+                    data: dadosComponentes[componente]
+                },
+                {
+                    label: `Limite de Alerta (${limitesAlerta[componente]}%)`,
+                    data: Array(6).fill(limitesAlerta[componente]),
+                    borderColor: "#ff0000",
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointRadius: 0,
+                    pointHoverRadius: 0,
+                    tension: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+}
+
 
 document.getElementById("componentSelect").addEventListener("change", e => {
     const comp = e.target.value;
@@ -172,22 +219,5 @@ function ativarPopup() {
 }
 function fecharPopup() {
     popup = $("#popup-logout");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
-
-function abrirEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
-function abrirPassos() {
-    popup = $("#popup-passos");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharPassos() {
-    popup = $("#popup-passos");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }

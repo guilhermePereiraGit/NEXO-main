@@ -278,6 +278,7 @@ header .header-navigation .alert {
 
 .conteudo .kpis .kpi .titulo h2 {
     font-size: 18px;
+    color: var();
 }
 
 .alerta {
