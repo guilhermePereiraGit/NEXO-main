@@ -29,12 +29,47 @@ async function carregarJson(diretorio, arquivo) {
 // carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
 // carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
 
-async function carregarDowntime(){
+async function carregarDowntime() {
+    //Carregar Downtime total da Região
     downtime_regiao = document.getElementById('downtime_regiao');
-    var downtime = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`,"downtime.json");
+    var downtime = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
     console.log(downtime);
-    console.log('AAAAAAAAAAAA');
-    
+
+    totalDowntimeRegiao = 0;
+    for (var i = 0; i < downtime.length; i++) {
+        totalDowntimeRegiao += (downtime[i].downtime7Dia * -1);
+        console.log(downtime[i].downtime7Dia);
+
+    }
+    downtime_regiao.innerHTML = converterHoras(totalDowntimeRegiao);
+
+    //Carregar Modelo com maior Downtime
+    modelo_pior = document.getElementById('p_modelo_downtime_pior');
+    downtime_pior = document.getElementById('p_pior_downtime');
+
+    vmodelo_pior = downtime[0].modelo;
+    vdowntime_pior = downtime[0].downtime7Dia * -1;
+
+    for (var i = 1; i < downtime.length; i++) {
+        if ((downtime[i].downtime7Dia * -1) > vdowntime_pior) {
+            vmodelo_pior = downtime[i].modelo;
+            vdowntime_pior = downtime[i].downtime7Dia * -1;
+        }
+    }
+
+    modelo_pior.innerHTML = "Modelo " + vmodelo_pior;
+    downtime_pior.innerHTML = converterHoras(vdowntime_pior);
+
+    regiao_agora = document.getElementById('regiao_agora');
+    regiao_agora.innerHTML = "Região " + sessionStorage.getItem('SIGLA_REGIAO');
+
+    return vmodelo_pior;
+}
+
+function converterHoras(horasDecimais) {
+    var horas = Math.floor(horasDecimais);
+    var minutos = Math.round((horasDecimais - horas) * 60);
+    return `${horas}h${minutos}min`;
 }
 
 function carregarDados() {
@@ -74,8 +109,7 @@ function buscarComponentes() {
             if (resposta.ok) {
                 resposta.json().then(data => {
                     componentes = data;
-                    console.log(componentes);
-                    plotarModelosCriticos(componentes);
+                    plotarModelosCriticos(componentes)
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");
@@ -87,17 +121,75 @@ function buscarComponentes() {
         });
 }
 
-function plotarModelosCriticos(componentes) {
+async function plotarModelosCriticos(componentes) {
+    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+    console.log(componentes);
 
+    //é tipo um enum que vimos na Célia, porém vi que dá para fazer para o JS também
+    //é literalmente só um objeto, mas ele é utilizado como um enum
+    var pesos = { "Muito Perigoso": 3, "Perigoso": 2, "Atenção": 1 };
+    let final = {};
+
+    //For para os componentes
+    for (var i = 0; i < componentes.length; i++) {
+        var componenteAtual = componentes[i].nome;
+        var pontuacao = {};
+
+        //For para os alertas
+        for (var j = 0; j < alertas.length; j++) {
+            var alertaAtual = alertas[j];
+            if (alertaAtual.componente == componenteAtual) {
+                var mAlert = alertaAtual.modelo;
+                var ponto = pesos[alertaAtual.grau];
+
+                if (!pontuacao[mAlert]) {pontuacao[mAlert] = 0;}
+                pontuacao[mAlert] += ponto;
+            }
+        }
+        var mCritico = "";
+        var mPontuacao = 0;
+
+        for (var modeloPoint in pontuacao) {
+            if (pontuacao[modeloPoint] > mPontuacao) {
+                mPontuacao = pontuacao[modeloPoint];
+                mCritico = modeloPoint
+            }
+        }
+        final[componenteAtual] = {
+            modelo: mCritico,
+            peso: mPontuacao,
+            componente:componenteAtual
+        }
+    }
+    console.log(final);
+
+    //Plotando no html
+    corpo_modelos = document.getElementById('modelos_criticos');
+    for(var componente in final){
+        corpo_modelos.innerHTML += `
+        <div class="modelo">
+        <h2>${componente}</h2>
+        <p>${final[componente].modelo}</p>
+        </div>
+        `;
+    }
+    pior_downtime = carregarDowntime();
+    
+    corpo_modelos.innerHTML += `
+        <div class="modelo">
+        <h2>DOWNTIME</h2>
+        <p>${vmodelo_pior}</p>
+        </div>
+        `;
 }
 
 async function gerarGraficoPizza(totens) {
-    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`,"alertas.json");
+    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
     total_alertas_p = document.getElementById('total_alertas');
     total_alertas_p.innerHTML = alertas.length + " Alertas";
     console.log('alertas', alertas);
-    console.log('totens',totens);
-    
+    console.log('totens', totens);
+
 
 
     const barra = document.getElementById('grafico-pizza');
@@ -190,15 +282,18 @@ function carregarModelos() {
         });
 }
 
-function plotarModelos(modelos) {
+async function plotarModelos(modelos) {
     div_modelos = document.getElementById('modelos');
     for (var i = 0; i < modelos.length; i++) {
-        div_modelos.innerHTML += `
-    <div class="modelo">
-    <h2>Modelo ${modelos[i].NomeModelo}</h2>
-    <div class="color"></div>
-    </div>
-    `;
+    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+    
+    
+    // div_modelos.innerHTML += `
+    // <div class="modelo">
+    // <h2>${modelos[i].NomeModelo}</h2>
+    // <div class="color"></div>
+    // </div>
+    // `;
     }
 }
 

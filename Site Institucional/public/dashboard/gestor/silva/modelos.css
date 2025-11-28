@@ -612,12 +612,14 @@ header .header-navigation .alert {
     gap: 40px;
     padding: 15px 30px 15px 30px;
     align-items: center;
-    background-color: var(--fundo);
 }
-
+.conteudo .kpis .kpi .modelos-kpi .modelo p{
+    color: var(--principal);
+    font-weight: bold;
+}
 .conteudo .kpis .kpi .modelos-kpi .modelo h2{
     font-size: 15px;
-    width: 50%;
+    width: 40%;
 }
 .conteudo .kpis .kpi .dados-previsao{
     display: flex;
