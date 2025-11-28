@@ -189,6 +189,7 @@
             </div>
             <!-- DASHBOARD -->
             <div class="dashboard" id="dashboard-agenda">
+                <div class="nenhumaManutencao" id="nenhumaManutencao"></div>
                 <div class="kpis" id="kpi-agenda">
                     <div class="kpi">
                         <div class="titulo">
@@ -280,16 +281,27 @@
         const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
         console.log("ENTREI NA VISUZLASFOIAJGOÁK")
 
-        fetch(`http://localhost:3000/visualizarChamadosJira?emailTecnico=${emailTecnico}`)
+        fetch(`/visualizarChamadosJira?emailTecnico=${emailTecnico}`)
             .then(res => {
                 console.log("FUNCIONOU")
-                res.json()
+                return res.json();
             })
             .then(dados => {
                 console.log("Chamados:", dados);
+                if (dados.lenght == 0 || !dados) {
+                    nenhumChamado();
+                }
             })
             .catch(erro => console.error("Erro", erro));
-
+    }
+    function nenhumChamado() {
+        nenhumaManutencao.innerHTML = `
+        <div class="card-nothing">
+                <h1>Sem Registros</h1>
+                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
+                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
+            </div>
+        `;
     }
     function carregarDados() {
         regiao_escolhida = document.getElementById('regiao-escolhida');

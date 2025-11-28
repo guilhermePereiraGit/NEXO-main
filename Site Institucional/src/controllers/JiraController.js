@@ -5,7 +5,6 @@ async function visualizarChamadosJira(req, res) {
     const token = process.env.JIRA_API_TOKEN;
     const email = process.env.JIRA_EMAIL;
     const url = process.env.JIRA_URL;
-    console.log(process.env.JIRA_EMAIL);
 
     /*Email do tecnico*/
     const emailTecnico = req.query.EMAIL_USUARIO;

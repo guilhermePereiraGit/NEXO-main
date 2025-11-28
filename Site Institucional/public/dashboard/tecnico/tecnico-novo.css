@@ -1550,3 +1550,10 @@ select {
 .titulo-agenda h1{
     font-size: 20px;
 }
+
+.nenhuma-manutencao{
+    background-color: white;
+    display: none;
+    width: 90%;
+    height: 90%;
+}
