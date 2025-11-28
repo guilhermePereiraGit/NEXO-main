@@ -188,7 +188,7 @@
                         <div class="dados">
                             <div class="texto2">
                                 <p id="total_totens"></p>
-                                <p style="color: #451c8b;" id="total_alertas">400 Alertas</p>
+                                <p style="color: #451c8b;" id="total_alertas"></p>
                             </div>
                             <div class="grafico">
                                 <canvas id="grafico-pizza" class="chart-container"></canvas>
@@ -233,7 +233,7 @@
                         <div class="dados">
                             <div class="texto">
                                 <p>Região RMSP</p>
-                                <p style="color: #451c8b;font-weight: bold;"> 245h35min</p>
+                                <p style="color: #451c8b;font-weight: bold;" id="downtime_regiao"> 245h35min</p>
                             </div>
                         </div>
                     </div>
@@ -284,14 +284,4 @@
     </div>
 </body>
 <script src="script.js"></script>
-<script>
-    async function carregarJson(diretorio, arquivo) {
-        var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
-        var dados = await resposta.json();
-        console.log(dados);
-        return dados;
-    }
-    carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
-    carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
-</script>
 </html>
