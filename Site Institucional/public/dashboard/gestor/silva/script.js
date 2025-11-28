@@ -1,5 +1,9 @@
 //Chamar Funções de Carregamento de Dados
-window.onload = function () {
+window.onload = async function () {
+    //Muito mais simples e reduz tempo de demora do await
+    var empresa = `empresa-${sessionStorage.getItem('ID_EMPRESA')}`;
+    cacheAlertas = await carregarJson(empresa, "alertas.json");
+    cacheDowntime = await carregarJson(empresa, "downtime.json");
     carregarDados();
     carregarDadosUser();
     carregarUltimos7Dias();
@@ -32,7 +36,7 @@ async function carregarJson(diretorio, arquivo) {
 async function carregarDowntime() {
     //Carregar Downtime total da Região
     downtime_regiao = document.getElementById('downtime_regiao');
-    var downtime = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
+    var downtime = cacheDowntime;
     console.log(downtime);
 
     totalDowntimeRegiao = 0;
@@ -122,7 +126,7 @@ function buscarComponentes() {
 }
 
 async function plotarModelosCriticos(componentes) {
-    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+    var alertas = cacheAlertas;
     console.log(componentes);
 
     //é tipo um enum que vimos na Célia, porém vi que dá para fazer para o JS também
@@ -184,7 +188,7 @@ async function plotarModelosCriticos(componentes) {
 }
 
 async function gerarGraficoPizza(totens) {
-    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+    var alertas = cacheAlertas;
     total_alertas_p = document.getElementById('total_alertas');
     total_alertas_p.innerHTML = alertas.length + " Alertas";
     console.log('alertas', alertas);
@@ -284,9 +288,11 @@ function carregarModelos() {
 
 async function plotarModelos(modelos) {
     div_modelos = document.getElementById('modelos');
+    var alertas = cacheAlertas;
     for (var i = 0; i < modelos.length; i++) {
-    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
     
+    //Aqui vou precisar buscar todos os totens associados à um modelo para depois ver a quantidade
+    //de alertas associados á esse modelo, e depois disso dá para mudar a cor
     
     // div_modelos.innerHTML += `
     // <div class="modelo">
