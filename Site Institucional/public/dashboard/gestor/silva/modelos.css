@@ -549,9 +549,6 @@ header .header-navigation .alert {
     font-size: 20px;
     margin-top: -10px;
 }
-.conteudo .kpis #first-kpi{
-    border-left: 10px solid #fada64;
-}
 .conteudo .kpis .kpi .dados{
     display: flex;
     width: 100%;

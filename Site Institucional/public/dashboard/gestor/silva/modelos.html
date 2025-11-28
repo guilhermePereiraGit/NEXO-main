@@ -252,18 +252,16 @@
                     </div>
                     <div class="grafico-linhas">
                         <div class="selecionar_modelo">
-                            <select name="select_modelo">
-                                <option value="X">Selecione um Modelo</option>
+                            <select name="select_modelo" id="slt_modelos_downtime" onchange="escolherModeloLinha()">
                                 <option value="all">Todos os Modelos</option>
                             </select>
                         </div>
                         <div class="titulo">
-                            <h1>Difusão de Downtime</h1>
+                            <h1>Downtime da Semana</h1>
                             <h2>Inatividade em Horas</h2>
                         </div>
                         <div class="case-linha">
-                            <canvas id="grafico-linha" class="chart-container"
-                                style="width: 750px;height: 250px;margin-top: 10px;"></canvas>
+                            <canvas id="grafico-linha" width="750" height="250" style="margin-top: 10px;"></canvas>
                         </div>
                     </div>
                 </div>

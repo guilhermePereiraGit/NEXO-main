@@ -8,6 +8,8 @@ window.onload = async function () {
     carregarDadosUser();
     carregarUltimos7Dias();
     carregarDowntime();
+    plotarSelecionarModeloLinha();
+    escolherModeloLinha();
 };
 
 // CARREGAR ÚLTIMOS 7 DIAS
@@ -21,6 +23,155 @@ function carregarUltimos7Dias() {
 
     p_data = document.getElementById('p_data');
     p_data.innerHTML = `${seteDiasFormatada} à ${dataAtualFormatada}`;
+}
+
+//PLOTAR MODELOS NO SELECT DO GRÁFICO PRINCIPAL DE LINHAS
+async function plotarSelecionarModeloLinha() {
+    select_principal = document.getElementById('slt_modelos_downtime');
+
+    var dados = await fetch("/gestor/buscarModelos", { method: "POST", headers: { "Content-Type": "application/json" } });
+    var modelos = await dados.json();
+
+    for (var i = 0; i < modelos.length; i++) {
+        select_principal.innerHTML += `<option value="${modelos[i].NomeModelo}">${modelos[i].NomeModelo}</option>`;
+    }
+}
+
+var linha = null;
+async function escolherModeloLinha() {
+    var downtimes = cacheDowntime;
+    var escolha = document.getElementById('slt_modelos_downtime').value;
+    console.log(downtimes);
+
+    var downtimesModelo = [];
+    for (var i = 0; i < downtimes.length; i++) {
+        if (downtimes[i].modelo == escolha) {
+            downtimesModelo.push((downtimes[i].downtime1Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime2Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime3Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime4Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime5Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime6Dia) * -1);
+            downtimesModelo.push((downtimes[i].downtime7Dia) * -1);
+        }
+    }
+
+    if (escolha == "all") {
+    if (linha != null) {linha.destroy();}
+    var downtimesRegiao = [];
+    var dr1Dia = 0;
+    var dr2Dia = 0;
+    var dr3Dia = 0;
+    var dr4Dia = 0;
+    var dr5Dia = 0;
+    var dr6Dia = 0;
+    var dr7Dia = 0;
+
+    for(var i = 0; i < downtimes.length; i++){
+        dr1Dia += downtimes[i].downtime1Dia * -1;
+        dr2Dia += downtimes[i].downtime2Dia * -1;
+        dr3Dia += downtimes[i].downtime3Dia * -1;
+        dr4Dia += downtimes[i].downtime4Dia * -1;
+        dr5Dia += downtimes[i].downtime5Dia * -1;
+        dr6Dia += downtimes[i].downtime6Dia * -1;
+        dr7Dia += downtimes[i].downtime7Dia * -1;
+    }
+    downtimesRegiao.push(dr1Dia);
+    downtimesRegiao.push(dr2Dia);
+    downtimesRegiao.push(dr3Dia);
+    downtimesRegiao.push(dr4Dia);
+    downtimesRegiao.push(dr5Dia);
+    downtimesRegiao.push(dr6Dia);
+    downtimesRegiao.push(dr7Dia);
+    diasDowntime = converter7Dias();
+
+    const ctx = document.getElementById("grafico-linha");
+    linha = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: diasDowntime,
+            datasets: [
+                {
+                    label: 'Tempo Downtime',
+                    data: downtimesRegiao,
+                    borderColor: '#451c8bd6',
+                    backgroundColor: '#451c8b6c',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false
+                }
+            }
+        },
+    });
+
+    } else {
+        //Esse reverse é uma função padrão do js e serve literalemnte para inverter a ordem de um vetor
+        gerarGraficoLinha(converter7Dias(), downtimesModelo);
+    }
+}
+
+function converter7Dias() {
+    var dataAtual = new Date;
+    var ultimaSemana = [];
+    for (var i = 0; i < 7; i++) {
+        var dataI = new Date(dataAtual);
+        dataI.setDate(dataAtual.getDate() - i);
+        var diaSemana = dataI.toLocaleString("pt-BR", { weekday: "long" });
+        diaSemana = diaSemana.replace("-feira", "");
+        ultimaSemana.push(diaSemana);
+    }
+    return ultimaSemana.reverse();
+}
+
+
+function gerarGraficoLinha(dias7, downtimesModelo) {
+    if (linha != null) {
+        //esse destroy é uma função padrão do ChatJs para limpeza de gráfico
+        //se alguém ficar curioso e quiser ver como usar também
+        //https://www.chartjs.org/docs/latest/developers/api.html
+        linha.destroy();
+    }
+
+    const ctx = document.getElementById("grafico-linha");
+    linha = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dias7,
+            datasets: [
+                {
+                    label: 'Tempo Downtime',
+                    data: downtimesModelo,
+                    borderColor: '#451c8bd6',
+                    backgroundColor: '#451c8b6c',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false
+                }
+            }
+        },
+    });
 }
 
 //CARREGAR ARQUIVOS JSON
@@ -88,7 +239,6 @@ function carregarDados() {
         document.getElementById('escolhaNew').style.display = 'block';
         carregarModelos();
         carregarTotens();
-        gerarGraficoLinha();
         buscarComponentes();
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
@@ -146,7 +296,7 @@ async function plotarModelosCriticos(componentes) {
                 var mAlert = alertaAtual.modelo;
                 var ponto = pesos[alertaAtual.grau];
 
-                if (!pontuacao[mAlert]) {pontuacao[mAlert] = 0;}
+                if (!pontuacao[mAlert]) { pontuacao[mAlert] = 0; }
                 pontuacao[mAlert] += ponto;
             }
         }
@@ -162,14 +312,14 @@ async function plotarModelosCriticos(componentes) {
         final[componenteAtual] = {
             modelo: mCritico,
             peso: mPontuacao,
-            componente:componenteAtual
+            componente: componenteAtual
         }
     }
     console.log(final);
 
     //Plotando no html
     corpo_modelos = document.getElementById('modelos_criticos');
-    for(var componente in final){
+    for (var componente in final) {
         corpo_modelos.innerHTML += `
         <div class="modelo">
         <h2>${componente}</h2>
@@ -178,7 +328,7 @@ async function plotarModelosCriticos(componentes) {
         `;
     }
     pior_downtime = carregarDowntime();
-    
+
     corpo_modelos.innerHTML += `
         <div class="modelo">
         <h2>DOWNTIME</h2>
@@ -212,38 +362,6 @@ async function gerarGraficoPizza(totens) {
                 legend: {
                     display: false
                 },
-            }
-        },
-    });
-}
-
-function gerarGraficoLinha() {
-    const linha = document.getElementById('grafico-linha');
-    new Chart(linha, {
-        type: 'line',
-        data: {
-            labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-            datasets: [
-                {
-                    label: 'Tempo Downtime',
-                    data: [10, 15, 5, 10, 13, 20, 15],
-                    borderColor: '#451c8bd6',
-                    backgroundColor: '#451c8b6c',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: false
-                }
             }
         },
     });
@@ -289,18 +407,18 @@ function carregarModelos() {
 async function plotarModelos(modelos) {
     div_modelos = document.getElementById('modelos');
     var alertas = cacheAlertas;
-        
+
     //Aqui vou precisar buscar todos os totens associados à um modelo para depois ver a quantidade
     //de alertas associados á esse modelo, e depois disso dá para mudar a cor
-    for(var i = 0; i < modelos.length; i++){
+    for (var i = 0; i < modelos.length; i++) {
         modeloAtual = modelos[i];
         totalAlertasAtual = 0;
         totalTotensAtual = 0;
 
         //For para os alertas
-        for(var j = 0; j < alertas.length; j++){
+        for (var j = 0; j < alertas.length; j++) {
             //Filtrando pelo modelo atual
-            if(alertas[j].modelo == modeloAtual.NomeModelo){
+            if (alertas[j].modelo == modeloAtual.NomeModelo) {
                 totalAlertasAtual++;
             }
         }
@@ -312,26 +430,26 @@ async function plotarModelos(modelos) {
         });
 
         totens_por_modelo = await dados.json();
-        
+
 
         //Vendo a quantidade de totens que esse modelo tem
-        for(var g = 0; g < totens_por_modelo.length; g++){
-            if(modeloAtual.NomeModelo == totens_por_modelo[g].nome){
+        for (var g = 0; g < totens_por_modelo.length; g++) {
+            if (modeloAtual.NomeModelo == totens_por_modelo[g].nome) {
                 totalTotensAtual++;
             }
         }
-        
+
         metrica = totalAlertasAtual / totalTotensAtual
-        if(metrica < 0.3){
+        if (metrica < 0.3) {
             cor = "#65fa8f";
-        }else if (metrica < 0.5){
+        } else if (metrica < 0.5) {
             cor = "#fada64";
-        }else if (metrica < 0.7){
+        } else if (metrica < 0.7) {
             cor = "#f98a25";
-        }else{
+        } else {
             cor = "#ff3131";
-        }        
-        
+        }
+
         div_modelos.innerHTML += `
         <div class="modelo">
         <h2>${modelos[i].NomeModelo}</h2>
@@ -374,6 +492,22 @@ function carregarTotens() {
 function plotarTotens(totens) {
     p_totaltotens = document.getElementById('total_totens');
     p_totaltotens.innerHTML = `${totens.length} Totens`;
+
+    var alertas = cacheAlertas;
+    metrica = alertas.length / totens.length
+
+    if (metrica < 0.3) {
+        cor = "#65fa8f";
+    } else if (metrica < 0.5) {
+        cor = "#fada64";
+    } else if (metrica < 0.7) {
+        cor = "#f98a25";
+    } else {
+        cor = "#ff3131";
+    }
+
+    kpi_integridade = document.getElementById('first-kpi');
+    kpi_integridade.style.borderLeft = `10px solid ${cor}`;
 }
 
 function carregarRegioes() {
