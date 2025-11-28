@@ -42,7 +42,7 @@ function buscarTotens(nomeRegiao) {
 
 function buscarComponentes() {
     const instrucaoSql = `
-    select nome from componente;
+    select nome,status from componente;
     `
     console.log(instrucaoSql)
     return database.executar(instrucaoSql);

@@ -27,53 +27,55 @@ function carregarUltimos7Dias() {
 
 //PLOTAR MÉTRICAS, MODELOS E ALERTAS
 async function plotarAlertasComponentes(componentes) {
+    console.log("AAAAAAAAAAAAa");
+    console.log(componentes);
+    var alertas = cacheAlertas;
+
     lista_metricas = document.getElementById('list_metrica');
     for (var i = 0; i < componentes.length; i++) {
+        var totalAlertasComponente = 0;
+
+        //Carregar Total de Alertas para cada Componente
+        for (var j = 0; j < alertas.length; j++) {
+            if(componentes[i].nome == alertas[j].componente){
+                totalAlertasComponente++;
+            }
+        }
+
         if (i == 0) {
-        lista_metricas.innerHTML += `
+            lista_metricas.innerHTML += `
         <div class="div_item" id="hide_metrica_${i}">
         <div class="infos-metrica">
         <h1 style="font-size:30px">${componentes[i].nome}</h1>
-        <p>Total de Modelos <span>40</span></p>
-        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+        <p>Status <span>${componentes[i].status}</span></p>
+        <p style="color: #451c8b;">Total de Alertas <span>${totalAlertasComponente}</span></p>
         </div>
         <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${i}',componentes.length)"></i>
         </div>
         `;
-        }else{
-        lista_metricas.innerHTML += `
+        } else {
+            lista_metricas.innerHTML += `
         <div class="div_item" id="hide_metrica_${i}" style="display:none">
         <div class="infos-metrica">
         <h1 style="font-size:30px">${componentes[i].nome}</h1>
-        <p>Total de Modelos <span>40</span></p>
-        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+        <p>Status <span>${componentes[i].status}</span></p>
+        <p style="color: #451c8b;">Total de Alertas <span>${totalAlertasComponente}</span></p>
         </div>
         <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${i}',componentes.length)"></i>
         </div>
         `;
         }
     }
-
-    lista_metricas.innerHTML += `
-        <div class="div_item" id="hide_metrica_${componentes.length}" style="display:none">
-        <div class="infos-metrica">
-        <h1 style="font-size:30px">DOWNTIME</h1>
-        <p>Total de Modelos <span>40</span></p>
-        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
-        </div>
-        <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${componentes.length}',componentes.length)"></i>
-        </div>
-        `;
 }
 
 var indiceComponenteAtual = 0;
 function passarComponente(componenteAparecer, totalComponentes) {
-    if (indiceComponenteAtual == totalComponentes) {
+    if (indiceComponenteAtual == totalComponentes - 1) {
         indiceComponenteAtual = 0;
     } else {
         indiceComponenteAtual++;
 
-        for (var i = 0; i <= totalComponentes; i++) {
+        for (var i = 0; i < totalComponentes; i++) {
             var atual = document.getElementById(`hide_metrica_${i}`);
 
             if (atual != componenteAparecer) {
