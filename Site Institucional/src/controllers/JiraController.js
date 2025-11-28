@@ -18,7 +18,7 @@ async function visualizarChamadosJira(req, res) {
         method: 'GET',
         headers: {
             'Authorization': `Basic ${auth}`,
-            'Accept: application/json'
+            'Accept': 'application/json'
             }
     })
         .then(resposta => resposta.json())
@@ -28,9 +28,6 @@ async function visualizarChamadosJira(req, res) {
         })
         .catch(erro => console.error("Erro ao procurar chamados (JIRA CONTROLLER):", erro));
         await buscarInfosTotem();
+    }
 
-}
-function buscarInfosTotem() {
-
-}
 module.exports = visualizarChamadosJira;
