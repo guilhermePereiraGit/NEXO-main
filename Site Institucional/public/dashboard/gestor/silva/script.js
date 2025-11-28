@@ -25,6 +25,65 @@ function carregarUltimos7Dias() {
     p_data.innerHTML = `${seteDiasFormatada} à ${dataAtualFormatada}`;
 }
 
+//PLOTAR MÉTRICAS, MODELOS E ALERTAS
+async function plotarAlertasComponentes(componentes) {
+    lista_metricas = document.getElementById('list_metrica');
+    for (var i = 0; i < componentes.length; i++) {
+        if (i == 0) {
+        lista_metricas.innerHTML += `
+        <div class="div_item" id="hide_metrica_${i}">
+        <div class="infos-metrica">
+        <h1 style="font-size:30px">${componentes[i].nome}</h1>
+        <p>Total de Modelos <span>40</span></p>
+        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+        </div>
+        <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${i}',componentes.length)"></i>
+        </div>
+        `;
+        }else{
+        lista_metricas.innerHTML += `
+        <div class="div_item" id="hide_metrica_${i}" style="display:none">
+        <div class="infos-metrica">
+        <h1 style="font-size:30px">${componentes[i].nome}</h1>
+        <p>Total de Modelos <span>40</span></p>
+        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+        </div>
+        <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${i}',componentes.length)"></i>
+        </div>
+        `;
+        }
+    }
+
+    lista_metricas.innerHTML += `
+        <div class="div_item" id="hide_metrica_${componentes.length}" style="display:none">
+        <div class="infos-metrica">
+        <h1 style="font-size:30px">DOWNTIME</h1>
+        <p>Total de Modelos <span>40</span></p>
+        <p style="color: #451c8b;">Total de Alertas <span>100</span></p>
+        </div>
+        <i class="bi bi-arrow-right" onclick="passarComponente('hide_metrica_${componentes.length}',componentes.length)"></i>
+        </div>
+        `;
+}
+
+var indiceComponenteAtual = 0;
+function passarComponente(componenteAparecer, totalComponentes) {
+    if (indiceComponenteAtual == totalComponentes) {
+        indiceComponenteAtual = 0;
+    } else {
+        indiceComponenteAtual++;
+
+        for (var i = 0; i <= totalComponentes; i++) {
+            var atual = document.getElementById(`hide_metrica_${i}`);
+
+            if (atual != componenteAparecer) {
+                atual.style.display = "none";
+            }
+        }
+    }
+    document.getElementById(`hide_metrica_${indiceComponenteAtual}`).style.display = "flex";
+}
+
 //PLOTAR MODELOS NO SELECT DO GRÁFICO PRINCIPAL DE LINHAS
 async function plotarSelecionarModeloLinha() {
     select_principal = document.getElementById('slt_modelos_downtime');
@@ -57,63 +116,63 @@ async function escolherModeloLinha() {
     }
 
     if (escolha == "all") {
-    if (linha != null) {linha.destroy();}
-    var downtimesRegiao = [];
-    var dr1Dia = 0;
-    var dr2Dia = 0;
-    var dr3Dia = 0;
-    var dr4Dia = 0;
-    var dr5Dia = 0;
-    var dr6Dia = 0;
-    var dr7Dia = 0;
+        if (linha != null) { linha.destroy(); }
+        var downtimesRegiao = [];
+        var dr1Dia = 0;
+        var dr2Dia = 0;
+        var dr3Dia = 0;
+        var dr4Dia = 0;
+        var dr5Dia = 0;
+        var dr6Dia = 0;
+        var dr7Dia = 0;
 
-    for(var i = 0; i < downtimes.length; i++){
-        dr1Dia += downtimes[i].downtime1Dia * -1;
-        dr2Dia += downtimes[i].downtime2Dia * -1;
-        dr3Dia += downtimes[i].downtime3Dia * -1;
-        dr4Dia += downtimes[i].downtime4Dia * -1;
-        dr5Dia += downtimes[i].downtime5Dia * -1;
-        dr6Dia += downtimes[i].downtime6Dia * -1;
-        dr7Dia += downtimes[i].downtime7Dia * -1;
-    }
-    downtimesRegiao.push(dr1Dia);
-    downtimesRegiao.push(dr2Dia);
-    downtimesRegiao.push(dr3Dia);
-    downtimesRegiao.push(dr4Dia);
-    downtimesRegiao.push(dr5Dia);
-    downtimesRegiao.push(dr6Dia);
-    downtimesRegiao.push(dr7Dia);
-    diasDowntime = converter7Dias();
+        for (var i = 0; i < downtimes.length; i++) {
+            dr1Dia += downtimes[i].downtime1Dia * -1;
+            dr2Dia += downtimes[i].downtime2Dia * -1;
+            dr3Dia += downtimes[i].downtime3Dia * -1;
+            dr4Dia += downtimes[i].downtime4Dia * -1;
+            dr5Dia += downtimes[i].downtime5Dia * -1;
+            dr6Dia += downtimes[i].downtime6Dia * -1;
+            dr7Dia += downtimes[i].downtime7Dia * -1;
+        }
+        downtimesRegiao.push(dr1Dia);
+        downtimesRegiao.push(dr2Dia);
+        downtimesRegiao.push(dr3Dia);
+        downtimesRegiao.push(dr4Dia);
+        downtimesRegiao.push(dr5Dia);
+        downtimesRegiao.push(dr6Dia);
+        downtimesRegiao.push(dr7Dia);
+        diasDowntime = converter7Dias();
 
-    const ctx = document.getElementById("grafico-linha");
-    linha = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: diasDowntime,
-            datasets: [
-                {
-                    label: 'Tempo Downtime',
-                    data: downtimesRegiao.reverse(),
-                    borderColor: '#451c8bd6',
-                    backgroundColor: '#451c8b6c',
-                    fill: true,
-                    tension: 0.4
+        const ctx = document.getElementById("grafico-linha");
+        linha = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: diasDowntime,
+                datasets: [
+                    {
+                        label: 'Tempo Downtime',
+                        data: downtimesRegiao.reverse(),
+                        borderColor: '#451c8bd6',
+                        backgroundColor: '#451c8b6c',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false
+                    }
                 }
-            ]
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: false
-                }
-            }
-        },
-    });
+            },
+        });
 
     } else {
         //Esse reverse é uma função padrão do js e serve literalemnte para inverter a ordem de um vetor
@@ -264,6 +323,7 @@ function buscarComponentes() {
                 resposta.json().then(data => {
                     componentes = data;
                     plotarModelosCriticos(componentes)
+                    plotarAlertasComponentes(componentes)
                 });
             } else {
                 console.log("Erro ao Pegar Modelos");

@@ -609,13 +609,17 @@ header .header-navigation .alert {
     gap: 40px;
     padding: 15px 30px 15px 30px;
     align-items: center;
+    transition: 0.3s;
+}
+.conteudo .kpis .kpi .modelos-kpi .modelo:hover{
+    background-color: var(--fundo);
 }
 .conteudo .kpis .kpi .modelos-kpi .modelo p{
     color: var(--principal);
     font-weight: bold;
 }
 .conteudo .kpis .kpi .modelos-kpi .modelo h2{
-    font-size: 15px;
+    font-size: 17px;
     width: 40%;
 }
 .conteudo .kpis .kpi .dados-previsao{
@@ -759,11 +763,22 @@ header .header-navigation .alert {
     display: flex;
     align-items: center;
     gap: 40px;
+    width: 300px;
+    overflow: hidden;
 }
 .metrica i{
     font-size: 50px;
     color: var(--principal);
     cursor: pointer;
+}
+.infos-metrica{
+    margin-top: 10px;
+    width: 230px;
+}
+.div_item{
+    display: flex;
+    width: 500px;
+    align-items: center;
 }
 #p_data{
     font-weight: bold;
