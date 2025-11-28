@@ -3,10 +3,6 @@ var router = express.Router();
 
 var gestorController = require("../controllers/gestorController");
 
-// router.post("/cadastrarEndereco", function (req, res) {
-//     enderecoController.cadastrarEndereco(req, res);
-// })
-
 router.post("/buscarRegioes", function (req, res){
     gestorController.buscarRegioes(req, res);
 })
@@ -21,6 +17,10 @@ router.post("/buscarTotens", function (req, res){
 
 router.post("/buscarComponentes", function (req, res){
     gestorController.buscarComponentes(req, res);
+})
+
+router.post("/buscarTotensPorModelo", function (req, res){
+    gestorController.buscarTotensPorModelo(req, res);
 })
 
 module.exports = router;
