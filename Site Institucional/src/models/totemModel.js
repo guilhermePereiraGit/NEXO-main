@@ -49,13 +49,14 @@ function desativarTotem(idTotem) {
 
 function infoTotem(numMAC){
     var instrucaoSql = `
-        SELECT t.numMAC, t.status, m.modelo, e.cep, e.numero, e.cidade, e.bairro, e.rua
+        SELECT t.idTotem, t.numMAC, t.status, m.nome as modelo, e.cep, e.numero, e.cidade, e.bairro, e.rua
         FROM totem t
-        INNER JOIN modelo m m.id = t.fkModelo
-        INNER JOIN endereco e e.id = t.fkEndereco
-        WHERE t.numMAC = ${numMAC};
+        INNER JOIN modelo m ON m.idModelo = t.fkModelo
+        INNER JOIN endereco e ON e.idEndereco = t.fkEndereco
+        WHERE t.numMAC = '${numMAC}';
     `
-
+    
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 

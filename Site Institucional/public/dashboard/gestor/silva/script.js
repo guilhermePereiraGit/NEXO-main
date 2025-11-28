@@ -3,6 +3,7 @@ window.onload = function () {
     carregarDados();
     carregarDadosUser();
     carregarUltimos7Dias();
+    carregarDowntime();
 };
 
 // CARREGAR ÚLTIMOS 7 DIAS
@@ -16,6 +17,24 @@ function carregarUltimos7Dias() {
 
     p_data = document.getElementById('p_data');
     p_data.innerHTML = `${seteDiasFormatada} à ${dataAtualFormatada}`;
+}
+
+//CARREGAR ARQUIVOS JSON
+async function carregarJson(diretorio, arquivo) {
+    var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
+    var dados = await resposta.json();
+    console.log(dados);
+    return dados;
+}
+// carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
+// carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "alertas.json");
+
+async function carregarDowntime(){
+    downtime_regiao = document.getElementById('downtime_regiao');
+    var downtime = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`,"downtime.json");
+    console.log(downtime);
+    console.log('AAAAAAAAAAAA');
+    
 }
 
 function carregarDados() {
@@ -69,91 +88,25 @@ function buscarComponentes() {
 }
 
 function plotarModelosCriticos(componentes) {
-    regiao_selecionar = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-    //Separar Modelos Críticos por cada Componente
-    fetch("/gestor/buscarAlertas", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            regiaoAtual: regiao_selecionar
-        }),
-    })
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
 
-            if (resposta.ok) {
-                resposta.json().then(data => {
-                    alertas = data;
-                    console.log(alertas);
-                    document.getElementById('total_alertas').innerHTML = `${alertas.length} Alertas`;
-
-                    listaMaiores = [];
-                    //Para separar por componente
-                    for (var i = 0; i < componentes.length; i++) {
-                        var listaAuxiliar = [];
-                        for (var j = 0; j < alertas.length; j++) {
-                            if (alertas[j].NomeComponente == componentes[i].nome) {
-                                listaAuxiliar.push(alertas[j]);
-                            }
-                        }
-
-                        console.log(listaAuxiliar);
-
-                        totalMaior = 0;
-                        indiceMaior = null;
-                        for (var g = 0; g < listaAuxiliar.length; g++) {
-                            if (listaAuxiliar[g].totalAlertas > totalMaior) {
-                                totalMaior = listaAuxiliar[g].totalAlertas
-                                indiceMaior = g;
-                            }
-                        }
-
-                        listaMaiores.push(listaAuxiliar[indiceMaior]);
-                    }
-                    console.log(listaMaiores);
-
-
-                    //Plotando informações
-                    modelos_criticos = document.getElementById('modelos_criticos');
-
-                    for (var i = 0; i < componentes.length; i++) {
-                        modelos_criticos.innerHTML += `
-                        <div class="modelo">
-                        <h2>${componentes[i].nome}</h2>
-                        <p>${listaMaiores[i].NomeModelo}</p>
-                        </div>
-                        `;
-                    }
-                    modelos_criticos.innerHTML += `
-                        <div class="modelo">
-                        <h2>DOWNTIME</h2>
-                        <p>AA0385</p>
-                        </div>
-                        `;
-                });
-            } else {
-                console.log("Erro ao Pegar Modelos");
-
-            }
-        })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
 }
 
-function gerarGraficoPizza(totens,alertas) {
+async function gerarGraficoPizza(totens) {
+    var alertas = await carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`,"alertas.json");
+    total_alertas_p = document.getElementById('total_alertas');
+    total_alertas_p.innerHTML = alertas.length + " Alertas";
+    console.log('alertas', alertas);
     console.log('totens',totens);
-    console.log('alertas',alertas);
     
+
+
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
         type: 'doughnut',
         data: {
             labels: ['Alertas', 'Totens'],
             datasets: [{
-                data: [20, totens],
+                data: [alertas.length, totens],
                 backgroundColor: ["#451c8b", "#c8c1ff"]
             }]
         },

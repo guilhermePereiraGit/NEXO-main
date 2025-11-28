@@ -18,7 +18,7 @@ async function visualizarChamadosJira(req, res) {
         method: 'GET',
         headers: {
             'Authorization': `Basic ${auth}`,
-            'Accept: application/json'
+            'Accept': 'application/json'
             }
     })
         .then(resposta => resposta.json())

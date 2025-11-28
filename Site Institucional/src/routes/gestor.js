@@ -23,8 +23,4 @@ router.post("/buscarComponentes", function (req, res){
     gestorController.buscarComponentes(req, res);
 })
 
-router.post("/buscarAlertas", function (req, res){
-    gestorController.buscarAlertas(req, res);
-})
-
 module.exports = router;

@@ -77,23 +77,28 @@ async function modificarStatusTotem(req, res){
 }
 
 async function buscarInfoTotem(req, res){
-    var numMAC = req.body.numMACServer;
+    var numMAC = req.query.numMAC;
+    
+    console.log("buscarInfoTotem chamado com MAC:", numMAC);
 
-    totemModel.infoTotem(numMAC)
-        .then(
-            function (resultado) {
-                res.json(resultado);
-            }
-        ).catch(
-            function (erro) {
-                console.log(erro);
-                console.log(
-                    "\nHouve um erro ao realizar a busca das informações! Erro: ",
-                    erro.sqlMessage
-                );
-                res.status(500).json(erro.sqlMessage);
-            }
+    if (!numMAC) {
+        console.log("MAC não foi fornecido!");
+        return res.status(400).json({ erro: "numMAC não fornecido" });
+    }
+
+    try {
+        console.log("Chamando totemModel.infoTotem...");
+        const resultado = await totemModel.infoTotem(numMAC);
+        console.log("Resultado da query:", resultado);
+        res.json(resultado);
+    } catch (erro) {
+        console.error("Erro completo:", erro);
+        console.log(
+            "\nHouve um erro ao realizar a busca das informações! Erro: ",
+            erro.sqlMessage || erro.message
         );
+        res.status(500).json({ erro: erro.sqlMessage || erro.message || "Erro desconhecido" });
+    }
 }
 
 module.exports = {
