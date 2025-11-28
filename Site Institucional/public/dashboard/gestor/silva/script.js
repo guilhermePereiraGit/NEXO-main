@@ -289,17 +289,55 @@ function carregarModelos() {
 async function plotarModelos(modelos) {
     div_modelos = document.getElementById('modelos');
     var alertas = cacheAlertas;
-    for (var i = 0; i < modelos.length; i++) {
-    
+        
     //Aqui vou precisar buscar todos os totens associados à um modelo para depois ver a quantidade
     //de alertas associados á esse modelo, e depois disso dá para mudar a cor
-    
-    // div_modelos.innerHTML += `
-    // <div class="modelo">
-    // <h2>${modelos[i].NomeModelo}</h2>
-    // <div class="color"></div>
-    // </div>
-    // `;
+    for(var i = 0; i < modelos.length; i++){
+        modeloAtual = modelos[i];
+        totalAlertasAtual = 0;
+        totalTotensAtual = 0;
+
+        //For para os alertas
+        for(var j = 0; j < alertas.length; j++){
+            //Filtrando pelo modelo atual
+            if(alertas[j].modelo == modeloAtual.NomeModelo){
+                totalAlertasAtual++;
+            }
+        }
+
+        //Carregar Totens e depois filtrar pelo modelo atual
+        var dados = await fetch("/gestor/buscarTotensPorModelo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        totens_por_modelo = await dados.json();
+        
+
+        //Vendo a quantidade de totens que esse modelo tem
+        for(var g = 0; g < totens_por_modelo.length; g++){
+            if(modeloAtual.NomeModelo == totens_por_modelo[g].nome){
+                totalTotensAtual++;
+            }
+        }
+        
+        metrica = totalAlertasAtual / totalTotensAtual
+        if(metrica < 0.3){
+            cor = "#65fa8f";
+        }else if (metrica < 0.5){
+            cor = "#fada64";
+        }else if (metrica < 0.7){
+            cor = "#f98a25";
+        }else{
+            cor = "#ff3131";
+        }        
+        
+        div_modelos.innerHTML += `
+        <div class="modelo">
+        <h2>${modelos[i].NomeModelo}</h2>
+        <div class="color" id="color_modelo" style="background-color:${cor}"></div>
+        </div>
+        `;
     }
 }
 

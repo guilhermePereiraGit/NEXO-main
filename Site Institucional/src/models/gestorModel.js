@@ -48,6 +48,15 @@ function buscarComponentes() {
     return database.executar(instrucaoSql);
 }
 
+function buscarTotensPorModelo() {
+    const instrucaoSql = `
+    select t.idTotem, m.nome from totem as t
+    inner join modelo as m on t.fkModelo = m.idModelo;
+    `
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    buscarRegioes,buscarModelos,buscarTotens,buscarComponentes
+    buscarRegioes,buscarModelos,buscarTotens,buscarComponentes,buscarTotensPorModelo
 };
