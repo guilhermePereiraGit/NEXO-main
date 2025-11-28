@@ -93,7 +93,7 @@ async function escolherModeloLinha() {
             datasets: [
                 {
                     label: 'Tempo Downtime',
-                    data: downtimesRegiao,
+                    data: downtimesRegiao.reverse(),
                     borderColor: '#451c8bd6',
                     backgroundColor: '#451c8b6c',
                     fill: true,
@@ -117,7 +117,7 @@ async function escolherModeloLinha() {
 
     } else {
         //Esse reverse é uma função padrão do js e serve literalemnte para inverter a ordem de um vetor
-        gerarGraficoLinha(converter7Dias(), downtimesModelo);
+        gerarGraficoLinha(converter7Dias(), downtimesModelo.reverse());
     }
 }
 
@@ -639,11 +639,13 @@ function fecharPopup() {
     popup = $("#popup-logout");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }
-function abrirPassos() {
-    popup = $("#popup-passos");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharPassos() {
-    popup = $("#popup-passos");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
+
+// DESEJÁVEL
+// function abrirPassos() {
+//     popup = $("#popup-passos");
+//     popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+// }
+// function fecharPassos() {
+//     popup = $("#popup-passos");
+//     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+// }
