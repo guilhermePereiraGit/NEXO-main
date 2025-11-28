@@ -12,6 +12,7 @@ var HOST_APP = process.env.APP_HOST;
 
 var app = express();
 
+var jiraRouter = require("./src/routes/Jira");
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var aprovacaoRouter = require("./src/routes/aprovacao");
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
+app.use("/", jiraRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/aprovacao", aprovacaoRouter);
 app.use("/modelo", modeloRouter);

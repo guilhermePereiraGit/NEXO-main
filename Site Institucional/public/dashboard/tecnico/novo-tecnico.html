@@ -33,12 +33,12 @@
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="ativar('fundo3');irPara('dashboard')" id="third"></i>
+                            <i class="bi bi-graph-up" onclick="ativar('fundo3');" id="third"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
                             <i class="bi bi-calendar3"
-                                onclick="ativar('fundo4');irPara('dashboard-agenda');visualizarChamadosJira();"
+                                onclick="visualizarChamadosJira();ativar('fundo4');irPara('dashboard-agenda');"
                                 id="fourth"></i>
                         </div>
                     </div>
@@ -192,7 +192,8 @@
                 <div class="kpis" id="kpi-agenda">
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Total de Manutenções</h1>
+                            <h1>Manutenções totais</h1>
+                            <h2> do dia</h2>
                         </div>
                         <div class="dado">
                             <h1>20</h1>
@@ -200,20 +201,11 @@
                     </div>
                     <div class="kpi">
                         <div class="titulo">
-                            <h1>Total de Manutenções</h1>
-                            <h2> concluídas</h2>
+                            <h1>Total Manutenções</h1>
+                            <h2> concluídas do dia</h2>
                         </div>
                         <div class="dado">
                             <h1>10</h1>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Manutenções de alerta crítico</h1>
-                            <h2>pendentes</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>4</h1>
                         </div>
                     </div>
                     <div class="kpi">
@@ -223,6 +215,15 @@
                         </div>
                         <div class="dado">
                             <h1>5</h1>
+                        </div>
+                    </div>
+                    <div class="kpi">
+                        <div class="titulo">
+                            <h1>Manutenções de alerta crítico</h1>
+                            <h2>pendentes</h2>
+                        </div>
+                        <div class="dado">
+                            <h1>4</h1>
                         </div>
                     </div>
                 </div>
@@ -277,17 +278,19 @@
 
     function visualizarChamadosJira() {
         const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
+        console.log("ENTREI NA VISUZLASFOIAJGOÁK")
 
-        fetch(`Jira/visualizarChamadosJira?emailTecnico=${emailTecnico}`, {
-        })
-            .then(res => res.json())
-        console.log("FUNCIONOU")
+        fetch(`http://localhost:3000/visualizarChamadosJira?emailTecnico=${emailTecnico}`)
+            .then(res => {
+                console.log("FUNCIONOU")
+                res.json()
+            })
             .then(dados => {
                 console.log("Chamados:", dados);
             })
             .catch(erro => console.error("Erro", erro));
-    }
 
+    }
     function carregarDados() {
         regiao_escolhida = document.getElementById('regiao-escolhida');
         sigla_escolhida = document.getElementById('sigla-regiao');
