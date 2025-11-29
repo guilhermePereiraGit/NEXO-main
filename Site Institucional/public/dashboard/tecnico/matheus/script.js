@@ -583,7 +583,7 @@ function carregarDados() {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
         maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO')
-        macMaisAlertas = carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json");
+        macMaisAlertas = carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json").macTotem;
         kpi1 = document.getElementById('kpi1');
         kpi1.innerHTML = `<div class="titulo">
                             <h1>Totem</h1>
