@@ -74,9 +74,14 @@ async function cadastrarFuncionario(req, res) {
             nome, email, cpf, senha, telefone, cargo, fkEmpresa
         );
 
+        console.log("DEBUG ZONA ATUACAO => ", zonaAtuacao, typeof zonaAtuacao);
+
         // if (zonaAtuacao != "") {
-        if(zonaAtuacao == ""){zonaAtuacao = 1}
-            await enderecoModel.cadastrarUsuarioComZona(zonaAtuacao, retornoIdUsuario, regiaoAtuacao);
+        if(zonaAtuacao == "" || !zonaAtuacao){
+            var zonasNenhum = await usuarioModel.buscarZonaNenhumPorRegiao(regiaoAtuacao);
+            var zonaAtuacao = zonasNenhum[0].idZona;
+        }
+        await enderecoModel.cadastrarUsuarioComZona(regiaoAtuacao,retornoIdUsuario,zonaAtuacao);
         // }
 
         // await enderecoModel.cadastrarUsuarioComRegiao(retornoIdUsuario, regiaoAtuacao);

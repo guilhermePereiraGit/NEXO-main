@@ -100,8 +100,17 @@ SELECT
   return database.executar(instrucaoSql);
 }
 
+function buscarZonaNenhumPorRegiao(idRegiao) {
+  var instrucaoSql = `
+    SELECT idZona 
+    FROM zona 
+    WHERE fkRegiao = ${idRegiao} AND nome = 'Nenhum';
+    `;
+  return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
   cadastrar, autenticarEmpresa, autenticarAdm, autenticarUsuario, verificarUsuarios, deletarFuncionario,
-  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarAprovados
+  cadastrarUsuario, limparFuncionarios, deletarEmpresa, verificarAprovados,buscarZonaNenhumPorRegiao
 };

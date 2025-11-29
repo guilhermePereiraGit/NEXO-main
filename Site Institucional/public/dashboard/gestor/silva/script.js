@@ -512,11 +512,7 @@ async function plotarModelos(modelos) {
         }
 
         //Carregar Totens e depois filtrar pelo modelo atual
-        var dados = await fetch("/gestor/buscarTotensPorModelo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" }
-        });
-
+        var dados = await fetch("/gestor/buscarTotensPorModelo", {method: "POST",headers: { "Content-Type": "application/json" }});
         totens_por_modelo = await dados.json();
 
 

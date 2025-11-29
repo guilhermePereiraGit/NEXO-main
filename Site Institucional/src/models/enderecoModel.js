@@ -47,10 +47,11 @@ function buscarIdZona(zonaAtuacao) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarUsuarioComZona(retornoIdZona, retornoIdUsuario, retornoIdRegiao) {
+function cadastrarUsuarioComZona(retornoIdRegiao, retornoIdUsuario, retornoIdZona) {
     const instrucaoSql = `
-        INSERT INTO areasAtuacao (fkRegiao, fkUsuario, fkZona) values (${retornoIdRegiao}, ${retornoIdUsuario}, ${retornoIdZona});
-    `
+        INSERT INTO areasAtuacao (fkRegiao, fkUsuario, fkZona)
+        VALUES (${retornoIdRegiao}, ${retornoIdUsuario}, ${retornoIdZona});
+    `;
     return database.executar(instrucaoSql);
 }
 

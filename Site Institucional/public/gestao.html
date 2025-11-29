@@ -339,7 +339,7 @@
     }
 
     function adicionarRegiao(usuario) {
-        carregarDadosAprovados()
+        carregarDadosAprovados();
         usuario_escolhido = sessionStorage.getItem('USUARIO_ESCOLHIDO');
         for (var i = 0; i < aprovados.length; i++) {
             if (aprovados[i].idUsuario == usuario_escolhido) {
