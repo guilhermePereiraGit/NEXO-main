@@ -583,10 +583,10 @@ function carregarDados() {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
         maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO')
+        carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alerta.json");
         document.getElementById('waiting').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
-        carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alerta.json");
         carregarTotens();
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
