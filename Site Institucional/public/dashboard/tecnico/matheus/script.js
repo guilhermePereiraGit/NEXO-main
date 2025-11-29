@@ -575,23 +575,22 @@ function irPara(escolhida) {
     }
 }
 
-function carregarDados() {
-    regiao_escolhida = document.getElementById('regiao-escolhida');
-    sigla_escolhida = document.getElementById('sigla-regiao');
-
+async function carregarDados() {
+    const regiao_escolhida = document.getElementById('regiao-escolhida');
+    const sigla_escolhida = document.getElementById('sigla-regiao');
     if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-        maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO')
-        dados = carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json");
-        kpi1 = document.getElementById('kpi1');
+        const maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO');
+        const dados = await carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json");
+        const kpi1 = document.getElementById('kpi1');
         kpi1.innerHTML = `<div class="titulo">
                             <h1>Totem</h1>
                             <h2>com mais alertas</h2>
-                        </div>
-                        <div class="dado">
+                          </div>
+                          <div class="dado">
                             <h2>Totem ${dados.macTotem}</h2>
-                        </div>`;
+                          </div>`;
         document.getElementById('waiting').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
