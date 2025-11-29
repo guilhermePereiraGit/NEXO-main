@@ -583,7 +583,7 @@ function carregarDados() {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
         maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO')
-        carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alerta.json");
+        carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alerta");
         document.getElementById('waiting').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
