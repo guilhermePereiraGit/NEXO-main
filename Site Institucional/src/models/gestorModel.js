@@ -57,6 +57,18 @@ function buscarTotensPorModelo() {
     return database.executar(instrucaoSql);
 }
 
+function buscarModelosPorEmpresa(idEmpresa){
+    const instrucaoSql = `
+    select
+    m.idModelo as idModelo,
+    m.nome as NomeModelo
+    from modelo as m
+    where fkEmpresa = ${idEmpresa}
+    `
+    console.log(instrucaoSql)
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    buscarRegioes,buscarModelos,buscarTotens,buscarComponentes,buscarTotensPorModelo
+    buscarRegioes,buscarModelos,buscarTotens,buscarComponentes,buscarTotensPorModelo,buscarModelosPorEmpresa
 };

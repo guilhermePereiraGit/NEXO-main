@@ -1,16 +1,42 @@
 //Chamar Funções de Carregamento de Dados
 window.onload = async function () {
     //Muito mais simples e reduz tempo de demora do await
-    var empresa = `empresa-${sessionStorage.getItem('ID_EMPRESA')}`;
-    cacheAlertas = await carregarJson(empresa, "alertas.json");
-    cacheDowntime = await carregarJson(empresa, "downtime.json");
-    carregarDados();
-    carregarDadosUser();
-    carregarUltimos7Dias();
-    carregarDowntime();
-    plotarSelecionarModeloLinha();
-    escolherModeloLinha();
+    vmodelos = await verificarModelos();
+    console.log(vmodelos);
+
+    //Se a empresa não tiver modelos cadastrados ele exibe um popup de aviso
+    if (vmodelos.length != 0) {
+        document.getElementById('sem_modelos').style.display = 'none';
+        var empresa = `empresa-${sessionStorage.getItem('FK_EMPRESA')}`;
+        cacheAlertas = await carregarJson(empresa, "alertas.json");
+        cacheDowntime = await carregarJson(empresa, "downtime.json");
+        verificarModelos();
+        carregarDados();
+        carregarDadosUser();
+        carregarUltimos7Dias();
+        carregarDowntime();
+        plotarSelecionarModeloLinha();
+        escolherModeloLinha();
+    } else {
+        console.log("AAAAAAAAAAAAAAAAAA");
+    }
 };
+
+vmodelos = [];
+async function verificarModelos() {
+    var fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
+    try {
+        var dados = await fetch("/gestor/buscarModelosPorEmpresa", {method: "POST",headers: { "Content-Type": "application/json" },body: JSON.stringify({ fkEmpresa })});
+        if (!dados.ok) {console.error("Erro ao Pegar Modelos");return [];}
+        var infos = await dados.json();
+        return infos;
+
+    } catch (erro) {
+        console.error("Erro na requisição:", erro);
+        return [];
+    }
+
+}
 
 // CARREGAR ÚLTIMOS 7 DIAS
 function carregarUltimos7Dias() {
@@ -37,7 +63,7 @@ async function plotarAlertasComponentes(componentes) {
 
         //Carregar Total de Alertas para cada Componente
         for (var j = 0; j < alertas.length; j++) {
-            if(componentes[i].nome == alertas[j].componente){
+            if (componentes[i].nome == alertas[j].componente) {
                 totalAlertasComponente++;
             }
         }

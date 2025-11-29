@@ -23,4 +23,8 @@ router.post("/buscarTotensPorModelo", function (req, res){
     gestorController.buscarTotensPorModelo(req, res);
 })
 
+router.post("/buscarModelosPorEmpresa", function (req, res){
+    gestorController.buscarModelosPorEmpresa(req, res);
+})
+
 module.exports = router;
