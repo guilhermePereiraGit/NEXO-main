@@ -711,7 +711,7 @@
     }
 
     async function carregarTotemMaisAlerta(diretorio, arquivo) {
-        var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
+        var resposta = await fetch(`/s3RouteMatheus/dados/${diretorio}/${arquivo}`);
         var dados = await resposta.json();
         console.log(dados);
         return dados;
