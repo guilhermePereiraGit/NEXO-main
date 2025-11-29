@@ -583,7 +583,15 @@ function carregarDados() {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
         maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO')
-        carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alerta");
+        macMaisAlertas = carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json");
+        kpi1 = document.getElementById('kpi1');
+        kpi1.innerHTML = `<div class="titulo">
+                            <h1>Totem</h1>
+                            <h2>com mais alertas</h2>
+                        </div>
+                        <div class="dado">
+                            <h2>Totem ${macMaisAlertas}</h2>
+                        </div>`;
         document.getElementById('waiting').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
@@ -714,14 +722,7 @@ async function carregarTotemMaisAlerta(diretorio, arquivo) {
     var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
     var dados = await resposta.json();
     console.log(dados);
-    kpi1 = document.getElementById('kpi1');
-    kpi1.innerHTML = `<div class="titulo">
-                            <h1>Totem</h1>
-                            <h2>com mais alertas</h2>
-                        </div>
-                        <div class="dado">
-                            <h2>Totem ${dados.macTotem}</h2>
-                        </div>`;
+    return dados;
 }
 
 function plotarTotens(totens) {
