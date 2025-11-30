@@ -758,25 +758,24 @@ function abrirMenu() {
 }
 
 async function encontrarTotemMaisProximo() {
-  try {
-    const resposta = await fetch('/totem/nearest-totem', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({})
-    });
+    try {
+        const resposta = await fetch('/totem/nearest-totem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
 
-    if (!resposta.ok) {
-      const textoErro = await resposta.text();
-      console.error('Resposta bruta de erro:', textoErro);
-      const erro = await resposta.json();
-      throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
-    }
+        if (!resposta.ok) {
+            const textoErro = await resposta.text();
+            console.error('Resposta bruta de erro:', textoErro);
+            throw new Error(textoErro || 'Falha ao buscar totem mais próximo');
+        }
 
-    const nearest = await resposta.json();
-    console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
+        const nearest = await resposta.json();
+        console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
 
-    const kpi3 = document.getElementById('kpi3');
-    kpi3.innerHTML = `<div class="titulo">
+        const kpi3 = document.getElementById('kpi3');
+        kpi3.innerHTML = `<div class="titulo">
                         <h1>Totem com alerta</h1>
                         <h2>mais próximo</h2>
                       </div>
@@ -784,62 +783,62 @@ async function encontrarTotemMaisProximo() {
                         <h2>${nearest.macTotem}</h2>
                       </div>`;
 
-  } catch (erro) {
-    console.error('Erro:', erro.message);
-    const kpi3 = document.getElementById('kpi3');
-    kpi3.innerHTML = `<div class="titulo">
+    } catch (erro) {
+        console.error('Erro:', erro.message);
+        const kpi3 = document.getElementById('kpi3');
+        kpi3.innerHTML = `<div class="titulo">
                         <h1>Totem com alerta</h1>
                         <h2>mais próximo</h2>
                       </div>
                       <div class="dado">
                         <h2>Erro: ${erro.message}</h2>
                       </div>`;
-    const userCep = prompt('Não conseguimos estimar sua localização. Digite seu CEP para calcular:');
-    if (userCep) {
-      try {
-        const cep = userCep.replace(/\D/g, '');
-        const cepResponse = await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`);
-        const cepData = await cepResponse.json();
-        if (cepResponse.ok && cepData.location && cepData.location.coordinates) {
-          const userLat = parseFloat(cepData.location.coordinates.latitude);
-          const userLon = parseFloat(cepData.location.coordinates.longitude);
-          if (isNaN(userLat) || isNaN(userLon)) {
-            throw new Error('Coordenadas inválidas no CEP');
-          }
+        const userCep = prompt('Não conseguimos estimar sua localização. Digite seu CEP para calcular:');
+        if (userCep) {
+            try {
+                const cep = userCep.replace(/\D/g, '');
+                const cepResponse = await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`);
+                const cepData = await cepResponse.json();
+                if (cepResponse.ok && cepData.location && cepData.location.coordinates) {
+                    const userLat = parseFloat(cepData.location.coordinates.latitude);
+                    const userLon = parseFloat(cepData.location.coordinates.longitude);
+                    if (isNaN(userLat) || isNaN(userLon)) {
+                        throw new Error('Coordenadas inválidas no CEP');
+                    }
 
-          const resposta = await fetch('/totem/nearest-totem', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userLat, userLon })
-          });
+                    const resposta = await fetch('/totem/nearest-totem', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userLat, userLon })
+                    });
 
-          if (!resposta.ok) {
-            const erro = await resposta.json();
-            throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
-          }
+                    if (!resposta.ok) {
+                        const erro = await resposta.json();
+                        throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
+                    }
 
-          const nearest = await resposta.json();
-          kpi3.innerHTML = `<div class="titulo">
+                    const nearest = await resposta.json();
+                    kpi3.innerHTML = `<div class="titulo">
                               <h1>Totem com alerta</h1>
                               <h2>mais próximo</h2>
                             </div>
                             <div class="dado">
                               <h2>Totem ${nearest.macTotem}</h2>
                             </div>`;
-        } else {
-          throw new Error('CEP sem coordenadas ou inválido: ' + (cepData.message || 'Resposta inválida'));
-        }
-      } catch (cepErro) {
-        kpi3.innerHTML = `<div class="titulo">
+                } else {
+                    throw new Error('CEP sem coordenadas ou inválido: ' + (cepData.message || 'Resposta inválida'));
+                }
+            } catch (cepErro) {
+                kpi3.innerHTML = `<div class="titulo">
                             <h1>Totem com alerta</h1>
                             <h2>mais próximo</h2>
                           </div>
                           <div class="dado">
                             <h2>Erro no CEP: ${cepErro.message}</h2>
                           </div>`;
-      }
+            }
+        }
     }
-  }
 }
 
 /*Usando*/
