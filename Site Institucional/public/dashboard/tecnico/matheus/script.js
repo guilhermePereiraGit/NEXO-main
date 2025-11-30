@@ -755,6 +755,49 @@ function abrirMenu() {
         menu_icon.classList.add("bi-list")
     }
 }
+
+async function encontrarTotemMaisProximo() {
+try {
+const position = await new Promise((resolve, reject) => {
+navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true });
+});
+const userLat = position.coords.latitude;
+const userLon = position.coords.longitude;
+const resposta = await fetch('/nearest-totem', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ userLat, userLon })
+});
+if (!resposta.ok) {
+const erro = await resposta.json();
+throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
+}
+const nearest = await resposta.json();
+console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
+const kpi3 = document.getElementById('kpi3');
+kpi3.innerHTML = `<div class="titulo">
+                            <h1>Totem com alerta</h1>
+                            <h2>mais próximo</h2>
+                        </div>
+                        <div class="dado">
+                            <h2>Totem ${nearest.macTotem}</h2>
+                        </div>`;
+} catch (erro) {
+console.error('Erro:', erro.message);
+const kpi3 = document.getElementById('kpi3');
+kpi3.innerHTML = `<div class="titulo">
+                            <h1>Totem com alerta</h1>
+                            <h2>mais próximo</h2>
+                        </div>
+                        <div class="dado">
+                            <h2>Totem ${nearest.macTotem}</h2>
+                        </div>`;
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+encontrarTotemMaisProximo();
+});
+
 /*Usando*/
 function ativarPopup() {
     popup = $("#popup-logout");
