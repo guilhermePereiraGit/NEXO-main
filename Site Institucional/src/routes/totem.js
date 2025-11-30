@@ -124,22 +124,35 @@ router.post("/nearest-totem", async (req, res) => {
           
           try {
             const cep = totem.cep.replace(/\D/g, '');
-            const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
-            const data = response.data;
             
-            if (response.status === 200 && data.location && data.location.coordinates) {
-              // DEBUG: Mostra o que a API retornou
-              console.log(`🔍 API retornou para ${totem.cep}:`, JSON.stringify(data.location.coordinates));
+            // Tenta AwesomeAPI primeiro (mais confiável para coordenadas)
+            let response = await axios.get(`https://cep.awesomeapi.com.br/json/${cep}`);
+            let data = response.data;
+            
+            if (response.status === 200 && data.lat && data.lng) {
+              console.log(`✅ AwesomeAPI retornou coordenadas para ${totem.cep}`);
+              lat = parseFloat(data.lat);
+              lon = parseFloat(data.lng);
+            } else {
+              // Fallback: BrasilAPI
+              console.log(`⚠️ AwesomeAPI falhou, tentando BrasilAPI...`);
+              response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
+              data = response.data;
               
-              lat = parseFloat(data.location.coordinates.latitude);
-              lon = parseFloat(data.location.coordinates.longitude);
+              if (response.status === 200 && data.location && data.location.coordinates && 
+                  data.location.coordinates.latitude && data.location.coordinates.longitude) {
+                lat = parseFloat(data.location.coordinates.latitude);
+                lon = parseFloat(data.location.coordinates.longitude);
+                console.log(`✅ BrasilAPI retornou coordenadas para ${totem.cep}`);
+              } else {
+                console.warn(`⚠️ Nenhuma API retornou coordenadas para CEP ${totem.cep}`);
+                return null;
+              }
+            }
 
-              console.log(`🔍 Após parseFloat: lat=${lat} (tipo: ${typeof lat}), lon=${lon} (tipo: ${typeof lon})`);
-              console.log(`🔍 Validações: isNaN(lat)=${isNaN(lat)}, isNaN(lon)=${isNaN(lon)}, lat!==0=${lat !== 0}, lon!==0=${lon !== 0}`);
-
-              // Valida coordenadas antes de salvar
-              if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
-                console.log(`✅ Coordenadas encontradas para ${totem.cep}: lat=${lat}, lon=${lon}`);
+            // Valida coordenadas antes de salvar
+            if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
+              console.log(`✅ Coordenadas válidas para ${totem.cep}: lat=${lat}, lon=${lon}`);
                 
                 // Salva no banco (converte para string se a coluna é VARCHAR)
                 pool.query(
@@ -154,13 +167,9 @@ router.post("/nearest-totem", async (req, res) => {
                   }
                 );
               } else {
-                console.warn(`⚠️ Coordenadas inválidas retornadas para CEP ${totem.cep}`);
+                console.warn(`⚠️ Coordenadas inválidas: lat=${lat}, lon=${lon}`);
                 return null;
               }
-            } else {
-              console.warn(`⚠️ API não retornou coordenadas para CEP ${totem.cep}`);
-              return null;
-            }
           } catch (apiErr) {
             console.error(`❌ Erro ao buscar CEP ${totem.cep}:`, apiErr.message);
             return null;
