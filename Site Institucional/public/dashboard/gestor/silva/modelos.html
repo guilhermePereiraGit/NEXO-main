@@ -18,7 +18,9 @@
         <div class="sem_modelos" id="sem_modelos">
             <div class="sem_box">
                 <h1>Sem Modelos Registrados</h1>
-                <p>Para visualizar as informações na Dashboard é necessário que você cadastre pelo menos 1 modelo no sistema, e para que apareçam informações relevantes, é necessária a instalação do sistema em um totem associado à este modelo.</p>
+                <p>Para visualizar as informações na Dashboard é necessário que você cadastre pelo menos 1 modelo no
+                    sistema, e para que apareçam informações relevantes, é necessária a instalação do sistema em um
+                    totem associado à este modelo.</p>
                 <button onclick="window.location.href = '../../../gestor.html'">Cadastrar Modelo</button>
             </div>
         </div>
@@ -39,7 +41,7 @@
                     </div>
                     <div class="eficiencia">
                         <div class="fundo" id="fundo2" style="display: block;"></div>
-                        <i class="bi bi-eye" style="color: #451c8b;" ></i>
+                        <i class="bi bi-eye" style="color: #451c8b;"></i>
                     </div>
                     <div class="eficiencia">
                         <div class="fundo" id="fundo2" style="display: none;"></div>
@@ -100,7 +102,35 @@
         <!-- POPUP DE PASSO À PASSO -->
         <div class="popup-passos" style="display: none;" id="popup-passos">
             <div class="passos-content">
-
+                <i class="bi bi-x-lg" onclick="fecharPassos()" style="cursor: pointer; font-size: 30px; color: #451c8b;"></i>
+                <div class="passos-infos">
+                    <h2>Métricas Utilizadas</h2>
+                    <div class="passos-metricas">
+                        <h3>para Modelos e Região</h3>
+                        <div class="content-again">
+                            <div class="text-metricas">
+                            Para os totens as métricas utilizadas são resgatadas do banco de dados
+                            conforme o inserido pelo gestores nos respectivos modelos
+                            e suas criticidades são baseadas em porcentagens ultrapassadas
+                            deste limite estabelecido.
+                        </div>
+                        <div class="scale-metricas">
+                            <div class="card-metrica" style="background-color: #ff3131;">
+                                <h1>Muito Perigoso</h1>
+                                <h2>+ 70% de Alerta</h2>
+                            </div>
+                            <div class="card-metrica" style="background-color: #f98a25;">
+                                <h1>Perigoso</h1>
+                                <h2>+ 50% de Alerta</h2>
+                            </div>
+                            <div class="card-metrica" style="background-color: #fada64;">
+                                <h1>Atenção</h1>
+                                <h2>+ 30% de Alerta</h2>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -145,7 +175,7 @@
                 </div>
                 <div class="priorizar" id="priorizar" style="display: none;">
                     <i class="bi bi-exclamation-diamond"></i>
-                    <p>A região mais crítica é Região Metropolitana de São Paulo</p>
+                    <p id="p_priorizar_regiao"></p>
                 </div>
 
                 <!-- ANTES DE ESCOLHER UM ESTADO -->
@@ -239,9 +269,15 @@
                 </div>
                 <div class="dados-all">
                     <div class="modelos">
-                        <div class="legenda">
-                            <h1>Modelos Associados</h1>
-                            <p>Taxa de Alertas</p>
+                        <div class="help-infos">
+                            <div class="legenda">
+                                <h1>Modelos Associados</h1>
+                                <p>Taxa de Alertas</p>
+                            </div>
+                            <div class="icon-help" onclick="abrirPassos()">
+                                <i class="bi bi-info-circle"></i>
+                                <h2>Métricas</h2>
+                            </div>
                         </div>
                         <div class="list-modelos">
                             <div class="modelos-all" id="modelos">
@@ -281,4 +317,5 @@
     </div>
 </body>
 <script src="script.js"></script>
+
 </html>

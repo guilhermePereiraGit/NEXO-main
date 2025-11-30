@@ -2,7 +2,6 @@ var gestorModel = require("../models/gestorModel");
 
 function buscarRegioes(req, res) {
     var emailUsuario = req.body.emailUsuario
-
     gestorModel.buscarRegioes(emailUsuario)
         .then(
             function (resultado) {
