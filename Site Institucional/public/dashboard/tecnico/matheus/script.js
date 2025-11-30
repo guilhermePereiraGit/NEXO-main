@@ -792,18 +792,30 @@ async function encontrarTotemMaisProximo() {
                       <div class="dado">
                         <h2>Erro: ${erro.message}</h2>
                       </div>`;
-    
     const userCep = prompt('Não conseguimos estimar sua localização. Digite seu CEP para calcular:');
     if (userCep) {
       try {
-        const cepResponse = await fetch(`https://cep.awesomeapi.com.br/json/${userCep.replace(/\D/g, '')}`);
+        const cep = userCep.replace(/\D/g, '');
+        const cepResponse = await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`);
         const cepData = await cepResponse.json();
-        if (cepData.lat && cepData.lng) {
+        if (cepResponse.ok && cepData.location && cepData.location.coordinates) {
+          const userLat = parseFloat(cepData.location.coordinates.latitude);
+          const userLon = parseFloat(cepData.location.coordinates.longitude);
+          if (isNaN(userLat) || isNaN(userLon)) {
+            throw new Error('Coordenadas inválidas no CEP');
+          }
+
           const resposta = await fetch('/nearest-totem', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userLat: parseFloat(cepData.lat), userLon: parseFloat(cepData.lng) })
+            body: JSON.stringify({ userLat, userLon })
           });
+
+          if (!resposta.ok) {
+            const erro = await resposta.json();
+            throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
+          }
+
           const nearest = await resposta.json();
           kpi3.innerHTML = `<div class="titulo">
                               <h1>Totem com alerta</h1>
@@ -813,7 +825,7 @@ async function encontrarTotemMaisProximo() {
                               <h2>Totem ${nearest.macTotem}</h2>
                             </div>`;
         } else {
-          throw new Error('CEP inválido');
+          throw new Error('CEP sem coordenadas ou inválido: ' + (cepData.message || 'Resposta inválida'));
         }
       } catch (cepErro) {
         kpi3.innerHTML = `<div class="titulo">
@@ -821,7 +833,7 @@ async function encontrarTotemMaisProximo() {
                             <h2>mais próximo</h2>
                           </div>
                           <div class="dado">
-                            <h2>CEP inválido</h2>
+                            <h2>Erro no CEP: ${cepErro.message}</h2>
                           </div>`;
       }
     }
