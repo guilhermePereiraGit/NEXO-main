@@ -2,7 +2,7 @@ var totemModel = require("../models/totemModel");
 
 function verificarAprovados(req, res) {
     var idEmpresa = req.body.idEmpresaServer
-    
+
     totemModel.verificarAprovados(idEmpresa)
         .then(
             function (resultado) {
@@ -37,6 +37,22 @@ async function buscarTotens(req, res) {
         }
     }
 }
+async function buscarEnderecoTotem(req, res) {
+    const mac = req.params.mac;
+    try {
+        endereco = await totemModel.buscarTotemMac(mac);
+
+        if (!endereco) {
+            return res.status(404).json({erro: "Totem não encontrado"});
+        }
+
+        res.json(endereco[0]);
+
+    } catch (erro) {
+        console.error("Erro ao buscar endereço do totem:", erro);
+        res.status(500).json({ erro: "erro no servidor" });
+    }
+}
 
 async function cadastrarTotem(req, res) {
     var modelo = req.body.modeloServer;
@@ -59,16 +75,16 @@ async function cadastrarTotem(req, res) {
     }
 }
 
-async function modificarStatusTotem(req, res){
+async function modificarStatusTotem(req, res) {
     var idTotem = req.body.idTotemServer;
     var acao = req.body.acaoServer;
 
-    if(!idTotem || !acao){
+    if (!idTotem || !acao) {
         return res.status(400).send("Parâmetros estão undefined!");
-    }else{
-        if(acao == "ativar"){
+    } else {
+        if (acao == "ativar") {
             await totemModel.ativarTotem(idTotem);
-        }else{
+        } else {
             await totemModel.desativarTotem(idTotem);
         }
 
@@ -77,5 +93,5 @@ async function modificarStatusTotem(req, res){
 }
 
 module.exports = {
-    cadastrarTotem, verificarAprovados, modificarStatusTotem
+    cadastrarTotem, verificarAprovados, modificarStatusTotem, buscarTotens, buscarEnderecoTotem
 };

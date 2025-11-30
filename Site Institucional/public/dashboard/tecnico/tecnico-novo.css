@@ -792,7 +792,6 @@ select {
     display: none;
     width: 100%;
     height: 100%;
-    padding: 20px;
 }
 
 .dashboard .kpis {
@@ -1513,6 +1512,10 @@ select {
 }
 
 /*DASH-AGENDA*/
+.dashboard #conteudo-dash-agenda{
+    padding: 20px;
+    align-self: center;
+}
 .dashboard #dashboard-agenda{
     align-self: center;
 }
@@ -1526,15 +1529,16 @@ select {
 #agenda-grafico-barras{
     background-color: white;
     height: 100%;
-    width: 40%;
+    width: 220px;
     border-radius: 10px;
 }
 .agenda {
     background-color: white;
     height: 100%;
-    width: 45vw;
+    width: 650px;
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
 
 }
 .titulo-agenda{
@@ -1556,4 +1560,14 @@ select {
     display: none;
     width: 90%;
     height: 90%;
+}
+#conteudo-dash-agenda{
+    padding: 20px;
+}
+#conteudo-agenda{
+    overflow: auto;
+}
+.info-chamados{
+    display: flex;
+    gap: 5px;
 }

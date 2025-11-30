@@ -29,16 +29,16 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');irPara('box');" id="second"></i>
+                            <i class="bi bi-display" onclick="ativar('fundo2');" style="display: block;"
+                                id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="ativar('fundo3');" id="third"></i>
+                            <i class="bi bi-graph-up" onclick="window.location.href='totem.html'"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
-                            <i class="bi bi-calendar3"
-                                onclick="visualizarChamadosJira();ativar('fundo4');irPara('dashboard-agenda');"
+                            <i class="bi bi-calendar3" onclick="window.location.href='dash-agenda.html'"
                                 id="fourth"></i>
                         </div>
                     </div>
@@ -107,8 +107,11 @@
                             <h1>Totens Cadastrados</h1>
                             <button onclick="abrirPopupTotem()" id="botao-cadastrar">Adicionar Totem</button>
                         </div>
-                        <div class="aprovados" id="div_aprovados"></div>
-                        <div class="totens-scroll" id="totens-totais"></div>
+                        <div class="conteudo" id="conteudo">
+                            <div class="aprovados" id="div_aprovados"></div>
+                            <div class="totens-scroll" id="totens-totais"></div>
+                        </div>
+
                     </div>
                     <div class="popuptotem" id="popuptotem">
                         <div class="card">
@@ -187,62 +190,6 @@
                     </div>
                 </div>
             </div>
-            <!-- DASHBOARD -->
-            <div class="dashboard" id="dashboard-agenda">
-                <div class="nenhumaManutencao" id="nenhumaManutencao"></div>
-                <div class="kpis" id="kpi-agenda">
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Manutenções totais</h1>
-                            <h2> do dia</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>20</h1>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Total Manutenções</h1>
-                            <h2> concluídas do dia</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>10</h1>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Total de Manutenções</h1>
-                            <h2>pendentes</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>5</h1>
-                        </div>
-                    </div>
-                    <div class="kpi">
-                        <div class="titulo">
-                            <h1>Manutenções de alerta crítico</h1>
-                            <h2>pendentes</h2>
-                        </div>
-                        <div class="dado">
-                            <h1>4</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="graficos">
-                    <div id="agenda" class="agenda">
-                        <div class="titulo-agenda">
-                            <h1 class="item-titulo-agenda">#</h1>
-                            <h1 class="item-titulo-agenda">ID Totem</h1>
-                            <h1 class="item-titulo-agenda">Local</h1>
-                            <h1 class="item-titulo-agenda">Status</h1>
-                            <h1 class="item-titulo-agenda">Qtd. Alertas</h1>
-                            <h1 class="item-titulo-agenda">Componente crítico</h1>
-                        </div>
-                    </div>
-                    <canvas id="agenda-grafico-barras">
-                    </canvas>
-                </div>
-            </div>
         </div>
     </div>
 </body>
@@ -276,33 +223,6 @@
             graficoBarras();
         }
     }
-
-    function visualizarChamadosJira() {
-        const emailTecnico = sessionStorage.getItem("EMAIL_USUARIO");
-        console.log("ENTREI NA VISUZLASFOIAJGOÁK")
-
-        fetch(`/visualizarChamadosJira?emailTecnico=${emailTecnico}`)
-            .then(res => {
-                console.log("FUNCIONOU")
-                return res.json();
-            })
-            .then(dados => {
-                console.log("Chamados:", dados);
-                if (dados.lenght == 0 || !dados) {
-                    nenhumChamado();
-                }
-            })
-            .catch(erro => console.error("Erro", erro));
-    }
-    function nenhumChamado() {
-        nenhumaManutencao.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
-    }
     function carregarDados() {
         regiao_escolhida = document.getElementById('regiao-escolhida');
         sigla_escolhida = document.getElementById('sigla-regiao');
@@ -321,8 +241,6 @@
             sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
             document.getElementById('escolhaNew').style.display = 'none';
             document.getElementById('conteudo').style.display = 'none';
-            document.getElementById('eficiencia').style.display = 'none';
-            document.getElementById('alertas').style.display = 'none';
         }
     }
 
@@ -354,28 +272,6 @@
             .catch(function (resposta) {
                 console.log(`#ERRO: ${resposta}`);
             });
-    }
-    function graficoBarras() {
-        const ctx = document.getElementById('agenda-grafico-barras');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Atenção', 'Alerta', 'Perigoso', 'Muito Perigoso'],
-                datasets: [{
-                    label: 'Número de alertas por criticidade',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
     }
     function carregarTotens() {
         nomeRegiao = sessionStorage.getItem('REGIAO_ESCOLHIDA');

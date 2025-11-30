@@ -16,9 +16,9 @@ function buscarTotens(idEmpresa) {
         `
     return database.executar(instrucaoSql);
 }
-function buscarTotemMac() {
-    var instrucaoSql = `totem.fkEndereco from totem inner join endereco on totem.fkEndereco = endereco.idEndereco
-    where totem.numMac = ${numMac}`;
+function buscarTotemMac(numMac) {
+    var instrucaoSql = `SELECT endereco.cep, endereco.rua, endereco.numero FROM totem INNER JOIN endereco ON totem.fkEndereco = endereco.idEndereco
+    WHERE totem.numMac = ${numMac};`
     return database.executar(instrucaoSql);
 }
 
@@ -48,5 +48,5 @@ function desativarTotem(idTotem) {
 }
 
 module.exports = {
-    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem
+    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem, buscarTotemMac, buscarTotens
 };
