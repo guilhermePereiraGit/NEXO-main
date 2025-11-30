@@ -1,8 +1,5 @@
 window.onload = async function () {
-    carregarDadosDoTotem();
-    diaAtual = new Date();
-    dados = await carregarJson(this.sessionStorage.IDEMPRESA, 271371670400310, 2025-11-19, "dados.json");
-    console.log(dados);
+    await carregarDadosDoTotem();
 };
 
 async function carregarJson(diretorio, mac, dia, arquivo) {
@@ -70,9 +67,12 @@ function preencherInfoTotem(totem) {
 }
 
 function preencherTicket(ticket) {
-    if (!ticket) {
+    if (ticket) {
         console.log("Nenhum ticket encontrado para o MAC fornecido.");
-        
+        document.getElementById('grauAlerta').textContent = "Nenhum alerta";
+        document.getElementById('alerta').style.borderLeftColor = 'var(--bem)';
+        document.getElementById('parametros').textContent = "Totem operando dentro dos parâmetros normais";
+        return;
     };
 
     const descricao = ticket.fields.description.content[0].content[0].text;
@@ -88,13 +88,17 @@ function preencherTicket(ticket) {
         document.getElementById('grauAlerta').textContent = criticidade;
 
         if (criticidade === 'Muito Perigoso') {
-            document.getElementById('grauAlerta').style.color = 'var(--mperigo)';
+            document.getElementById('alerta').style.borderLeftColor = 'var(--mperigo)';
         } else if (criticidade === 'Atenção') {
-            document.getElementById('grauAlerta').style.color = 'var(--atencao)';
+            document.getElementById('alerta').style.borderLeftColor = 'var(--atencao)';
         } else if (criticidade === 'Perigoso') {
-            document.getElementById('grauAlerta').style.color = 'var(--perigo)';
+            document.getElementById('alerta').style.borderLeftColor = 'var(--perigo)';
         }
     }
+}
+
+function preencherDadosBucket(jsonDados) {
+    
 }
 
 async function carregarDadosDoTotem() {
@@ -107,6 +111,9 @@ async function carregarDadosDoTotem() {
     preencherInfoTotem(infoTotem);
     preencherTicket(ticket);
     carregarDashboard(mac, sessionStorage.MODELOTOTEM, sessionStorage.IDEMPRESA);
+
+    diaAtual = "2025-11-19";
+    dados = await carregarJson('33', '271371670400310', diaAtual, "dados.json");
 
     console.log("Dados carregados com sucesso!");
 }
@@ -158,7 +165,7 @@ function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta
     return new Chart(ctx, {
         type: "line",
         data: {
-            labels: ["0h", "4h", "8h", "12h", "16h", "20h"],
+            labels: ["20h", "16h", "12h", "8h", "4h", "0h"],
             datasets: [
                 {
                     label: componente.toUpperCase(),
@@ -198,7 +205,6 @@ document.getElementById("componentSelect").addEventListener("change", e => {
     chart.data.datasets[0].data = dadosComponentes[comp];
     chart.data.datasets[0].label = comp.toUpperCase();
 
-    // Atualiza a linha de alerta com o limite do componente selecionado
     chart.data.datasets[1].data = Array(6).fill(limitesAlerta[comp]);
     chart.data.datasets[1].label = `Limite de Alerta (${limitesAlerta[comp]}%)`;
 

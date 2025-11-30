@@ -282,7 +282,7 @@ header .header-navigation .alert {
 }
 
 .alerta {
-    border-left: 8px solid #ff3131; 
+    border-left: 8px solid;
 }
 
 .alerta .titulo {
