@@ -4,21 +4,29 @@ var totemController = require("../controllers/totemController");
 const axios = require('axios');
 const mysql = require('mysql2');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_DATABASE || 'seu_banco',
-  port: process.env.DB_PORT || 3306
-});
+// const pool = mysql.createPool({
+//   host: process.env.DB_HOST || 'localhost',
+//   user: process.env.DB_USER || 'root',
+//   password: process.env.DB_PASSWORD || '',
+//   database: process.env.DB_DATABASE || 'seu_banco',
+//   port: process.env.DB_PORT || 3306
+// });
 
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error('❌ Erro ao conectar ao MySQL:', err.message);
-  } else {
-    console.log('✅ MySQL conectado com sucesso!');
-    connection.release();
-  }
+// pool.getConnection((err, connection) => {
+//   if (err) {
+//     console.error('❌ Erro ao conectar ao MySQL:', err.message);
+//   } else {
+//     console.log('✅ MySQL conectado com sucesso!');
+//     connection.release();
+//   }
+// });
+
+router.post("/nearest-totem", async (req, res) => {
+  console.log('✅ Rota /nearest-totem foi chamada com sucesso!');
+  res.json({ 
+    macTotem: 'TESTE-123', 
+    distanciaKm: 5.5 
+  });
 });
 
 router.post("/cadastrarTotem", function (req, res) {
