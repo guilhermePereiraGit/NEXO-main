@@ -4,22 +4,22 @@ var totemController = require("../controllers/totemController");
 const axios = require('axios');
 const mysql = require('mysql2');
 
-// const pool = mysql.createPool({
-//   host: process.env.DB_HOST || 'localhost',
-//   user: process.env.DB_USER || 'root',
-//   password: process.env.DB_PASSWORD || '',
-//   database: process.env.DB_DATABASE || 'seu_banco',
-//   port: process.env.DB_PORT || 3306
-// });
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_DATABASE || 'seu_banco',
+  port: process.env.DB_PORT || 3306
+});
 
-// pool.getConnection((err, connection) => {
-//   if (err) {
-//     console.error('❌ Erro ao conectar ao MySQL:', err.message);
-//   } else {
-//     console.log('✅ MySQL conectado com sucesso!');
-//     connection.release();
-//   }
-// });
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error('❌ Erro ao conectar ao MySQL:', err.message);
+  } else {
+    console.log('✅ MySQL conectado com sucesso!');
+    connection.release();
+  }
+});
 
 router.post("/nearest-totem", async (req, res) => {
   console.log('✅ Rota /nearest-totem foi chamada com sucesso!');
@@ -45,7 +45,7 @@ router.get("/infoTotem", function (req, res) {
     totemController.buscarInfoTotem(req, res);
 })
 
-router.post("/totem/nearest-totem", async (req, res) => {
+router.post("/nearest-totem", async (req, res) => {
   let userLat, userLon;
   const { userCep, userLat: providedLat, userLon: providedLon } = req.body;
 
