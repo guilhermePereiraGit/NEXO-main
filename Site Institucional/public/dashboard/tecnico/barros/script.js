@@ -1,7 +1,16 @@
-window.addEventListener('load', function () {
+window.onload = async function () {
     carregarDadosDoTotem();
-    
-});
+    diaAtual = new Date();
+    dados = await carregarJson(this.sessionStorage.IDEMPRESA, 271371670400310, 2025-11-19, "dados.json");
+    console.log(dados);
+};
+
+async function carregarJson(diretorio, mac, dia, arquivo) {
+    var resposta = await fetch(`/s3Route/${diretorio}/${mac}/${dia}/${arquivo}`);
+    var dados = await resposta.json();
+    console.log(dados);
+    return dados;
+}
 
 async function buscarParametrosTotem(nomeModelo, idEmpresa) {
     try {
