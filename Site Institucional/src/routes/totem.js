@@ -21,14 +21,6 @@ pool.getConnection((err, connection) => {
   }
 });
 
-router.post("/nearest-totem", async (req, res) => {
-  console.log('✅ Rota /nearest-totem foi chamada com sucesso!');
-  res.json({ 
-    macTotem: 'TESTE-123', 
-    distanciaKm: 5.5 
-  });
-});
-
 router.post("/cadastrarTotem", function (req, res) {
     totemController.cadastrarTotem(req, res);
 })
