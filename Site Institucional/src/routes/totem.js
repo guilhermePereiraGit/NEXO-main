@@ -5,36 +5,39 @@ const axios = require('axios');
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_DATABASE || 'seu_banco',
-  port: process.env.DB_PORT || 3306
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 pool.getConnection((err, connection) => {
   if (err) {
-    console.error('❌ Erro ao conectar ao MySQL:', err.message);
+    console.error('❌ Erro MySQL na rota totem:', err.message);
   } else {
-    console.log('✅ MySQL conectado com sucesso!');
+    console.log('✅ MySQL conectado na rota totem!');
     connection.release();
   }
 });
 
 router.post("/cadastrarTotem", function (req, res) {
-    totemController.cadastrarTotem(req, res);
+  totemController.cadastrarTotem(req, res);
 })
-router.post("/verificarAprovados", function (req, res){
-    totemController.verificarAprovados(req, res);
+router.post("/verificarAprovados", function (req, res) {
+  totemController.verificarAprovados(req, res);
 })
-router.post("/modificarStatusTotem", function(req, res){
-    totemController.modificarStatusTotem(req, res);
+router.post("/modificarStatusTotem", function (req, res) {
+  totemController.modificarStatusTotem(req, res);
 })
 router.get("/buscarTotens/:idEmpresa/:idRegiao", function (req, res) {
-    totemController.buscarTotens(req, res);
+  totemController.buscarTotens(req, res);
 })
 router.get("/infoTotem", function (req, res) {
-    totemController.buscarInfoTotem(req, res);
+  totemController.buscarInfoTotem(req, res);
 })
 
 router.post("/nearest-totem", async (req, res) => {
@@ -79,18 +82,35 @@ router.post("/nearest-totem", async (req, res) => {
 
         if (!lat || !lon) {
           const cep = totem.cep.replace(/\D/g, '');
-          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
-          const data = response.data;
-          if (response.status === 200 && data.location && data.location.coordinates) {
-            lat = parseFloat(data.location.coordinates.latitude);
-            lon = parseFloat(data.location.coordinates.longitude);
+          try {
+            const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
+            const data = response.data;
+            if (response.status === 200 && data.location && data.location.coordinates) {
+              lat = parseFloat(data.location.coordinates.latitude);
+              lon = parseFloat(data.location.coordinates.longitude);
 
-            pool.query('UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?', [lat, lon, totem.cep], (updateErr) => {
-              if (updateErr) console.error('Erro ao atualizar cache:', updateErr);
-            });
-          } else {
+              if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
+                pool.query('UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?', [lat, lon, totem.cep], (updateErr) => {
+                  if (updateErr) console.error('Erro ao atualizar cache:', updateErr);
+                  else console.log(`✅ Coordenadas atualizadas para CEP ${totem.cep}`);
+                });
+              } else {
+                console.warn(`⚠️ Coordenadas inválidas para CEP ${totem.cep}: lat=${lat}, lon=${lon}`);
+                return null;
+              }
+            } else {
+              console.warn(`⚠️ CEP sem coordenadas: ${totem.cep}`);
+              return null;
+            }
+          } catch (apiErr) {
+            console.error(`❌ Erro ao buscar CEP ${totem.cep}:`, apiErr.message);
             return null;
           }
+        }
+
+        if (isNaN(lat) || isNaN(lon)) {
+          console.warn(`⚠️ Totem ${totem.numMac} com coordenadas inválidas - ignorado`);
+          return null;
         }
 
         const dist = haversineDistance(userLat, userLon, lat, lon);
@@ -117,8 +137,8 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
   const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
