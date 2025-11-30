@@ -128,8 +128,14 @@ router.post("/nearest-totem", async (req, res) => {
             const data = response.data;
             
             if (response.status === 200 && data.location && data.location.coordinates) {
+              // DEBUG: Mostra o que a API retornou
+              console.log(`🔍 API retornou para ${totem.cep}:`, JSON.stringify(data.location.coordinates));
+              
               lat = parseFloat(data.location.coordinates.latitude);
               lon = parseFloat(data.location.coordinates.longitude);
+
+              console.log(`🔍 Após parseFloat: lat=${lat} (tipo: ${typeof lat}), lon=${lon} (tipo: ${typeof lon})`);
+              console.log(`🔍 Validações: isNaN(lat)=${isNaN(lat)}, isNaN(lon)=${isNaN(lon)}, lat!==0=${lat !== 0}, lon!==0=${lon !== 0}`);
 
               // Valida coordenadas antes de salvar
               if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
