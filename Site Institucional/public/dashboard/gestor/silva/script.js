@@ -45,6 +45,7 @@ async function priorizarRegiao(regioes){
     for(var i = 0; i < regioes.length; i++){
         var regiaoAtual = regioes[i].NomeRegiao;
         var totalAlertasRegiao = 0;
+        
         //For dos alertas
         for(var j = 0; j < alertas.length; j++){
             if(alertas[j].regiao == regioes[i].NomeRegiao){
@@ -60,8 +61,10 @@ async function priorizarRegiao(regioes){
 
     var maiorAlertas = 0;
     var regiaoPriorizar = "";
+
+    console.log(bancoRegioesAlerta);
     //For para ver a região com maior número de alertas   
-    for(var i = 0; i < bancoRegioesAlerta.length; i++){
+    for(var i = 0; i < bancoRegioesAlerta.length; i++){        
         if(bancoRegioesAlerta[i].totalAlertas){
             maiorAlertas = bancoRegioesAlerta[i].totalAlertas;
             regiaoPriorizar = bancoRegioesAlerta[i].nomeRegiao;
