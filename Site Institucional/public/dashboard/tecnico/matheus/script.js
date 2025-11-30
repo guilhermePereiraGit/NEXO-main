@@ -568,6 +568,7 @@ async function carregarDados() {
     const regiao_escolhida = document.getElementById('regiao-escolhida');
     const sigla_escolhida = document.getElementById('sigla-regiao');
     if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
+        encontrarTotemMaisProximo();
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
         const caminhoJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO');
@@ -757,46 +758,75 @@ function abrirMenu() {
 }
 
 async function encontrarTotemMaisProximo() {
-try {
-const position = await new Promise((resolve, reject) => {
-navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true });
-});
-const userLat = position.coords.latitude;
-const userLon = position.coords.longitude;
-const resposta = await fetch('/nearest-totem', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ userLat, userLon })
-});
-if (!resposta.ok) {
-const erro = await resposta.json();
-throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
-}
-const nearest = await resposta.json();
-console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
-const kpi3 = document.getElementById('kpi3');
-kpi3.innerHTML = `<div class="titulo">
+  try {
+    const resposta = await fetch('/nearest-totem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+
+    if (!resposta.ok) {
+      const erro = await resposta.json();
+      throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
+    }
+
+    const nearest = await resposta.json();
+    console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
+
+    const kpi3 = document.getElementById('kpi3');
+    kpi3.innerHTML = `<div class="titulo">
+                        <h1>Totem com alerta</h1>
+                        <h2>mais próximo</h2>
+                      </div>
+                      <div class="dado">
+                        <h2>${nearest.macTotem}</h2>
+                      </div>`;
+
+  } catch (erro) {
+    console.error('Erro:', erro.message);
+    const kpi3 = document.getElementById('kpi3');
+    kpi3.innerHTML = `<div class="titulo">
+                        <h1>Totem com alerta</h1>
+                        <h2>mais próximo</h2>
+                      </div>
+                      <div class="dado">
+                        <h2>Erro: ${erro.message}</h2>
+                      </div>`;
+    
+    const userCep = prompt('Não conseguimos estimar sua localização. Digite seu CEP para calcular:');
+    if (userCep) {
+      try {
+        const cepResponse = await fetch(`https://cep.awesomeapi.com.br/json/${userCep.replace(/\D/g, '')}`);
+        const cepData = await cepResponse.json();
+        if (cepData.lat && cepData.lng) {
+          const resposta = await fetch('/nearest-totem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userLat: parseFloat(cepData.lat), userLon: parseFloat(cepData.lng) })
+          });
+          const nearest = await resposta.json();
+          kpi3.innerHTML = `<div class="titulo">
+                              <h1>Totem com alerta</h1>
+                              <h2>mais próximo</h2>
+                            </div>
+                            <div class="dado">
+                              <h2>Totem ${nearest.macTotem}</h2>
+                            </div>`;
+        } else {
+          throw new Error('CEP inválido');
+        }
+      } catch (cepErro) {
+        kpi3.innerHTML = `<div class="titulo">
                             <h1>Totem com alerta</h1>
                             <h2>mais próximo</h2>
-                        </div>
-                        <div class="dado">
-                            <h2>Totem ${nearest.macTotem}</h2>
-                        </div>`;
-} catch (erro) {
-console.error('Erro:', erro.message);
-const kpi3 = document.getElementById('kpi3');
-kpi3.innerHTML = `<div class="titulo">
-                            <h1>Totem com alerta</h1>
-                            <h2>mais próximo</h2>
-                        </div>
-                        <div class="dado">
-                            <h2>Totem ${nearest.macTotem}</h2>
-                        </div>`;
+                          </div>
+                          <div class="dado">
+                            <h2>CEP inválido</h2>
+                          </div>`;
+      }
+    }
   }
 }
-document.addEventListener('DOMContentLoaded', () => {
-encontrarTotemMaisProximo();
-});
 
 /*Usando*/
 function ativarPopup() {
