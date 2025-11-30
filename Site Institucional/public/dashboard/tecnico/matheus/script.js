@@ -61,17 +61,6 @@ function carregarDadosAprovados() {
     });
 }
 
-function nadaPorAquiModelos() {
-    div_aprovados.innerHTML = `
-        <div class="card-nothing">
-                <h1>Sem Registros</h1>
-                <p>Caso isto não seja o esperado pelo nosso sistema, considere entrar em contato com nossa equipe de suporte</p>
-                <p>Estamos à sua disposição para solucionar seus incidentes e tornar sua experiência verdadeiramente NEXO.</p>
-            </div>
-        `;
-}
-
-
 function gerarCardTotens() {
     for (var i = 0; i < aprovados.length; i++) {
         var ativo = aprovados[i].status === "ATIVO";
@@ -581,8 +570,9 @@ async function carregarDados() {
     if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
         regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
         sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-        const maisAlertasJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO');
-        const dados = await carregarTotemMaisAlerta(maisAlertasJSON, "totem-mais-alertas.json");
+        const caminhoJSON = sessionStorage.getItem('FK_EMPRESA') + "/" + sessionStorage.getItem('SIGLA_REGIAO');
+        const dados = await carregarJSON(caminhoJSON, "totem-mais-alertas.json");
+        const dados2 = await carregarJSON(caminhoJSON, "componente-mais-alertas.json");
         const kpi1 = document.getElementById('kpi1');
         kpi1.innerHTML = `<div class="titulo">
                             <h1>Totem</h1>
@@ -590,6 +580,13 @@ async function carregarDados() {
                           </div>
                           <div class="dado">
                             <h2>Totem ${dados.macTotem}</h2>
+                          </div>`;
+        kpi2.innerHTML = `<div class="titulo">
+                            <h1>Componente</h1>
+                            <h2>com mais alertas</h2>
+                          </div>
+                          <div class="dado">
+                            <h2>${dados2.componente}</h2>
                           </div>`;
         document.getElementById('waiting').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
@@ -717,7 +714,7 @@ function plotarRegioes(regioes) {
     }
 }
 
-async function carregarTotemMaisAlerta(diretorio, arquivo) {
+async function carregarJSON(diretorio, arquivo) {
     var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
     var dados = await resposta.json();
     console.log(dados);
