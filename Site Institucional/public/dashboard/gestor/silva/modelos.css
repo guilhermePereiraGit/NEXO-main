@@ -203,6 +203,7 @@ header .header-navigation .alert {
 .menu-extend .infos-user h1 {
     font-weight: 500;
     color: white;
+    text-align: center;
 }
 
 .menu-extend .infos-user h2 {
@@ -507,12 +508,55 @@ header .header-navigation .alert {
 }
 
 .popup-passos .passos-content {
-    width: 30%;
-    height: 40vh;
+    width: 50%;
+    height: 60vh;
     background-color: white;
     padding: 20px;
     transition: 0.3s;
     border-radius: 10px;
+}
+.popup-passos .passos-content .passos-infos{}
+.popup-passos .passos-content .passos-infos h2{
+    color: var(--principal);
+    text-align: center;
+    font-size: 25px;
+}
+.popup-passos .passos-content .passos-infos h3{
+    text-align: center;
+    margin-top: -10px;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas{
+    width: 100%;
+    height: 45vh;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas .content-again{
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    align-items: center;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas .content-again .text-metricas{
+    width: 45%;
+    font-size: 18px;
+    text-align: justify;
+}
+.scale-metricas{
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    height: 35vh;
+}
+.card-metrica{
+    display: flex;
+    padding: 25px;
+}
+.card-metrica h1{
+    font-size: 18px;
+    width: 50%;
+}
+.card-metrica h2{
+    font-size: 18px !important;
+    width: 50%;
 }
 /* AJUSTES */
 .information-first{
@@ -825,4 +869,28 @@ header .header-navigation .alert {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+/* ÍCONE PARA PARÂMETROS */
+.help-infos{
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+.help-infos .icon-help i{
+    font-size: 30px;
+    color: var(--principal);
+}
+.help-infos .icon-help{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--principal);
+    padding: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.help-infos .icon-help:hover{
+    background-color: var(--fundo);
 }

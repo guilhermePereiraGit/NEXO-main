@@ -2,7 +2,6 @@
 window.onload = async function () {
     //Muito mais simples e reduz tempo de demora do await
     vmodelos = await verificarModelos();
-    console.log(vmodelos);
 
     //Se a empresa não tiver modelos cadastrados ele exibe um popup de aviso
     if (vmodelos.length != 0) {
@@ -18,7 +17,7 @@ window.onload = async function () {
         plotarSelecionarModeloLinha();
         escolherModeloLinha();
     } else {
-        console.log("AAAAAAAAAAAAAAAAAA");
+        document.getElementById('sem_modelos').style.display = 'flex';
     }
 };
 
@@ -38,6 +37,42 @@ async function verificarModelos() {
 
 }
 
+//PARA VERIFICAR A REGIÃO MAIS CRÍTICA À SER ANALISADA
+async function priorizarRegiao(regioes){
+    var alertas = cacheAlertas;
+    var bancoRegioesAlerta = [];    
+
+    for(var i = 0; i < regioes.length; i++){
+        var regiaoAtual = regioes[i].NomeRegiao;
+        var totalAlertasRegiao = 0;
+        //For dos alertas
+        for(var j = 0; j < alertas.length; j++){
+            if(alertas[j].regiao == regioes[i].NomeRegiao){
+                totalAlertasRegiao++;
+            }
+        }
+        objetoRegiao = {
+            nomeRegiao:regiaoAtual,
+            totalAlertas:totalAlertasRegiao
+        }
+        bancoRegioesAlerta.push(objetoRegiao);
+    }
+
+    var maiorAlertas = 0;
+    var regiaoPriorizar = "";
+    //For para ver a região com maior número de alertas   
+    for(var i = 0; i < bancoRegioesAlerta.length; i++){
+        if(bancoRegioesAlerta[i].totalAlertas){
+            maiorAlertas = bancoRegioesAlerta[i].totalAlertas;
+            regiaoPriorizar = bancoRegioesAlerta[i].nomeRegiao;
+        }
+    }
+    
+    document.getElementById('p_priorizar_regiao').innerHTML = `
+    A região mais crítica é ${regiaoPriorizar}
+    `;
+}
+
 // CARREGAR ÚLTIMOS 7 DIAS
 function carregarUltimos7Dias() {
     dataAtual = new Date();
@@ -53,8 +88,6 @@ function carregarUltimos7Dias() {
 
 //PLOTAR MÉTRICAS, MODELOS E ALERTAS
 async function plotarAlertasComponentes(componentes) {
-    console.log("AAAAAAAAAAAAa");
-    console.log(componentes);
     var alertas = cacheAlertas;
 
     lista_metricas = document.getElementById('list_metrica');
@@ -128,7 +161,6 @@ var linha = null;
 async function escolherModeloLinha() {
     var downtimes = cacheDowntime;
     var escolha = document.getElementById('slt_modelos_downtime').value;
-    console.log(downtimes);
 
     var downtimesModelo = [];
     for (var i = 0; i < downtimes.length; i++) {
@@ -265,7 +297,6 @@ function gerarGraficoLinha(dias7, downtimesModelo) {
 async function carregarJson(diretorio, arquivo) {
     var resposta = await fetch(`/s3Route/dados/${diretorio}/${arquivo}`);
     var dados = await resposta.json();
-    console.log(dados);
     return dados;
 }
 // carregarJson(`empresa-${sessionStorage.getItem('ID_EMPRESA')}`, "downtime.json");
@@ -275,12 +306,10 @@ async function carregarDowntime() {
     //Carregar Downtime total da Região
     downtime_regiao = document.getElementById('downtime_regiao');
     var downtime = cacheDowntime;
-    console.log(downtime);
 
     totalDowntimeRegiao = 0;
     for (var i = 0; i < downtime.length; i++) {
         totalDowntimeRegiao += (downtime[i].downtime7Dia * -1);
-        console.log(downtime[i].downtime7Dia);
 
     }
     downtime_regiao.innerHTML = converterHoras(totalDowntimeRegiao);
@@ -345,7 +374,6 @@ function buscarComponentes() {
         }
     })
         .then(function (resposta) {
-            console.log("resposta: ", resposta);
 
             if (resposta.ok) {
                 resposta.json().then(data => {
@@ -365,7 +393,6 @@ function buscarComponentes() {
 
 async function plotarModelosCriticos(componentes) {
     var alertas = cacheAlertas;
-    console.log(componentes);
 
     //é tipo um enum que vimos na Célia, porém vi que dá para fazer para o JS também
     //é literalmente só um objeto, mas ele é utilizado como um enum
@@ -403,7 +430,6 @@ async function plotarModelosCriticos(componentes) {
             componente: componenteAtual
         }
     }
-    console.log(final);
 
     //Plotando no html
     corpo_modelos = document.getElementById('modelos_criticos');
@@ -429,10 +455,6 @@ async function gerarGraficoPizza(totens) {
     var alertas = cacheAlertas;
     total_alertas_p = document.getElementById('total_alertas');
     total_alertas_p.innerHTML = alertas.length + " Alertas";
-    console.log('alertas', alertas);
-    console.log('totens', totens);
-
-
 
     const barra = document.getElementById('grafico-pizza');
     new Chart(barra, {
@@ -474,12 +496,10 @@ function carregarModelos() {
         }
     })
         .then(function (resposta) {
-            console.log("resposta: ", resposta);
 
             if (resposta.ok) {
                 resposta.json().then(data => {
                     modelos = data;
-                    console.log(modelos);
                     plotarModelos(modelos);
                 });
             } else {
@@ -555,11 +575,9 @@ function carregarTotens() {
         }),
     })
         .then(function (resposta) {
-            console.log("resposta: ", resposta);
             if (resposta.ok) {
                 resposta.json().then(data => {
                     totens = data;
-                    console.log(totens);
                     plotarTotens(totens);
                     gerarGraficoPizza(totens.length);
                 });
@@ -638,7 +656,6 @@ function abrirMenu() {
     menu_icon = document.getElementById('icone');
     menu = document.querySelector('.menu-extend');
     if (menu_icon.classList.contains("bi-list")) {
-        console.log("entrei");
         document.getElementById('extend').style.display = "flex";
         menu.style.animation = "expandirDireita 0.5s ease forwards";
         menu_icon.classList.remove("bi-list");
@@ -680,14 +697,11 @@ function carregarRegioesCadastradas() {
         }),
     })
         .then(function (resposta) {
-            console.log("resposta: ", resposta);
-
             if (resposta.ok) {
                 resposta.json().then(data => {
                     regioes = data;
-                    console.log(regioes);
                     plotarRegioes(regioes)
-
+                    priorizarRegiao(regioes)
                 });
             } else {
                 console.log("Erro ao Pegar Regiões");
@@ -699,16 +713,36 @@ function carregarRegioesCadastradas() {
         });
 }
 
-function plotarRegioes(regioes) {
+async function plotarRegioes(regioes) {
+    var alertas = cacheAlertas;
+    console.log(alertas);
     div_regioes = document.getElementById('regioes');
     div_regioes.innerHTML = ``;
     for (var i = 0; i < regioes.length; i++) {
-        div_regioes.innerHTML += `
+    var regiaoAgora = regioes[i].NomeRegiao;
+    var totalAlertas = 0;
+    console.log(regiaoAgora);
+    
+
+    //For para Carregar Disponibilidade
+    for(var j = 0; j < alertas.length; j++){
+        if(alertas[j].regiao == regiaoAgora){
+            totalAlertas++;
+        }
+    }
+
+    //Calculando a Disponibilidade
+    var dados = await fetch("/gestor/buscarTotens", {method: "POST",headers: { "Content-Type": "application/json" },body: JSON.stringify({ nomeRegiao: regiaoAgora }),});
+    total_totens = await dados.json();
+
+    var criticidade = ((totalAlertas / total_totens.length) * 100).toFixed(0);
+
+    div_regioes.innerHTML += `
     <div class="regiao" onclick="escolherRegiao('${regioes[i].NomeRegiao}','${regioes[i].SiglaRegiao}')">
     <h1>${regioes[i].NomeRegiao} - ${regioes[i].SiglaRegiao}</h1>
     <div class="priorizar">
-    <h2>Disponibilidade</h2>
-    <h3>60%</h3>
+    <h2>Criticidade</h2>
+    <h3>${criticidade}%</h3>
     </div>
     </div>
     `;
@@ -725,11 +759,11 @@ function fecharPopup() {
 }
 
 // DESEJÁVEL
-// function abrirPassos() {
-//     popup = $("#popup-passos");
-//     popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-// }
-// function fecharPassos() {
-//     popup = $("#popup-passos");
-//     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-// }
+function abrirPassos() {
+    popup = $("#popup-passos");
+    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+}
+function fecharPassos() {
+    popup = $("#popup-passos");
+    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+}
