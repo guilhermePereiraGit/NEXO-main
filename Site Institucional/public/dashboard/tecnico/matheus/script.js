@@ -764,16 +764,13 @@ async function encontrarTotemMaisProximo() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({})
         });
-
         if (!resposta.ok) {
             const textoErro = await resposta.text();
             console.error('Resposta bruta de erro:', textoErro);
             throw new Error(textoErro || 'Falha ao buscar totem mais próximo');
         }
-
         const nearest = await resposta.json();
         console.log('Totem mais próximo:', nearest.macTotem, 'a', nearest.distanciaKm.toFixed(2), 'km');
-
         const kpi3 = document.getElementById('kpi3');
         kpi3.innerHTML = `<div class="titulo">
                         <h1>Totem com alerta</h1>
@@ -782,7 +779,6 @@ async function encontrarTotemMaisProximo() {
                       <div class="dado">
                         <h2>${nearest.macTotem}</h2>
                       </div>`;
-
     } catch (erro) {
         console.error('Erro:', erro.message);
         const kpi3 = document.getElementById('kpi3');
@@ -797,7 +793,7 @@ async function encontrarTotemMaisProximo() {
         if (userCep) {
             try {
                 const cep = userCep.replace(/\D/g, '');
-                const cepResponse = await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`);
+                const cepResponse = await fetch(`https://brasilapi.com.br/api/cep/v2/${cep}`); // ← CORRIGI AQUI
                 const cepData = await cepResponse.json();
                 if (cepResponse.ok && cepData.location && cepData.location.coordinates) {
                     const userLat = parseFloat(cepData.location.coordinates.latitude);
@@ -805,18 +801,15 @@ async function encontrarTotemMaisProximo() {
                     if (isNaN(userLat) || isNaN(userLon)) {
                         throw new Error('Coordenadas inválidas no CEP');
                     }
-
                     const resposta = await fetch('/totem/nearest-totem', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userLat, userLon })
                     });
-
                     if (!resposta.ok) {
-                        const erro = await resposta.json();
-                        throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
+                        const textoErro = await resposta.text(); // ← CORRIGI AQUI TAMBÉM
+                        throw new Error(textoErro || 'Falha ao buscar totem mais próximo');
                     }
-
                     const nearest = await resposta.json();
                     kpi3.innerHTML = `<div class="titulo">
                               <h1>Totem com alerta</h1>
