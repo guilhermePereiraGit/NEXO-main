@@ -759,7 +759,7 @@ function abrirMenu() {
 
 async function encontrarTotemMaisProximo() {
   try {
-    const resposta = await fetch('/nearest-totem', {
+    const resposta = await fetch('/totem/nearest-totem', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({})
