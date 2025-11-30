@@ -766,6 +766,8 @@ async function encontrarTotemMaisProximo() {
     });
 
     if (!resposta.ok) {
+      const textoErro = await resposta.text();
+      console.error('Resposta bruta de erro:', textoErro);
       const erro = await resposta.json();
       throw new Error(erro.erro || 'Falha ao buscar totem mais próximo');
     }
