@@ -17,8 +17,9 @@ function buscarTotens(idEmpresa) {
     return database.executar(instrucaoSql);
 }
 function buscarTotemMac(numMac) {
-    var instrucaoSql = `SELECT endereco.cep, endereco.rua, endereco.numero FROM totem INNER JOIN endereco ON totem.fkEndereco = endereco.idEndereco
-    WHERE totem.numMac = ${numMac};`
+    var instrucaoSql = `SELECT endereco.cep, endereco.rua, endereco.numero, endereco.cidade FROM totem 
+    INNER JOIN endereco ON totem.fkEndereco = endereco.idEndereco
+    WHERE totem.numMac = ${numMac}; `
     return database.executar(instrucaoSql);
 }
 
