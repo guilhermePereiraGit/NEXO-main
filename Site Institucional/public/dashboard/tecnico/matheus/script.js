@@ -595,11 +595,6 @@ async function carregarDados() {
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
         carregarTotens();
-        setTimeout(() => {
-        if (document.getElementById('map')) {
-            initMap();
-        }
-    }, 500);
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
         sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
@@ -608,6 +603,12 @@ async function carregarDados() {
         document.getElementById('eficiencia').style.display = 'none';
         document.getElementById('alertas').style.display = 'none';
     }
+
+    setTimeout(() => {
+        if (document.getElementById('map')) {
+            initMap();
+        }
+    }, 500);
 }
 
 function escolherRegiao(regiao, sigla) {
@@ -994,12 +995,10 @@ function toggleMarkers() {
     }
 }
 
-/*Usando*/
 function ativarPopup() {
     popup = $("#popup-logout");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
 }
-/*Usando*/
 function fecharPopup() {
     popup = $("#popup-logout");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
@@ -1014,3 +1013,9 @@ function fecharEscolha() {
     popup = $("#popup-escolha");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('map')) {
+        initMap();
+    }
+});

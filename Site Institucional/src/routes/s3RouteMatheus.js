@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const path = require('path');
+var s3Controller = require('../controllers/s3ControllerMatheus');
+
+router.get('/dados/*', (req, res) => {  // Captura tudo após /dados/
+  s3Controller.lerArquivo(req, res);
+});
+
+module.exports = router;
