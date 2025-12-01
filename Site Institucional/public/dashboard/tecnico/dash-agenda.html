@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda diária - NEXO</title>
-    <link rel="stylesheet" href="tecnico-novo.css">
+    <link rel="stylesheet" href="../../css/tecnico-novo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -134,22 +134,23 @@
                     </div>
                 </div>
                 <div class="graficos">
-                    <div id="agenda" class="agenda">
-                        <div class="titulo-agenda">
-                            <h1 class="item-titulo-agenda">Id chamado</h1>
-                            <h1 class="item-titulo-agenda">MAC</h1>
-                            <h1 class="item-titulo-agenda">Local</h1>
-                            <h1 class="item-titulo-agenda">Status</h1>
-                            <h1 class="item-titulo-agenda">Qtd. Alertas</h1>
-                            <h1 class="item-titulo-agenda">Componente crítico</h1>
-                        </div>
-                        <div id="conteudo-agenda"></div>
-                    </div>
-                    <canvas id="agenda-grafico-barras">
-                    </canvas>
+                    <table id="agenda" class="agenda">
+                        <tr class="titulo-agenda">
+                            <th class="item-titulo-agenda">Id chamado</th>
+                            <th class="item-titulo-agenda">MAC</th>
+                            <th class="item-titulo-agenda">Local</th>
+                            <th class="item-titulo-agenda">Status</th>
+                            <th class="item-titulo-agenda">Qtd. Alertas</th>
+                            <th class="item-titulo-agenda">Componente crítico</th>
+                        </tr>
+                        <tr id="conteudo-agenda">
                 </div>
+                </table>
+                <canvas id="agenda-grafico-barras">
+                </canvas>
             </div>
         </div>
+    </div>
     </div>
     </div>
 </body>
@@ -260,7 +261,7 @@
             .catch(erro => console.error("Erro", erro));
 
     }
-   async function plotarDadosAgenda(dados){
+    async function plotarDadosAgenda(dados) {
         conteudoAgenda = document.getElementById('conteudo-agenda');
         conteudoAgenda.innerHTML = '';
         for (var i = 0; i < dados.issues.length; i++) {
@@ -276,18 +277,18 @@
                     var rua = `${endereco.rua}`;
                     var cep = `${endereco.cep}`;
                     var numEndereco = `${endereco.numero}`;
+                    var cidade = `${endereco.cidade}`;
                 }
             } catch (erro) {
                 console.error("Erro ao buscando endereço de totem (plotarDadosAgenda):", erro);
             }
-            conteudoAgenda.innerHTML += `<div class="info-chamados">
-                <p>${chamado.key}</p>
-                <p>${mac}</p>
-                <p>${cep}</p>
-                <p>${rua}</p>
-                <p>${numEndereco}</p>
-                <p>${status}</p>
-                </div>`;
+            conteudoAgenda.innerHTML += `<tr class="info-chamados">
+                <th>${chamado.key}</th>
+                <th>${mac}</th>
+                <th>${cep}</th>
+                <th>R. ${rua}, ${numEndereco}</th>
+                <th>${status}</th>
+                </tr>`;
         }
     }
     function extrairCriticidade(summary) {
@@ -367,8 +368,14 @@
                 datasets: [{
                     label: 'Número de alertas por criticidade',
                     data: [qtdAtenção, qtdPerigoso, qtdMuitoPerigoso],
-                    borderWidth: 1
-                }]
+                    borderWidth: 1,
+                    backgroundColor: [               
+                        'rgba(255, 159, 64, 0.8)',   
+                        'rgba(255, 99, 132, 0.8)',  
+                        'rgba(139, 0, 0, 0.9)'       
+                    ],
+                }],
+
             },
             options: {
                 scales: {
