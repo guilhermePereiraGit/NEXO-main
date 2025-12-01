@@ -44,6 +44,10 @@ router.get("/infoTotem", function (req, res) {
   totemController.buscarInfoTotem(req, res);
 })
 
+router.get("/parametrosTotem", function (req, res) {
+    totemController.buscarparametrosTotem(req, res);
+})
+
 router.post("/nearest-totem", async (req, res) => {
   let userLat, userLon;
   const { userCep, userLat: providedLat, userLon: providedLon } = req.body;
