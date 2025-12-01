@@ -848,24 +848,23 @@ let heatmapVisible = true;
 let markersVisible = false;
 
 // Inicializa o mapa
-async function initMap() {
-    // Centro padrão: São Paulo
-    map = L.map('map').setView([-23.550520, -46.633308], 11);
-
-    // Tile layer (mapa base)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 18
-    }).addTo(map);
-
-    // Carrega os totens
-    await loadTotens();
-}
-
-// Carrega dados dos totens
 async function loadTotens() {
     try {
-        const response = await fetch('/totem/heatmap-totens');
+        const regiaoEscolhida = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+        const idEmpresa = sessionStorage.getItem('FK_EMPRESA');
+        
+        console.log('🔍 Buscando totens para região:', regiaoEscolhida);
+
+        const response = await fetch('/totem/heatmap-totens', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                regiao: regiaoEscolhida,
+                idEmpresa: idEmpresa
+            })
+        });
 
         if (!response.ok) {
             throw new Error('Erro ao buscar totens');
@@ -874,7 +873,7 @@ async function loadTotens() {
         const data = await response.json();
         totensData = data.totens;
 
-        console.log(`✅ ${totensData.length} totens carregados`);
+        console.log(`✅ ${totensData.length} totens carregados para região: ${regiaoEscolhida}`);
 
         // Atualiza estatísticas
         document.getElementById('totalTotens').textContent = data.total;
@@ -884,19 +883,22 @@ async function loadTotens() {
         document.getElementById('loading').style.display = 'none';
 
         // Cria o heatmap
-        createHeatmap();
-
-        // Ajusta o zoom para mostrar todos os totens
         if (totensData.length > 0) {
+            createHeatmap();
+
+            // Ajusta o zoom para mostrar todos os totens
             const bounds = totensData.map(t => [t.lat, t.lon]);
             map.fitBounds(bounds, { padding: [50, 50] });
+        } else {
+            console.warn('⚠️ Nenhum totem encontrado para esta região');
+            alert('Nenhum totem encontrado para a região selecionada');
         }
 
     } catch (error) {
         console.error('❌ Erro:', error);
         document.getElementById('loading').innerHTML = `
-                    <p style="color: red;">Erro ao carregar totens: ${error.message}</p>
-                `;
+            <p style="color: red;">Erro ao carregar totens: ${error.message}</p>
+        `;
     }
 }
 
