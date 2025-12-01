@@ -792,7 +792,7 @@ async function encontrarTotemMaisProximo() {
                         <h2>mais próximo</h2>
                       </div>
                       <div class="dado">
-                        <h2>${nearest.macTotem}</h2>
+                        <h2>Totem ${nearest.macTotem}</h2>
                       </div>`;
     } catch (erro) {
         console.error('Erro:', erro.message);
@@ -837,68 +837,6 @@ async function encontrarTotemMaisProximo() {
           </div>`;
             }
         }
-    }
-}
-
-let map;
-let heatLayer;
-let markersLayer;
-let totensData = [];
-let heatmapVisible = true;
-let markersVisible = false;
-
-// Inicializa o mapa
-async function loadTotens() {
-    try {
-        const regiaoEscolhida = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-        const idEmpresa = sessionStorage.getItem('FK_EMPRESA');
-        
-        console.log('🔍 Buscando totens para região:', regiaoEscolhida);
-
-        const response = await fetch('/totem/heatmap-totens', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                regiao: regiaoEscolhida,
-                idEmpresa: idEmpresa
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao buscar totens');
-        }
-
-        const data = await response.json();
-        totensData = data.totens;
-
-        console.log(`✅ ${totensData.length} totens carregados para região: ${regiaoEscolhida}`);
-
-        // Atualiza estatísticas
-        document.getElementById('totalTotens').textContent = data.total;
-        document.getElementById('totensVisiveis').textContent = data.total;
-
-        // Oculta loading
-        document.getElementById('loading').style.display = 'none';
-
-        // Cria o heatmap
-        if (totensData.length > 0) {
-            createHeatmap();
-
-            // Ajusta o zoom para mostrar todos os totens
-            const bounds = totensData.map(t => [t.lat, t.lon]);
-            map.fitBounds(bounds, { padding: [50, 50] });
-        } else {
-            console.warn('⚠️ Nenhum totem encontrado para esta região');
-            alert('Nenhum totem encontrado para a região selecionada');
-        }
-
-    } catch (error) {
-        console.error('❌ Erro:', error);
-        document.getElementById('loading').innerHTML = `
-            <p style="color: red;">Erro ao carregar totens: ${error.message}</p>
-        `;
     }
 }
 
