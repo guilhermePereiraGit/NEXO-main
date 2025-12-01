@@ -1,0 +1,115 @@
+:root {
+    --principal: #451c8b;
+    --contraste: #c8c1ff;
+    --fundo: #eeecff;
+    --bem: #65fa8f;
+    --atencao: #fada64;
+    --perigo: #f98a25;
+    --mperigo: #ff3131;
+}
+
+#regiao-escolhida{
+    color:var(--principal);
+    font-weight: bold;
+    margin-left: 40px;
+}
+#botao-cadastrar{
+    padding: 30px;
+    width: 30%;
+    height: 6vh;
+    background-color: var(--principal);
+    color: white;
+}
+#botao-cadastrar p{
+    margin-top: -15px;
+    font-size: 20px;
+}
+.popuptotem .card{
+    width: 70%;
+}
+#item-boss{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#item_cep{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+#item_cep input{
+    height: 7vh;
+    border: 2px solid #8b5cf6;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+}
+#estado{
+    width: 20%;
+}
+#regioes{
+    width: 30%;
+}
+#zonas{
+    width: 30%;
+}
+#item-boss-dois{
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+}
+#item-boss-dois .item-card{
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+}
+#item-boss-dois .item-card input{
+    border: 2px solid #8b5cf6;
+    height: 7vh;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+#item-boss-tres{
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+}
+#item-boss-tres .item-card{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+#item-boss-tres .item-card input{
+    height: 7vh;
+    border: 2px solid #8b5cf6;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+.part-dois .item-card{
+    margin-top: 20px;
+    width: 50%;
+}
+.part-dois .item-card input{
+    border: 2px solid #8b5cf6;
+    height: 7vh;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+#botoes_parte2{
+    margin-top: 20px;
+}
+#botoes_parte2 button{
+    height: 9vh;
+}
+.cima h1{
+    color: #451c8b;
+}
+.cima button{
+    background-color: transparent;
+    border: none;
+    width: 10%;
+}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprovação NEXO</title>
     <link rel="stylesheet" href="../../css/tecnico-novo.css">
+    <link rel="stylesheet" href="../../css/cssajustes.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -29,12 +30,12 @@
                     <div class="icones">
                         <div class="cadastrar-totens">
                             <div class="fundo" id="fundo2" style="display: block;"></div>
-                            <i class="bi bi-display" onclick="ativar('fundo2');" style="display: block;"
+                            <i class="bi bi-display" onclick="ativar('fundo2');" style="display: block; color: #451c8b;"
                                 id="second"></i>
                         </div>
                         <div class="dashboard">
                             <div class="fundo" id="fundo3" style="display: none;"></div>
-                            <i class="bi bi-graph-up" onclick="window.location.href='totem.html'"></i>
+                            <i class="bi bi-graph-up" onclick="window.location.href='./matheus/totens.html'"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
@@ -105,7 +106,9 @@
                     <div id="segundo">
                         <div class="more" id="more">
                             <h1>Totens Cadastrados</h1>
-                            <button onclick="abrirPopupTotem()" id="botao-cadastrar">Adicionar Totem</button>
+                            <button onclick="abrirPopupTotem()" id="botao-cadastrar">
+                                <p>Adicionar Totem</p>
+                            </button>
                         </div>
                         <div class="conteudo" id="conteudo">
                             <div class="aprovados" id="div_aprovados"></div>
@@ -120,8 +123,8 @@
                                 <button onclick="fecharPopupTotem()"><img src="../../assets/imgs/close.png"></button>
                             </div>
                             <div class="baixo" id="baixo"></div>
-                            <div class="item-card">
-                                <div class="item-card">
+                            <div class="item-card" id="item-boss">
+                                <div class="item-card" id="item_cep">
                                     <label for="input_cep">Cep:</label>
                                     <input type="text" id="input_cep" placeholder="CEP" value="00222-333">
                                 </div>
@@ -130,8 +133,6 @@
                                     <select name="estado_atuacao" id="estado_atuacao"
                                         onchange="atualizarCampos()"></select>
                                 </div>
-                            </div>
-                            <div class="item-card">
                                 <div class="item-card" id="regioes">
                                     <label>Região:</label>
                                     <select name="regiao_atuacao" id="regiao_atuacao"
@@ -142,7 +143,7 @@
                                     <select name="zona_atuacao" id="zona_atuacao"></select>
                                 </div>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" id="item-boss-dois">
                                 <div class="item-card">
                                     <label for="input_cidade">Cidade:</label>
                                     <input type="text" id="input_cidade" placeholder="Cidade" value="São Paulo">
@@ -156,7 +157,7 @@
                                     <input type="text" id="input_bairro" placeholder="Bairro" value="Jardins">
                                 </div>
                             </div>
-                            <div class="item-card">
+                            <div class="item-card" id="item-boss-tres">
                                 <div class="item-card">
                                     <label for="input_complemento">Complemento:</label>
                                     <input type="text" id="input_complemento" placeholder="Complemento" value="Loja1">
@@ -165,14 +166,14 @@
                                     <label for="input_numero">Número:</label>
                                     <input type="number" id="input_numero" placeholder="N°" value="34">
                                 </div>
-                            </div>
-                            <div class="part-dois">
                                 <div class="item-card">
                                     <label for="input_modelos">Qual o modelo?</label>
                                     <select name="modelos" id="input_modelos">
                                         <option value="">Selecione uma opção</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="part-dois">
                                 <div class="item-card">
                                     <label for="input_qtd_de_totens">Quantos totens nesse local?</label>
                                     <input type="number" id="input_qtd_de_totens" oninput="atualizarTotens()"
@@ -180,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="totens-scroll" id="totens"></div>
-                            <div class="part-dois">
+                            <div class="part-dois" id="botoes_parte2">
                                 <button class="cadastrar" onclick="adicionarMaisUmTotem()" id="botao-popup">Adicionar
                                     Totem</button>
                                 <button class="cadastrar" onclick="cadastrarEndereco()"
@@ -237,8 +238,7 @@
             carregarTotens();
             buscarComponentes();
         } else {
-            regiao_escolhida.innerHTML = "Região não Selecionada";
-            sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
+            regiao_escolhida.innerHTML = "Cadastro de Totens";
             document.getElementById('escolhaNew').style.display = 'none';
             document.getElementById('conteudo').style.display = 'none';
         }

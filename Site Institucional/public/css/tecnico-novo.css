@@ -55,7 +55,7 @@ header .header-container i {
     transform: scale(1.1);
 }
 
-/* NAVEGAÇÃO DO HEADER */
+/* NAVEGAÇÃO DO HEADER */ 
 
 header .header-navigation .cadastrar-totens,
 header .header-navigation .dashboard,
@@ -71,9 +71,8 @@ header .header-navigation .sair {
 header .icones {
     display: flex;
     flex-direction: column;
-    gap: 5vh;
     padding-top: 5vh;
-    padding-bottom: 5vh;
+    padding-bottom: 10vh;
 }
 
 /* ANIMAÇÃO DE NAVEGAÇÃO */
@@ -320,7 +319,7 @@ header .header-navigation {
     display: flex;
     justify-content: center;
     display: none;
-    padding-top: 10%;
+    align-items: center;
 }
 
 .cima {

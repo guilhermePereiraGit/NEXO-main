@@ -29,7 +29,7 @@ body {
 /* HEADER */
 header .header-container {
     background-color: var(--principal);
-    width: 9.8vw;
+    width: 150px;
     height: 100vh;
     padding: 40px;
     display: flex;
