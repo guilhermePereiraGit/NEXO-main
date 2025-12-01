@@ -52,7 +52,6 @@ router.post("/nearest-totem", async (req, res) => {
   console.log('Dados:', { userCep, providedLat, providedLon });
 
   try {
-    // Determina localização do usuário
     if (userCep) {
       console.log('🔍 Buscando coordenadas por CEP:', userCep);
       const cep = userCep.replace(/\D/g, '');
@@ -85,13 +84,11 @@ router.post("/nearest-totem", async (req, res) => {
       }
     }
 
-    // Valida coordenadas do usuário
     if (isNaN(userLat) || isNaN(userLon)) {
       console.log('❌ Coordenadas do usuário inválidas:', { userLat, userLon });
       return res.status(400).json({ erro: 'Coordenadas inválidas' });
     }
 
-    // Busca totens no banco
     console.log('🔎 Buscando totens no banco de dados...');
     pool.query(`
       SELECT t.numMac, e.cep, e.lat, e.lon
@@ -109,23 +106,19 @@ router.post("/nearest-totem", async (req, res) => {
         return res.status(404).json({ erro: 'Nenhum totem cadastrado' });
       }
 
-      // Processa cada totem
       const totensWithDist = await Promise.all(totens.map(async (totem) => {
         let lat = totem.lat;
         let lon = totem.lon;
 
-        // Converte para número se vier como string do banco
         if (typeof lat === 'string') lat = parseFloat(lat);
         if (typeof lon === 'string') lon = parseFloat(lon);
 
-        // Se não tem coordenadas, busca pela API do CEP
         if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
           console.log(`🔄 Totem ${totem.numMac} sem coordenadas, buscando CEP ${totem.cep}...`);
           
           try {
             const cep = totem.cep.replace(/\D/g, '');
             
-            // Tenta AwesomeAPI primeiro (mais confiável para coordenadas)
             let response = await axios.get(`https://cep.awesomeapi.com.br/json/${cep}`);
             let data = response.data;
             
@@ -134,7 +127,6 @@ router.post("/nearest-totem", async (req, res) => {
               lat = parseFloat(data.lat);
               lon = parseFloat(data.lng);
             } else {
-              // Fallback: BrasilAPI
               console.log(`⚠️ AwesomeAPI falhou, tentando BrasilAPI...`);
               response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
               data = response.data;
@@ -150,11 +142,9 @@ router.post("/nearest-totem", async (req, res) => {
               }
             }
 
-            // Valida coordenadas antes de salvar
             if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
               console.log(`✅ Coordenadas válidas para ${totem.cep}: lat=${lat}, lon=${lon}`);
                 
-                // Salva no banco (converte para string se a coluna é VARCHAR)
                 pool.query(
                   'UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?', 
                   [lat.toString(), lon.toString(), totem.cep], 
@@ -176,20 +166,17 @@ router.post("/nearest-totem", async (req, res) => {
           }
         }
 
-        // Validação final
         if (isNaN(lat) || isNaN(lon)) {
           console.warn(`⚠️ Totem ${totem.numMac} ignorado (coordenadas inválidas)`);
           return null;
         }
 
-        // Calcula distância
         const dist = haversineDistance(userLat, userLon, lat, lon);
         console.log(`📏 Totem ${totem.numMac}: ${dist.toFixed(2)} km`);
         
         return { macTotem: totem.numMac, distanciaKm: dist };
       }));
 
-      // Filtra totens válidos
       const filteredTotens = totensWithDist.filter(t => t !== null);
       
       console.log(`✅ ${filteredTotens.length} totens com coordenadas válidas`);
@@ -198,7 +185,6 @@ router.post("/nearest-totem", async (req, res) => {
         return res.status(404).json({ erro: 'Nenhum totem encontrado com coordenadas válidas' });
       }
 
-      // Encontra o mais próximo
       const nearest = filteredTotens.reduce(
         (min, curr) => curr.distanciaKm < min.distanciaKm ? curr : min, 
         { distanciaKm: Infinity }
