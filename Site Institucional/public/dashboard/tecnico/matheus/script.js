@@ -565,6 +565,8 @@ function irPara(escolhida) {
 }
 
 async function carregarDados() {
+    document.getElementById('infos-user').innerHTML = `<h1>${sessionStorage.getItem('NOME_USUARIO')}</h1>
+                    <h2>Técnico de Operações</h2>`
     const regiao_escolhida = document.getElementById('regiao-escolhida');
     const sigla_escolhida = document.getElementById('sigla-regiao');
     if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
@@ -823,6 +825,161 @@ async function encontrarTotemMaisProximo() {
           </div>`;
             }
         }
+    }
+}
+
+let map;
+let heatLayer;
+let markersLayer;
+let totensData = [];
+let heatmapVisible = true;
+let markersVisible = false;
+
+// Inicializa o mapa
+async function initMap() {
+    // Centro padrão: São Paulo
+    map = L.map('map').setView([-23.550520, -46.633308], 11);
+
+    // Tile layer (mapa base)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(map);
+
+    // Carrega os totens
+    await loadTotens();
+}
+
+// Carrega dados dos totens
+async function loadTotens() {
+    try {
+        const response = await fetch('/totem/heatmap-totens');
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar totens');
+        }
+
+        const data = await response.json();
+        totensData = data.totens;
+
+        console.log(`✅ ${totensData.length} totens carregados`);
+
+        // Atualiza estatísticas
+        document.getElementById('totalTotens').textContent = data.total;
+        document.getElementById('totensVisiveis').textContent = data.total;
+
+        // Oculta loading
+        document.getElementById('loading').style.display = 'none';
+
+        // Cria o heatmap
+        createHeatmap();
+
+        // Ajusta o zoom para mostrar todos os totens
+        if (totensData.length > 0) {
+            const bounds = totensData.map(t => [t.lat, t.lon]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+
+    } catch (error) {
+        console.error('❌ Erro:', error);
+        document.getElementById('loading').innerHTML = `
+                    <p style="color: red;">Erro ao carregar totens: ${error.message}</p>
+                `;
+    }
+}
+
+// Cria o heatmap
+function createHeatmap() {
+    if (heatLayer) {
+        map.removeLayer(heatLayer);
+    }
+
+    // Prepara os dados para o heatmap [lat, lon, intensidade]
+    const heatData = totensData.map(totem => [totem.lat, totem.lon, 0.8]);
+
+    // Cria a camada de calor
+    heatLayer = L.heatLayer(heatData, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+        max: 1.0,
+        gradient: {
+            0.0: 'green',
+            0.5: 'yellow',
+            1.0: 'red'
+        }
+    }).addTo(map);
+
+    console.log('🔥 Heatmap criado com sucesso');
+}
+
+// Cria marcadores individuais
+function createMarkers() {
+    if (markersLayer) {
+        map.removeLayer(markersLayer);
+    }
+
+    markersLayer = L.layerGroup();
+
+    totensData.forEach(totem => {
+        const marker = L.marker([totem.lat, totem.lon], {
+            icon: L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background: #667eea; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>',
+                iconSize: [12, 12]
+            })
+        });
+
+        marker.bindPopup(`
+                    <div class="popup-content">
+                        <h3>📡 Totem ${totem.mac}</h3>
+                        <p><strong>Endereço:</strong> ${totem.endereco}</p>
+                        <p><strong>CEP:</strong> ${totem.cep}</p>
+                        <p><strong>Coordenadas:</strong> ${totem.lat.toFixed(6)}, ${totem.lon.toFixed(6)}</p>
+                    </div>
+                `);
+
+        markersLayer.addLayer(marker);
+    });
+
+    if (markersVisible) {
+        markersLayer.addTo(map);
+    }
+}
+
+// Toggle heatmap
+function toggleHeatmap() {
+    heatmapVisible = !heatmapVisible;
+    const btn = document.getElementById('toggleHeatmap');
+
+    if (heatmapVisible) {
+        heatLayer.addTo(map);
+        btn.classList.add('active');
+        btn.textContent = '🔥 Heatmap Ativo';
+    } else {
+        map.removeLayer(heatLayer);
+        btn.classList.remove('active');
+        btn.textContent = '🔥 Heatmap Desativado';
+    }
+}
+
+// Toggle marcadores
+function toggleMarkers() {
+    markersVisible = !markersVisible;
+    const btn = document.getElementById('toggleMarkers');
+
+    if (!markersLayer) {
+        createMarkers();
+    }
+
+    if (markersVisible) {
+        markersLayer.addTo(map);
+        btn.classList.add('active');
+        btn.textContent = '📍 Marcadores Ativos';
+    } else {
+        map.removeLayer(markersLayer);
+        btn.classList.remove('active');
+        btn.textContent = '📍 Mostrar Marcadores';
     }
 }
 

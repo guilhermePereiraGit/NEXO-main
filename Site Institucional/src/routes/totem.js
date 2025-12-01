@@ -58,7 +58,7 @@ router.post("/nearest-totem", async (req, res) => {
       const cep = userCep.replace(/\D/g, '');
       const cepResponse = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
       const cepData = cepResponse.data;
-      
+
       if (cepResponse.status === 200 && cepData.location && cepData.location.coordinates) {
         userLat = parseFloat(cepData.location.coordinates.latitude);
         userLon = parseFloat(cepData.location.coordinates.longitude);
@@ -72,27 +72,27 @@ router.post("/nearest-totem", async (req, res) => {
       console.log('✅ Usando coordenadas fornecidas:', { userLat, userLon });
     } else {
       console.log('🌐 Tentando geolocalização por IP...');
-      
+
       // Pega o IP real do cliente (considera proxies como ELB, Nginx, CloudFlare)
-      let clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
-                     req.headers['x-real-ip'] || 
-                     req.connection.remoteAddress || 
-                     req.socket.remoteAddress;
-      
+      let clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() ||
+        req.headers['x-real-ip'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress;
+
       // Remove o prefixo IPv6 se presente (::ffff:)
       if (clientIP && clientIP.includes('::ffff:')) {
         clientIP = clientIP.replace('::ffff:', '');
       }
-      
+
       console.log('🔍 IP do cliente detectado:', clientIP);
-      
+
       try {
         // Usa o IP do cliente para buscar geolocalização
         const ipResponse = await axios.get(`https://ipapi.co/${clientIP}/json/`);
         const ipData = ipResponse.data;
-        
+
         console.log('📡 Resposta da API de IP:', ipData);
-        
+
         if (ipData.latitude && ipData.longitude) {
           userLat = parseFloat(ipData.latitude);
           userLon = parseFloat(ipData.longitude);
@@ -143,14 +143,14 @@ router.post("/nearest-totem", async (req, res) => {
         // Se não tem coordenadas, busca pela API do CEP
         if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
           console.log(`🔄 Totem ${totem.numMac} sem coordenadas, buscando CEP ${totem.cep}...`);
-          
+
           try {
             const cep = totem.cep.replace(/\D/g, '');
-            
+
             // Tenta AwesomeAPI primeiro (mais confiável para coordenadas)
             let response = await axios.get(`https://cep.awesomeapi.com.br/json/${cep}`);
             let data = response.data;
-            
+
             if (response.status === 200 && data.lat && data.lng) {
               console.log(`✅ AwesomeAPI retornou coordenadas para ${totem.cep}`);
               lat = parseFloat(data.lat);
@@ -160,9 +160,9 @@ router.post("/nearest-totem", async (req, res) => {
               console.log(`⚠️ AwesomeAPI falhou, tentando BrasilAPI...`);
               response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
               data = response.data;
-              
-              if (response.status === 200 && data.location && data.location.coordinates && 
-                  data.location.coordinates.latitude && data.location.coordinates.longitude) {
+
+              if (response.status === 200 && data.location && data.location.coordinates &&
+                data.location.coordinates.latitude && data.location.coordinates.longitude) {
                 lat = parseFloat(data.location.coordinates.latitude);
                 lon = parseFloat(data.location.coordinates.longitude);
                 console.log(`✅ BrasilAPI retornou coordenadas para ${totem.cep}`);
@@ -175,23 +175,23 @@ router.post("/nearest-totem", async (req, res) => {
             // Valida coordenadas antes de salvar
             if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
               console.log(`✅ Coordenadas válidas para ${totem.cep}: lat=${lat}, lon=${lon}`);
-                
-                // Salva no banco (converte para string se a coluna é VARCHAR)
-                pool.query(
-                  'UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?', 
-                  [lat.toString(), lon.toString(), totem.cep], 
-                  (updateErr) => {
-                    if (updateErr) {
-                      console.error(`❌ Erro ao atualizar coordenadas do CEP ${totem.cep}:`, updateErr.message);
-                    } else {
-                      console.log(`💾 Coordenadas salvas no banco para CEP ${totem.cep}`);
-                    }
+
+              // Salva no banco (converte para string se a coluna é VARCHAR)
+              pool.query(
+                'UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?',
+                [lat.toString(), lon.toString(), totem.cep],
+                (updateErr) => {
+                  if (updateErr) {
+                    console.error(`❌ Erro ao atualizar coordenadas do CEP ${totem.cep}:`, updateErr.message);
+                  } else {
+                    console.log(`💾 Coordenadas salvas no banco para CEP ${totem.cep}`);
                   }
-                );
-              } else {
-                console.warn(`⚠️ Coordenadas inválidas: lat=${lat}, lon=${lon}`);
-                return null;
-              }
+                }
+              );
+            } else {
+              console.warn(`⚠️ Coordenadas inválidas: lat=${lat}, lon=${lon}`);
+              return null;
+            }
           } catch (apiErr) {
             console.error(`❌ Erro ao buscar CEP ${totem.cep}:`, apiErr.message);
             return null;
@@ -207,13 +207,13 @@ router.post("/nearest-totem", async (req, res) => {
         // Calcula distância
         const dist = haversineDistance(userLat, userLon, lat, lon);
         console.log(`📏 Totem ${totem.numMac}: ${dist.toFixed(2)} km`);
-        
+
         return { macTotem: totem.numMac, distanciaKm: dist };
       }));
 
       // Filtra totens válidos
       const filteredTotens = totensWithDist.filter(t => t !== null);
-      
+
       console.log(`✅ ${filteredTotens.length} totens com coordenadas válidas`);
 
       if (filteredTotens.length === 0) {
@@ -222,12 +222,12 @@ router.post("/nearest-totem", async (req, res) => {
 
       // Encontra o mais próximo
       const nearest = filteredTotens.reduce(
-        (min, curr) => curr.distanciaKm < min.distanciaKm ? curr : min, 
+        (min, curr) => curr.distanciaKm < min.distanciaKm ? curr : min,
         { distanciaKm: Infinity }
       );
 
       console.log(`🎯 Totem mais próximo: ${nearest.macTotem} (${nearest.distanciaKm.toFixed(2)} km)`);
-      
+
       res.json(nearest);
     });
 
@@ -251,5 +251,112 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
+
+// Nova rota: Busca todos os totens com coordenadas para o heatmap
+router.get("/heatmap-totens", async (req, res) => {
+  console.log('🗺️ Requisição para heatmap de totens');
+
+  try {
+    pool.query(`
+      SELECT t.numMac, t.fkModelo, e.cep, e.lat, e.lon, e.logradouro, e.cidade, e.uf
+      FROM totem t
+      INNER JOIN endereco e ON t.fkEndereco = e.idEndereco
+    `, async (err, totens) => {
+      if (err) {
+        console.error('❌ Erro na query:', err.message);
+        return res.status(500).json({ erro: err.message });
+      }
+
+      console.log(`📦 ${totens.length} totens encontrados para heatmap`);
+
+      // Processa cada totem para garantir que tem coordenadas
+      const totensComCoordenadas = await Promise.all(totens.map(async (totem) => {
+        let lat = totem.lat;
+        let lon = totem.lon;
+
+        // Converte para número se vier como string do banco
+        if (typeof lat === 'string') lat = parseFloat(lat);
+        if (typeof lon === 'string') lon = parseFloat(lon);
+
+        // Se não tem coordenadas, busca pela API do CEP
+        if (!lat || !lon || isNaN(lat) || isNaN(lon)) {
+          console.log(`🔄 Buscando coordenadas para totem ${totem.numMac} (CEP: ${totem.cep})`);
+
+          try {
+            const cep = totem.cep.replace(/\D/g, '');
+
+            // Tenta AwesomeAPI primeiro
+            let response = await axios.get(`https://cep.awesomeapi.com.br/json/${cep}`);
+            let data = response.data;
+
+            if (response.status === 200 && data.lat && data.lng) {
+              lat = parseFloat(data.lat);
+              lon = parseFloat(data.lng);
+
+              // Salva no banco para próximas consultas
+              pool.query(
+                'UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?',
+                [lat.toString(), lon.toString(), totem.cep],
+                (updateErr) => {
+                  if (updateErr) console.error(`❌ Erro ao atualizar ${totem.cep}`);
+                }
+              );
+            } else {
+              // Fallback: BrasilAPI
+              response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`);
+              data = response.data;
+
+              if (response.status === 200 && data.location && data.location.coordinates &&
+                data.location.coordinates.latitude && data.location.coordinates.longitude) {
+                lat = parseFloat(data.location.coordinates.latitude);
+                lon = parseFloat(data.location.coordinates.longitude);
+
+                pool.query(
+                  'UPDATE endereco SET lat = ?, lon = ? WHERE cep = ?',
+                  [lat.toString(), lon.toString(), totem.cep],
+                  (updateErr) => {
+                    if (updateErr) console.error(`❌ Erro ao atualizar ${totem.cep}`);
+                  }
+                );
+              }
+            }
+          } catch (apiErr) {
+            console.error(`❌ Erro ao buscar CEP ${totem.cep}:`, apiErr.message);
+            return null;
+          }
+        }
+
+        // Validação final
+        if (isNaN(lat) || isNaN(lon)) {
+          console.warn(`⚠️ Totem ${totem.numMac} sem coordenadas válidas - ignorado`);
+          return null;
+        }
+
+        return {
+          mac: totem.numMac,
+          lat: lat,
+          lon: lon,
+          cep: totem.cep,
+          endereco: `${totem.logradouro}, ${totem.cidade} - ${totem.uf}`,
+          modelo: totem.fkModelo
+        };
+      }));
+
+      // Filtra totens válidos
+      const totensValidos = totensComCoordenadas.filter(t => t !== null);
+
+      console.log(`✅ ${totensValidos.length} totens com coordenadas válidas`);
+
+      res.json({
+        totens: totensValidos,
+        total: totensValidos.length
+      });
+    });
+
+  } catch (err) {
+    console.error('❌ Erro geral:', err.message);
+    res.status(500).json({ erro: 'Erro ao buscar totens para heatmap: ' + err.message });
+  }
+});
 
 module.exports = router;
