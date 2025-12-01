@@ -595,6 +595,11 @@ async function carregarDados() {
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
         carregarTotens();
+        setTimeout(() => {
+        if (document.getElementById('map')) {
+            initMap();
+        }
+    }, 500);
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
         sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
@@ -608,11 +613,16 @@ async function carregarDados() {
 function escolherRegiao(regiao, sigla) {
     sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
     sessionStorage.setItem('SIGLA_REGIAO', sigla);
-    initMap();
     carregarTotens();
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
+
+    setTimeout(() => {
+        if (document.getElementById('map')) {
+            initMap();
+        }
+    }, 500);
 }
 
 function carregarTotens() {

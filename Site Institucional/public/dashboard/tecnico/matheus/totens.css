@@ -1104,11 +1104,10 @@ select {
     background-color: #ff3131;
 }
 
-/* GRÁFICO DE LINHA */
-.grafico {
-    background-color: white;
-    margin-top: 10px;
-    width: 48vw;
+/* GRÁFICO HEATMAP */
+#map {
+    width: 100%;
+    height: 500px;
     border-radius: 10px;
 }
 
