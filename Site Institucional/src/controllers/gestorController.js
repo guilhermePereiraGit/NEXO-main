@@ -20,7 +20,8 @@ function buscarRegioes(req, res) {
 }
 
 function buscarModelos(req, res) {
-    gestorModel.buscarModelos()
+    var fkEmpresa = req.body.fkEmpresa
+    gestorModel.buscarModelos(fkEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado);
