@@ -5,7 +5,7 @@ var s3Controller = require('../controllers/s3Controller');
 
 // FETCH MATHEUS
 router.get('/dados/*', (req, res) => {
-  s3Controller.lerArquivo(req, res);
+  s3Controller.lerArquivoMatheus(req, res);
 });
 
 module.exports = router;

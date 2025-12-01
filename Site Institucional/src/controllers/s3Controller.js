@@ -3,7 +3,7 @@ const Papa = require('papaparse');
 AWS.config.update({ region: process.env.AWS_REGION });
 const s3 = new AWS.S3();
 
-async function lerArquivo(req, res) {
+async function lerArquivoMatheus(req, res) {
   try {
     const fileKey = req.params[0];  // Pega o path completo após /dados/
     if (!fileKey || !/^[\w.\-/]+$/.test(fileKey)) {  // Valida com / permitido
@@ -35,5 +35,5 @@ async function lerArquivo(req, res) {
 }
 
 module.exports = {
-  lerArquivo
+  lerArquivoMatheus
 };
