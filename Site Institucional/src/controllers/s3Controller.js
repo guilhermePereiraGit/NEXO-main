@@ -29,8 +29,8 @@ async function lerArquivo(req, res) {
 
 async function lerArquivoBarros(req, res) {
   try {
-    const { diretorio, mac, dia, conteudo } = req.params;
-    const fileKey = `${diretorio}/${mac}/${dia}/${conteudo}`;
+    const { diretorio, mac, conteudo } = req.params;
+    const fileKey = `${diretorio}/${mac}/${conteudo}`;
     
     const params = {
       Bucket: process.env.S3_BUCKET,

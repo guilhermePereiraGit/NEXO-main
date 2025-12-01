@@ -2,8 +2,26 @@ window.onload = async function () {
     await carregarDadosDoTotem();
 };
 
-async function carregarJson(diretorio, mac, dia, arquivo) {
-    var resposta = await fetch(`/s3Route/${diretorio}/${mac}/${dia}/${arquivo}`);
+async function carregarDadosDoTotem() {
+    const mac = sessionStorage.MAC_TOTEM;
+    const empresa = sessionStorage.IDEMPRESA;
+    const modelo = sessionStorage.MODELOTOTEM;
+    console.log("Carregando dados do totem:", mac, empresa);
+
+    const dados = await carregarJson(empresa, mac, "dados.json");
+    const infoTotem = await buscarInfoTotem(mac);
+    const ticket = await buscarTicketPorMAC(mac);
+
+    preencherDadosBucket(dados);
+    preencherInfoTotem(infoTotem);
+    preencherTicket(ticket);
+    carregarDashboard(modelo, empresa);
+
+    console.log("Dados carregados com sucesso!");
+}
+
+async function carregarJson(diretorio, mac, arquivo) {
+    var resposta = await fetch(`/s3Route/${diretorio}/${mac}/${arquivo}`);
     var dados = await resposta.json();
     console.log(dados);
     return dados;
@@ -33,7 +51,7 @@ async function buscarInfoTotem(mac) {
 
 async function buscarTicketPorMAC(mac) {
     try {
-        const response = await fetch(`/jira/buscarTicketPorMAC?mac=${mac}`);
+        const response = await fetch(`/jiraBarros/buscarTicketPorMAC?mac=${mac}`);
         if (!response.ok) throw new Error(`Erro ao buscar ticket: ${response.status}`);
         return await response.json();
     } catch (erro) {
@@ -49,15 +67,15 @@ function preencherInfoTotem(totem) {
 
     console.log("Preenchendo informações do totem:", t);
 
-    document.querySelector('#idTotem').textContent   = t.idTotem;
-    document.querySelector('#Mac p').textContent     = t.numMAC;
-    document.querySelector('#modelo p').textContent  = t.modelo;
-    document.querySelector('#status p').textContent  = t.status;
-    document.querySelector('#cep p').textContent     = t.cep;
-    document.querySelector('#cidade p').textContent  = t.cidade;
-    document.querySelector('#bairro p').textContent  = t.bairro;
-    document.querySelector('#rua p').textContent     = t.rua;
-    document.querySelector('#numero p').textContent  = t.numero;
+    document.querySelector('#idTotem').innerHTML = t.idTotem;
+    document.querySelector('#Mac p').innerHTML = t.numMAC;
+    document.querySelector('#modelo p').innerHTML = t.modelo;
+    document.querySelector('#status p').innerHTML = t.status;
+    document.querySelector('#cep p').innerHTML = t.cep;
+    document.querySelector('#cidade p').innerHTML = t.cidade;
+    document.querySelector('#bairro p').innerHTML = t.bairro;
+    document.querySelector('#rua p').innerHTML = t.rua;
+    document.querySelector('#numero p').innerHTML = t.numero;
 
     sessionStorage.MODELOTOTEM = t.modelo;
     sessionStorage.IDEMPRESA = t.fkEmpresa;
@@ -67,11 +85,11 @@ function preencherInfoTotem(totem) {
 }
 
 function preencherTicket(ticket) {
-    if (ticket) {
+    if (!ticket) {
         console.log("Nenhum ticket encontrado para o MAC fornecido.");
-        document.getElementById('grauAlerta').textContent = "Nenhum alerta";
+        document.getElementById('grauAlerta').innerHTML = "Nenhum alerta";
         document.getElementById('alerta').style.borderLeftColor = 'var(--bem)';
-        document.getElementById('parametros').textContent = "Totem operando dentro dos parâmetros normais";
+        document.getElementById('parametros').innerHTML = "Totem operando dentro dos parâmetros normais";
         return;
     };
 
@@ -79,51 +97,100 @@ function preencherTicket(ticket) {
 
     const indexParametros = descricao.indexOf('Parâmetros ultrapassados: ');
     if (indexParametros !== -1) {
-        document.getElementById('parametros').textContent = "Causas: " + descricao.substring(indexParametros + 25).trim();
+        document.getElementById('parametros').innerHTML = "Causas: " + descricao.substring(indexParametros + 25).trim();
     }
 
     const indexNivel = descricao.indexOf('Nível do alerta: ');
     if (indexNivel !== -1) {
         const criticidade = descricao.substring(indexNivel + 16).trim();
-        document.getElementById('grauAlerta').textContent = criticidade;
+        document.getElementById('grauAlerta').innerHTML = criticidade;
 
-        if (criticidade === 'Muito Perigoso') {
+        if (criticidade == 'Muito Perigoso') {
             document.getElementById('alerta').style.borderLeftColor = 'var(--mperigo)';
-        } else if (criticidade === 'Atenção') {
+        } else if (criticidade == 'Atenção') {
             document.getElementById('alerta').style.borderLeftColor = 'var(--atencao)';
-        } else if (criticidade === 'Perigoso') {
+        } else if (criticidade == 'Perigoso') {
             document.getElementById('alerta').style.borderLeftColor = 'var(--perigo)';
         }
     }
 }
 
+dadosGrafico = [];
 function preencherDadosBucket(jsonDados) {
-    
+    if (!jsonDados) {
+        console.log("Nenhum dado encontrado no bucket.");
+        return;
+    };
+
+    console.log("Preenchendo dados do bucket com:", jsonDados);
+
+    dadosCpu = [];
+    dadosRam = [];
+    dadosDisco = [];
+
+    const dados = jsonDados;
+    console.log("Preenchendo dados do bucket:", dados);
+
+    top5Processos = [];
+    stringDiaHora = "";
+    qtdProcessosAtivos = 0;
+    for (i = 0; i < dados.janelas4h.length; i++) {
+        if (dados.janelas4h[i].cpuMedia !== null &&
+            dados.janelas4h[i].ramMedia !== null &&
+            dados.janelas4h[i].discoMedia !== null &&
+            dados.janelas4h[i].cpuMedia == 0 &&
+            dados.janelas4h[i].ramMedia == 0 &&
+            dados.janelas4h[i].discoMedia == 0) {
+            console.log(`Fim do loop ${i}:`, dados.janelas4h[i]);
+            break;
+        }
+
+        dadosCpu.push(dados.janelas4h[i].cpuMedia);
+        dadosRam.push(dados.janelas4h[i].ramMedia);
+        dadosDisco.push(dados.janelas4h[i].discoMedia);
+
+        dias = dados.janelas4h[i].uptime / 24;
+        diasInteiros = Math.floor(dias);
+        horas = (dias - diasInteiros) * 24;
+        horasInteiras = Math.floor(horas);
+        stringDiaHora = `${diasInteiros}d ${horasInteiras}h`;
+
+        qtdProcessosAtivos = dados.janelas4h[i].qtdProcessos;
+
+        top5Processos = dados.janelas4h[i].processos;
+
+        console.log(`Dados na iteração ${i}: CPU=${dados.janelas4h[i].cpuMedia}, RAM=${dados.janelas4h[i].ramMedia}, Disco=${dados.janelas4h[i].discoMedia}`);
+    }
+    document.getElementById('valor-uptime').innerHTML = stringDiaHora;
+    document.getElementById('valorAtivos').innerHTML = qtdProcessosAtivos;
+
+    processosAtivos = document.getElementById('processosAtivos');
+
+    console.log("Top 5 processos ativos:", top5Processos);
+
+    for (i = 0; i < top5Processos.length; i++) {
+        processosAtivos.innerHTML += `
+        <tr>
+            <td>${top5Processos[i].nome}</td>
+            <td>${top5Processos[i].cpu}%</td>
+            <td>${top5Processos[i].ram}%</td>
+        </tr>
+        `;
+    }
+
+    dadosGrafico = {
+        cpu: dadosCpu,
+        ram: dadosRam,
+        disco: dadosDisco
+    };
 }
 
-async function carregarDadosDoTotem() {
-    const mac = 149397958151314;
-    console.log("Carregando dados do totem:", mac);
-
-    const infoTotem = await buscarInfoTotem(mac);
-    const ticket = await buscarTicketPorMAC(mac);
-
-    preencherInfoTotem(infoTotem);
-    preencherTicket(ticket);
-    carregarDashboard(mac, sessionStorage.MODELOTOTEM, sessionStorage.IDEMPRESA);
-
-    diaAtual = "2025-11-19";
-    dados = await carregarJson('33', '271371670400310', diaAtual, "dados.json");
-
-    console.log("Dados carregados com sucesso!");
-}
-
-async function carregarDashboard(mac, modelo, idEmpresa) {
+async function carregarDashboard(modelo, idEmpresa) {
     const ctx = document.getElementById("graficoComponente");
 
     const parametros = await buscarParametrosTotem(modelo, idEmpresa);
 
-    document.querySelector('#limiteProcessos').textContent  = parametros[3].limiteMax;
+    document.querySelector('#limiteProcessos').innerHTML = parametros[3].limiteMax;
 
     console.log("Parâmetros recebidos do backend:", parametros);
 
@@ -141,10 +208,12 @@ async function carregarDashboard(mac, modelo, idEmpresa) {
 
     // --- 2. Definir dados mockados do gráfico (ou vindo do backend futuramente) ---
     let dadosComponentes = {
-        cpu: [12, 25, 18, 40, 32, 60],
-        ram: [50, 48, 52, 60, 63, 70],
-        disco: [30, 35, 45, 28, 22, 18]
+        cpu: dadosGrafico.cpu,
+        ram: dadosGrafico.ram,
+        disco: dadosGrafico.disco
     };
+
+    console.log("Dados dos componentes para o gráfico:", dadosComponentes);
 
     // --- 3. Criar gráfico inicial ---
     const componenteInicial = document.getElementById("componentSelect").value;
@@ -183,12 +252,35 @@ function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta
                     fill: false,
                     pointRadius: 0,
                     pointHoverRadius: 0,
-                    tension: 0
+                    tension: 0,
                 }
             ]
         },
         options: {
             responsive: true,
+            scales: {
+                y: {
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: "Utilização (%)",
+                        font: {
+                            size: 14,
+                            weight: "bold"
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Horas passadas desde a captura",
+                        font: {
+                            size: 14,
+                            weight: "bold"
+                        }
+                    }
+                }
+            },
             plugins: {
                 legend: {
                     display: true
@@ -197,7 +289,6 @@ function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta
         }
     });
 }
-
 
 document.getElementById("componentSelect").addEventListener("change", e => {
     const comp = e.target.value;
