@@ -612,6 +612,7 @@ function escolherRegiao(regiao, sigla) {
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
+    initMap();
 }
 
 function carregarTotens() {
