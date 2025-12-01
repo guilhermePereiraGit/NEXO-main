@@ -74,24 +74,36 @@ router.post("/nearest-totem", async (req, res) => {
       console.log('🌐 Tentando geolocalização por IP...');
       
       // Pega o IP real do cliente (considera proxies como ELB, Nginx, CloudFlare)
-      const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
-                       req.headers['x-real-ip'] || 
-                       req.connection.remoteAddress || 
-                       req.socket.remoteAddress;
+      let clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
+                     req.headers['x-real-ip'] || 
+                     req.connection.remoteAddress || 
+                     req.socket.remoteAddress;
+      
+      // Remove o prefixo IPv6 se presente (::ffff:)
+      if (clientIP && clientIP.includes('::ffff:')) {
+        clientIP = clientIP.replace('::ffff:', '');
+      }
       
       console.log('🔍 IP do cliente detectado:', clientIP);
       
-      // Usa o IP do cliente para buscar geolocalização
-      const ipResponse = await axios.get(`https://ipapi.co/${clientIP}/json/`);
-      const ipData = ipResponse.data;
-      
-      if (ipData.latitude && ipData.longitude) {
-        userLat = parseFloat(ipData.latitude);
-        userLon = parseFloat(ipData.longitude);
-        console.log('✅ Coordenadas usuário via IP:', { userLat, userLon, cidade: ipData.city, regiao: ipData.region });
-      } else {
-        console.log('❌ Falha ao obter localização via IP');
-        return res.status(400).json({ erro: 'Não foi possível obter localização via IP' });
+      try {
+        // Usa o IP do cliente para buscar geolocalização
+        const ipResponse = await axios.get(`https://ipapi.co/${clientIP}/json/`);
+        const ipData = ipResponse.data;
+        
+        console.log('📡 Resposta da API de IP:', ipData);
+        
+        if (ipData.latitude && ipData.longitude) {
+          userLat = parseFloat(ipData.latitude);
+          userLon = parseFloat(ipData.longitude);
+          console.log('✅ Coordenadas usuário via IP:', { userLat, userLon, cidade: ipData.city, regiao: ipData.region });
+        } else {
+          console.log('❌ API não retornou coordenadas. Dados:', ipData);
+          return res.status(400).json({ erro: 'Não foi possível obter localização via IP' });
+        }
+      } catch (ipErr) {
+        console.error('❌ Erro ao buscar IP:', ipErr.message);
+        return res.status(400).json({ erro: 'Erro ao obter localização via IP: ' + ipErr.message });
       }
     }
 
@@ -239,4 +251,5 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
+
 module.exports = router;
