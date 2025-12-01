@@ -210,6 +210,57 @@ header .header-navigation .alert {
     color: var(--contraste);
 }
 
+/* POPUP PARA LOGOUT */
+.popup-logout {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-logout .popup-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-logout .popup-content i {
+    font-size: 30px;
+    color: var(--principal);
+    cursor: pointer;
+}
+
+.popup-logout .popup-content h1 {
+    color: var(--principal);
+    text-align: center;
+}
+
+.popup-logout .popup-content button {
+    padding: 30px;
+    font-size: 20px;
+    width: 90%;
+    background-color: var(--principal);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.popup-logout .popup-content .box-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
 /* CONTENT */
 .content .information {
     width: 100%;
