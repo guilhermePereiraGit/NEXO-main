@@ -608,11 +608,11 @@ async function carregarDados() {
 function escolherRegiao(regiao, sigla) {
     sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
     sessionStorage.setItem('SIGLA_REGIAO', sigla);
+    initMap();
     carregarTotens();
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
-    initMap();
 }
 
 function carregarTotens() {
