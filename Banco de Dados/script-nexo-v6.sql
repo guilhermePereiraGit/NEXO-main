@@ -571,3 +571,5 @@ insert into modelo (nome,descricao_arq,status,fkEmpresa) values ('Modelo F','Sau
 insert into modelo (nome,descricao_arq,status,fkEmpresa) values ('Modelo G','Saude','ATIVO',1);
 insert into modelo (nome,descricao_arq,status,fkEmpresa) values ('Modelo H','Saude','ATIVO',1);
 insert into modelo (nome,descricao_arq,status,fkEmpresa) values ('Modelo I','Saude','ATIVO',1);
+
+select * from modelo where fkEmpresa = 1;

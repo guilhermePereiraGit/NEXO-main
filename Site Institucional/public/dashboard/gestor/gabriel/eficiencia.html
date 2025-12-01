@@ -16,18 +16,80 @@
 <body onload="carregarDados()">
 
   <div class="container">
-    <div class="nav-bar">
-      <div class="sair" style="margin-top: 40px;">
-        <div class="fundo" style="display: none;"></div>
+    <div class="header-container">
+      <!-- MENU -->
+      <div class="header-menu">
+        <div class="menu" id="menu" onclick="abrirMenu()">
+          <i class="bi bi-list" id="icone"></i>
+        </div>
+      </div>
 
-        <i class="bi bi-box-arrow-left" onclick="ativarPopup()" style="color: white; cursor: pointer;"></i>
+      <!-- NAVEGAÇÃO -->
+      <div class="header-navigation">
+        <div class="home">
+          <div class="fundo" style="display: none;"></div>
+          <i class="bi bi-house" onclick="window.location.href = '../../../gestor.html'"></i>
+        </div>
+        <div class="eficiencia">
+          <div class="fundo" id="fundo2" style="display: block;"></div>
+          <i class="bi bi-eye" style="color: #451c8b;"></i>
+        </div>
+        <div class="eficiencia">
+          <div class="fundo" id="fundo2" style="display: none;"></div>
+          <i class="bi bi-clipboard-data" onclick="window.location.href = '../gabriel/eficiencia.html'" id="third"></i>
+        </div>
+        <div class="sair">
+          <div class="fundo" style="display: none;"></div>
+          <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+        </div>
+      </div>
+      <!-- HELP - MÉTRICAS -->
+      <div class="header-help"></div>
+      <div class="menu-extend" style="display: none;" id="extend">
+        <div class="infos-user">
+          <h1 id="nome_user"></h1>
+          <h2>Gestor de Operações</h2>
+        </div>
+        <div class="widgets">
+          <p>Caso se depare com algum problema, entre em contato via:</p>
+          <div class="email" style="margin-top: 20px;">
+            <i class="bi bi-envelope"></i>
+            <p>Email: nexoadm9328@outlook.com</p>
+          </div>
+          <div class="telefone" style="margin-top: 20px;">
+            <i class="bi bi-telephone"></i>
+            <p>Telefone: +55(11)98802-2449</p>
+          </div>
+        </div>
+        <div class="jira-slack">
+          <div class="card"
+            onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+            <img src="../../../assets/imgs/icon-jira.png">
+            <h1>Jira</h1>
+          </div>
+          <div class="card" onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+            <img src="../../../assets/imgs/icon-slack.png">
+            <h1>Slack</h1>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="main">
-      <div class="topo">
-        <h2 style="margin-left: 70px;">Modelos Cadastrados</h2>
-        <button onclick="abrirPopupModelo()" style="margin-right: 70px;">Adicionar Modelo</button>
+      <div class="information">
+        <div class="information-first">
+          <div class="title">
+            <h1 id="regiao-escolhida"></h1>
+            <p id="sigla-regiao"></p>
+          </div>
+          <div class="alterar-regiao">
+            <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
+          </div>
+        </div>
+        <div class="interval">
+          <h1>Últimos 7 Dias</h1>
+          <p id="p_data"></p>
+        </div>
       </div>
 
       <div class="baixo">
@@ -81,23 +143,7 @@
                 <h2>H. Ideais</h2>
                 <h2>H. Trabalhadas</h2>
               </div>
-              <div id="conteudo-tabela">
-                <div class="linha-tabela">
-                  <p>São Paulo</p>
-                  <p>700</p>
-                  <p style="color: #DC2626;">1050</p>
-                </div>
-                <div class="linha-tabela">
-                  <p>Campinas</p>
-                  <p>670</p>
-                  <p style="color: #DC2626;">720</p>
-                </div>
-                <div class="linha-tabela">
-                  <p>São Bernardo</p>
-                  <p>530</p>
-                  <p style="color: #10B981;">500</p>
-                </div>
-              </div>
+              <div id="conteudo_tabela"></div>
             </div>
           </div>
         </div>
@@ -108,6 +154,23 @@
 </body>
 
 <script>
+
+  function abrirMenu() {
+    menu_icon = document.getElementById('icone');
+    menu = document.querySelector('.menu-extend');
+    if (menu_icon.classList.contains("bi-list")) {
+      document.getElementById('extend').style.display = "flex";
+      menu.style.animation = "expandirDireita 0.5s ease forwards";
+      menu_icon.classList.remove("bi-list");
+      menu_icon.classList.add("bi-x-lg")
+
+    } else {
+      menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+      menu_icon.classList.remove("bi-x-lg");
+      menu_icon.classList.add("bi-list")
+    }
+  }
+
   async function carregarDados() {
 
     const idEmpresa = sessionStorage.FK_EMPRESA;
@@ -119,24 +182,46 @@
 
     const dataFormatada = `${dia}-${mes}-${ano}`;
 
-    const resposta = await fetch(`/1/23-11-25/`);
+    const resposta = await fetch(`/s3Route/${idEmpresa}/23-11-25`);
     const data = await resposta.json();
 
-    plotarDados(data, idEmpresa, idRegiao)
+    console.log(data)
+
+    plotarDados(data, idEmpresa, regiao)
   }
 
-  function plotarDados(data, idEmpresa, idRegiao){
+  function plotarDados(data, idEmpresa, regiao) {
 
-    for(var i = 0; i < data.length; i++){
-      if(data.totalTecnicos[0].regiao == regiao){
-        total_tecnicos.innerHTML = data.totalTecnicos[i].qtdTecnicos;
-        comparacao.innerHTML = Math.round(data.comparacao[i].percentual, 1);
-      }
+    total_tecnicos.innerHTML = data.totalTecnicos[0].qtdTecnicos;
+    comparacao.innerHTML = Math.round(data.comparacao[0].percentual, 1);
+
+    var horasIdeais = data.horasIdeais[0].horasIdeais;
+
+    qtd_horas_ideais.innerHTML = horasIdeais; 
+
+    var duracao = Math.round((data.horasTrabalhadas[0].duracao / 60) / 60, 2);
+
+    if(duracao <= horasIdeais){
+      qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
+    }else{
+      qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
     }
 
-    qtd_horas_ideais.innerHTML = 
-    qtd_horas_trabalhadas.innerHTML = 
-    qtd_recomendada.innerHTML = data.t
+    qtd_recomendada.innerHTML = data.qtdRecomendadaDeFuncionarios[0].qtdRecomendada;
+
+    var conteudo = ``
+
+    for (var i = 0; i < data.horasIdeais.length; i++) {
+      var item = data.horasIdeais[i];
+
+      conteudo_tabela.innerHTML += `
+        <div class="linha-tabela">
+          <p>${item.regiao}</p>
+          <p>${item.horasIdeais}</p>
+          <p style="color: #DC2626;">1050</p>
+        </div>
+      `;
+    }
   }
 
   var options = {

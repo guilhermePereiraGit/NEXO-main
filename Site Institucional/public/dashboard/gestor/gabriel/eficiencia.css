@@ -992,7 +992,7 @@ select {
     padding-right: 5px;
 }
 
-#conteudo-tabela{
+#conteudo_tabela{
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1048,4 +1048,176 @@ select {
 #horas_trabalhadas_tabela p{
     text-align: right;
     font-weight: 600;
+}
+
+.header-container {
+    background-color: var(--principal);
+    width: 150px;
+    height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-container i {
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+    z-index: 900;
+    transition: 0.3s;
+}
+
+#menu {
+    transition: 0.3s;
+}
+
+#menu:hover {
+    transform: scale(1.1);
+}
+
+.menu-extend {
+    width: 30%;
+    top: 0;
+    left: 150px;
+    background-color: var(--principal);
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    animation: expandirDireita 0.5s ease forwards;
+    transform-origin: left;
+    border-left: 1px solid var(--contraste);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+@keyframes expandirDireita {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes recolherEsquerda {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+.menu-extend .jira-slack {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-extend .jira-slack .card {
+    display: flex;
+    gap: 10px;
+    width: 50%;
+    padding: 20px;
+    background-color: var(--contraste);
+    border-radius: 10px;
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.menu-extend .jira-slack .card:hover {
+    background-color: white;
+}
+
+.menu-extend .jira-slack .card img {
+    width: 33%;
+}
+
+.menu-extend .widgets {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 5px;
+}
+
+.menu-extend .widgets .email,
+.menu-extend .widgets .telefone {
+    font-size: 20px;
+}
+
+.menu-extend .widgets .email i,
+.menu-extend .widgets .telefone i {
+    color: white;
+}
+
+.menu-extend .widgets p {
+    color: var(--contraste);
+    font-size: 18px;
+    text-align: justify;
+}
+
+.menu-extend .infos-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.menu-extend .infos-user h1 {
+    font-weight: 500;
+    color: white;
+    text-align: center;
+}
+
+.menu-extend .infos-user h2 {
+    font-weight: 500;
+    color: var(--contraste);
+}
+
+.information {
+    width: 1340px;
+    height: 12vh;
+    background-color: var(--contraste);
+    padding-left: 40px;
+    padding-right: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.information h1 {
+    font-weight: 500;
+    color: var(--principal);
+}
+
+.information .title {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.information .title p {
+    font-size: 25px;
+    color: var(--principal);
+    font-weight: bold;
+}
+
+.information .alterar-regiao i {
+    cursor: pointer;
+}
+
+.information .alterar-regiao {
+    margin-top: 10px;
+    font-size: 35px;
+    color: var(--principal);
+}   
+
+.information-first{
+    display: flex;
+    gap: 20px;
 }
