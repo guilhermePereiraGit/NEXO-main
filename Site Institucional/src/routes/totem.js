@@ -253,15 +253,43 @@ function deg2rad(deg) {
 }
 
 // Nova rota: Busca todos os totens com coordenadas para o heatmap
-router.get("/heatmap-totens", async (req, res) => {
+// Modifique de GET para POST para aceitar parâmetros
+router.post("/heatmap-totens", async (req, res) => {
   console.log('🗺️ Requisição para heatmap de totens');
+  
+  const { regiao, idEmpresa } = req.body;
+  console.log('Filtros recebidos:', { regiao, idEmpresa });
 
   try {
-    pool.query(`
-      SELECT t.numMac, t.fkModelo, e.cep, e.lat, e.lon, e.logradouro, e.cidade, e.uf
+    // Query base
+    let query = `
+      SELECT t.numMac, t.fkModelo, e.cep, e.lat, e.lon, e.logradouro, e.cidade, e.uf,
+             r.nome as nomeRegiao, r.sigla as siglaRegiao
       FROM totem t
       INNER JOIN endereco e ON t.fkEndereco = e.idEndereco
-    `, async (err, totens) => {
+      LEFT JOIN zona z ON e.fkZona = z.idZona
+      LEFT JOIN regiao r ON z.fkRegiao = r.idRegiao
+      WHERE 1=1
+    `;
+    
+    const params = [];
+    
+    // Adiciona filtro de região se fornecido
+    if (regiao) {
+      query += ` AND r.nome = ?`;
+      params.push(regiao);
+    }
+    
+    // Adiciona filtro de empresa se fornecido
+    if (idEmpresa) {
+      query += ` AND t.fkEmpresa = ?`;
+      params.push(idEmpresa);
+    }
+
+    console.log('📊 Query:', query);
+    console.log('📊 Params:', params);
+
+    pool.query(query, params, async (err, totens) => {
       if (err) {
         console.error('❌ Erro na query:', err.message);
         return res.status(500).json({ erro: err.message });
@@ -338,7 +366,9 @@ router.get("/heatmap-totens", async (req, res) => {
           lon: lon,
           cep: totem.cep,
           endereco: `${totem.logradouro}, ${totem.cidade} - ${totem.uf}`,
-          modelo: totem.fkModelo
+          modelo: totem.fkModelo,
+          regiao: totem.nomeRegiao,
+          siglaRegiao: totem.siglaRegiao
         };
       }));
 
