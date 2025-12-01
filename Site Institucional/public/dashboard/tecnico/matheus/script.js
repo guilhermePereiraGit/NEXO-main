@@ -757,6 +757,7 @@ function abrirMenu() {
     }
 }
 
+// Funciona com base no IP do usuário
 async function encontrarTotemMaisProximo() {
     try {
         const resposta = await fetch('/totem/nearest-totem', {
