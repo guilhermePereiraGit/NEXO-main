@@ -6,7 +6,7 @@ window.onload = async function () {
     //Se a empresa não tiver modelos cadastrados ele exibe um popup de aviso
     if (vmodelos.length != 0) {
         document.getElementById('sem_modelos').style.display = 'none';
-        var empresa = `empresa-${sessionStorage.getItem('FK_EMPRESA')}`;
+        var empresa = `${sessionStorage.getItem('FK_EMPRESA')}`;
         cacheAlertas = await carregarJson(empresa, "alertas.json");
         cacheDowntime = await carregarJson(empresa, "downtime.json");
         verificarModelos();
@@ -45,6 +45,7 @@ async function priorizarRegiao(regioes){
     for(var i = 0; i < regioes.length; i++){
         var regiaoAtual = regioes[i].NomeRegiao;
         var totalAlertasRegiao = 0;
+        
         //For dos alertas
         for(var j = 0; j < alertas.length; j++){
             if(alertas[j].regiao == regioes[i].NomeRegiao){
@@ -60,8 +61,10 @@ async function priorizarRegiao(regioes){
 
     var maiorAlertas = 0;
     var regiaoPriorizar = "";
+
+    console.log(bancoRegioesAlerta);
     //For para ver a região com maior número de alertas   
-    for(var i = 0; i < bancoRegioesAlerta.length; i++){
+    for(var i = 0; i < bancoRegioesAlerta.length; i++){        
         if(bancoRegioesAlerta[i].totalAlertas){
             maiorAlertas = bancoRegioesAlerta[i].totalAlertas;
             regiaoPriorizar = bancoRegioesAlerta[i].nomeRegiao;
@@ -149,7 +152,7 @@ function passarComponente(componenteAparecer, totalComponentes) {
 async function plotarSelecionarModeloLinha() {
     select_principal = document.getElementById('slt_modelos_downtime');
 
-    var dados = await fetch("/gestor/buscarModelos", { method: "POST", headers: { "Content-Type": "application/json" } });
+    var dados = await fetch("/gestor/buscarModelos", {method: "POST",headers: { "Content-Type": "application/json" },body: JSON.stringify({ fkEmpresa:sessionStorage.getItem('FK_EMPRESA')})});
     var modelos = await dados.json();
 
     for (var i = 0; i < modelos.length; i++) {
@@ -493,7 +496,10 @@ function carregarModelos() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-        }
+        },
+        body: JSON.stringify({
+            fkEmpresa: sessionStorage.getItem('FK_EMPRESA')
+        }),
     })
         .then(function (resposta) {
 

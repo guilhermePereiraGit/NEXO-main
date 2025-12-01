@@ -16,12 +16,13 @@ function buscarRegioes(emailUsuario) {
     return database.executar(instrucaoSql);
 }
 
-function buscarModelos() {
+function buscarModelos(fkEmpresa) {
     const instrucaoSql = `
     select
     m.idModelo as idModelo,
     m.nome as NomeModelo
-    from modelo as m;
+    from modelo as m
+    where fkEmpresa = ${fkEmpresa}
     `
     console.log(instrucaoSql)
     return database.executar(instrucaoSql);

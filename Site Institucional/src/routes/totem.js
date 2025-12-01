@@ -15,16 +15,13 @@ router.post("/modificarStatusTotem", function(req, res){
     totemController.modificarStatusTotem(req, res);
 })
 
-router.get("/buscarTotens/:idEmpresa/:idRegiao", function (req, res) {
+router.get("/buscarTotens", function (req, res) {
     totemController.buscarTotens(req, res);
 })
 
-router.get("/infoTotem", function (req, res) {
-    totemController.buscarInfoTotem(req, res);
-})
+router.get("/buscarEnderecoTotem/:mac", function (req, res) {
+    totemController.buscarEnderecoTotem(req, res);
+});
 
-router.get("/parametrosTotem", function (req, res) {
-    totemController.buscarparametrosTotem(req, res);
-})
 
 module.exports = router;

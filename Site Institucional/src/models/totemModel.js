@@ -16,9 +16,9 @@ function buscarTotens(idEmpresa) {
         `
     return database.executar(instrucaoSql);
 }
-function buscarTotemMac() {
-    var instrucaoSql = `totem.fkEndereco from totem inner join endereco on totem.fkEndereco = endereco.idEndereco
-    where totem.numMac = ${numMac}`;
+function buscarTotemMac(numMac) {
+    var instrucaoSql = `SELECT endereco.cep, endereco.rua, endereco.numero FROM totem INNER JOIN endereco ON totem.fkEndereco = endereco.idEndereco
+    WHERE totem.numMac = ${numMac};`
     return database.executar(instrucaoSql);
 }
 
@@ -47,34 +47,6 @@ function desativarTotem(idTotem) {
     return database.executar(instrucaoSql)
 }
 
-function infoTotem(numMAC) {
-    var instrucaoSql = `
-        SELECT t.idTotem, t.numMAC, t.status, m.nome as modelo, e.cep, e.numero, e.cidade, e.bairro, e.rua, m.fkEmpresa
-        FROM totem t
-        INNER JOIN modelo m ON m.idModelo = t.fkModelo
-        INNER JOIN endereco e ON e.idEndereco = t.fkEndereco
-        WHERE t.numMAC = '${numMAC}';
-    `
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
-
-function parametrosTotem(NomeModelo, idEmpresa) {
-    var instrucaoSql = `
-        SELECT c.nome, p.limiteMax
-        FROM modelo AS m
-        INNER JOIN parametro AS p ON m.idModelo = p.fkModelo
-        INNER JOIN componente AS c ON p.fkComponente = c.idComponente
-        WHERE m.nome = '${NomeModelo}' AND m.fkEmpresa = ${idEmpresa};
-    `
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
-
-
-
 module.exports = {
-    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem, infoTotem, parametrosTotem
+    cadastrarTotem, verificarAprovados, ativarTotem, desativarTotem, buscarTotemMac, buscarTotens
 };
