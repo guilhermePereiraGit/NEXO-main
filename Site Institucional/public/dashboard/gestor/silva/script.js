@@ -6,7 +6,7 @@ window.onload = async function () {
     //Se a empresa não tiver modelos cadastrados ele exibe um popup de aviso
     if (vmodelos.length != 0) {
         document.getElementById('sem_modelos').style.display = 'none';
-        var empresa = `empresa-${sessionStorage.getItem('FK_EMPRESA')}`;
+        var empresa = `${sessionStorage.getItem('FK_EMPRESA')}`;
         cacheAlertas = await carregarJson(empresa, "alertas.json");
         cacheDowntime = await carregarJson(empresa, "downtime.json");
         verificarModelos();
@@ -152,7 +152,7 @@ function passarComponente(componenteAparecer, totalComponentes) {
 async function plotarSelecionarModeloLinha() {
     select_principal = document.getElementById('slt_modelos_downtime');
 
-    var dados = await fetch("/gestor/buscarModelos", { method: "POST", headers: { "Content-Type": "application/json" } });
+    var dados = await fetch("/gestor/buscarModelos", {method: "POST",headers: { "Content-Type": "application/json" },body: JSON.stringify({ fkEmpresa:sessionStorage.getItem('FK_EMPRESA')})});
     var modelos = await dados.json();
 
     for (var i = 0; i < modelos.length; i++) {
@@ -496,7 +496,10 @@ function carregarModelos() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-        }
+        },
+        body: JSON.stringify({
+            fkEmpresa: sessionStorage.getItem('FK_EMPRESA')
+        }),
     })
         .then(function (resposta) {
 
