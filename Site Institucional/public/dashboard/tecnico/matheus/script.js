@@ -618,12 +618,7 @@ function escolherRegiao(regiao, sigla) {
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
-
-    setTimeout(() => {
-        if (document.getElementById('map')) {
-            initMap();
-        }
-    }, 500);
+    carregarGraficoAlertasPorGrau();
 }
 
 function carregarTotens() {
@@ -838,6 +833,181 @@ async function encontrarTotemMaisProximo() {
             }
         }
     }
+}
+
+// Variável global para armazenar a instância do gráfico
+let graficoAlertasInstance = null;
+
+// Função para carregar e gerar o gráfico de alertas por grau
+async function carregarGraficoAlertasPorGrau() {
+    try {
+        // Pegar o FK_EMPRESA do sessionStorage (note que está em maiúsculo no seu código)
+        const fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
+        
+        if (!fkEmpresa) {
+            console.error('fkEmpresa não encontrado no sessionStorage');
+            return;
+        }
+        
+        // Montar a URL do bucket S3
+        const urlBucket = `https://bucket-client-nexo.s3.amazonaws.com/${fkEmpresa}/alertas.json`;
+        
+        // Fazer requisição para buscar os dados
+        const response = await fetch(urlBucket);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar dados: ${response.status}`);
+        }
+        
+        const dados = await response.json();
+        
+        // Contar alertas por grau
+        const contagemGraus = contarAlertasPorGrau(dados);
+        
+        // Preparar dados para o gráfico
+        const labels = Object.keys(contagemGraus);
+        const valores = Object.values(contagemGraus);
+        
+        // Cores para cada grau de alerta
+        const coresGraus = {
+            'Muito Perigoso': '#dc3545',  // Vermelho
+            'Perigoso': '#fd7e14',         // Laranja
+            'Atenção': '#ffc107'           // Amarelo
+        };
+        
+        const cores = labels.map(grau => coresGraus[grau] || '#6c757d');
+        
+        // Destruir gráfico anterior se existir (evita sobreposição)
+        if (graficoAlertasInstance) {
+            graficoAlertasInstance.destroy();
+        }
+        
+        // Configuração do gráfico
+        const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        graficoAlertasInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Quantidade de Alertas',
+                    data: valores,
+                    backgroundColor: cores,
+                    borderColor: cores.map(cor => cor),
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    hoverBackgroundColor: cores.map(cor => cor + 'dd')
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: 'Poppins',
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribuição de Alertas por Grau de Criticidade',
+                        font: {
+                            family: 'Poppins',
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            family: 'Poppins',
+                            size: 14
+                        },
+                        bodyFont: {
+                            family: 'Poppins',
+                            size: 13
+                        },
+                        padding: 12,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10,
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Quantidade',
+                            font: {
+                                family: 'Poppins',
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Grau de Alerta',
+                            font: {
+                                family: 'Poppins',
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+    } catch (error) {
+        console.error('Erro ao carregar gráfico de alertas:', error);
+        // Exibir mensagem de erro no canvas
+        const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        ctx.font = '16px Poppins';
+        ctx.fillStyle = '#dc3545';
+        ctx.textAlign = 'center';
+        ctx.fillText('Erro ao carregar dados do gráfico', ctx.canvas.width / 2, ctx.canvas.height / 2);
+    }
+}
+
+// Função auxiliar para contar alertas por grau
+function contarAlertasPorGrau(dados) {
+    const contagem = {};
+    
+    dados.forEach(item => {
+        const grau = item.grau;
+        contagem[grau] = (contagem[grau] || 0) + 1;
+    });
+    
+    return contagem;
 }
 
 function ativarPopup() {
