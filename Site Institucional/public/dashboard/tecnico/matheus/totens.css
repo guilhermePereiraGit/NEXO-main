@@ -467,6 +467,7 @@ header .header-navigation {
     width: 20%;
     margin-top: 50px;
 }
+
 /*CADASTRAR TOTENS*/
 .popuptotem,
 .popupmodelo,
@@ -528,7 +529,7 @@ header .header-navigation {
     margin: 0;
 }
 
-#botao-popup{
+#botao-popup {
     width: 300px;
     height: 5vh;
     border-radius: 20px;
@@ -827,6 +828,7 @@ select {
 .botao-lixeira:hover {
     color: #f03f3f;
 }
+
 /*MORE*/
 .more {
     display: flex;
@@ -849,6 +851,7 @@ select {
     cursor: pointer;
     transition: 0.3s;
 }
+
 @media (min-width: 1025px) {
     .card {
         width: 60%;
@@ -900,7 +903,7 @@ select {
 }
 
 /*Card nothing*/
-.card-nothing{
+.card-nothing {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -910,7 +913,7 @@ select {
     border-radius: 20px;
 }
 
-.card-nothing p{
+.card-nothing p {
     font-size: 20px;
 }
 
@@ -932,7 +935,7 @@ select {
 
 .cadastrar-totens button {
     width: 250px;
-    height:7vh;
+    height: 7vh;
     border-radius: 20px;
     border: 2px solid var(--principal);
     color: white;
@@ -1104,6 +1107,10 @@ select {
     background-color: #ff3131;
 }
 
+#dashboard-grafico {
+    display: flex;
+}
+
 /* POPUP PARA LOGOUT */
 .popup-logout {
     width: 100%;
@@ -1154,7 +1161,8 @@ select {
     justify-content: center;
     margin-top: 40px;
 }
-.box-button a{
+
+.box-button a {
     color: white;
     text-decoration: none;
 }
@@ -1187,31 +1195,32 @@ select {
     font-size: 35px;
     color: var(--principal);
 }
+
 .card-user {
-    flex: 1 1 calc(50% - 40px); 
+    flex: 1 1 calc(50% - 40px);
     max-width: 50%;
     box-sizing: border-box;
     font-size: 20px;
     padding: 30px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     transition: 0.3s;
-    width: auto; 
-    border: none; 
+    width: auto;
+    border: none;
     flex-direction: column;
 }
 
 
 .card-user:hover {
-    background-color: var(--fundo); 
+    background-color: var(--fundo);
 }
 
 .card-user .card-first,
 .card-user .card-second {
     display: flex;
     flex-direction: column;
-    gap: 10px; 
+    gap: 10px;
     align-items: flex-start;
 }
 
@@ -1224,6 +1233,7 @@ select {
     cursor: pointer;
     justify-content: center;
 }
+
 /*teste*/
 
 @media (max-width: 768px) {
