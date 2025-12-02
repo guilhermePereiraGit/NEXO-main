@@ -326,12 +326,12 @@ header .header-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 40px;
 }
 
 .cima h1 {
     color: var(--primaria);
     font-size: 40px;
+    padding-top: 50px;
     margin: 0;
 }
 
