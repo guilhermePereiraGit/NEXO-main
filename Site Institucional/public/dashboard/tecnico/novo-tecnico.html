@@ -29,18 +29,17 @@
                 <div class="header-navigation">
                     <div class="icones">
                         <div class="cadastrar-totens">
-                            <div class="fundo" id="fundo2" style="display: none;"
-                                onclick="location.href = '../novo-tecnico.html'"></div>
-                            <i class="bi bi-display" onclick="location.href = '../novo-tecnico.html';" id="second"></i>
+                            <div class="fundo" id="fundo2" style="display: block;"></div>
+                            <i class="bi bi-display" onclick="ativar('fundo2');" style="display: block; color: #451c8b;"
+                                id="second"></i>
                         </div>
                         <div class="dashboard">
-                            <div class="fundo" id="fundo3" style="display: block;"></div>
-                            <i class="bi bi-graph-up" onclick="ativar('fundo3');irPara('dashboard')" id="third"></i>
+                            <div class="fundo" id="fundo3" style="display: none;"></div>
+                            <i class="bi bi-graph-up" onclick="window.location.href='./matheus/totens.html'"></i>
                         </div>
                         <div class="dashboard-agenda">
                             <div class="fundo" id="fundo4" style="display: none;"></div>
-                            <i class="bi bi-calendar3"
-                                onclick="location.href = '../novo-tecnico.html'; irPara('dashboard-agenda')"
+                            <i class="bi bi-calendar3" onclick="window.location.href='dash-agenda.html'"
                                 id="fourth"></i>
                         </div>
                     </div>
@@ -51,8 +50,8 @@
                 </div>
             </div>
             <div class="menu-extend" style="display: none;" id="extend">
-                <div class="infos-user" id="infos-user">
-                    <h1>Guilherme Barros</h1>
+                <div class="infos-user">
+                    <h1>Gabriel Castilho</h1>
                     <h2>Técnico de Operações</h2>
                 </div>
                 <div class="widgets">
@@ -69,12 +68,12 @@
                 <div class="jira-slack">
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-                        <img src="assets/imgs/icon-jira.png">
+                        <img src="../../assets/imgs/icon-jira.png">
                         <h1>Jira</h1>
                     </div>
                     <div class="card-jira-slack"
                         onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-                        <img src="assets/imgs/icon-slack.png">
+                        <img src="../../assets/imgs/icon-slack.png">
                         <h1>Slack</h1>
                     </div>
                 </div>
@@ -86,77 +85,7 @@
                 <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
                 <h1>Deseja Sair?</h1>
                 <div class="box-button">
-                    <button onclick="window.location.href='../../../login.html'">Fazer Logout</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- POPUP DE PASSO À PASSO -->
-        <div class="popup-passos" style="display: none;" id="popup-passos">
-            <div class="passos-content">
-
-            </div>
-        </div>
-
-        <!-- POPUP DE ESCOLHA DE REGIÃO -->
-        <div class="popup-escolha" style="display: none;" id="popup-escolha">
-            <div class="escolha-content">
-                <i class="bi bi-x-lg" onclick="fecharEscolha(),carregarDados()" style="cursor: pointer;"></i>
-                <div class="initial-escolha">
-                    <div class="box-regiao">
-                        <h1>Escolha o Estado</h1>
-                        <select name="estado-escolha" id="estado-escolha" onchange="carregarRegioes()">
-                            <option value="x" selected>Escolha uma Opção</option>
-                            <option value="AC">AC - Acre</option>
-                            <option value="AL">AL - Alagoas</option>
-                            <option value="AP">AP - Amapá</option>
-                            <option value="AM">AM - Amazonas</option>
-                            <option value="BA">BA - Bahia</option>
-                            <option value="CE">CE - Ceará</option>
-                            <option value="DF">DF - Distrito Federal</option>
-                            <option value="ES">ES - Espírito Santo</option>
-                            <option value="GO">GO - Goiás</option>
-                            <option value="MA">MA - Maranhão</option>
-                            <option value="MT">MT - Mato Grosso</option>
-                            <option value="MS">MS - Mato Grosso do Sul</option>
-                            <option value="MG">MG - Minas Gerais</option>
-                            <option value="PA">PA - Pará</option>
-                            <option value="PB">PB - Paraíba</option>
-                            <option value="PR">PR - Paraná</option>
-                            <option value="PE">PE - Pernambuco</option>
-                            <option value="PI">PI - Piauí</option>
-                            <option value="RJ">RJ - Rio de Janeiro</option>
-                            <option value="RN">RN - Rio Grande do Norte</option>
-                            <option value="RS">RS - Rio Grande do Sul</option>
-                            <option value="RO">RO - Rondônia</option>
-                            <option value="RR">RR - Roraima</option>
-                            <option value="SC">SC - Santa Catarina</option>
-                            <option value="SP">SP - São Paulo</option>
-                            <option value="SE">SE - Sergipe</option>
-                            <option value="TO">TO - Tocantins</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="priorizar" id="priorizar" style="display: none;">
-                    <i class="bi bi-exclamation-diamond"></i>
-                    <p>A região mais crítica é Região Metropolitana de São Paulo</p>
-                </div>
-
-                <!-- ANTES DE ESCOLHER UM ESTADO -->
-                <div class="aguardando" id="aguardando">
-                    <h2>Selecione o Estado para Prosseguir</h2>
-                    <p>Escolha um estado para que suas regiões metropolitanas sejam devidamente carregadas para
-                        selecionar.</p>
-                </div>
-
-                <!-- APÓS ESCOLHER UM ESTADO -->
-                <div class="regioes" id="regioes" style="display: none;">
-                </div>
-
-                <!-- EM PRODUÇÃO -->
-                <div class="producao" id="producao" style="display: none;">
-                    <h2>Em Produção</h2>
-                    <p>Este Estado ainda não possui serviços disponíveis para análise ou monitoramento dos dados</p>
+                    <button> <a href="../../logi.html">Fazer Logout</a></button>
                 </div>
             </div>
         </div>
@@ -182,6 +111,7 @@
                             <div class="aprovados" id="div_aprovados"></div>
                             <div class="totens-scroll" id="totens-totais"></div>
                         </div>
+
                     </div>
                     <div class="popuptotem" id="popuptotem">
                         <div class="card">
