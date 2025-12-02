@@ -331,8 +331,8 @@ header .header-navigation {
 .cima h1 {
     color: var(--primaria);
     font-size: 40px;
-    padding-top: 50px;
     margin: 0;
+    margin-top: 40px;
 }
 
 .cima button {
