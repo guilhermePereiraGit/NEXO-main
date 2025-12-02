@@ -618,12 +618,7 @@ function escolherRegiao(regiao, sigla) {
     fecharEscolha();
     carregarDados();
     gerarGraficoLinha();
-
-    setTimeout(() => {
-        if (document.getElementById('map')) {
-            initMap();
-        }
-    }, 500);
+    carregarGraficoAlertasPorGrau();
 }
 
 function carregarTotens() {
