@@ -837,7 +837,7 @@ async function encontrarTotemMaisProximo() {
 
 async function carregarGraficoAlertasPorGrau() {
     try {
-        const fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
+        const fkEmpresa = sessionStorage.getItem('fkEmpresa');
         
         if (!fkEmpresa) {
             console.error('fkEmpresa não encontrado no sessionStorage');
@@ -867,7 +867,6 @@ async function carregarGraficoAlertasPorGrau() {
         
         const cores = labels.map(grau => coresGraus[grau] || '#6c757d');
         
-        // Configuração do gráfico
         const ctx = document.getElementById('graficoAlertas').getContext('2d');
         const graficoAlertas = new Chart(ctx, {
             type: 'bar',
