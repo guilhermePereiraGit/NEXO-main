@@ -9,13 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <link rel="stylesheet" href="eficiencia.css">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="eficiencia.js"></script>
 </head>
 
-<body onload="carregarDados()">
+<body onload="carregarDadosUser(); carregarDadosAprovados()">
 
-  <div class="container">
+  <div class="tudo">
     <header>
       <div class="header-container">
         <div class="header-menu">
@@ -26,31 +27,27 @@
 
         <div class="header-navigation">
           <div class="home">
-            <div class="fundo" style="display: none;"></div>
-            <i class="bi bi-house" onclick="window.location.href='../../../gestor.html'" style="color: white;"></i>
-          </div>
-          <div class="eficiencia">
-            <div class="fundo" style="display: none;"></div>
-            <i class="bi bi-eye" onclick="window.location.href='#'"></i>
-          </div>
-          <div class="eficiencia">
             <div class="fundo" style="display: block;"></div>
-            <i class="bi bi-clipboard-data" onclick="window.location.reload()" style="color: #451c8b;"></i>
+            <i class="bi bi-house" onclick="window.location.href = '../../../gestor.html'" style="color: #451c8b;"></i>
+          </div>
+          <div class="eficiencia">
+            <div class="fundo" style="display: none;"></div>
+            <i class="bi bi-eye" onclick="window.location.href = '../silva/modelos.html'"></i>
+          </div>
+          <div class="eficiencia">
+            <div class="fundo" style="display: none;"></div>
+            <i class="bi bi-clipboard-data" onclick="window.location.reload()"></i>
           </div>
           <div class="sair">
             <div class="fundo" style="display: none;"></div>
             <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
           </div>
         </div>
-
-        <!-- Mantém o espaço da base da navbar, mas sem o "i" -->
-        <div class="header-help"></div>
       </div>
 
-      <!-- MENU LATERAL EXPANDIDO (COMPLETO, IGUAL ORIGINAL) -->
       <div class="menu-extend" style="display: none;" id="extend">
         <div class="infos-user">
-          <h1 id="nome_user">Usuário</h1>
+          <h1 id="nome_user"></h1>
           <h2>Gestor de Operações</h2>
         </div>
         <div class="widgets">
@@ -67,186 +64,174 @@
         <div class="jira-slack">
           <div class="card"
             onclick="window.location.href='https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-            <img src="assets/imgs/icon-jira.png">
+            <img src="../../../assets/imgs/icon-jira.png">
             <h1>Jira</h1>
           </div>
           <div class="card" onclick="window.location.href='https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-            <img src="assets/imgs/icon-slack.png">
+            <img src="../../../assets/imgs/icon-slack.png">
             <h1>Slack</h1>
           </div>
         </div>
       </div>
     </header>
 
-
-    <div class="main">
-      <div class="information">
-        <div class="information-first">
-          <div class="title">
-            <h1 id="regiao-escolhida"></h1>
-            <p id="sigla-regiao"></p>
-          </div>
-          <div class="alterar-regiao">
-            <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
-          </div>
-        </div>
-        <div class="interval">
-          <h1>Últimos 7 Dias</h1>
-          <p id="p_data"></p>
+    <div class="popup-logout" style="display: none;" id="popup-logout">
+      <div class="popup-content">
+        <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
+        <h1>Deseja Sair?</h1>
+        <div class="box-button">
+          <button onclick="limparSessao()">Fazer Logout</button>
         </div>
       </div>
+    </div>
 
-      <div class="baixo">
-        <div class="conteudo">
-          <div class="div_kpis" id="div_kpis">
-            <div id="total_tecnicos_associados" class="kpi">
-              <div class="kpi-cima">
-                <h2>Total de Técnicos Associados</h2>
-                <p>da Região</p>
-              </div>
-              <div class="kpi-baixo">
-                <h3 id="total_tecnicos"></h3>
-                <p><span id="comparacao"></span>% do total</p>
-              </div>
+    <div class="popup-passos" style="display: none;" id="popup-passos">
+      <div class="passos-content">
+        <i class="bi bi-x-lg" onclick="fecharPassos()"
+          style="float: right; font-size: 30px; color: #451c8b; cursor: pointer;"></i>
+        <h1 style="text-align: center; color: #451c8b; margin-top: 40px;">Ajuda</h1>
+        <p style="margin-top: 20px; text-align: center;">Área de gerenciamento de modelos de totens.</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="main">
+        <div class="information">
+          <div class="information-first">
+            <div class="title">
+              <h1 id="regiao-escolhida"></h1>
+              <p id="sigla-regiao"></p>
             </div>
-            <div id="capacidade_operacional" class="kpi">
-              <div id="kpi-cima">
-                <h2>Capacidade Operacional</h2>
-              </div>
-              <div id="kpi-baixo-capacidade-operacional">
-                <div id="horas_ideais">
-                  <h3>Horas Ideais</h3>
-                  <p id="qtd_horas_ideais">588</p>
+            <div class="alterar-regiao">
+              <i class="bi bi-arrow-repeat" onclick="abrirEscolha()" id="escolhaNew"></i>
+            </div>
+          </div>
+          <div class="interval">
+            <h1>Últimos 7 Dias</h1>
+            <p id="p_data"></p>
+          </div>
+        </div>
+
+        <div class="baixo">
+          <div class="conteudo">
+            <div class="div_kpis" id="div_kpis">
+              <div id="total_tecnicos_associados" class="kpi">
+                <div class="kpi-cima">
+                  <h2>Total de Técnicos Associados</h2>
+                  <p>da Região</p>
                 </div>
-                <div id="horas_trabalhadas">
-                  <h3>Horas Trabalhadas</h3>
-                  <p id="qtd_horas_trabalhadas">1000</p>
+                <div class="kpi-baixo">
+                  <h3 id="total_tecnicos"></h3>
+                  <p><span id="comparacao"></span>% do total</p>
+                </div>
+              </div>
+              <div id="capacidade_operacional" class="kpi">
+                <div id="kpi-cima">
+                  <h2>Capacidade Operacional</h2>
+                </div>
+                <div id="kpi-baixo-capacidade-operacional">
+                  <div id="horas_ideais">
+                    <h3>Horas Ideais</h3>
+                    <p id="qtd_horas_ideais">588</p>
+                  </div>
+                  <div id="horas_trabalhadas">
+                    <h3>Horas Trabalhadas</h3>
+                    <p id="qtd_horas_trabalhadas">1000</p>
+                  </div>
+                </div>
+              </div>
+              <div id="quantidade_tecnicos_recomendada" class="kpi">
+                <div class="kpi-cima">
+                  <h2>Quantidade de Técnicos<br>Recomendada</h2>
+                  <p>para a Região</p>
+                </div>
+                <div class="kpi-baixo">
+                  <h3 id="qtd_recomendada"></h3>
                 </div>
               </div>
             </div>
-            <div id="quantidade_tecnicos_recomendada" class="kpi">
-              <div class="kpi-cima">
-                <h2>Quantidade de Técnicos<br>Recomendada</h2>
-                <p>para a Região</p>
+            <div class="graficos">
+              <div id="chart">
+                <div id="timeline-chart"></div>
               </div>
-              <div class="kpi-baixo">
-                <h3 id="qtd_recomendada"></h3>
-              </div>
-            </div>
-          </div>
-          <div class="graficos">
-            <div id="chart">
-              <div id="timeline-chart"></div>
-            </div>
-            <div class="tabela">
-              <div id="titulo-tabela">
-                <h2>Capacidade Operacional por Região</h2>
-              </div>
-              <div id="categorias">
-                <h2>Região</h2>
-                <h2>H. Ideais</h2>
-                <h2>H. Trabalhadas</h2>
-              </div>
-              <div id="conteudo_tabela"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP DE ESCOLHA DE REGIÃO -->
-  <div class="popup-escolha" style="display: none;" id="popup-escolha">
-    <div class="escolha-content">
-      <i class="bi bi-x-lg" onclick="fecharEscolha(),carregarDados()" style="cursor: pointer;"></i>
-      <div class="initial-escolha">
-        <div class="box">
-          <h1>Escolha o Estado</h1>
-          <select name="estado-escolha" id="estado-escolha" onchange="carregarRegioes()">
-            <option value="x">Escolha uma Opção</option>
-            <option value="AC">AC - Acre</option>
-            <option value="AL">AL - Alagoas</option>
-            <option value="AP">AP - Amapá</option>
-            <option value="AM">AM - Amazonas</option>
-            <option value="BA">BA - Bahia</option>
-            <option value="CE">CE - Ceará</option>
-            <option value="DF">DF - Distrito Federal</option>
-            <option value="ES">ES - Espírito Santo</option>
-            <option value="GO">GO - Goiás</option>
-            <option value="MA">MA - Maranhão</option>
-            <option value="MT">MT - Mato Grosso</option>
-            <option value="MS">MS - Mato Grosso do Sul</option>
-            <option value="MG">MG - Minas Gerais</option>
-            <option value="PA">PA - Pará</option>
-            <option value="PB">PB - Paraíba</option>
-            <option value="PR">PR - Paraná</option>
-            <option value="PE">PE - Pernambuco</option>
-            <option value="PI">PI - Piauí</option>
-            <option value="RJ">RJ - Rio de Janeiro</option>
-            <option value="RN">RN - Rio Grande do Norte</option>
-            <option value="RS">RS - Rio Grande do Sul</option>
-            <option value="RO">RO - Rondônia</option>
-            <option value="RR">RR - Roraima</option>
-            <option value="SC">SC - Santa Catarina</option>
-            <option value="SP">SP - São Paulo</option>
-            <option value="SE">SE - Sergipe</option>
-            <option value="TO">TO - Tocantins</option>
-          </select>
-        </div>
-      </div>
-      <div class="priorizar" id="priorizar" style="display: none;">
-        <i class="bi bi-exclamation-diamond"></i>
-        <p id="p_priorizar_regiao"></p>
-      </div>
-      <div id="regioes" class="lista-regioes"></div>
-    </div>
-  </div>
-
-  <div class="popup-passos" style="display: none;" id="popup-passos">
-    <div class="passos-content">
-      <i class="bi bi-x-lg" onclick="fecharPassos()" style="cursor: pointer; font-size: 30px; color: #451c8b;"></i>
-      <div class="passos-infos">
-        <h2>Métricas Utilizadas</h2>
-        <div class="passos-metricas">
-          <h3>para Modelos e Região</h3>
-          <div class="content-again">
-            <div class="text-metricas">
-              Para os totens as métricas utilizadas são resgatadas do banco de dados
-              conforme o inserido pelo gestores nos respectivos modelos
-              e suas criticidades são baseadas em porcentagens ultrapassadas
-              deste limite estabelecido.
-            </div>
-            <div class="scale-metricas">
-              <div class="card-metrica" style="background-color: #ff3131;">
-                <h1>Muito Perigoso</h1>
-                <h2>+ 70% de Alerta</h2>
-              </div>
-              <div class="card-metrica" style="background-color: #f98a25;">
-                <h1>Perigoso</h1>
-                <h2>+ 50% de Alerta</h2>
-              </div>
-              <div class="card-metrica" style="background-color: #fada64;">
-                <h1>Atenção</h1>
-                <h2>+ 30% de Alerta</h2>
+              <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                  var chart = new ApexCharts(document.querySelector("#chart"), options);
+                  chart.render();
+                });
+              </script>
+              <div class="tabela">
+                <div id="titulo-tabela">
+                  <h2>Capacidade Operacional por Região</h2>
+                </div>
+                <div id="categorias">
+                  <h2>Região</h2>
+                  <h2>H. Ideais</h2>
+                  <h2>H. Trabalhadas</h2>
+                </div>
+                <div id="conteudo_tabela"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
+
   </div>
 
-  <div class="popup-logout" style="display: none;" id="popup-logout">
-    <div class="popup-content">
-      <i class="bi bi-x-lg" onclick="fecharPopup()"></i>
-      <h1>Deseja Sair?</h1>
-      <div class="box-button">
-        <button onclick="window.location.href='login.html'">Fazer Logout</button>
+  <div class="popup-cadastro" id="popupmodelo" style="display: none;">
+    <div class="cadastro-content">
+      <i class="bi bi-x-lg fechar-popup" onclick="fecharPopupModelo()"></i>
+
+      <h1 id="popup_titulo" style="text-align: center; margin-bottom: 20px;">Cadastro de Modelo</h1>
+
+      <div class="infos">
+        <div class="infos-first">
+          <div class="drop">
+            <h2>Nome</h2>
+            <input type="text" id="input_nome_modelo">
+          </div>
+          <div class="drop">
+            <h2>Descrição</h2>
+            <input type="text" id="input_descricao">
+          </div>
+        </div>
+
+        <h1 style="margin-top: 20px; font-size: 18px; color: var(--principal); font-weight: 500;">Métricas de
+          Monitoramento:</h1>
+        <p class="info-default">
+          Ao selecionar uma métrica e clicar em <strong><u>Adicionar Parâmetro</u></strong>, um valor padrão
+          será sugerido.
+          Para CPU, RAM e Disco, este é o <strong><u>percentual máximo de uso</u></strong>.
+          Para Processos, é a <strong><u>contagem total</u></strong>.
+        </p>
+
+        <div class="infos-third" id="linha-input-estatica">
+          <div class="drop" style="width: 60%;">
+            <select id="componente_master" class="componentes" onchange="definirDefault(this)">
+              <option value="">Selecione para adicionar...</option>
+            </select>
+            <input type="hidden" id="limite_master">
+          </div>
+          <div class="drop" style="width: 40%;">
+            <button class="cadastrar" id="btn_adicionar_parametro" onclick="adicionarParametro()"
+              style="background-color: var(--fundo); color: var(--principal); border: 1px solid var(--principal);"
+              disabled>Adicionar Parâmetro</button>
+          </div>
+        </div>
+
+        <div class="parametros-scroll" id="parametros-container">
+        </div>
+      </div>
+
+      <div class="infos-final" style="margin-top: 20px;">
+        <div class="drop" style="width: 100%;">
+          <button class="cadastrar" id="popup_button" onclick="cadastrarModelo()">Cadastrar Modelo</button>
+        </div>
       </div>
     </div>
   </div>
 </body>
-
-<script src="eficiencia.js"></script>
 
 </html>
