@@ -1108,7 +1108,19 @@ select {
 }
 
 #dashboard-grafico {
-    display: flex;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    min-height: 400px;
+}
+
+#grafico-barra {
+    width: 100%;
+    height: 400px;
+    position: relative;
 }
 
 /* POPUP PARA LOGOUT */
