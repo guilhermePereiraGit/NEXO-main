@@ -368,14 +368,17 @@ header .header-navigation .alert {
 .alerta .dado .grid-alerta .tituloAlerta .grauAlerta {
     color: black;
     font-size: 25px;
+    text-align: center;
 }
 
 .alerta .dado .grid-alerta .tituloAlerta {
     margin-left: 10px;
+    text-align: center;
 }
 
 .alerta .dado .grid-alerta .tituloAlerta h1 {
     font-size: 25px;
+    text-align: center;
     color: var(--principal);
 }
 
@@ -553,6 +556,8 @@ header .header-navigation .alert {
 
 .tabela-processos td {
     border-bottom: solid var(--contraste) 2px;
+    white-space: normal;
+    overflow-wrap: break-word; 
 }
 
 .monitoramento {
