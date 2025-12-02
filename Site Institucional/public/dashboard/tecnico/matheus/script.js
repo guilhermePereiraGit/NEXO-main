@@ -680,8 +680,8 @@ function plotarRegioes(regioes) {
     <div class="regiao" onclick="escolherRegiao('${regioes[i].NomeRegiao}','${regioes[i].SiglaRegiao}')">
     <h1>${regioes[i].NomeRegiao} - ${regioes[i].SiglaRegiao}</h1>
     <div class="priorizar">
-    <h2>Disponibilidade</h2>
-    <h3>60%</h3>
+    <h2>Criticidade</h2>
+    <h3>155%</h3>
     </div>
     </div>
     `;
