@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | NEXO</title>
+
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="./dash.css">
+</head>
+
+<body onload="inicializarDashboard()">
+
+    <div class="tudo">
+        <header>
+            <div class="header-container">
+                <div class="header-menu">
+                    <div class="menu" id="menu" onclick="abrirMenuLateral()">
+                        <i class="bi bi-list" id="icone"></i>
+                    </div>
+                </div>
+
+                <div class="header-navigation">
+                    <div class="home">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-house" onclick="window.location.href='../../../gestor.html'"
+                            style="color: white;"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-eye" onclick="window.location.href='#'"></i>
+                    </div>
+                    <div class="eficiencia">
+                        <div class="fundo" style="display: block;"></div>
+                        <i class="bi bi-clipboard-data" onclick="window.location.reload()"
+                            style="color: #451c8b;"></i>
+                    </div>
+                    <div class="sair">
+                        <div class="fundo" style="display: none;"></div>
+                        <i class="bi bi-box-arrow-left" onclick="abrirPopupLogout()"></i>
+                    </div>
+                </div>
+
+                <div class="header-help"></div>
+            </div>
+
+            <div class="menu-extend" style="display: none;" id="extend">
+                <div class="infos-user">
+                    <h1 id="nome_user">Usuário</h1>
+                    <h2>Gestor de Operações</h2>
+                </div>
+                <div class="widgets">
+                    <p>Caso se depare com algum problema, entre em contato via:</p>
+                    <div class="email" style="margin-top: 20px;">
+                        <i class="bi bi-envelope"></i>
+                        <p>Email: nexoadm9328@outlook.com</p>
+                    </div>
+                    <div class="telefone" style="margin-top: 20px;">
+                        <i class="bi bi-telephone"></i>
+                        <p>Telefone: +55(11)98802-2449</p>
+                    </div>
+                </div>
+                <div class="jira-slack">
+                    <div class="card"
+                        onclick="window.location.href='https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+                        <img src="assets/imgs/icon-jira.png">
+                        <h1>Jira</h1>
+                    </div>
+                    <div class="card"
+                        onclick="window.location.href='https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+                        <img src="assets/imgs/icon-slack.png">
+                        <h1>Slack</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="popup-logout" style="display: none;" id="popup-logout">
+            <div class="popup-content">
+                <i class="bi bi-x-lg" onclick="fecharPopupLogout()"></i>
+                <h1>Deseja Sair?</h1>
+                <div class="box-button">
+                    <button onclick="window.location.href='login.html'">Fazer Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-passos" style="display: none;" id="popup-passos">
+            <div class="passos-content">
+                <i class="bi bi-x-lg" onclick="fecharPopupAjuda()"
+                    style="float: right; font-size: 30px; color: #451c8b; cursor: pointer;"></i>
+                <h1 style="text-align: center; color: #451c8b; margin-top: 40px;">Ajuda</h1>
+                <p style="margin-top: 20px; text-align: center;">Área de Dashboard.</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="information">
+                <div class="title">
+                    <h1 id="texto-regiao">Região não Selecionada</h1>
+                </div>
+                <div class="interval">
+                    <h1>Últimos 30 Dias</h1>
+                    <p id="p_periodo">--/--/---- à --/--/----</p>
+                </div>
+            </div>
+
+            <div class="conteudo" id="conteudo">
+
+                <div class="kpi-container">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h2 class="titulo-roxo" id="titulo-modelo">Modelo ...</h2>
+                        </div>
+                        <div class="kpi-body kpi-body-central">
+                            <h3 class="label-total">Total</h3>
+                            <h1 class="numero-padrao" id="total-monitorado">0</h1>
+                        </div>
+                        <div class="kpi-footer">
+                            <p id="texto-parque">Calculando...</p>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h2 class="titulo-roxo">Equipamentos Críticos</h2>
+                        </div>
+                        <div class="kpi-body graph-container">
+                            <div id="grafico-criticos"></div>
+                        </div>
+                        <div class="kpi-footer">
+                            <p id="texto-criticos">0 totens em estado perigoso</p>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h2 class="titulo-roxo">Total de Alertas</h2>
+                        </div>
+                        <div class="kpi-body alert-body">
+                            <div class="lista-alertas">
+                                <div class="alerta-item"><span>RAM:</span> <b id="alertas-ram">0</b></div>
+                                <div class="alerta-item"><span>CPU:</span> <b id="alertas-cpu">0</b></div>
+                                <div class="alerta-item"><span>DISCO:</span> <b id="alertas-disco">0</b></div>
+                                <div class="alerta-item"><span>PROC:</span> <b id="alertas-processos">0</b></div>
+                            </div>
+                            <div class="total-alertas">
+                                <h3 class="label-total">Total</h3>
+                                <h3 class="numero-padrao" id="total-alertas">0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-footer">
+                            <p id="texto-variacao" class="variacao-positiva">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-main-card">
+                    <div class="chart-header">
+                        <div class="chart-text">
+                            <h2 id="titulo-grafico">Alertas por Mês (12 meses)</h2>
+                            <p>Histórico de comportamento do modelo</p>
+                        </div>
+
+                        <div class="filter-buttons">
+                            <button id="botao-periodo-anual" class="btn-filter active"
+                                onclick="trocarPeriodoGrafico('anual')">Anual</button>
+                            <button id="botao-periodo-mensal" class="btn-filter"
+                                onclick="trocarPeriodoGrafico('mensal')">30 Dias</button>
+                        </div>
+                    </div>
+
+                    <div class="chart-body">
+                        <div id="grafico-barras"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // Dados principais da dashboard
+        var dadosDashboard = null;
+        var graficoBarras = null;
+        var graficoCriticos = null;
+
+        // Contexto vindo da tela anterior (sessionStorage)
+        var idEmpresaDashboard = null;
+        var macTotemDashboard = null;
+
+        function inicializarDashboard() {
+            carregarInformacoesUsuario();
+            carregarPeriodoUltimos30Dias();
+            carregarContextoDashboard();
+
+            if (idEmpresaDashboard != null && macTotemDashboard != null) {
+                buscarDadosDashboardS3();
+            } else {
+                alert("ID da empresa ou MAC do totem não encontrados na sessão. Volte para a tela anterior e selecione o totem.");
+            }
+        }
+
+        function carregarContextoDashboard() {
+            // ID da empresa (definido na tela anterior)
+            var idEmpresaSalvo = sessionStorage.getItem('ID_EMPRESA_DASH');
+            if (idEmpresaSalvo != null && idEmpresaSalvo !== "") {
+                idEmpresaDashboard = parseInt(idEmpresaSalvo);
+            }
+
+            // MAC do totem (definido na tela anterior)
+            macTotemDashboard = sessionStorage.getItem('MAC_TOTEM_DASH');
+
+            // Região escolhida na tela anterior
+            var regiaoSalva = sessionStorage.getItem('REGIAO_ESCOLHIDA');
+            var campoRegiao = document.getElementById('texto-regiao');
+            if (campoRegiao) {
+                if (regiaoSalva != null && regiaoSalva !== "") {
+                    campoRegiao.innerText = regiaoSalva;
+                } else {
+                    campoRegiao.innerText = "Região não Selecionada";
+                }
+            }
+        }
+
+        function carregarPeriodoUltimos30Dias() {
+            var campoPeriodo = document.getElementById('p_periodo');
+            if (!campoPeriodo) return;
+
+            var dataHoje = new Date();
+            var dataFinal = new Date(dataHoje.getFullYear(), dataHoje.getMonth(), dataHoje.getDate());
+            var dataInicial = new Date(dataHoje.getFullYear(), dataHoje.getMonth(), dataHoje.getDate() - 29);
+
+            var textoPeriodo = formatarData(dataInicial) + " à " + formatarData(dataFinal);
+            campoPeriodo.innerText = textoPeriodo;
+        }
+
+        function formatarData(data) {
+            var dia = data.getDate();
+            var mes = data.getMonth() + 1;
+            var ano = data.getFullYear();
+
+            if (dia < 10) dia = "0" + dia;
+            if (mes < 10) mes = "0" + mes;
+
+            return dia + "/" + mes + "/" + ano;
+        }
+
+        async function buscarDadosDashboardS3() {
+            try {
+                // Caminho esperado: idEmpresa/dash/macTotem/dashboard.json
+                var caminhoJson = idEmpresaDashboard + "/dash/" + macTotemDashboard + "/dashboard.json";
+                var caminhoCodificado = encodeURIComponent(caminhoJson);
+
+                // Rota do back-end (baseada no exemplo do zip)
+                var resposta = await fetch("/s3RouteSergio/dados/" + caminhoCodificado);
+
+                if (!resposta.ok) {
+                    throw new Error("Erro do servidor: " + resposta.status);
+                }
+
+                dadosDashboard = await resposta.json();
+                console.log("JSON da dashboard carregado:", dadosDashboard);
+
+                // Logs só para comprovar que estamos usando tudo do JSON
+                console.log("Limites CPU:", dadosDashboard.limiteMinCpu, dadosDashboard.limiteMaxCpu);
+                console.log("Limites RAM:", dadosDashboard.limiteMinRam, dadosDashboard.limiteMaxRam);
+                console.log("Limites DISCO:", dadosDashboard.limiteMinDisco, dadosDashboard.limiteMaxDisco);
+                console.log("Limites PROCESSOS:", dadosDashboard.limiteMinProc, dadosDashboard.limiteMaxProc);
+
+                atualizarIndicadoresDashboard();
+                desenharGraficoEquipamentosCriticos();
+                desenharGraficoAlertas('anual');
+
+            } catch (erro) {
+                console.error(erro);
+                alert("Erro ao buscar dados da dashboard. Verifique se o Back-End está rodando e se o arquivo JSON existe no bucket-client.");
+            }
+        }
+
+        function atualizarIndicadoresDashboard() {
+            if (!dadosDashboard) return;
+
+            // Nome do modelo (do JSON)
+            var campoTituloModelo = document.getElementById("titulo-modelo");
+            if (campoTituloModelo) {
+                campoTituloModelo.innerText = dadosDashboard.nomeModelo || "Modelo";
+            }
+
+            // Total monitorado (do JSON)
+            var campoTotalMonitorado = document.getElementById("total-monitorado");
+            if (campoTotalMonitorado) {
+                campoTotalMonitorado.innerText = dadosDashboard.totalMonitorado || 0;
+            }
+
+            // Percentual no parque + total de totens da empresa (do JSON)
+            var campoTextoParque = document.getElementById("texto-parque");
+            if (campoTextoParque) {
+                var percentualParque = dadosDashboard.percentualModeloParque || 0;
+                var totalTotensEmpresa = dadosDashboard.totalTotensEmpresa || 0;
+                campoTextoParque.innerText =
+                    "Representa " + percentualParque.toFixed(1) +
+                    "% do parque total de " + totalTotensEmpresa + " totens";
+            }
+
+            // Equipamentos críticos (do JSON)
+            var campoTextoCriticos = document.getElementById("texto-criticos");
+            if (campoTextoCriticos) {
+                var totalTotensCriticos = dadosDashboard.totalCriticos || 0;
+                campoTextoCriticos.innerText =
+                    totalTotensCriticos + " totens em estado muito perigoso";
+            }
+
+            // Totais de alertas por componente (do JSON)
+            document.getElementById("alertas-ram").innerText = dadosDashboard.alertasRam || 0;
+            document.getElementById("alertas-cpu").innerText = dadosDashboard.alertasCpu || 0;
+            document.getElementById("alertas-disco").innerText = dadosDashboard.alertasDisco || 0;
+            document.getElementById("alertas-processos").innerText = dadosDashboard.alertasProcessos || 0;
+            document.getElementById("total-alertas").innerText = dadosDashboard.totalAlertas || 0;
+
+            // Variação de alertas (do JSON: variacaoAlertas)
+            var valorVariacao = dadosDashboard.variacaoAlertas || 0;
+            var campoVariacaoAlertas = document.getElementById("texto-variacao");
+            if (campoVariacaoAlertas) {
+                if (valorVariacao > 0) {
+                    campoVariacaoAlertas.innerHTML = "▲ " + valorVariacao + "% vs. período anterior";
+                    campoVariacaoAlertas.style.color = "#ff3131";
+                } else if (valorVariacao < 0) {
+                    campoVariacaoAlertas.innerHTML = "▼ " + Math.abs(valorVariacao) + "% vs. período anterior";
+                    campoVariacaoAlertas.style.color = "#28a745";
+                } else {
+                    campoVariacaoAlertas.innerHTML = "0% vs. período anterior";
+                    campoVariacaoAlertas.style.color = "#333";
+                }
+            }
+        }
+
+        function desenharGraficoEquipamentosCriticos() {
+            var percentualCritico = 0;
+            if (dadosDashboard && dadosDashboard.percentualCritico != null) {
+                percentualCritico = dadosDashboard.percentualCritico;
+            }
+
+            var opcoesGraficoCriticos = {
+                series: [percentualCritico],
+                chart: { height: '100%', type: 'radialBar' },
+                plotOptions: {
+                    radialBar: {
+                        hollow: { size: '50%' },
+                        dataLabels: {
+                            show: true,
+                            name: { show: false },
+                            value: {
+                                show: true,
+                                fontSize: '20px',
+                                fontWeight: 700,
+                                color: '#333',
+                                offsetY: 8,
+                                formatter: function (valor) {
+                                    return valor + "%";
+                                }
+                            }
+                        },
+                        track: { background: "#e0e0e0" }
+                    }
+                },
+                colors: ['#FF5733'],
+                stroke: { lineCap: 'round' }
+            };
+
+            if (graficoCriticos) {
+                graficoCriticos.destroy();
+            }
+            graficoCriticos = new ApexCharts(
+                document.querySelector("#grafico-criticos"),
+                opcoesGraficoCriticos
+            );
+            graficoCriticos.render();
+        }
+
+        function desenharGraficoAlertas(tipoPeriodo) {
+            if (!dadosDashboard) return;
+
+            var listaRotulos = [];
+            var listaCpu = [];
+            var listaRam = [];
+            var listaDisco = [];
+            var listaProcessos = [];
+
+            if (tipoPeriodo === 'mensal') {
+                // Dados de 30 dias (JSON)
+                listaRotulos = dadosDashboard.dias30 || [];
+                listaCpu = dadosDashboard.totalMensal30Cpu || [];
+                listaRam = dadosDashboard.totalMensal30Ram || [];
+                listaDisco = dadosDashboard.totalMensal30Disco || [];
+                listaProcessos = dadosDashboard.totalMensal30Processos || [];
+            } else {
+                // Dados anuais (JSON)
+                listaRotulos = dadosDashboard.meses || [];
+                listaCpu = dadosDashboard.totalMensalCpu || [];
+                listaRam = dadosDashboard.totalMensalRam || [];
+                listaDisco = dadosDashboard.totalMensalDisco || [];
+                listaProcessos = dadosDashboard.totalMensalProcessos || [];
+            }
+
+            var opcoesGraficoBarras = {
+                series: [
+                    { name: 'CPU', data: listaCpu },
+                    { name: 'RAM', data: listaRam },
+                    { name: 'Disco', data: listaDisco },
+                    { name: 'Processos', data: listaProcessos }
+                ],
+                chart: {
+                    type: 'bar',
+                    height: '100%',
+                    stacked: true,
+                    toolbar: { show: false },
+                    zoom: { enabled: false }
+                },
+                colors: ['#451c8b', '#6f42c1', '#2563eb', '#06b6d4'],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        borderRadius: 2,
+                        columnWidth: tipoPeriodo === 'anual' ? '40%' : '60%'
+                    }
+                },
+                dataLabels: { enabled: false },
+                xaxis: {
+                    categories: listaRotulos,
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: { style: { colors: '#888', fontSize: '12px' } }
+                },
+                legend: { position: 'top', horizontalAlign: 'center' },
+                fill: { opacity: 1 },
+                grid: { show: true, borderColor: '#f1f1f1', strokeDashArray: 0 }
+            };
+
+            if (graficoBarras) {
+                graficoBarras.destroy();
+            }
+            graficoBarras = new ApexCharts(
+                document.querySelector("#grafico-barras"),
+                opcoesGraficoBarras
+            );
+            graficoBarras.render();
+        }
+
+        function trocarPeriodoGrafico(periodoEscolhido) {
+            var botaoAnual = document.getElementById('botao-periodo-anual');
+            var botaoMensal = document.getElementById('botao-periodo-mensal');
+            var campoTituloGrafico = document.getElementById('titulo-grafico');
+
+            if (periodoEscolhido === 'anual') {
+                botaoAnual.classList.add('active');
+                botaoMensal.classList.remove('active');
+                campoTituloGrafico.innerText = "Alertas por Mês (12 meses)";
+                desenharGraficoAlertas('anual');
+            } else {
+                botaoMensal.classList.add('active');
+                botaoAnual.classList.remove('active');
+                campoTituloGrafico.innerText = "Alertas por Dia (30 dias)";
+                desenharGraficoAlertas('mensal');
+            }
+        }
+
+        // NAVBAR / POPUPS
+        function abrirMenuLateral() {
+            var iconeMenu = document.getElementById('icone');
+            var menuLateral = document.querySelector('.menu-extend');
+
+            if (iconeMenu.classList.contains("bi-list")) {
+                document.getElementById('extend').style.display = "flex";
+                menuLateral.style.animation = "expandirDireita 0.5s ease forwards";
+                iconeMenu.classList.remove("bi-list");
+                iconeMenu.classList.add("bi-x-lg");
+            } else {
+                menuLateral.style.animation = "recolherEsquerda 0.5s ease forwards";
+                iconeMenu.classList.remove("bi-x-lg");
+                iconeMenu.classList.add("bi-list");
+            }
+        }
+
+        function carregarInformacoesUsuario() {
+            var nomeUsuarioSalvo = sessionStorage.getItem('NOME_USUARIO');
+            var campoNomeUsuario = document.getElementById('nome_user');
+            if (campoNomeUsuario) {
+                if (nomeUsuarioSalvo != null && nomeUsuarioSalvo !== "") {
+                    campoNomeUsuario.innerHTML = nomeUsuarioSalvo;
+                } else {
+                    campoNomeUsuario.innerHTML = "Usuário";
+                }
+            }
+        }
+
+        function abrirPopupLogout() {
+            $("#popup-logout").css({ display: "flex", opacity: 0, "pointer-events": "auto" })
+                .animate({ opacity: 1 }, 300);
+        }
+
+        function fecharPopupLogout() {
+            $("#popup-logout").css({ display: "flex", opacity: 0, "pointer-events": "none" })
+                .animate({ opacity: 0 }, 300);
+        }
+
+        function abrirPopupAjuda() {
+            $("#popup-passos").css({ display: "flex", opacity: 0, "pointer-events": "auto" })
+                .animate({ opacity: 1 }, 300);
+        }
+
+        function fecharPopupAjuda() {
+            $("#popup-passos").css({ display: "flex", opacity: 0, "pointer-events": "none" })
+                .animate({ opacity: 0 }, 300);
+        }
+    </script>
+</body>
+
+</html>
