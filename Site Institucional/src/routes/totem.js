@@ -23,5 +23,12 @@ router.get("/buscarEnderecoTotem/:mac", function (req, res) {
     totemController.buscarEnderecoTotem(req, res);
 });
 
+router.get("/infoTotem", function (req, res) {
+    totemController.buscarInfoTotem(req, res);
+})
+
+router.get("/parametrosTotem", function (req, res) {
+    totemController.buscarparametrosTotem(req, res);
+})
 
 module.exports = router;

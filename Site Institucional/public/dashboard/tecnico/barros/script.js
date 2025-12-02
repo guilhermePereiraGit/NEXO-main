@@ -4,8 +4,8 @@ window.onload = async function () {
 
 async function carregarDadosDoTotem() {
     const mac = sessionStorage.MAC_TOTEM;
-    const empresa = sessionStorage.IDEMPRESA;
-    const modelo = sessionStorage.MODELOTOTEM;
+    const empresa = sessionStorage.ID_EMPRESA;
+    
     console.log("Carregando dados do totem:", mac, empresa);
 
     const dados = await carregarJson(empresa, mac, "dados.json");
@@ -14,6 +14,9 @@ async function carregarDadosDoTotem() {
 
     preencherDadosBucket(dados);
     preencherInfoTotem(infoTotem);
+
+    const modelo = sessionStorage.MODELOTOTEM;
+
     preencherTicket(ticket);
     carregarDashboard(modelo, empresa);
 
@@ -77,8 +80,8 @@ function preencherInfoTotem(totem) {
     document.querySelector('#rua p').innerHTML = t.rua;
     document.querySelector('#numero p').innerHTML = t.numero;
 
+    document.getElementById('nomeUsuario').innerHTML = sessionStorage.NOME_USUARIO;
     sessionStorage.MODELOTOTEM = t.modelo;
-    sessionStorage.IDEMPRESA = t.fkEmpresa;
 
     console.log("Id da empresa no objeto totem:", t.fkEmpresa);
     console.log("Id da empresa armazenado na sessionStorage:", sessionStorage.IDEMPRESA);
@@ -116,6 +119,7 @@ function preencherTicket(ticket) {
 }
 
 dadosGrafico = [];
+labelsGrafico = [];
 function preencherDadosBucket(jsonDados) {
     if (!jsonDados) {
         console.log("Nenhum dado encontrado no bucket.");
@@ -148,6 +152,7 @@ function preencherDadosBucket(jsonDados) {
         dadosCpu.push(dados.janelas4h[i].cpuMedia);
         dadosRam.push(dados.janelas4h[i].ramMedia);
         dadosDisco.push(dados.janelas4h[i].discoMedia);
+        labelsGrafico.push(dados.janelas4h[i].horaInicio);
 
         dias = dados.janelas4h[i].uptime / 24;
         diasInteiros = Math.floor(dias);
@@ -234,7 +239,7 @@ function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta
     return new Chart(ctx, {
         type: "line",
         data: {
-            labels: ["20h", "16h", "12h", "8h", "4h", "0h"],
+            labels: [labelsGrafico],
             datasets: [
                 {
                     label: componente.toUpperCase(),
@@ -271,6 +276,7 @@ function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta
                     }
                 },
                 x: {
+                    max: 7,
                     title: {
                         display: true,
                         text: "Horas passadas desde a captura",

@@ -92,6 +92,57 @@ async function modificarStatusTotem(req, res) {
     }
 }
 
+async function buscarInfoTotem(req, res){
+    var numMAC = req.query.numMAC;
+
+    console.log("buscarInfoTotem chamado com MAC:", numMAC);
+
+    if (!numMAC) {
+        console.log("MAC não foi fornecido!");
+        return res.status(400).json({ erro: "numMAC não fornecido" });
+    }
+
+    try {
+        console.log("Chamando totemModel.infoTotem...");
+        const resultado = await totemModel.infoTotem(numMAC);
+        console.log("Resultado da query:", resultado);
+        res.json(resultado);
+    } catch (erro) {
+        console.error("Erro completo:", erro);
+        console.log(
+            "\nHouve um erro ao realizar a busca das informações! Erro: ",
+            erro.sqlMessage || erro.message
+        );
+        res.status(500).json({ erro: erro.sqlMessage || erro.message || "Erro desconhecido" });
+    }
+}
+
+async function buscarparametrosTotem(req, res){
+    var nomeModelo = req.query.nomeModelo;
+    var idEmpresa = req.query.idEmpresa;
+
+    console.log("buscarInfoTotem chamado com modelo:", nomeModelo);
+    console.log("buscarInfoTotem chamado com empresa:", idEmpresa);
+
+    if (!nomeModelo || !idEmpresa) {
+        return res.status(400).json({ erro: "modelo ou empresa não fornecido" });
+    }
+
+    try {
+        const resultado = await totemModel.parametrosTotem(nomeModelo, idEmpresa);
+        console.log("Resultado da query:", resultado);
+        res.json(resultado);
+
+    } catch (erro) {
+        console.error("Erro completo:", erro);
+        console.log(
+            "\nHouve um erro ao realizar a busca das informações! Erro: ",
+            erro.sqlMessage || erro.message
+        );
+        res.status(500).json({ erro: erro.sqlMessage || erro.message || "Erro desconhecido" });
+    }
+}
+
 module.exports = {
-    cadastrarTotem, verificarAprovados, modificarStatusTotem, buscarTotens, buscarEnderecoTotem
+    cadastrarTotem, verificarAprovados, modificarStatusTotem, buscarTotens, buscarEnderecoTotem, buscarparametrosTotem, buscarInfoTotem
 };
