@@ -1104,13 +1104,6 @@ select {
     background-color: #ff3131;
 }
 
-/* GRÁFICO HEATMAP */
-#dashboard {
-    display: flex;
-    width: 30vw;
-    height: 20vh;
-}
-
 /* POPUP PARA LOGOUT */
 .popup-logout {
     width: 100%;
