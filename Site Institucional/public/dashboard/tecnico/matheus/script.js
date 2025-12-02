@@ -619,6 +619,10 @@ function escolherRegiao(regiao, sigla) {
     carregarDados();
     gerarGraficoLinha();
     carregarGraficoAlertasPorGrau();
+
+    setTimeout(() => {
+        carregarGraficoAlertasPorGrau();
+    }, 1000);
 }
 
 function carregarTotens() {
