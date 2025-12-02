@@ -1053,11 +1053,11 @@ select {
 .header-container {
     background-color: var(--principal);
     width: 150px;
-    height: 100vh;
+    height: 100%;
     padding: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
 }
 
@@ -1067,6 +1067,22 @@ select {
     cursor: pointer;
     z-index: 900;
     transition: 0.3s;
+}
+
+.header-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.header-navigation .home,
+.header-navigation .eficiencia,
+.header-navigation .modelos,
+.header-navigation .alert,
+.header-navigation .sair {
+    display: flex;
+    align-items: center;
+    height: 13vh;
 }
 
 #menu {
@@ -1220,4 +1236,678 @@ select {
 .information-first{
     display: flex;
     gap: 20px;
+}
+
+/* =============== POPUP ESCOLHA DE REGIÃO =============== */
+.popup-escolha {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.popup-escolha[style*="display: flex"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.escolha-content {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.escolha-content > i {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.lista-regioes {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.regiao {
+    padding: 16px;
+    background: #f8f9ff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid #e2e8f0;
+}
+
+.regiao:hover {
+    background: #e6e8ff;
+    transform: translateY(-2px);
+}
+
+.regiao h1 {
+    margin: 0;
+    font-size: 18px;
+    color: #451c8b;
+}
+
+/* =============== RESPONSIVIDADE =============== */
+
+/* Ajustes base para o header e navegação */
+.header-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+}
+
+.header-navigation > div {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.header-navigation .fundo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #E6E8FF;
+    border-radius: 0;
+    z-index: 1;
+    left: 0;
+}
+
+.header-navigation i {
+    position: relative;
+    z-index: 2;
+    font-size: 50px;
+    color: white;
+    transition: 0.3s;
+    padding: 20px 0;
+}
+
+.header-navigation > div:hover i {
+    transform: scale(1.1);
+}
+
+/* Ajustes base para o navbar superior */
+.information {
+    box-sizing: border-box;
+    overflow: visible;
+    width: 100% !important;
+    margin-left: 0;
+}
+
+.information .title {
+    flex: 1;
+    min-width: 0;
+}
+
+.information .title p {
+    white-space: nowrap;
+}
+
+.information-first {
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* Telas grandes e médias (acima de 1024px) */
+@media (min-width: 1025px) {
+    .information {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    
+    .information .title p {
+        font-size: 25px;
+    }
+}
+
+/* Tablets e telas médias (até 1024px) */
+@media (max-width: 1024px) {
+    .information {
+        padding-left: 20px;
+        padding-right: 20px;
+        height: auto;
+        min-height: 12vh;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .information .title p {
+        font-size: 20px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .information .alterar-regiao {
+        font-size: 28px;
+    }
+
+    .div_kpis {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 15px;
+    }
+
+    .kpi {
+        width: 48%;
+        min-width: 280px;
+    }
+
+    #capacidade_operacional {
+        width: 100%;
+    }
+
+    .graficos {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+
+    #chart,
+    .tabela {
+        width: 100%;
+        min-height: 400px;
+    }
+
+    .header-container {
+        width: 100px;
+        padding: 20px;
+    }
+
+    .header-container i {
+        font-size: 40px;
+    }
+
+    .header-navigation {
+        gap: 15px;
+    }
+
+    .header-navigation i {
+        font-size: 40px;
+        padding: 15px 0;
+    }
+
+    .menu-extend {
+        left: 100px;
+        width: 40%;
+    }
+}
+
+/* Ajuste específico para evitar corte do texto entre tablet e desktop */
+@media (max-width: 1200px) and (min-width: 769px) {
+    .information .title p {
+        font-size: 18px;
+    }
+}
+
+/* Tablets pequenos e celulares grandes (até 768px) */
+@media (max-width: 768px) {
+    .header-container {
+        width: 80px;
+        padding: 15px;
+    }
+
+    .header-container i {
+        font-size: 35px;
+    }
+
+    .header-navigation {
+        gap: 12px;
+    }
+
+    .header-navigation i {
+        font-size: 35px;
+        padding: 12px 0;
+    }
+
+    .menu-extend {
+        left: 80px;
+        width: calc(100% - 80px);
+        padding: 15px;
+    }
+
+    .menu-extend .jira-slack {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .menu-extend .jira-slack .card {
+        width: 100%;
+    }
+
+    .menu-extend .widgets {
+        width: 100%;
+    }
+
+    .menu-extend .widgets .email,
+    .menu-extend .widgets .telefone {
+        font-size: 16px;
+    }
+
+    .menu-extend .widgets p {
+        font-size: 14px;
+    }
+
+    .information {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .information-first {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .information .title {
+        width: 100%;
+    }
+
+    .information .title p {
+        font-size: 18px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .information .alterar-regiao {
+        font-size: 24px;
+        align-self: flex-end;
+        margin-top: -30px;
+    }
+
+    .div_kpis {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .kpi {
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    .kpi h2 {
+        font-size: 18px;
+    }
+
+    .kpi h3 {
+        font-size: 38px;
+    }
+
+    .kpi p {
+        font-size: 14px;
+    }
+
+    #capacidade_operacional h2 {
+        font-size: 18px;
+    }
+
+    #kpi-baixo-capacidade-operacional {
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    #kpi-baixo-capacidade-operacional h3 {
+        font-size: 12px;
+    }
+
+    #kpi-baixo-capacidade-operacional p {
+        font-size: 26px;
+    }
+
+    .graficos {
+        margin-top: 3%;
+    }
+
+    #chart,
+    .tabela {
+        padding: 15px;
+        min-height: 350px;
+    }
+
+    #titulo-tabela h2 {
+        font-size: 18px;
+    }
+
+    #categorias h2 {
+        font-size: 13px;
+    }
+
+    .linha-tabela p {
+        font-size: 13px;
+    }
+
+    .escolha-content {
+        width: 95%;
+        padding: 20px;
+        max-height: 80vh;
+    }
+
+    .escolha-content > i {
+        font-size: 24px;
+        top: 10px;
+        right: 15px;
+    }
+
+    .regiao h1 {
+        font-size: 16px;
+    }
+}
+
+/* Celulares (até 480px) */
+@media (max-width: 480px) {
+    .header-container {
+        width: 60px;
+        padding: 10px;
+    }
+
+    .header-container i {
+        font-size: 28px;
+    }
+
+    .header-navigation {
+        gap: 10px;
+    }
+
+    .header-navigation i {
+        font-size: 28px;
+        padding: 10px 0;
+    }
+
+    .menu-extend {
+        left: 60px;
+        width: calc(100% - 60px);
+        padding: 10px;
+    }
+
+    .menu-extend .infos-user h1 {
+        font-size: 18px;
+    }
+
+    .menu-extend .infos-user h2 {
+        font-size: 14px;
+    }
+
+    .information {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .information h1 {
+        font-size: 20px;
+    }
+
+    .information .title p {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .information .alterar-regiao {
+        font-size: 20px;
+        margin-top: -25px;
+    }
+
+    .kpi {
+        padding: 15px 10px;
+    }
+
+    .kpi h2 {
+        font-size: 16px;
+    }
+
+    .kpi h3 {
+        font-size: 32px;
+    }
+
+    .kpi p {
+        font-size: 13px;
+    }
+
+    #capacidade_operacional h2 {
+        font-size: 16px;
+    }
+
+    #kpi-baixo-capacidade-operacional {
+        gap: 20px;
+    }
+
+    #kpi-baixo-capacidade-operacional h3 {
+        font-size: 11px;
+    }
+
+    #kpi-baixo-capacidade-operacional p {
+        font-size: 22px;
+    }
+
+    #chart,
+    .tabela {
+        padding: 10px;
+        min-height: 300px;
+    }
+
+    #titulo-tabela {
+        margin-bottom: 10px;
+    }
+
+    #titulo-tabela h2 {
+        font-size: 16px;
+    }
+
+    #categorias {
+        padding: 8px 0;
+    }
+
+    #categorias h2 {
+        font-size: 11px;
+    }
+
+    .linha-tabela {
+        padding: 6px 3px;
+    }
+
+    .linha-tabela p {
+        font-size: 11px;
+    }
+
+    #conteudo_tabela {
+        gap: 8px;
+    }
+
+    .escolha-content {
+        padding: 15px;
+    }
+
+    .regiao {
+        padding: 12px;
+    }
+
+    .regiao h1 {
+        font-size: 14px;
+    }
+
+    .lista-regioes {
+        gap: 8px;
+    }
+}
+
+/* Ajustes para telas muito pequenas (até 360px) */
+@media (max-width: 360px) {
+    .header-container {
+        width: 50px;
+        padding: 8px;
+    }
+
+    .header-container i {
+        font-size: 24px;
+    }
+
+    .header-navigation i {
+        font-size: 24px;
+        padding: 8px 0;
+    }
+
+    .menu-extend {
+        left: 50px;
+        width: calc(100% - 50px);
+    }
+
+    .kpi h3 {
+        font-size: 28px;
+    }
+
+    #kpi-baixo-capacidade-operacional p {
+        font-size: 20px;
+    }
+
+    #categorias h2,
+    .linha-tabela p {
+        font-size: 10px;
+    }
+}
+
+.popup-passos {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-passos .passos-content {
+    width: 50%;
+    height: 60vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+.popup-passos .passos-content .passos-infos{}
+.popup-passos .passos-content .passos-infos h2{
+    color: var(--principal);
+    text-align: center;
+    font-size: 25px;
+}
+.popup-passos .passos-content .passos-infos h3{
+    text-align: center;
+    margin-top: -10px;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas{
+    width: 100%;
+    height: 45vh;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas .content-again{
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    align-items: center;
+}
+.popup-passos .passos-content .passos-infos .passos-metricas .content-again .text-metricas{
+    width: 45%;
+    font-size: 18px;
+    text-align: justify;
+}
+.scale-metricas{
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    height: 35vh;
+}
+.card-metrica{
+    display: flex;
+    padding: 25px;
+}
+.card-metrica h1{
+    font-size: 18px;
+    width: 50%;
+}
+.card-metrica h2{
+    font-size: 18px !important;
+    width: 50%;
+}
+
+.popup-logout {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.507);
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    opacity: 0;
+    display: none;
+}
+
+.popup-logout .popup-content {
+    width: 30%;
+    height: 40vh;
+    background-color: white;
+    padding: 20px;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.popup-logout .popup-content i {
+    font-size: 30px;
+    color: var(--principal);
+    cursor: pointer;
+}
+
+.popup-logout .popup-content h1 {
+    color: var(--principal);
+    text-align: center;
+}
+
+.popup-logout .popup-content button {
+    padding: 30px;
+    font-size: 20px;
+    width: 90%;
+    background-color: var(--principal);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.popup-logout .popup-content .box-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
 }

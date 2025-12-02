@@ -1,210 +1,325 @@
-//Chamar Funções de Carregamento de Dados
-window.onload = function() {
-    carregarDados();
-};
-
-//Chamar Função de Plotar Gráficos (Detalhe, usando o método de EventListener para aguardar surgir
-//o canvas corretamente para plotar)
-window.addEventListener("load", () => {
-        gerarGraficoPizza();
-        gerarGraficoPizza2();
-});
-
-function gerarGraficoPizza() {
-    const barra = document.getElementById('grafico-pizza');
-    new Chart(barra, {
-        type: 'doughnut',
-        data: {
-            labels: ['Alertas', 'Totens'],
-            datasets: [{
-                data: [400, 1000],
-                backgroundColor: ["#451c8b","#c8c1ff"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-            }
-        },
-    });
-}
-
-function gerarGraficoPizza2() {
-    const barra = document.getElementById('grafico-pizza2');
-    new Chart(barra, {
-        type: 'doughnut',
-        data: {
-            labels: ['Alertas', 'Técnicos'],
-            datasets: [{
-                data: [120, 60],
-                backgroundColor: ["#451c8b","#c8c1ff"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-            }
-        },
-    });
-}
-
-function gerarGraficoLinha() {
-    const linha = document.getElementById('grafico-linha');
-    new Chart(linha, {
-        type: 'line',
-        data: {
-            labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-            datasets: [
-                {
-                    label: 'Atenção',
-                    data: [10, 15, 5, 10, 13, 20, 15],
-                    borderColor: '#fada64',
-                    tension: 0.4
-                },
-                {
-                    label: 'Perigoso',
-                    data: [5, 2, 7, 12, 3, 6, 9],
-                    borderColor: '#f98a25',
-                    tension: 0.4
-                },
-                {
-                    label: 'Crítico',
-                    data: [1, 2, 1, 4, 2, 3, 1],
-                    borderColor: '#ff3131',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
-                }
-            }
-        },
-    });
-}
-function escolherRegiao(regiao, sigla) {
-    sessionStorage.setItem('REGIAO_ESCOLHIDA', regiao);
-    sessionStorage.setItem('SIGLA_REGIAO', sigla);
-    fecharEscolha();
-    carregarDados();
-    gerarGraficoLinha();
-}
-
-function carregarDados() {
-    regiao_escolhida = document.getElementById('regiao-escolhida');
-    sigla_escolhida = document.getElementById('sigla-regiao');
-
-    if (sessionStorage.getItem('REGIAO_ESCOLHIDA')) {
-        regiao_escolhida.innerHTML = sessionStorage.getItem('REGIAO_ESCOLHIDA');
-        sigla_escolhida.innerHTML = sessionStorage.getItem('SIGLA_REGIAO');
-        document.getElementById('waiting').style.display = 'none';
-        document.getElementById('conteudo').style.display = 'block';
-        document.getElementById('escolhaNew').style.display = 'block';
-        document.getElementById('eficiencia').style.display = 'block';
-        document.getElementById('alertas').style.display = 'block';
-        
-    } else {
-        regiao_escolhida.innerHTML = "Região não Selecionada";
-        sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
-        document.getElementById('escolhaNew').style.display = 'none';
-        document.getElementById('conteudo').style.display = 'none';
-        document.getElementById('eficiencia').style.display = 'none';
-        document.getElementById('alertas').style.display = 'none';
-    }
-}
-
-function carregarRegioes() {
-    escolha = document.getElementById('estado-escolha').value;
-    regioes = document.getElementById('regioes');
-    producao = document.getElementById('producao');
-    aguardando = document.getElementById('aguardando');
-    priorizar = document.getElementById('priorizar');
-    if (escolha == "x") {
-        aguardando.style.display = 'flex';
-        regioes.style.display = 'none';
-        producao.style.display = 'none';
-        priorizar.style.display = 'none';
-    } else if (escolha == "SP") {
-        aguardando.style.display = 'none';
-        regioes.style.display = 'flex';
-        producao.style.display = 'none';
-        priorizar.style.display = 'flex';
-    } else {
-        aguardando.style.display = 'none';
-        regioes.style.display = 'none';
-        producao.style.display = 'flex';
-        priorizar.style.display = 'none';
-    }
-}
-
-function ativar(escolha) {
-    document.getElementById(escolha).style.display = 'block';
-    document.getElementById(escolha).style.animation = 'expandirEsquerda 0.5s ease forwards';
-    if (escolha == "fundo") {
-        document.getElementById('fundo2').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById('first').style.color = "#451c8b";
-        document.getElementById('second').style.color = "white";
-        document.getElementById('third').style.color = "white";
-    } else if (escolha == "fundo2") {
-        document.getElementById('fundo').style.animation = 'recolherDireita 0.5s ease forwards';
-        document.getElementById('second').style.color = "#451c8b";
-        document.getElementById('first').style.color = "white";
-        document.getElementById('third').style.color = "white";
-    }
-}
 
 function abrirMenu() {
-    menu_icon = document.getElementById('icone');
-    menu = document.querySelector('.menu-extend');
-    if (menu_icon.classList.contains("bi-list")) {
-        console.log("entrei");
-        document.getElementById('extend').style.display = "flex";
-        menu.style.animation = "expandirDireita 0.5s ease forwards";
-        menu_icon.classList.remove("bi-list");
-        menu_icon.classList.add("bi-x-lg")
+  menu_icon = document.getElementById('icone');
+  menu = document.querySelector('.menu-extend');
+  if (menu_icon.classList.contains("bi-list")) {
+    document.getElementById('extend').style.display = "flex";
+    menu.style.animation = "expandirDireita 0.5s ease forwards";
+    menu_icon.classList.remove("bi-list");
+    menu_icon.classList.add("bi-x-lg")
 
-    } else {
-        menu.style.animation = "recolherEsquerda 0.5s ease forwards";
-        menu_icon.classList.remove("bi-x-lg");
-        menu_icon.classList.add("bi-list")
+  } else {
+    menu.style.animation = "recolherEsquerda 0.5s ease forwards";
+    menu_icon.classList.remove("bi-x-lg");
+    menu_icon.classList.add("bi-list")
+  }
+}
+
+function getUltimoDomingo() {
+  const hoje = new Date();
+  const diaDaSemana = hoje.getDay();
+
+  if (diaDaSemana === 0) {
+    return hoje;
+  }
+
+  const domingo = new Date(hoje);
+  domingo.setDate(hoje.getDate() - diaDaSemana);
+
+  return domingo;
+}
+
+function formatarDataBR(data) {
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const ano = String(data.getFullYear()).slice(-2);
+  return `${dia}-${mes}-${ano}`;
+}
+
+/**
+ * Pega o último domingo e retorna um objeto com as 4 datas 
+ * (do mais recente ao mais antigo) armazenadas em chaves separadas.
+ * * @param {Date} ultimoDomingo - O objeto Date do domingo mais recente.
+ * @returns {Object<string, string>} Um objeto com as chaves domingo_0 a domingo_3.
+ */
+
+function getUltimos4DomingosComoObjeto(ultimoDomingo) {
+  const domingos = {};
+  const dataAtual = new Date(ultimoDomingo);
+
+  for (let i = 0; i < 4; i++) {
+    // A chave é dinâmica: domingo_0, domingo_1, domingo_2, domingo_3
+    const chave = `domingo_${i}`;
+
+    // Armazena a data formatada no objeto com a chave correspondente
+    domingos[chave] = formatarDataBR(dataAtual);
+
+    // Subtrai 7 dias para ir para o domingo da semana anterior
+    dataAtual.setDate(dataAtual.getDate() - 7);
+  }
+
+  return domingos;
+}
+
+async function carregarDados() {
+
+  const ultimoDomingo = getUltimoDomingo();
+
+  // 1. CHAME A FUNÇÃO E ARMAZENE O OBJETO
+  const datasDoFetch = getUltimos4DomingosComoObjeto(ultimoDomingo); // <-- CORREÇÃO AQUI
+
+  // Desestruturação do objeto para criar as variáveis separadas
+  const {
+    domingo_0,
+    domingo_1, 
+    domingo_2,
+    domingo_3
+  } = datasDoFetch;
+
+  const idEmpresa = sessionStorage.FK_EMPRESA;
+  const regiao = ""
+
+  const resposta = await fetch(`/s3Route/${idEmpresa}/${domingo_0}`);
+  const resposta2 = await fetch(`/s3Route/${idEmpresa}/${domingo_1}`);
+  const resposta3 = await fetch(`/s3Route/${idEmpresa}/${domingo_2}`);
+  const resposta4 = await fetch(`/s3Route/${idEmpresa}/${domingo_3}`);
+
+  const data = await resposta.json();
+  const data2 = await resposta2.json();
+  const data3 = await resposta3.json();
+  const data4 = await resposta4.json();
+
+  plotarDados(data, idEmpresa, regiao)
+  plotarDadosGrafico(data, data2, data3, data4)
+}
+
+function plotarDados(data, idEmpresa, regiao) {
+
+  total_tecnicos.innerHTML = data.totalTecnicos[0].qtdTecnicos;
+  comparacao.innerHTML = Math.round(data.comparacao[0].percentual, 1);
+
+  var horasIdeais = data.horasIdeais[0].horasIdeais;
+
+  qtd_horas_ideais.innerHTML = horasIdeais;
+
+  var duracao = Math.round((data.horasTrabalhadas[0].duracao / 60) / 60, 2);
+
+  if (duracao <= horasIdeais) {
+    qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
+  } else {
+    qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
+  }
+
+  qtd_recomendada.innerHTML = data.qtdRecomendadaDeFuncionarios[0].qtdRecomendada;
+
+  var conteudo = ``
+
+  for (var i = 0; i < data.horasIdeais.length; i++) {
+    var item = data.horasIdeais[i];
+
+    conteudo_tabela.innerHTML += `
+        <div class="linha-tabela">
+          <p>${item.regiao}</p>
+          <p>${item.horasIdeais}</p>
+          <p style="color: #DC2626;">1050</p>
+        </div>
+      `;
+  }
+}
+
+function plotarDadosGrafico(data, data2, data3, data4){
+  
+}
+
+var options = {
+  series: [
+    {
+      name: 'Actual',
+      data: [
+        {
+          x: '01/11',
+          y: 890,
+          goals: [
+            {
+              name: 'Expected',
+              value: 700,
+              strokeHeight: 5,
+              strokeColor: '#775DD0'
+            }
+          ]
+        },
+        {
+          x: '08/11',
+          y: 924,
+          goals: [
+            {
+              name: 'Expected',
+              value: 700,
+              strokeHeight: 5,
+              strokeColor: '#775DD0'
+            }
+          ]
+        },
+        {
+          x: '15/11',
+          y: 680,
+          goals: [
+            {
+              name: 'Expected',
+              value: 700,
+              strokeHeight: 5,
+              strokeColor: '#775DD0'
+            }
+          ]
+        },
+        {
+          x: '22/11',
+          y: 876,
+          goals: [
+            {
+              name: 'Expected',
+              value: 700,
+              strokeHeight: 5,
+              strokeColor: '#775DD0'
+            }
+          ]
+        }
+      ]
     }
+  ],
+  chart: {
+    height: 350,
+    type: 'bar'
+  },
+  title: {
+    text: 'Comparação de Capacidade Operacional',
+    align: 'center',
+    style: {
+      fontSize: '16px',
+      fontWeight: 'bold',
+      fontFamily: 'Poppins',
+      color: '#6B46C1'
+    },
+  },
+  subtitle: {
+    text: 'Últimas 4 Semanas',
+    align: 'center',
+    offsetX: 0,
+    offsetY: 30,
+    floating: false,
+    style: {
+      fontSize: '14px',
+      fontWeight: 'normal',
+      color: '#9699a2'
+    },
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: '60%'
+    }
+  },
+  colors: ['#00E396'],
+  dataLabels: {
+    enabled: false
+  },
+  legend: {
+    show: true,
+    showForSingleSeries: true,
+    customLegendItems: ['Horas Trabalhadas', 'Horas Ideais'],
+    markers: {
+      fillColors: ['#00E396', '#775DD0']
+    }
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+function abrirEscolha() {
+  const popup = document.getElementById("popup-escolha");
+  popup.style.display = "flex";
+  popup.style.opacity = "0";
+  popup.style.pointerEvents = "auto";
+
+  // Animação de entrada
+  setTimeout(() => {
+    popup.style.transition = "opacity 0.3s ease";
+    popup.style.opacity = "1";
+  }, 10);
+
+  carregarRegioesCadastradas();
+}
+
+function fecharEscolha() {
+  const popup = document.getElementById("popup-escolha");
+  popup.style.opacity = "0";
+  popup.style.pointerEvents = "none";
+
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 300);
+}
+
+function carregarRegioesCadastradas() {
+  emailUsuario = sessionStorage.getItem('EMAIL_USUARIO');
+
+  fetch("/gestor/buscarRegioes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      emailUsuario: emailUsuario
+    }),
+  })
+    .then(function (resposta) {
+      if (resposta.ok) {
+        resposta.json().then(data => {
+          regioes = data;
+          plotarRegioes(regioes)
+          priorizarRegiao(regioes)
+        });
+      } else {
+        console.log("Erro ao Pegar Regiões");
+
+      }
+    })
+    .catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
+}
+
+async function plotarRegioes(regioes) {
+  const div_regioes = document.getElementById('regioes');
+  div_regioes.innerHTML = '';
+
+  regioes.forEach(regiao => {
+    div_regioes.innerHTML += `
+      <div class="regiao" onclick="escolherRegiao('${regiao.NomeRegiao}', '${regiao.SiglaRegiao}')">
+        <h1>${regiao.NomeRegiao} - ${regiao.SiglaRegiao}</h1>
+      </div>
+    `;
+  });
+}
+
+function priorizarRegiao() {
+  document.getElementById('priorizar').style.display = 'none';
+}
+
+function abrirPassos() {
+  popup = $("#popup-passos");
+  popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+}
+function fecharPassos() {
+  popup = $("#popup-passos");
+  popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }
 
 function ativarPopup() {
-    popup = $("#popup-logout");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
+  popup = $("#popup-logout");
+  popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
 }
 function fecharPopup() {
-    popup = $("#popup-logout");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
-
-function abrirEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharEscolha() {
-    popup = $("#popup-escolha");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
-}
-function abrirPassos() {
-    popup = $("#popup-passos");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
-}
-function fecharPassos() {
-    popup = $("#popup-passos");
-    popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
+  popup = $("#popup-logout");
+  popup.css({ display: "flex", opacity: 0, "pointer-events": "none" }).animate({ opacity: 0 }, 300);
 }
