@@ -722,6 +722,13 @@ select {
     overflow-y: auto;
 }
 
+.aprovados {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow-y: auto;
+}
+
 #div_aprovados .nada {
     display: flex;
     flex-direction: column;
