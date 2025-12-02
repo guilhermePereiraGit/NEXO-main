@@ -608,12 +608,6 @@ async function carregarDados() {
         document.getElementById('eficiencia').style.display = 'none';
         document.getElementById('alertas').style.display = 'none';
     }
-
-    setTimeout(() => {
-        if (document.getElementById('map')) {
-            initMap();
-        }
-    }, 500);
 }
 
 function escolherRegiao(regiao, sigla) {
