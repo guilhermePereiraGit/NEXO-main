@@ -158,6 +158,9 @@ function preencherDadosBucket(jsonDados) {
         dadosRam.push(dados.janelas4h[i].ramMedia);
         dadosDisco.push(dados.janelas4h[i].discoMedia);
         labelsGrafico.push(dados.janelas4h[i].horaInicio);
+        if (labelsGrafico.length > 6) {
+            labelsGrafico.shift();
+        }
 
         dias = dados.janelas4h[i].uptime / 24;
         diasInteiros = Math.floor(dias);
@@ -240,11 +243,12 @@ async function carregarDashboard(modelo, idEmpresa) {
 
 
 function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta) {
+    console.log("Gerando gráfico para o componente:", labelsGrafico);
 
     return new Chart(ctx, {
         type: "line",
         data: {
-            labels: [labelsGrafico],
+            labels: labelsGrafico,
             datasets: [
                 {
                     label: componente.toUpperCase(),
