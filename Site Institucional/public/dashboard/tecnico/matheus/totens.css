@@ -1113,9 +1113,7 @@ select {
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 48vw;
-    height: 2vh;
-    margin-top: 20px;
-    min-height: 400px;
+    height: 10vh;
 }
 
 #grafico-barra {
