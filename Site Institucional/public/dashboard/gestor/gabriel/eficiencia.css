@@ -1911,3 +1911,13 @@ select {
     justify-content: center;
     margin-top: 40px;
 }
+
+#conteudo_tabela {
+  max-height: 260px; /* ajuste o tamanho que preferir */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* opcional: barra de scroll mais bonita */
+  scrollbar-width: thin;
+  scrollbar-color: #a78bfa #f3f4f6;
+}
