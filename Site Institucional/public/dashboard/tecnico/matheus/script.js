@@ -835,17 +835,24 @@ async function encontrarTotemMaisProximo() {
     }
 }
 
+// Variável global para armazenar a instância do gráfico
+let graficoAlertasInstance = null;
+
+// Função para carregar e gerar o gráfico de alertas por grau
 async function carregarGraficoAlertasPorGrau() {
     try {
-        const fkEmpresa = sessionStorage.getItem('fkEmpresa');
+        // Pegar o FK_EMPRESA do sessionStorage (note que está em maiúsculo no seu código)
+        const fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
         
         if (!fkEmpresa) {
             console.error('fkEmpresa não encontrado no sessionStorage');
             return;
         }
         
+        // Montar a URL do bucket S3
         const urlBucket = `https://bucket-client-nexo.s3.amazonaws.com/${fkEmpresa}/alertas.json`;
         
+        // Fazer requisição para buscar os dados
         const response = await fetch(urlBucket);
         
         if (!response.ok) {
@@ -854,21 +861,30 @@ async function carregarGraficoAlertasPorGrau() {
         
         const dados = await response.json();
         
+        // Contar alertas por grau
         const contagemGraus = contarAlertasPorGrau(dados);
         
+        // Preparar dados para o gráfico
         const labels = Object.keys(contagemGraus);
         const valores = Object.values(contagemGraus);
         
+        // Cores para cada grau de alerta
         const coresGraus = {
-            'Muito Perigoso': '#dc3545',
-            'Perigoso': '#fd7e14',
-            'Atenção': '#ffc107'
+            'Muito Perigoso': '#dc3545',  // Vermelho
+            'Perigoso': '#fd7e14',         // Laranja
+            'Atenção': '#ffc107'           // Amarelo
         };
         
         const cores = labels.map(grau => coresGraus[grau] || '#6c757d');
         
+        // Destruir gráfico anterior se existir (evita sobreposição)
+        if (graficoAlertasInstance) {
+            graficoAlertasInstance.destroy();
+        }
+        
+        // Configuração do gráfico
         const ctx = document.getElementById('graficoAlertas').getContext('2d');
-        const graficoAlertas = new Chart(ctx, {
+        graficoAlertasInstance = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
@@ -973,6 +989,7 @@ async function carregarGraficoAlertasPorGrau() {
         
     } catch (error) {
         console.error('Erro ao carregar gráfico de alertas:', error);
+        // Exibir mensagem de erro no canvas
         const ctx = document.getElementById('graficoAlertas').getContext('2d');
         ctx.font = '16px Poppins';
         ctx.fillStyle = '#dc3545';
@@ -981,6 +998,7 @@ async function carregarGraficoAlertasPorGrau() {
     }
 }
 
+// Função auxiliar para contar alertas por grau
 function contarAlertasPorGrau(dados) {
     const contagem = {};
     
