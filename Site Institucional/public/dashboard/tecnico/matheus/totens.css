@@ -1111,9 +1111,10 @@ select {
     width: 100%;
     background: white;
     border-radius: 12px;
+    padding: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 48vw;
-    height: 10vh;
+    height: 40vh;
 }
 
 #grafico-barra {
