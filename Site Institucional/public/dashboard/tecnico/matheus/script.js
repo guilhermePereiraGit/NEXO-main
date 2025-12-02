@@ -840,6 +840,164 @@ async function encontrarTotemMaisProximo() {
     }
 }
 
+async function carregarGraficoAlertasPorGrau() {
+    try {
+        const fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
+        
+        if (!fkEmpresa) {
+            console.error('fkEmpresa não encontrado no sessionStorage');
+            return;
+        }
+        
+        const urlBucket = `https://bucket-client-nexo.s3.amazonaws.com/${fkEmpresa}/alertas.json`;
+        
+        const response = await fetch(urlBucket);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar dados: ${response.status}`);
+        }
+        
+        const dados = await response.json();
+        
+        const contagemGraus = contarAlertasPorGrau(dados);
+        
+        const labels = Object.keys(contagemGraus);
+        const valores = Object.values(contagemGraus);
+        
+        const coresGraus = {
+            'Muito Perigoso': '#dc3545',
+            'Perigoso': '#fd7e14',
+            'Atenção': '#ffc107'
+        };
+        
+        const cores = labels.map(grau => coresGraus[grau] || '#6c757d');
+        
+        // Configuração do gráfico
+        const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        const graficoAlertas = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Quantidade de Alertas',
+                    data: valores,
+                    backgroundColor: cores,
+                    borderColor: cores.map(cor => cor),
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    hoverBackgroundColor: cores.map(cor => cor + 'dd')
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: 'Poppins',
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribuição de Alertas por Grau de Criticidade',
+                        font: {
+                            family: 'Poppins',
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            family: 'Poppins',
+                            size: 14
+                        },
+                        bodyFont: {
+                            family: 'Poppins',
+                            size: 13
+                        },
+                        padding: 12,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10,
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Quantidade',
+                            font: {
+                                family: 'Poppins',
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Grau de Alerta',
+                            font: {
+                                family: 'Poppins',
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+    } catch (error) {
+        console.error('Erro ao carregar gráfico de alertas:', error);
+        const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        ctx.font = '16px Poppins';
+        ctx.fillStyle = '#dc3545';
+        ctx.textAlign = 'center';
+        ctx.fillText('Erro ao carregar dados do gráfico', ctx.canvas.width / 2, ctx.canvas.height / 2);
+    }
+}
+
+function contarAlertasPorGrau(dados) {
+    const contagem = {};
+    
+    dados.forEach(item => {
+        const grau = item.grau;
+        contagem[grau] = (contagem[grau] || 0) + 1;
+    });
+    
+    return contagem;
+}
+
 function ativarPopup() {
     popup = $("#popup-logout");
     popup.css({ display: "flex", opacity: 0, "pointer-events": "auto" }).animate({ opacity: 1 }, 300);
