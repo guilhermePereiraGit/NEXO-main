@@ -213,13 +213,13 @@
 
         function carregarContextoDashboard() {
             // ID da empresa (definido na tela anterior)
-            var idEmpresaSalvo = sessionStorage.getItem('ID_EMPRESA_DASH');
+            var idEmpresaSalvo = sessionStorage.getItem('FK_EMPRESA');
             if (idEmpresaSalvo != null && idEmpresaSalvo !== "") {
                 idEmpresaDashboard = parseInt(idEmpresaSalvo);
             }
 
             // MAC do totem (definido na tela anterior)
-            macTotemDashboard = sessionStorage.getItem('MAC_TOTEM_DASH');
+            macTotemDashboard = sessionStorage.getItem('ID_MODELO');
 
             // Região escolhida na tela anterior
             var regiaoSalva = sessionStorage.getItem('REGIAO_ESCOLHIDA');

@@ -560,13 +560,20 @@ async function plotarModelos(modelos) {
             cor = "#ff3131";
         }
 
+        
+
         div_modelos.innerHTML += `
-        <div class="modelo">
+        <div class="modelo" onclick="irparaSergio(${modelos[i].idModelo})">
         <h2>${modelos[i].NomeModelo}</h2>
         <div class="color" id="color_modelo" style="background-color:${cor}"></div>
         </div>
         `;
     }
+}
+
+function irparaSergio(idModelo){
+    sessionStorage.setItem('ID_MODELO',idModelo);
+    window.location.href = '../Sergio/dash.html';
 }
 
 function carregarTotens() {
