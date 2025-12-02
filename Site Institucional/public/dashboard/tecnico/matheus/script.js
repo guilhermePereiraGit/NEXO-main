@@ -595,6 +595,11 @@ async function carregarDados() {
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
         carregarTotens();
+        setTimeout(() => {
+        if (document.getElementById('graficoAlertas')) {
+            carregarGraficoAlertasPorGrau();
+        }
+    }, 500);
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
         sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
@@ -603,12 +608,6 @@ async function carregarDados() {
         document.getElementById('eficiencia').style.display = 'none';
         document.getElementById('alertas').style.display = 'none';
     }
-
-    setTimeout(() => {
-        if (document.getElementById('map')) {
-            initMap();
-        }
-    }, 500);
 }
 
 function escolherRegiao(regiao, sigla) {
@@ -619,6 +618,10 @@ function escolherRegiao(regiao, sigla) {
     carregarDados();
     gerarGraficoLinha();
     carregarGraficoAlertasPorGrau();
+
+    setTimeout(() => {
+        carregarGraficoAlertasPorGrau();
+    }, 1000);
 }
 
 function carregarTotens() {
@@ -840,33 +843,53 @@ let graficoAlertasInstance = null;
 
 // Função para carregar e gerar o gráfico de alertas por grau
 async function carregarGraficoAlertasPorGrau() {
+    console.log('🔍 Iniciando carregamento do gráfico...');
+    
     try {
-        // Pegar o FK_EMPRESA do sessionStorage (note que está em maiúsculo no seu código)
+        // Verificar se o canvas existe
+        const canvasElement = document.getElementById('graficoAlertas');
+        if (!canvasElement) {
+            console.error('❌ Canvas #graficoAlertas não encontrado no DOM!');
+            return;
+        }
+        console.log('✅ Canvas encontrado:', canvasElement);
+        
+        // Pegar o FK_EMPRESA do sessionStorage
         const fkEmpresa = sessionStorage.getItem('FK_EMPRESA');
+        console.log('🔑 FK_EMPRESA:', fkEmpresa);
         
         if (!fkEmpresa) {
-            console.error('fkEmpresa não encontrado no sessionStorage');
+            console.error('❌ FK_EMPRESA não encontrado no sessionStorage');
+            console.log('📦 Conteúdo do sessionStorage:', JSON.stringify(sessionStorage));
             return;
         }
         
-        // Montar a URL do bucket S3
-        const urlBucket = `https://bucket-client-nexo.s3.amazonaws.com/${fkEmpresa}/alertas.json`;
+        // Usar a rota do backend ao invés de acessar o S3 diretamente
+        const urlBackend = `/s3Route/dados/${fkEmpresa}/alertas.json`;
+        console.log('🌐 URL do backend:', urlBackend);
         
-        // Fazer requisição para buscar os dados
-        const response = await fetch(urlBucket);
+        // Fazer requisição para buscar os dados através do backend
+        console.log('📡 Fazendo requisição via backend...');
+        const response = await fetch(urlBackend);
+        console.log('📥 Response status:', response.status);
         
         if (!response.ok) {
             throw new Error(`Erro ao carregar dados: ${response.status}`);
         }
         
         const dados = await response.json();
+        console.log('📊 Dados recebidos:', dados);
+        console.log('📈 Total de registros:', dados.length);
         
         // Contar alertas por grau
         const contagemGraus = contarAlertasPorGrau(dados);
+        console.log('📊 Contagem por grau:', contagemGraus);
         
         // Preparar dados para o gráfico
         const labels = Object.keys(contagemGraus);
         const valores = Object.values(contagemGraus);
+        console.log('🏷️ Labels:', labels);
+        console.log('🔢 Valores:', valores);
         
         // Cores para cada grau de alerta
         const coresGraus = {
@@ -876,14 +899,17 @@ async function carregarGraficoAlertasPorGrau() {
         };
         
         const cores = labels.map(grau => coresGraus[grau] || '#6c757d');
+        console.log('🎨 Cores:', cores);
         
-        // Destruir gráfico anterior se existir (evita sobreposição)
+        // Destruir gráfico anterior se existir
         if (graficoAlertasInstance) {
+            console.log('🗑️ Destruindo gráfico anterior...');
             graficoAlertasInstance.destroy();
         }
         
         // Configuração do gráfico
-        const ctx = document.getElementById('graficoAlertas').getContext('2d');
+        console.log('🎯 Criando gráfico...');
+        const ctx = canvasElement.getContext('2d');
         graficoAlertasInstance = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -987,14 +1013,21 @@ async function carregarGraficoAlertasPorGrau() {
             }
         });
         
+        console.log('✅ Gráfico criado com sucesso!');
+        
     } catch (error) {
-        console.error('Erro ao carregar gráfico de alertas:', error);
-        // Exibir mensagem de erro no canvas
-        const ctx = document.getElementById('graficoAlertas').getContext('2d');
-        ctx.font = '16px Poppins';
-        ctx.fillStyle = '#dc3545';
-        ctx.textAlign = 'center';
-        ctx.fillText('Erro ao carregar dados do gráfico', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        console.error('❌ Erro ao carregar gráfico de alertas:', error);
+        console.error('📋 Stack trace:', error.stack);
+        
+        // Tentar exibir mensagem de erro no canvas
+        const canvasElement = document.getElementById('graficoAlertas');
+        if (canvasElement) {
+            const ctx = canvasElement.getContext('2d');
+            ctx.font = '16px Poppins';
+            ctx.fillStyle = '#dc3545';
+            ctx.textAlign = 'center';
+            ctx.fillText('Erro ao carregar dados do gráfico', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        }
     }
 }
 

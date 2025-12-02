@@ -1104,13 +1104,6 @@ select {
     background-color: #ff3131;
 }
 
-/* GRÁFICO HEATMAP */
-#map {
-    width: 100%;
-    height: 500px;
-    border-radius: 10px;
-}
-
 /* POPUP PARA LOGOUT */
 .popup-logout {
     width: 100%;
