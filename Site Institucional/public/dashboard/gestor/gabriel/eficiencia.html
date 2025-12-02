@@ -16,62 +16,68 @@
 <body onload="carregarDados()">
 
   <div class="container">
-    <div class="header-container">
-      <div class="header-menu">
-        <div class="menu" id="menu" onclick="abrirMenu()">
-          <i class="bi bi-list" id="icone"></i>
+    <header>
+      <div class="header-container">
+        <div class="header-menu">
+          <div class="menu" id="menu" onclick="abrirMenu()">
+            <i class="bi bi-list" id="icone"></i>
+          </div>
         </div>
-      </div>
-      <div class="header-navigation">
-        <div class="home">
-          <div class="fundo" style="display: block;"></div>
-          <i class="bi bi-house" onclick="window.location.reload()" style="color: #451c8b;"></i>
-        </div>
-        <div class="eficiencia">
-          <div class="fundo" style="display: none;"></div>
-          <i class="bi bi-eye" onclick="window.location.href = '../silva/modelos.html'"></i>
-        </div>
-        <div class="eficiencia">
-          <div class="fundo" style="display: none;"></div>
-          <i class="bi bi-clipboard-data"
-            onclick="window.location.href = 'dashboard/gestor/gabriel/eficiencia.html'"></i>
-        </div>
-        <div class="sair">
-          <div class="fundo" style="display: none;"></div>
-          <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
-        </div>
-      </div>
-    </div>
 
-    <div class="header-help"></div>
-    <div class="menu-extend" style="display: none;" id="extend">
-      <div class="infos-user">
-        <h1 id="nome_user"></h1>
-        <h2>Gestor de Operações</h2>
+        <div class="header-navigation">
+          <div class="home">
+            <div class="fundo" style="display: none;"></div>
+            <i class="bi bi-house" onclick="window.location.href='../../../gestor.html'" style="color: white;"></i>
+          </div>
+          <div class="eficiencia">
+            <div class="fundo" style="display: none;"></div>
+            <i class="bi bi-eye" onclick="window.location.href='#'"></i>
+          </div>
+          <div class="eficiencia">
+            <div class="fundo" style="display: block;"></div>
+            <i class="bi bi-clipboard-data" onclick="window.location.reload()" style="color: #451c8b;"></i>
+          </div>
+          <div class="sair">
+            <div class="fundo" style="display: none;"></div>
+            <i class="bi bi-box-arrow-left" onclick="ativarPopup()"></i>
+          </div>
+        </div>
+
+        <!-- Mantém o espaço da base da navbar, mas sem o "i" -->
+        <div class="header-help"></div>
       </div>
-      <div class="widgets">
-        <p>Caso se depare com algum problema, entre em contato via:</p>
-        <div class="email" style="margin-top: 20px;">
-          <i class="bi bi-envelope"></i>
-          <p>Email: nexoadm9328@outlook.com</p>
+
+      <!-- MENU LATERAL EXPANDIDO (COMPLETO, IGUAL ORIGINAL) -->
+      <div class="menu-extend" style="display: none;" id="extend">
+        <div class="infos-user">
+          <h1 id="nome_user">Usuário</h1>
+          <h2>Gestor de Operações</h2>
         </div>
-        <div class="telefone" style="margin-top: 20px;">
-          <i class="bi bi-telephone"></i>
-          <p>Telefone: +55(11)98802-2449</p>
+        <div class="widgets">
+          <p>Caso se depare com algum problema, entre em contato via:</p>
+          <div class="email" style="margin-top: 20px;">
+            <i class="bi bi-envelope"></i>
+            <p>Email: nexoadm9328@outlook.com</p>
+          </div>
+          <div class="telefone" style="margin-top: 20px;">
+            <i class="bi bi-telephone"></i>
+            <p>Telefone: +55(11)98802-2449</p>
+          </div>
+        </div>
+        <div class="jira-slack">
+          <div class="card"
+            onclick="window.location.href='https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
+            <img src="assets/imgs/icon-jira.png">
+            <h1>Jira</h1>
+          </div>
+          <div class="card" onclick="window.location.href='https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
+            <img src="assets/imgs/icon-slack.png">
+            <h1>Slack</h1>
+          </div>
         </div>
       </div>
-      <div class="jira-slack">
-        <div class="card"
-          onclick="window.location.href = 'https://nexoadm.atlassian.net/jira/servicedesk/projects/NEXO/summary?ignoreStickyVersion=true'">
-          <img src="../../../assets/imgs/icon-jira.png">
-          <h1>Jira</h1>
-        </div>
-        <div class="card" onclick="window.location.href = 'https://app.slack.com/client/T09LFRM7PFX/C09LH8XJS22'">
-          <img src="../../../assets/imgs/icon-slack.png">
-          <h1>Slack</h1>
-        </div>
-      </div>
-    </div>
+    </header>
+
 
     <div class="main">
       <div class="information">

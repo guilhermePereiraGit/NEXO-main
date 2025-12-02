@@ -79,49 +79,78 @@ async function carregarDados() {
   const idEmpresa = sessionStorage.FK_EMPRESA;
   const regiao = ""
 
-  const resposta = await fetch(`/s3Route/${idEmpresa}/${domingo_0}`);
-  const resposta2 = await fetch(`/s3Route/${idEmpresa}/${domingo_1}`);
-  const resposta3 = await fetch(`/s3Route/${idEmpresa}/${domingo_2}`);
-  const resposta4 = await fetch(`/s3Route/${idEmpresa}/${domingo_3}`);
+  const resposta = await fetch(`/s3Route/${idEmpresa}/2025-12-02/`);
+  const resposta2 = await fetch(`/s3Route/${idEmpresa}/2025-11-24/`);
+  const resposta3 = await fetch(`/s3Route/${idEmpresa}/2025-11-17/`);
+  const resposta4 = await fetch(`/s3Route/${idEmpresa}/2025-11-10/`);
 
   const data = await resposta.json();
   const data2 = await resposta2.json();
   const data3 = await resposta3.json();
   const data4 = await resposta4.json();
 
-  plotarDados(data, idEmpresa, regiao)
+  console.log(data, data2, data3, data4)
+
+  plotarDados(data3, idEmpresa, regiao)
   plotarDadosGrafico(data, data2, data3, data4)
 }
 
 function plotarDados(data, idEmpresa, regiao) {
 
-  total_tecnicos.innerHTML = data.totalTecnicos[0].qtdTecnicos;
-  comparacao.innerHTML = Math.round(data.comparacao[0].percentual, 1);
-
-  var horasIdeais = data.horasIdeais[0].horasIdeais;
-
-  qtd_horas_ideais.innerHTML = horasIdeais;
-
-  var duracao = Math.round((data.horasTrabalhadas[0].duracao / 60) / 60, 2);
-
-  if (duracao <= horasIdeais) {
-    qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
-  } else {
-    qtd_horas_trabalhadas.innerHTML = `<p  style="color: green;">${duracao}</p>`;
+  // Certifique-se de que esses elementos estão definidos no HTML
+  if (typeof total_tecnicos === 'undefined' || typeof comparacao === 'undefined' || 
+      typeof qtd_horas_ideais === 'undefined' || typeof qtd_horas_trabalhadas === 'undefined' || 
+      typeof qtd_recomendada === 'undefined' || typeof conteudo_tabela === 'undefined') {
+      console.error("Um ou mais elementos HTML (total_tecnicos, comparacao, etc.) não estão definidos.");
+      return;
   }
 
-  qtd_recomendada.innerHTML = data.qtdRecomendadaDeFuncionarios[0].qtdRecomendada;
+  // --- Bloco de Dados Principais (Acessando o índice 1) ---
+  
+  // Acesso direto, assumindo que data.totalTecnicos[1] existe
+  total_tecnicos.innerHTML = data.totalTecnicos[1].qtdTecnicos;
+  
+  // Arredondamento do percentual
+  comparacao.innerHTML = Math.round(data.comparacao[1].percentual * 10) / 10; // Arredonda para 1 casa decimal
+  
+  var horasIdeais = data.horasIdeais[1].horasIdeais;
+  qtd_horas_ideais.innerHTML = horasIdeais;
+  
+  // Correção aqui: Acessar data.horasTrabalhadas[1].duracao e converter para horas
+  // Conversão de Segundos para Horas: duracao / 3600 (60 segundos * 60 minutos)
+  var duracaoSegundos = data.horasTrabalhadas[1].duracao;
+  var duracaoHoras = Math.round((duracaoSegundos / 60) / 1000, 2); // Arredonda para o número inteiro de horas
+  
+  // Exibição condicional das horas trabalhadas
+  if (duracaoHoras <= horasIdeais) {
+    qtd_horas_trabalhadas.innerHTML = `<p style="color: green;">${duracaoHoras}</p>`;
+  } else {
+    qtd_horas_trabalhadas.innerHTML = `<p style="color: red;">${duracaoHoras}</p>`;
+  }
 
-  var conteudo = ``
+  qtd_recomendada.innerHTML = data.qtdRecomendadaDeFuncionarios[1].qtdRecomendada;
+
+  // Limpa o conteúdo anterior da tabela
+  conteudo_tabela.innerHTML = ''; 
+
+  // --- Bloco da Tabela (Iterando sobre todas as regiões) ---
 
   for (var i = 0; i < data.horasIdeais.length; i++) {
-    var item = data.horasIdeais[i];
+    var itemHorasIdeais = data.horasIdeais[i];
+    
+    var itemHorasTrabalhadas = data.horasTrabalhadas[i];
+
+    // Converte a duração em segundos para horas
+    var horasTrabalhadas = Math.round((itemHorasTrabalhadas.duracao / 60) / 1000, 2);
+    
+    // Define a cor com base na comparação
+    var cor = horasTrabalhadas > itemHorasIdeais.horasIdeais ? '#DC2626' : '#10B981';
 
     conteudo_tabela.innerHTML += `
         <div class="linha-tabela">
-          <p>${item.regiao}</p>
-          <p>${item.horasIdeais}</p>
-          <p style="color: #DC2626;">1050</p>
+          <p>${itemHorasIdeais.regiao}</p>
+          <p>${itemHorasIdeais.horasIdeais}h</p>
+          <p style="color: ${cor};">${horasTrabalhadas}h</p>
         </div>
       `;
   }
@@ -137,48 +166,48 @@ var options = {
       name: 'Actual',
       data: [
         {
-          x: '01/11',
-          y: 890,
+          x: '10/11',
+          y: 98,
           goals: [
             {
               name: 'Expected',
-              value: 700,
+              value: 168,
               strokeHeight: 5,
               strokeColor: '#775DD0'
             }
           ]
         },
         {
-          x: '08/11',
-          y: 924,
+          x: '17/11',
+          y: 168,
           goals: [
             {
               name: 'Expected',
-              value: 700,
+              value: 168,
               strokeHeight: 5,
               strokeColor: '#775DD0'
             }
           ]
         },
         {
-          x: '15/11',
+          x: '24/11',
           y: 680,
           goals: [
             {
               name: 'Expected',
-              value: 700,
+              value: 168,
               strokeHeight: 5,
               strokeColor: '#775DD0'
             }
           ]
         },
         {
-          x: '22/11',
-          y: 876,
+          x: '02/12',
+          y: 280,
           goals: [
             {
               name: 'Expected',
-              value: 700,
+              value: 168,
               strokeHeight: 5,
               strokeColor: '#775DD0'
             }
