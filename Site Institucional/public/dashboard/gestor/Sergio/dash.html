@@ -9,8 +9,7 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -41,8 +40,7 @@
                     </div>
                     <div class="eficiencia">
                         <div class="fundo" style="display: block;"></div>
-                        <i class="bi bi-clipboard-data" onclick="window.location.reload()"
-                            style="color: #451c8b;"></i>
+                        <i class="bi bi-clipboard-data" onclick="window.location.reload()" style="color: #451c8b;"></i>
                     </div>
                     <div class="sair">
                         <div class="fundo" style="display: none;"></div>
@@ -189,7 +187,7 @@
     </div>
 
     <script>
-        
+
         // Dados principais da dashboard
         var dadosDashboard = null;
         var graficoBarras = null;
@@ -258,25 +256,15 @@
 
         async function buscarDadosDashboardS3() {
             try {
-                // Caminho esperado: idEmpresa/dash/macTotem/dashboard.json
-                var caminhoJson = idEmpresaDashboard + "/dash/" + macTotemDashboard + "/dashboard.json";
-                var caminhoCodificado = encodeURIComponent(caminhoJson);
-
-                // Rota do back-end (baseada no exemplo do zip)
-                var resposta = await fetch("/s3RouteSergio/dados/" + caminhoCodificado);
+                // Caminho local do JSON
+                const resposta = await fetch("./dashboard.json");
 
                 if (!resposta.ok) {
-                    throw new Error("Erro do servidor: " + resposta.status);
+                    throw new Error("Erro ao carregar dashboard.json local: " + resposta.status);
                 }
 
                 dadosDashboard = await resposta.json();
-                console.log("JSON da dashboard carregado:", dadosDashboard);
-
-                // Logs só para comprovar que estamos usando tudo do JSON
-                console.log("Limites CPU:", dadosDashboard.limiteMinCpu, dadosDashboard.limiteMaxCpu);
-                console.log("Limites RAM:", dadosDashboard.limiteMinRam, dadosDashboard.limiteMaxRam);
-                console.log("Limites DISCO:", dadosDashboard.limiteMinDisco, dadosDashboard.limiteMaxDisco);
-                console.log("Limites PROCESSOS:", dadosDashboard.limiteMinProc, dadosDashboard.limiteMaxProc);
+                console.log("JSON local carregado:", dadosDashboard);
 
                 atualizarIndicadoresDashboard();
                 desenharGraficoEquipamentosCriticos();
@@ -284,7 +272,7 @@
 
             } catch (erro) {
                 console.error(erro);
-                alert("Erro ao buscar dados da dashboard. Verifique se o Back-End está rodando e se o arquivo JSON existe no bucket-client.");
+                alert("Erro ao carregar dashboard.json local. Verifique se o arquivo está no mesmo diretório do HTML.");
             }
         }
 
