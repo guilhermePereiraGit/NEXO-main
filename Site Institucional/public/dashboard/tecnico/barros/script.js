@@ -4,7 +4,7 @@ window.onload = async function () {
 
 async function carregarDadosDoTotem() {
     const mac = sessionStorage.MAC_TOTEM;
-    const empresa = sessionStorage.ID_EMPRESA;
+    const empresa = sessionStorage.FK_EMPRESA;
     
     console.log("Carregando dados do totem:", mac, empresa);
 
@@ -84,10 +84,11 @@ function preencherInfoTotem(totem) {
     sessionStorage.MODELOTOTEM = t.modelo;
 
     console.log("Id da empresa no objeto totem:", t.fkEmpresa);
-    console.log("Id da empresa armazenado na sessionStorage:", sessionStorage.IDEMPRESA);
+    console.log("Id da empresa armazenado na sessionStorage:", sessionStorage.FK_EMPRESA);
 }
 
 function preencherTicket(ticket) {
+    console.log("entrei na funcao de preencher ticket");
     if (!ticket) {
         console.log("Nenhum ticket encontrado para o MAC fornecido.");
         document.getElementById('grauAlerta').innerHTML = "Nenhum alerta";
@@ -98,14 +99,18 @@ function preencherTicket(ticket) {
 
     const descricao = ticket.fields.description.content[0].content[0].text;
 
-    const indexParametros = descricao.indexOf('Parâmetros ultrapassados: ');
+    const indexParametros = descricao.indexOf('Parâmetros: ');
     if (indexParametros !== -1) {
-        document.getElementById('parametros').innerHTML = "Causas: " + descricao.substring(indexParametros + 25).trim();
+        console.log("Causas: " + descricao.substring(indexParametros + 12).trim());
+        document.getElementById('parametros').innerHTML = "Causas: " + descricao.substring(indexParametros + 12).trim();
     }
 
-    const indexNivel = descricao.indexOf('Nível do alerta: ');
+    const indexNivel = descricao.indexOf('Nível de alerta: ');
     if (indexNivel !== -1) {
-        const criticidade = descricao.substring(indexNivel + 16).trim();
+        const resto = descricao.substring(indexNivel + 16);
+        const criticidade = resto.split('.')[0].trim();
+        
+        console.log("Nível do alerta: " + criticidade);
         document.getElementById('grauAlerta').innerHTML = criticidade;
 
         if (criticidade == 'Muito Perigoso') {
@@ -153,6 +158,9 @@ function preencherDadosBucket(jsonDados) {
         dadosRam.push(dados.janelas4h[i].ramMedia);
         dadosDisco.push(dados.janelas4h[i].discoMedia);
         labelsGrafico.push(dados.janelas4h[i].horaInicio);
+        if (labelsGrafico.length > 6) {
+            labelsGrafico.shift();
+        }
 
         dias = dados.janelas4h[i].uptime / 24;
         diasInteiros = Math.floor(dias);
@@ -235,11 +243,12 @@ async function carregarDashboard(modelo, idEmpresa) {
 
 
 function gerarGraficoComponente(ctx, componente, dadosComponentes, limitesAlerta) {
+    console.log("Gerando gráfico para o componente:", labelsGrafico);
 
     return new Chart(ctx, {
         type: "line",
         data: {
-            labels: [labelsGrafico],
+            labels: labelsGrafico,
             datasets: [
                 {
                     label: componente.toUpperCase(),
