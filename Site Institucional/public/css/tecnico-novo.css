@@ -719,7 +719,7 @@ select {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 #div_aprovados .nada {
