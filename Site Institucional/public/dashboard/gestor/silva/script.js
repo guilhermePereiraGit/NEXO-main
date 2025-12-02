@@ -331,7 +331,7 @@ async function carregarDowntime() {
         }
     }
 
-    modelo_pior.innerHTML = "Modelo " + vmodelo_pior;
+    modelo_pior.innerHTML = vmodelo_pior;
     downtime_pior.innerHTML = converterHoras(vdowntime_pior);
 
     regiao_agora = document.getElementById('regiao_agora');
@@ -561,7 +561,6 @@ async function plotarModelos(modelos) {
         }
 
         
-
         div_modelos.innerHTML += `
         <div class="modelo" onclick="irparaSergio(${modelos[i].idModelo})">
         <h2>${modelos[i].NomeModelo}</h2>
