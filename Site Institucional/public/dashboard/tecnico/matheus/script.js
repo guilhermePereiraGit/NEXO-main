@@ -494,48 +494,6 @@ function procurarZonas() {
         });
 
 }
-/*Usando*/
-function gerarGraficoLinha() {
-    const linha = document.getElementById('grafico-linha');
-    new Chart(linha, {
-        type: 'line',
-        data: {
-            labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-            datasets: [
-                {
-                    label: 'Atenção',
-                    data: [10, 15, 5, 10, 13, 20, 15],
-                    borderColor: '#fada64',
-                    tension: 0.4
-                },
-                {
-                    label: 'Perigoso',
-                    data: [5, 2, 7, 12, 3, 6, 9],
-                    borderColor: '#f98a25',
-                    tension: 0.4
-                },
-                {
-                    label: 'Crítico',
-                    data: [1, 2, 1, 4, 2, 3, 1],
-                    borderColor: '#ff3131',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart.js Line Chart'
-                }
-            }
-        },
-    });
-}
 
 function plotarZonasSelect(zonas) {
     var option = `<option value="">Selecione uma opção</option>`;
