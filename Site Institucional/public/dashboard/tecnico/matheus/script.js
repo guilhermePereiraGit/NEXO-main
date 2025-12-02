@@ -595,6 +595,11 @@ async function carregarDados() {
         document.getElementById('conteudo').style.display = 'block';
         document.getElementById('escolhaNew').style.display = 'block';
         carregarTotens();
+        setTimeout(() => {
+        if (document.getElementById('graficoAlertas')) {
+            carregarGraficoAlertasPorGrau();
+        }
+    }, 500);
     } else {
         regiao_escolhida.innerHTML = "Região não Selecionada";
         sigla_escolhida.innerHTML = "Clique em <i class='bi bi-arrow-repeat' style='cursor: pointer;' onclick=\"abrirEscolha()\"></i> para Selecionar uma Região";
